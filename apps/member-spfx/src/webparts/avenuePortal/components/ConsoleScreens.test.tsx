@@ -279,6 +279,16 @@ describe('schedule', () => {
     expect(document.querySelector('[data-testid="schedule-list"] article[data-unit="stove-1"]')?.textContent).toContain('12:00 PM – 2:00 PM');
     expect(document.querySelector('[data-testid="board"]')).toBeNull();
   });
+  it('opens a booked day in a sheet on phones, so the member does not scroll past the month grid', async () => {
+    await act(async () => { root.render(<SizeContext.Provider value="phone"><CalendarView source={src} facility={facility} resources={resources} /></SizeContext.Provider>); });
+    await flush();
+    const cell = Array.from(document.querySelectorAll('[role="gridcell"]')).find(c => /, [1-9]\d* booking/.test(c.getAttribute('aria-label') || ''));
+    expect(cell).toBeDefined();
+    await click(cell);
+    await flush();
+    const dialog = document.querySelector('[role="dialog"]');
+    expect(dialog?.textContent).toContain('Sample Bakery');
+  });
   it('shows an error instead of an empty schedule when loading fails', async () => {
     const bad = { listCalendar: async () => { throw new Error('offline'); } } as never;
     await act(async () => { root.render(<CalendarView source={bad} facility={facility} resources={resources} />); });

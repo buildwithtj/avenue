@@ -1639,3 +1639,42 @@ $ink2d: #0B3A47;
 @media (max-height: 500px) and (orientation: landscape) { .hxMedia { display: none; } .hx { grid-template-columns: 1fr; min-height: 0; } }
 .cwHint { display: block; margin-top: 6px; font-size: 14px; font-weight: 500; color: #6B4F10; }
 .inactive { max-width: 640px; margin: 48px auto; padding: 32px 28px; background: #fff; border: 1px solid $line; border-radius: var(--av-r-lg, 16px); p { color: $subtle; max-width: 60ch; } }
+
+// ---- v12: client feedback, 23 Nov 2026 ----
+// Date chips on My bookings and Book: one clean card style (weekday over a large numeral), replacing the tear-off band.
+.monthStrip { gap: 8px; padding: 4px 2px 10px; li > button { width: 58px; } }
+.monthDay, .bkDays button {
+  display: grid; justify-items: center; align-content: center; gap: 3px; position: relative;
+  padding: 9px 0 12px; border: 1px solid #D9E1E5; border-radius: 12px; background: #fff; color: $text;
+  box-shadow: 0 1px 2px rgba(16, 42, 52, .06); transition: transform .15s var(--av-ease), border-color .15s, box-shadow .15s, background .15s;
+  span { display: block; width: auto; margin: 0; padding: 0; background: none !important; border: 0 !important; color: $subtle !important; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  b { font-size: 20px; font-weight: 800; line-height: 1.05; color: inherit; font-variant-numeric: tabular-nums; }
+  @media (hover: hover) { &:not(:disabled):hover { transform: translateY(-1px); border-color: $ink; box-shadow: 0 4px 10px rgba(16, 42, 52, .1); } }
+}
+// My bookings: days without a booking stay readable but quiet; booked days carry a gold dot.
+.monthDay:disabled { opacity: 1; background: transparent; border-color: transparent; box-shadow: none; color: #7D8A95; }
+.monthDay i { bottom: 5px; width: 6px; height: 6px; margin-left: -3px; }
+.monthBooked { color: $ink; border-color: #C3D1D8; }
+.monthToday { border-color: $ink !important; span { color: $ink !important; } }
+.monthStrip .monthFocus { background: $ink; border-color: $ink; color: #fff; box-shadow: 0 4px 12px rgba(15, 76, 92, .25); span { color: #CFE0E5 !important; } i { background: $citrus; } }
+// Book: today outlined in gold, the picked day solid.
+.bkDays .bkDayToday { border-color: $citrus; span { color: #8A6A1F !important; } }
+.bkDays .bkDayOn { background: $ink !important; border-color: $ink !important; color: #fff !important; box-shadow: 0 4px 12px rgba(15, 76, 92, .25);
+  span { background: none !important; color: #CFE0E5 !important; } }
+
+// Schedule month: hint on stacked layouts (the day opens in a sheet there).
+.mcHint { margin: 0 0 10px; font-size: 13px; color: $subtle; }
+
+// Book equipment rows: each unit is a card with a larger picture, full-strength name and a status pill.
+.bkUnits { row-gap: 10px; li { padding: 12px !important; border: 1px solid #D9E1E5; border-radius: 12px; background: #fff; box-shadow: 0 1px 2px rgba(16, 42, 52, .05); } }
+.bkUnitBtn .artTile { width: 64px; height: 50px; background: #EEF3F5; }
+.bkUnitText { align-items: center !important; gap: 8px !important;
+  strong { font-size: 16px; font-weight: 700; color: #14262E; line-height: 1.25; }
+  em { font-family: inherit !important; font-size: 12px !important; font-weight: 700; color: #3D4F59; background: #EEF3F5; border-radius: 999px; padding: 3px 9px; white-space: nowrap; } }
+.bkUnitText em.bkFree { background: #E3F1EC; color: #0B5D4B !important; }
+.bkUnitText em.bkTaken { background: #FBE9E9; color: #9B2C2C !important; }
+.bkTick { width: 36px; height: 36px; border-radius: 10px; font-size: 18px; }
+.bkBar { height: 8px; border-radius: 999px; background: #D6E1E5; }
+.bkGroup h3 { color: #3D4F59; margin-bottom: 8px; }
+.bkUnitOff .bkUnitBtn { opacity: .7; }
+.bkUnits li.bkUnitOn { background: #FBF6EA; border-color: $citrus; box-shadow: inset 3px 0 0 $citrus; }

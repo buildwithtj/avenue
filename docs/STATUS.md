@@ -1,6 +1,8 @@
 # Status
 
-## 23 Nov 2026 (latest) — member portal 2.16.0.0 LIVE: UI plan phases 2–5, F2–F4
+## 23 Nov 2026 (night, latest) — member portal 2.17.0.0 LIVE: client UI feedback (date chips, schedule day drawer on phones, equipment cards). 367 tests; live page loads bundle 655fa7ea. See CHANGELOG.
+
+## 23 Nov 2026  — member portal 2.16.0.0 LIVE: UI plan phases 2–5, F2–F4
 - New notices list, motion, page polish, responsive rules, inactive-member screen, event date note, friendly load errors. 366 tests; live debug preview checked at 375 / desktop / 1920 px. Deployed and confirmed on the live page (bundle 6aff8c92). Returning browsers may need a reload or two (SharePoint service-worker cache).
 - F1 LIVE: the booking flow refuses requests while PaymentStatus is PastDue/Unpaid (owner override only); cancel items no longer fail the flow. Still open: F5 (no guest accounts), F6 (needs OK to save a member e-mail flow).
 

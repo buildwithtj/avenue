@@ -285,7 +285,7 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
               <h2 className={s.bkLabel}>1 · Date</h2>
               <div className={s.bkDays}>
                 {dayOpts.map(d => (
-                  <button key={d} type="button" aria-pressed={day === d} aria-label={fmt(d, { weekday: 'long', month: 'long', day: 'numeric' })} className={day === d ? s.bkDayOn : ''} onClick={() => pickDay(d)}>
+                  <button key={d} type="button" aria-pressed={day === d} aria-label={fmt(d, { weekday: 'long', month: 'long', day: 'numeric' })} className={`${day === d ? s.bkDayOn : ''} ${d === today ? s.bkDayToday : ''}`} onClick={() => pickDay(d)}>
                     <span>{d === today ? 'Today' : fmt(d, { weekday: 'short' })}</span><b>{fmt(d, { day: 'numeric' })}</b>
                   </button>
                 ))}

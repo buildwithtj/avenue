@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-23 (night) — client UI feedback doc: dates, schedule day, equipment rows (2.17.0.0, LIVE)
+- Source: the developer's Google Doc of four phone screenshots (23 Nov). My bookings date strip and the Book date grid share one clean chip style: weekday over a large numeral, rounded white card, no tear-off band; days without a booking stay readable (no 55 % fade); today outlined (gold on Book), the picked day solid ink.
+- Schedule month: on phone and mid widths a tap on a day with bookings opens that day in the drawer, so the member no longer scrolls past the six-week grid; a hint says so. Desktop keeps the side panel.
+- Book equipment: each unit is a card with a larger picture (64 × 50 on a tinted tile), full-strength name, status as a pill (Free green, Taken red), 36 px add button, stronger availability bar.
+- `npm run build`: 367 tests pass (new: booked day opens in a sheet on phones). Checked at 375 px in the live debug preview (TDDAdmin) on My bookings, Book and Schedule. Version 2.17.0.0. Deployed 23 Nov on the developer's OK (TDDAdmin): upload + Deploy returned 200, Deployed true, AppCatalogVersion 2.17.0.0; bundle `avenue-portal-web-part_655fa7ead1d4ad75b660.js` served (200) and loaded by the plain live page. (A first upload attempt was refused with 403 because the browser was signed in as automations@; nothing changed.)
+
 ## 2026-11-23 (evening) — F1 live: overdue payment refuses new bookings (BKG-14)
 - "Avenue - Booking request to Pending booking" (edited and saved as automations@): new refusal rule for PastDue/Unpaid; only the owner's OwnerOverride passes (no staff bypass). Second trigger condition skips cancel items, which failed this flow on every cancel request (run 23 Nov 10:58). Exact expressions in `flows/expressions.md`.
 - Tested live: PastDue member, staff on-behalf request → Declined with "a payment is overdue"; status restored; test rows recycled by id. Members still see the overdue warning in Billing (portal) as before.

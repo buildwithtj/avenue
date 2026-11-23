@@ -6,6 +6,8 @@ import { facilityDayLabel } from '../../../avenue/home';
 import type { AvenueReadSource } from '../../../avenue/readSource';
 import { equipmentChips } from '../../../avenue/ui-helpers';
 import { useCalendarDay } from './ui';
+import { useSize } from './motion';
+import { Sheet } from './Sheet';
 
 export interface IMonthCalendarProps { source: AvenueReadSource; facility: IFacility; resources: IResource[]; onBook?: () => void }
 
@@ -30,6 +32,23 @@ export default function MonthCalendar(props: IMonthCalendarProps): React.ReactEl
     setMonth(next); setSel(next.slice(0, 7) === today.slice(0, 7) ? today : next);
   };
   const picked = days.filter(d => d.day === sel)[0];
+  // Phones and mid widths stack the day panel under the 6-week grid; there a tap on a booked day opens it as a sheet instead.
+  const stacked: boolean = useSize() !== 'wide';
+  const [sheet, setSheet] = React.useState<boolean>(false);
+  const closeSheet = React.useCallback(() => setSheet(false), []);
+  const selTitle: string = facilityDayLabel(sel, today) === 'Today' || facilityDayLabel(sel, today) === 'Tomorrow' ? `${facilityDayLabel(sel, today)}, ${fmt(sel, { month: 'long', day: 'numeric' })}` : fmt(sel, { month: 'long', day: 'numeric', year: 'numeric' });
+  const detail: React.ReactElement = !cal.ready ? <div className={s.skeleton} style={{ height: 120 }} role="status" aria-label="Loading the calendar" />
+    : !picked || picked.entries.length === 0 ? <p className={s.muted}>No approved bookings. The kitchen is free all day.</p> : (
+      <ul className={s.mcList}>
+        {picked.entries.map(e => (
+          <li key={e.bookingId}>
+            <b>{localTime(e.startUtc, tz)} – {localTime(e.endUtc, tz)}</b>
+            <strong>{e.memberName}</strong>
+            <span>{equipmentChips(e.space || '', e.equipmentIds, resources).join(', ') || 'Booking'}</span>
+          </li>
+        ))}
+      </ul>
+    );
 
   return (
     <div className={s.mc}>
@@ -43,6 +62,7 @@ export default function MonthCalendar(props: IMonthCalendarProps): React.ReactEl
         </div>
       </div>
       {cal.failed && <div className={s.errorPanel} role="alert"><strong>We could not load the calendar.</strong><button type="button" className={s.btn} onClick={cal.reload}>Try again</button></div>}
+      {stacked && <p className={s.mcHint}>Tap a day with bookings to see who has what.</p>}
       <div className={s.mcLayout}>
         <div className={s.mcGrid} role="grid" aria-label="Shared facility calendar" aria-busy={!cal.ready}>
           {WEEK.map(w => <div key={w} className={s.mcDow} role="columnheader">{w}</div>)}
@@ -50,7 +70,7 @@ export default function MonthCalendar(props: IMonthCalendarProps): React.ReactEl
             const inMonth: boolean = d.day.slice(0, 7) === month.slice(0, 7);
             return (
               <button key={d.day} type="button" role="gridcell" aria-selected={sel === d.day} aria-label={`${fmt(d.day, { weekday: 'long', month: 'long', day: 'numeric' })}, ${d.entries.length} ${d.entries.length === 1 ? 'booking' : 'bookings'}`}
-                className={`${s.mcCell} ${inMonth ? '' : s.mcOut} ${d.day === today ? s.mcToday : ''} ${sel === d.day ? s.mcSel : ''}`} onClick={() => setSel(d.day)}>
+                className={`${s.mcCell} ${inMonth ? '' : s.mcOut} ${d.day === today ? s.mcToday : ''} ${sel === d.day ? s.mcSel : ''}`} onClick={() => { setSel(d.day); if (stacked && d.entries.length > 0) { setSheet(true); } }}>
                 <b>{Number(d.day.slice(8))}</b>
                 {d.entries.length > 0 && <span className={s.mcBars} aria-hidden="true">{d.entries.slice(0, 4).map(e => <i key={e.bookingId} />)}{d.entries.length > 4 && <em>+{d.entries.length - 4}</em>}</span>}
               </button>
@@ -59,22 +79,17 @@ export default function MonthCalendar(props: IMonthCalendarProps): React.ReactEl
         </div>
         <aside className={s.mcSide} aria-label="Selected day">
           <div className={s.eyebrow}>{fmt(sel, { weekday: 'long' })}</div>
-          <h3>{facilityDayLabel(sel, today) === 'Today' || facilityDayLabel(sel, today) === 'Tomorrow' ? `${facilityDayLabel(sel, today)}, ${fmt(sel, { month: 'long', day: 'numeric' })}` : fmt(sel, { month: 'long', day: 'numeric', year: 'numeric' })}</h3>
-          {!cal.ready ? <div className={s.skeleton} style={{ height: 120 }} role="status" aria-label="Loading the calendar" />
-            : !picked || picked.entries.length === 0 ? <p className={s.muted}>No approved bookings. The kitchen is free all day.</p> : (
-              <ul className={s.mcList}>
-                {picked.entries.map(e => (
-                  <li key={e.bookingId}>
-                    <b>{localTime(e.startUtc, tz)} – {localTime(e.endUtc, tz)}</b>
-                    <strong>{e.memberName}</strong>
-                    <span>{equipmentChips(e.space || '', e.equipmentIds, resources).join(', ') || 'Booking'}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
+          <h3>{selTitle}</h3>
+          {detail}
           <p className={s.mcNote}>Approved bookings only. Names and equipment, nothing else.</p>
         </aside>
       </div>
+      {sheet && stacked && (
+        <Sheet title={`${fmt(sel, { weekday: 'long' })}, ${selTitle}`} onClose={closeSheet}>
+          {detail}
+          <p className={s.mcNote}>Approved bookings only. Names and equipment, nothing else.</p>
+        </Sheet>
+      )}
     </div>
   );
 }
