@@ -1,0 +1,2427 @@
+{
+  "schema": 1,
+  "projectId": "avenue-linear-workflow-20261110",
+  "title": "Avenue · Workflow atlas",
+  "phases": [
+    {
+      "id": "foundation",
+      "title": "Establish the foundation",
+      "description": "Ownership, access, security and the implementation baseline."
+    },
+    {
+      "id": "connect",
+      "title": "Connect the facility",
+      "description": "Stripe setup and operator onboarding before live payments."
+    },
+    {
+      "id": "membership",
+      "title": "Onboard the member",
+      "description": "Payment-first enrollment, document upload and authorized access."
+    },
+    {
+      "id": "booking",
+      "title": "Book and manage resources",
+      "description": "Availability, automatic confirmation, exceptions and changes."
+    },
+    {
+      "id": "session",
+      "title": "Run the kitchen session",
+      "description": "Timed reminders, individual check-in, safety and exit."
+    },
+    {
+      "id": "billing",
+      "title": "Bill and reconcile",
+      "description": "Recurring memberships, usage charges, collection and recovery."
+    },
+    {
+      "id": "compliance",
+      "title": "Maintain compliance",
+      "description": "Renewal, expiry reminders and booking eligibility."
+    },
+    {
+      "id": "monitoring",
+      "title": "Monitor the environment",
+      "description": "Flavors-only Swift Sensors integration and historical visibility."
+    },
+    {
+      "id": "communication",
+      "title": "Communicate and administer",
+      "description": "Publishing, operator tools and controlled account changes."
+    },
+    {
+      "id": "insights",
+      "title": "Understand operations",
+      "description": "In-app facility dashboards and separate B Street analytics."
+    },
+    {
+      "id": "release",
+      "title": "Validate and release",
+      "description": "End-to-end acceptance, controlled go-live and recovery."
+    },
+    {
+      "id": "operations",
+      "title": "Operate and evolve",
+      "description": "Repeat daily operations, retain history and separate future scope."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "scope",
+      "phase": "foundation",
+      "title": "Reconcile the project baseline",
+      "summary": "Apply the latest email decisions over the older scope.",
+      "tech": [
+        "Project documentation",
+        "Decision register"
+      ],
+      "actions": [
+        "Replace QuickBooks references with Stripe throughout schema and flows.",
+        "Record the nine Phase 1 modules and the new billing/booking decisions."
+      ],
+      "rules": [
+        "Flavors is the pilot; a standalone multi-client product remains Phase 2.",
+        "Stripe Connect is configured for the platform model without assuming the entire Phase 2 application is included."
+      ],
+      "data": [
+        "Revised scope",
+        "Acceptance criteria",
+        "Open decisions"
+      ],
+      "checks": [
+        "Every original module has a destination in this map.",
+        "No QuickBooks connection or customer mapping remains."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Phase 1 included read-only QuickBooks visibility and no payment gateway.",
+          "after": "Client explicitly replaces QuickBooks with Stripe billing, then adds Stripe Connect. Flavors remains the pilot; the standalone multi-client platform remains the Phase 2 goal.",
+          "source": "Emails 3–5 and 9–10"
+        }
+      ]
+    },
+    {
+      "id": "access",
+      "phase": "foundation",
+      "title": "Activate accounts and environments",
+      "summary": "Use the supplied Microsoft accounts and Stripe invitation.",
+      "tech": [
+        "Microsoft 365 Business Basic",
+        "SharePoint Online",
+        "Power Platform",
+        "Stripe Dashboard"
+      ],
+      "actions": [
+        "Verify assigned rights, service connections and access to test resources.",
+        "Enable tenant/site guest sharing and a site-level app catalog."
+      ],
+      "rules": [
+        "Subscriptions and account details have been provided; access still needs testing.",
+        "B Street hosts the tenant and owns Avenue."
+      ],
+      "data": [
+        "Build identities",
+        "Service identity",
+        "App catalog",
+        "Environment IDs"
+      ],
+      "checks": [
+        "Deploy a sample web part and read a test list.",
+        "Confirm service-account ownership without putting credentials in code."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "scope"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Tenant owner was unspecified and Business Premium was assumed.",
+          "after": "B Street HQ owns/hosts Avenue and purchases licenses. Business Basic ×3, Power Automate Premium ×1 and Power BI Pro ×1 are the stated build setup; account details were later confirmed supplied.",
+          "source": "Emails 4 and 10; later chat clarification"
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "phase": "foundation",
+      "title": "Model identities and permissions",
+      "summary": "Separate platform, facility, member business and team-member access.",
+      "tech": [
+        "Microsoft Entra ID B2B",
+        "SharePoint permissions",
+        "Power Automate"
+      ],
+      "actions": [
+        "Map each identity to its member/facility and authorized role.",
+        "Keep payments, files and checklist answers private; expose only agreed calendar fields."
+      ],
+      "rules": [
+        "B Street is super-admin; Flavors has an operator and a restricted staff account.",
+        "Only the Flavors owner may override expired-document or overdue-balance booking blocks."
+      ],
+      "data": [
+        "Identity mapping",
+        "Role matrix",
+        "Private libraries",
+        "Audit events"
+      ],
+      "checks": [
+        "Member A cannot fetch B’s private record by direct URL/API.",
+        "Restricted staff cannot perform owner-only overrides."
+      ],
+      "exception": "If permission setup fails, keep private records inaccessible and queue repair.",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "access"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Generic member, operator-admin and super-admin tiers; up to two operator admins.",
+          "after": "B Street retains super-admin access and can assign support staff. Flavors gets one operator and one restricted staff account; only the Flavors owner can override overdue-balance/expired-document booking blocks.",
+          "source": "Emails 4–6"
+        }
+      ]
+    },
+    {
+      "id": "catalog",
+      "phase": "foundation",
+      "title": "Configure the facility catalog",
+      "summary": "Load plans, bookable spaces, equipment and operating settings.",
+      "tech": [
+        "SharePoint Lists",
+        "Power Apps",
+        "Power Fx"
+      ],
+      "actions": [
+        "Create plans with included hours and extra-hour rates.",
+        "Configure stations, equipment, storage and the clarified event/dining resources."
+      ],
+      "rules": [
+        "Plan tiers affect allowances and rates.",
+        "Exact prices, resource capacities, checklist questions and grace periods still need supplied configuration."
+      ],
+      "data": [
+        "Plans",
+        "Resources",
+        "Equipment",
+        "Members",
+        "Settings"
+      ],
+      "checks": [
+        "Validate representative member plans and prices with the operator.",
+        "Use the facility timezone for booking and billing boundaries."
+      ],
+      "exception": "Do not invent missing rates or timing values.",
+      "status": "Needs decision",
+      "parent": null,
+      "depends": [
+        "scope",
+        "security"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Plans, resources and rates were requested but booking limits were not established.",
+          "after": "Plans include different hour allowances and tier-specific extra-hour rates. Provide membership prices, equipment/storage charges and resource configuration; B Street will onboard the initial members for January billing.",
+          "source": "Emails 4 and 6"
+        }
+      ]
+    },
+    {
+      "id": "apps",
+      "phase": "foundation",
+      "title": "Create the two interfaces",
+      "summary": "Keep members in the browser and staff in the admin app.",
+      "tech": [
+        "SharePoint Pages",
+        "SPFx",
+        "React",
+        "TypeScript",
+        "Power Apps",
+        "Power Fx"
+      ],
+      "actions": [
+        "Build responsive member web parts and role-aware navigation.",
+        "Build operator/staff screens with shared authoritative data and workflows."
+      ],
+      "rules": [
+        "No member-facing Power Apps app or Power Pages.",
+        "No custom native app; member journeys run in desktop/mobile browsers."
+      ],
+      "data": [
+        "Member portal",
+        "Admin app",
+        "Reusable UI components"
+      ],
+      "checks": [
+        "Test a real guest browser session and phone layout.",
+        "UI visibility never substitutes for record-level authorization."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "security",
+        "catalog"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Manager",
+          "before": "Members and staff both use the Canvas App.",
+          "after": "Manager recommends SharePoint pages with custom web parts for members, retaining the Power Apps admin app for staff. The client’s later replies proceed on this approach.",
+          "source": "Email 1; continued in client replies"
+        }
+      ]
+    },
+    {
+      "id": "backend",
+      "phase": "foundation",
+      "title": "Establish trusted integration endpoints",
+      "summary": "Privileged operations run outside member browser code.",
+      "tech": [
+        "Secure server endpoint — to select",
+        "Power Automate",
+        "Secret storage — to select"
+      ],
+      "actions": [
+        "Select and approve server-side execution for Stripe operations and HTTPS webhooks.",
+        "Validate callers, store secrets securely and record idempotent operations."
+      ],
+      "rules": [
+        "SPFx must not contain Stripe secrets or sensor credentials.",
+        "Existing subscriptions do not prove that backend hosting and every premium flow are covered."
+      ],
+      "data": [
+        "Webhook endpoint",
+        "Platform credentials",
+        "Operation ledger"
+      ],
+      "checks": [
+        "Reject forged requests and incorrect signatures.",
+        "Document costs and ownership before activating any extra service."
+      ],
+      "exception": "Backend host and credential-storage implementation remain unselected.",
+      "status": "Needs decision",
+      "parent": null,
+      "depends": [
+        "access",
+        "security"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "stripe-config",
+      "phase": "connect",
+      "title": "Review Stripe Connect responsibilities",
+      "summary": "Confirm the platform’s direct-charge SaaS configuration.",
+      "tech": [
+        "Stripe Connect",
+        "Stripe Dashboard"
+      ],
+      "actions": [
+        "Inspect fees, refunds, disputes, verification and negative-balance settings.",
+        "Document which party handles each responsibility and flag platform exposure."
+      ],
+      "rules": [
+        "B Street/Avenue should not receive or hold client payment funds.",
+        "Do not promise zero platform liability solely because direct charges are used."
+      ],
+      "data": [
+        "Configuration record",
+        "Responsibility matrix",
+        "Connected-account model"
+      ],
+      "checks": [
+        "A payment is created on the test connected account.",
+        "Client receives payouts; any platform-risk setting is reviewed."
+      ],
+      "exception": "Do not enable a setting that changes funds routing or liability before approval.",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "backend"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "No payment gateway; invoices and balances came from QuickBooks.",
+          "after": "Avenue/B Street is the Connect platform. Facility clients connect their own Stripe accounts; direct charges and payouts belong to the facility. Review all fees, refunds, disputes, losses and verification responsibilities; flag possible B Street exposure before enabling.",
+          "source": "Emails 3–5 and 9–10"
+        }
+      ]
+    },
+    {
+      "id": "operator-connect",
+      "phase": "connect",
+      "title": "Launch Stripe-hosted operator onboarding",
+      "summary": "A facility operator connects its own payment account from Avenue.",
+      "tech": [
+        "SharePoint member/admin entry",
+        "Secure server endpoint",
+        "Stripe-hosted onboarding"
+      ],
+      "actions": [
+        "Authenticate the authorized operator and start Stripe onboarding.",
+        "Stripe collects financial and verification information directly."
+      ],
+      "rules": [
+        "Do not collect/store the client’s Stripe password, secret key, bank details or verification documents.",
+        "An Avenue invitation can be forwarded; generate Stripe’s short-lived onboarding link after authentication."
+      ],
+      "data": [
+        "Facility ID ↔ connected-account ID",
+        "Onboarding progress"
+      ],
+      "checks": [
+        "Expired/used links safely regenerate for the right operator.",
+        "Return to Avenue does not alone prove verification is complete."
+      ],
+      "exception": "Resume incomplete onboarding without duplicating the facility connection.",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "stripe-config"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Facility Stripe account onboarding was not part of the original scope.",
+          "after": "Launch Stripe-hosted client-account onboarding from Avenue. Do not collect/store the client’s Stripe password, secret key, bank details or verification documents. Provide the operator invitation only after test approval.",
+          "source": "Emails 9–10"
+        }
+      ]
+    },
+    {
+      "id": "connect-status",
+      "phase": "connect",
+      "title": "Verify account readiness and events",
+      "summary": "Keep Avenue aware of payment capability and onboarding status.",
+      "tech": [
+        "Stripe API",
+        "Verified webhooks",
+        "SharePoint Lists"
+      ],
+      "actions": [
+        "Verify event signatures and resolve the correct connected account.",
+        "Retrieve current account capability/requirement state when necessary."
+      ],
+      "rules": [
+        "No cross-facility event or payment data leakage.",
+        "Process repeated/out-of-order events safely."
+      ],
+      "data": [
+        "Account readiness",
+        "Event IDs",
+        "Integration health"
+      ],
+      "checks": [
+        "Successful, incomplete and failed onboarding states display correctly.",
+        "Replay does not duplicate changes."
+      ],
+      "exception": "Unverified events are rejected; failures go to an operational queue.",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "operator-connect"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Only scheduled QuickBooks invoice/balance synchronization was described.",
+          "after": "Test that a client connects, payment status returns to Avenue and the payment appears under the connected account.",
+          "source": "Email 9"
+        }
+      ]
+    },
+    {
+      "id": "stripe-demo",
+      "phase": "connect",
+      "title": "Demonstrate the test flow",
+      "summary": "Show the exact operator experience and a simulated payment.",
+      "tech": [
+        "Stripe test mode",
+        "Avenue portal",
+        "Test evidence"
+      ],
+      "actions": [
+        "Connect a test facility, create a test direct payment and return its status to Avenue.",
+        "Show account records, funds routing and the responsibility findings."
+      ],
+      "rules": [
+        "No live onboarding or live payment processing before explicit approval."
+      ],
+      "data": [
+        "Demo checklist",
+        "Test payment IDs",
+        "Approval record"
+      ],
+      "checks": [
+        "Client sees the actual onboarding screens and test account payment.",
+        "Open responsibility questions are resolved before release."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "connect-status"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "No Stripe demo or payment go-live approval gate was specified.",
+          "after": "Demonstrate the completed test flow and exact client-facing onboarding. Confirm platform settings and responsibilities, obtain approval, then proceed to the real operator/live flow.",
+          "source": "Emails 9–10"
+        }
+      ]
+    },
+    {
+      "id": "member-start",
+      "phase": "membership",
+      "title": "Select plan and payment date",
+      "summary": "Capture the member’s business and selected membership.",
+      "tech": [
+        "SharePoint Pages",
+        "SPFx / React",
+        "SharePoint Lists"
+      ],
+      "actions": [
+        "Present membership plans and the approved prices.",
+        "Let the member choose a monthly collection date from the 1st through 15th."
+      ],
+      "rules": [
+        "New members pay before operational onboarding begins.",
+        "No public or unapproved applicant document uploads."
+      ],
+      "data": [
+        "Application",
+        "Business owner",
+        "Plan",
+        "Payment-day preference"
+      ],
+      "checks": [
+        "The selected plan/date are associated with the correct applicant.",
+        "First-payment amount and proration follow an agreed rule."
+      ],
+      "exception": "Initial payment, approval ordering and rejected-application handling need final rules.",
+      "status": "Needs decision",
+      "parent": null,
+      "depends": [
+        "catalog",
+        "apps",
+        "stripe-demo"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Prospective member supplied details, selected membership and uploaded initial documents before staff approval.",
+          "after": "Members pay before onboarding starts; select a recurring collection date between the 1st and 15th. No public/unapproved document uploads. First-payment and invoice-cutoff calculations still need decisions.",
+          "source": "Emails 3 and 6"
+        }
+      ]
+    },
+    {
+      "id": "first-payment",
+      "phase": "membership",
+      "title": "Complete initial membership payment",
+      "summary": "Stripe handles the payment under the facility’s connected account.",
+      "tech": [
+        "Stripe payment / billing APIs",
+        "Stripe-hosted payment UI — proposed",
+        "Secure server endpoint"
+      ],
+      "actions": [
+        "Calculate the charge from trusted plan data.",
+        "Confirm successful payment through verified Stripe status."
+      ],
+      "rules": [
+        "Never trust a browser-supplied price or success flag.",
+        "Store Stripe references and necessary status, not payment-card data."
+      ],
+      "data": [
+        "Connected customer ID",
+        "Payment reference",
+        "Paid status"
+      ],
+      "checks": [
+        "A failed or abandoned payment does not activate full member access.",
+        "A repeated request cannot create duplicate charges."
+      ],
+      "exception": "Payment failure offers an approved retry path; do not grant operational access.",
+      "status": "Proposed implementation",
+      "parent": null,
+      "depends": [
+        "member-start"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Avenue did not collect payments; payment stayed in QuickBooks.",
+          "after": "Use the facility’s Stripe billing/payment setup for the initial and recurring membership payment. Successful payment initiates member onboarding.",
+          "source": "Emails 3–6"
+        }
+      ]
+    },
+    {
+      "id": "paid-intake",
+      "phase": "membership",
+      "title": "Start authenticated onboarding",
+      "summary": "Collect the member’s operational profile after payment.",
+      "tech": [
+        "Microsoft Entra ID B2B",
+        "SharePoint Lists",
+        "Power Automate"
+      ],
+      "actions": [
+        "Provision the permitted guest/onboarding access and capture member details.",
+        "Link member business, authorized team and paid plan."
+      ],
+      "rules": [
+        "B Street will onboard current members for January billing.",
+        "A paid state alone does not establish that every compliance requirement is complete."
+      ],
+      "data": [
+        "Member profile",
+        "Guest identity",
+        "Team association"
+      ],
+      "checks": [
+        "Paid members reach their own onboarding area.",
+        "Another applicant cannot access their profile or documents."
+      ],
+      "exception": "Staff approval after payment is not conclusively resolved in the trail.",
+      "status": "Needs decision",
+      "parent": null,
+      "depends": [
+        "first-payment",
+        "security"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Application/documents came before approval and access provisioning.",
+          "after": "Only paid new members and current members enter onboarding and upload after login. B Street handles initial member onboarding. The exact remaining manual approval step is still unresolved.",
+          "source": "Email 6"
+        }
+      ]
+    },
+    {
+      "id": "initial-docs",
+      "phase": "membership",
+      "title": "Upload permits and compliance files",
+      "summary": "Documents are collected only after authenticated onboarding starts.",
+      "tech": [
+        "SharePoint Document Libraries",
+        "SPFx upload UI",
+        "Power Automate"
+      ],
+      "actions": [
+        "Upload required files with document type and issue/expiry dates.",
+        "Apply member-specific permissions and track required/missing documents."
+      ],
+      "rules": [
+        "No public Microsoft Forms upload journey.",
+        "Final document types, warning window and validation requirements must be configured."
+      ],
+      "data": [
+        "Private file",
+        "Member ID",
+        "Document metadata"
+      ],
+      "checks": [
+        "Direct download denies other members.",
+        "Staff on-behalf upload grants the correct member access."
+      ],
+      "exception": "Failed upload or permission grant remains pending; do not label it compliant.",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "paid-intake"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Initial documents were submitted through an external application form before full access.",
+          "after": "Collect documents only from current members or paid new members after login/onboarding begins. Public document upload is not wanted.",
+          "source": "Email 6"
+        }
+      ]
+    },
+    {
+      "id": "member-ready",
+      "phase": "membership",
+      "title": "Evaluate operational eligibility",
+      "summary": "Expose the member’s portal once the applicable requirements are satisfied.",
+      "tech": [
+        "SharePoint Lists",
+        "Power Automate",
+        "Power Apps",
+        "Entra guest access"
+      ],
+      "actions": [
+        "Evaluate paid membership and required compliance state.",
+        "Show clear status and what needs attention."
+      ],
+      "rules": [
+        "Booking blocks apply for expired documents and overdue balances.",
+        "Only Flavors owner may override those specific blocks, with audit."
+      ],
+      "data": [
+        "Membership status",
+        "Compliance status",
+        "Eligibility",
+        "Override history"
+      ],
+      "checks": [
+        "A blocked member cannot bypass checks through direct requests.",
+        "Owner override is explicit and attributable."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "initial-docs"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "calendar",
+      "phase": "booking",
+      "title": "Browse the shared calendar",
+      "summary": "Members see kitchen occupancy without private operational data.",
+      "tech": [
+        "SharePoint Lists",
+        "SPFx / React calendar"
+      ],
+      "actions": [
+        "Read the requested calendar range and filter resources.",
+        "Display member name, station, equipment, date and time."
+      ],
+      "rules": [
+        "Private files, balances, answers and contact data do not belong on shared rows."
+      ],
+      "data": [
+        "Public booking projection",
+        "Resource catalog"
+      ],
+      "checks": [
+        "All allowed bookings in the range appear, including beyond local row limits.",
+        "Private data never leaks through shared-list access."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "member-ready",
+        "apps"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "request",
+      "phase": "booking",
+      "title": "Submit a reservation",
+      "summary": "Request station/equipment and a start/end interval.",
+      "tech": [
+        "SPFx / React",
+        "SharePoint Lists",
+        "Trusted booking action"
+      ],
+      "actions": [
+        "Validate membership, compliance, balance and resource constraints.",
+        "Calculate allowance usage and applicable pricing under agreed rules."
+      ],
+      "rules": [
+        "Plan limits and overage rates affect the request.",
+        "Booking mutations and price calculations require authoritative validation."
+      ],
+      "data": [
+        "Booking request",
+        "Equipment lines",
+        "Rate snapshot"
+      ],
+      "checks": [
+        "Reject invalid duration, inaccessible resources and forged ownership.",
+        "Evaluate booking eligibility again at commit."
+      ],
+      "exception": "Exact capacity/buffer and booked-versus-attended usage rules still need confirmation.",
+      "status": "Needs decision",
+      "parent": null,
+      "depends": [
+        "calendar"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "auto-book",
+      "phase": "booking",
+      "title": "Automatically confirm an available booking",
+      "summary": "Apply first-come, first-served confirmation for conflict-free requests.",
+      "tech": [
+        "Power Automate",
+        "SharePoint Lists",
+        "Booking conflict validation"
+      ],
+      "actions": [
+        "Check station, equipment and date/time conflicts.",
+        "Recheck when confirming and record the confirmed reservation."
+      ],
+      "rules": [
+        "No manual approval for an eligible conflict-free request.",
+        "The original design excludes a database-level lock; the new auto-confirm path needs a tested concurrency strategy."
+      ],
+      "data": [
+        "Confirmed booking",
+        "Actor audit",
+        "Reservation version"
+      ],
+      "checks": [
+        "Simultaneous requests cannot silently create conflicting confirmations.",
+        "Confirmed booking appears in the shared calendar."
+      ],
+      "exception": "Serialize/recheck confirmation or select another approved safe strategy before acceptance.",
+      "status": "Needs decision",
+      "parent": null,
+      "depends": [
+        "request"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Staff approved or denied every booking; conflicts were flagged for manual resolution.",
+          "after": "Automatically approve when station, equipment and date/time are available, following first-come, first-served allocation. Send conflicts to staff. Safe concurrent confirmation is an implementation decision, not a client-specified database lock.",
+          "source": "Email 3"
+        }
+      ]
+    },
+    {
+      "id": "conflict",
+      "phase": "booking",
+      "title": "Route conflicts to facility staff",
+      "summary": "An exception branch handles contested resources or times.",
+      "tech": [
+        "Power Automate",
+        "Power Apps staff queue"
+      ],
+      "actions": [
+        "Notify operator/staff of the conflict.",
+        "Record resolution and only confirm an agreed available alternative."
+      ],
+      "rules": [
+        "A conflict must not silently override another reservation."
+      ],
+      "data": [
+        "Conflict case",
+        "Resolution",
+        "Staff actor"
+      ],
+      "checks": [
+        "Pending conflict is clearly distinguishable from confirmation.",
+        "The requestor sees the final outcome."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": "auto-book",
+      "depends": [
+        "request"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Staff reviewed all reservation requests.",
+          "after": "Only conflicting requests require staff resolution, subject to the other eligibility rules.",
+          "source": "Email 3"
+        }
+      ]
+    },
+    {
+      "id": "booking-notice",
+      "phase": "booking",
+      "title": "Send confirmation and portal actions",
+      "summary": "Member receives a simple booking notice with Avenue links.",
+      "tech": [
+        "Power Automate",
+        "Microsoft 365 email",
+        "Avenue portal"
+      ],
+      "actions": [
+        "Send an approved booking confirmation.",
+        "Provide authenticated change/cancel links into Avenue."
+      ],
+      "rules": [
+        "The email trail permits booking confirmation wording and portal links.",
+        "Permission to send booking notices is not permission to email private wellness or financial details."
+      ],
+      "data": [
+        "Notification log",
+        "Booking link"
+      ],
+      "checks": [
+        "Clicking the link opens the authorized booking.",
+        "A retry does not cause unintended repeated notices."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "auto-book"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "No operational content in email; generic login-only nudges.",
+          "after": "Client permits a simple booking confirmation and a portal button to change/cancel and view details. This does not authorize emailing private wellness answers or unrestricted financial details.",
+          "source": "Email 6"
+        }
+      ]
+    },
+    {
+      "id": "extension",
+      "phase": "booking",
+      "title": "Request additional time",
+      "summary": "Members, operator and staff can request an extension.",
+      "tech": [
+        "SPFx / React",
+        "Power Apps",
+        "Power Automate"
+      ],
+      "actions": [
+        "Check the extra interval against other reservations.",
+        "Add eligible overage charges and update reminder targets."
+      ],
+      "rules": [
+        "Conflicts alert the Flavors owner/staff for resolution.",
+        "Extra usage above included credits/storage allowance becomes billable."
+      ],
+      "data": [
+        "Booking revision",
+        "Extra time",
+        "Charge lines"
+      ],
+      "checks": [
+        "A change does not leave stale reminders active.",
+        "Member, operator and staff actors are audited."
+      ],
+      "exception": "The invoice cutoff for late-month extensions is still a billing decision.",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "booking-notice"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Developer flow mentioned exit or extend without defining billing and permissions.",
+          "after": "Member, owner and staff can request extra time when available. Conflicts alert the Flavors owner/staff; excess hours or storage allowances produce additional charges.",
+          "source": "Email 6"
+        }
+      ]
+    },
+    {
+      "id": "cancellation",
+      "phase": "booking",
+      "title": "Cancel or shorten a booking",
+      "summary": "Apply notice windows and controlled adjustments.",
+      "tech": [
+        "Avenue portal",
+        "Power Apps",
+        "Power Automate",
+        "Charge ledger"
+      ],
+      "actions": [
+        "Allow kitchen/storage cancellation with 24-hour notice.",
+        "Route late requests to owner/staff to decide credit restoration or forfeiture."
+      ],
+      "rules": [
+        "Members do not automatically receive unused time back for leaving early.",
+        "Owner/staff can adjust the booking and credited hours."
+      ],
+      "data": [
+        "Cancellation request",
+        "Credit adjustment",
+        "Audit"
+      ],
+      "checks": [
+        "A late request cannot self-grant a refund of credits.",
+        "Confirmed changes update availability and billing."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "booking-notice"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "No detailed cancellation or unused-hour policy was supplied.",
+          "after": "Kitchen/storage: 24-hour cancellation notice. Late requests require owner/staff approval and discretionary credit loss/restoration. Leaving early does not automatically restore hours; only owner/staff can adjust the booked time.",
+          "source": "Email 6"
+        }
+      ]
+    },
+    {
+      "id": "events",
+      "phase": "booking",
+      "title": "Apply event-specific cancellation rules",
+      "summary": "Dining/events have different cancellation and refund rules.",
+      "tech": [
+        "Power Apps",
+        "Power Automate",
+        "Stripe refund API"
+      ],
+      "actions": [
+        "Apply the stated 15-day/full-refund and 7-day/forfeit rules.",
+        "Record the security deposit and paid amounts when relevant."
+      ],
+      "rules": [
+        "For seven-day notice the client says deposit/payments are forfeited with no further amount owed.",
+        "Rules for 8–14 days and other unlisted boundaries are not supplied."
+      ],
+      "data": [
+        "Event booking",
+        "Deposit",
+        "Refund / forfeiture record"
+      ],
+      "checks": [
+        "Correct notice boundary and authorized refund action are tested.",
+        "Refunds follow the connected-account responsibility configuration."
+      ],
+      "exception": "Do not invent the policy for unspecified notice periods.",
+      "status": "Needs decision",
+      "parent": "cancellation",
+      "depends": [],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "No separate dining/event cancellation policy.",
+          "after": "15+ days: full refund. At seven-day notice: security deposit and payments already made are forfeited with no further balance owed. Unspecified intervals/boundaries remain open.",
+          "source": "Email 6"
+        }
+      ]
+    },
+    {
+      "id": "no-show",
+      "phase": "booking",
+      "title": "Handle a no-show",
+      "summary": "Booked hours are forfeited unless authorized staff override.",
+      "tech": [
+        "Power Apps",
+        "Power Automate",
+        "SharePoint Lists"
+      ],
+      "actions": [
+        "Identify a missed booking under the agreed detection rule.",
+        "Record consumed hours and any owner/staff exception."
+      ],
+      "rules": [
+        "No-shows lose booked hours.",
+        "Owner/staff can override this rule; this is distinct from owner-only debt/compliance overrides."
+      ],
+      "data": [
+        "No-show state",
+        "Hours ledger",
+        "Override reason"
+      ],
+      "checks": [
+        "Exception is auditable and does not double-deduct hours."
+      ],
+      "exception": "No-show detection timing has not been specified.",
+      "status": "Needs decision",
+      "parent": "cancellation",
+      "depends": [],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "No-show consequences were unspecified.",
+          "after": "No-shows lose booked hours. Flavors owner/staff can override.",
+          "source": "Email 6"
+        }
+      ]
+    },
+    {
+      "id": "reminders",
+      "phase": "session",
+      "title": "Run 3 / 2 / 1-hour reminders",
+      "summary": "Scheduled reminders prepare members for the booking.",
+      "tech": [
+        "Power Automate scheduled flows",
+        "SharePoint Lists",
+        "Microsoft 365 email"
+      ],
+      "actions": [
+        "Find eligible confirmed bookings and due reminder events.",
+        "Check booking revision, cancellation and member state before sending."
+      ],
+      "rules": [
+        "Source flow proposes a 15-minute scan; exact-minute delivery is not guaranteed.",
+        "Deduplicate logical events and track ambiguous send outcomes."
+      ],
+      "data": [
+        "Reminder ledger",
+        "Booking version",
+        "Send result"
+      ],
+      "checks": [
+        "Retries and overlapping runs do not blindly resend.",
+        "Late-booking catch-up policy is approved."
+      ],
+      "exception": "Catch-up, grace periods and uncertain-send recovery need configuration.",
+      "status": "Needs decision",
+      "parent": null,
+      "depends": [
+        "booking-notice"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "arrival",
+      "phase": "session",
+      "title": "Check each team member in",
+      "summary": "Capture wellness and food-safety answers on arrival.",
+      "tech": [
+        "SPFx / React",
+        "SharePoint Checklists list"
+      ],
+      "actions": [
+        "Resolve the member business and individual submitting the checklist.",
+        "Capture answers, question version, identity and timestamp."
+      ],
+      "rules": [
+        "Client requires every team member to check in with wellness items.",
+        "Individual team-member identity/access model needs completion beyond the original member-only schema."
+      ],
+      "data": [
+        "Entry checklist",
+        "Team identity",
+        "Booking ID"
+      ],
+      "checks": [
+        "Answers are private and attributed to the actual submitter.",
+        "Duplicate submission rules are applied."
+      ],
+      "exception": "Exact questions and per-team identity permissions are configuration dependencies.",
+      "status": "Needs decision",
+      "parent": null,
+      "depends": [
+        "reminders",
+        "member-ready"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Fixed entry/exit checklist per booking; HTML included wellness while DOCX omitted it.",
+          "after": "Wellness is explicitly retained, and every team member must check in on arrival so the supervisor can follow up where needed. Individual team identities and exact questions still need configuration.",
+          "source": "Emails 5–6"
+        }
+      ]
+    },
+    {
+      "id": "failed-entry",
+      "phase": "session",
+      "title": "Notify responsible people of a failed checklist",
+      "summary": "Route failures for correction and follow-up.",
+      "tech": [
+        "Power Automate",
+        "Power Apps exception view",
+        "Private member portal"
+      ],
+      "actions": [
+        "Alert the Flavors operator/staff and the member business owner.",
+        "Track follow-up and corrective action."
+      ],
+      "rules": [
+        "The member business remains responsible for its team’s issue.",
+        "Facility or another member’s issues are handled by Flavors with the appropriate party."
+      ],
+      "data": [
+        "Failed checklist",
+        "Follow-up case",
+        "Resolution"
+      ],
+      "checks": [
+        "Only authorized recipients can read the answer details.",
+        "Failure detection does not invent an unapproved automatic access ban."
+      ],
+      "exception": "Detailed safety responses belong in the private portal, not broad emails.",
+      "status": "Confirmed",
+      "parent": "arrival",
+      "depends": [],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Missed checklists escalated to staff; failure handling was not defined.",
+          "after": "Failed answers notify the member business owner and Flavors owner/staff for correction and follow-up. The member business remains responsible for its team; facility/other-member issues go through Flavors.",
+          "source": "Emails 5–6"
+        }
+      ]
+    },
+    {
+      "id": "missed-entry",
+      "phase": "session",
+      "title": "Escalate missing check-in",
+      "summary": "Detect missing entry after the configured grace period.",
+      "tech": [
+        "Power Automate scheduled monitor",
+        "Power Apps staff queue"
+      ],
+      "actions": [
+        "Nudge the member, then escalate to staff when unresolved.",
+        "Record staff outreach and suppress reminders once resolved."
+      ],
+      "rules": [
+        "Grace periods and escalation contacts must be supplied."
+      ],
+      "data": [
+        "Overdue entry",
+        "Outreach log"
+      ],
+      "checks": [
+        "No escalation after a valid entry or cancelled booking.",
+        "One resolved incident does not repeatedly reopen."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": "arrival",
+      "depends": [],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "exit",
+      "phase": "session",
+      "title": "Complete exit and close the session",
+      "summary": "Submit the exit checklist or request an authorized extension.",
+      "tech": [
+        "SPFx / React",
+        "Power Automate",
+        "SharePoint Checklists list"
+      ],
+      "actions": [
+        "Prompt exit at session end.",
+        "Save private exit answers and update session state."
+      ],
+      "rules": [
+        "Original scope requires entry and exit checklists per booking.",
+        "The trail explicitly expands individual entry; whether exit is per person needs clarification."
+      ],
+      "data": [
+        "Exit answers",
+        "Session status",
+        "Usage basis"
+      ],
+      "checks": [
+        "Exit cannot silently extend the reservation.",
+        "Actual versus booked-hour reporting remains explicit."
+      ],
+      "exception": "Missing exit routes to staff; never fabricate completion.",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "arrival"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "exit-escalation",
+      "phase": "session",
+      "title": "Resolve overdue exit and outreach",
+      "summary": "Staff handle unresolved end-of-session cases.",
+      "tech": [
+        "Power Automate",
+        "Power Apps",
+        "Audit log"
+      ],
+      "actions": [
+        "Flag a missing exit after the approved interval.",
+        "Log one-off staff follow-up and final resolution."
+      ],
+      "rules": [
+        "Retain booking and checklist history."
+      ],
+      "data": [
+        "Exception state",
+        "Outreach",
+        "Resolved by/at"
+      ],
+      "checks": [
+        "Resolved cases stop generating overdue notices."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": "exit",
+      "depends": [],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "billing-rule",
+      "phase": "billing",
+      "title": "Define the invoice cycle",
+      "summary": "Resolve calendar-month usage against the chosen debit date.",
+      "tech": [
+        "Billing configuration",
+        "SharePoint Lists",
+        "Stripe billing APIs"
+      ],
+      "actions": [
+        "Define first payment, recurrence anchor and invoice cutoff.",
+        "Define late-month overages, proration, plan changes, credits and taxes if applicable."
+      ],
+      "rules": [
+        "Client wants payment dates 1–15 and overages added to the month’s invoice.",
+        "How usage after that date is collected is not resolved; do not silently choose next-month billing."
+      ],
+      "data": [
+        "Approved pricing examples",
+        "Cycle rules",
+        "Tax / credit rules"
+      ],
+      "checks": [
+        "Example invoices reconcile for members paying on day 1 and day 15.",
+        "Month-end usage has an agreed destination."
+      ],
+      "exception": "",
+      "status": "Needs decision",
+      "parent": null,
+      "depends": [
+        "catalog",
+        "member-start"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Read-only financial dashboard; no recurring invoice or collection logic.",
+          "after": "Generate monthly membership invoices, automatically add approved extra usage, let members select payment day 1–15. The reconciliation between calendar-month overages and that debit date is still open.",
+          "source": "Emails 3–4 and 6"
+        }
+      ]
+    },
+    {
+      "id": "usage",
+      "phase": "billing",
+      "title": "Calculate usage and overages",
+      "summary": "Translate reservations and authorized adjustments into charges.",
+      "tech": [
+        "SharePoint booking / credit ledgers",
+        "Power Automate",
+        "Trusted billing logic"
+      ],
+      "actions": [
+        "Apply included plan hours and approved resource rates.",
+        "Account for extensions, cancellations, no-shows and storage/equipment charges."
+      ],
+      "rules": [
+        "Avenue calculates charges; Stripe invoices/collects.",
+        "Bookable hours versus actual attendance must be agreed."
+      ],
+      "data": [
+        "Usage lines",
+        "Rate snapshot",
+        "Allowance balance",
+        "Charge key"
+      ],
+      "checks": [
+        "A booking revision does not double-charge.",
+        "Every charge traces to a reservation or approved adjustment."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "billing-rule",
+        "extension",
+        "cancellation"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Usage reporting existed, but Avenue did not calculate billable invoice additions.",
+          "after": "Avenue calculates extra booked hours, equipment and applicable storage amounts, then sends the charges to Stripe for invoicing/collection. Apply plan allowances and authorized cancellations/no-shows.",
+          "source": "Emails 3–6"
+        }
+      ]
+    },
+    {
+      "id": "invoice",
+      "phase": "billing",
+      "title": "Create the recurring invoice",
+      "summary": "Build membership plus approved extra-charge lines.",
+      "tech": [
+        "Stripe subscriptions / invoices",
+        "Secure server endpoint",
+        "Power Automate"
+      ],
+      "actions": [
+        "Create/update the facility-connected member billing records.",
+        "Apply the approved collection date and usage cutoff."
+      ],
+      "rules": [
+        "Payment objects belong to the correct facility’s connected Stripe account.",
+        "Stripe Billing/API capabilities, fees and exact route need configuration review."
+      ],
+      "data": [
+        "Connected customer",
+        "Subscription",
+        "Invoice ID",
+        "Line items"
+      ],
+      "checks": [
+        "Retry cannot create a second invoice/line.",
+        "Invoice matches manually calculated reference examples."
+      ],
+      "exception": "",
+      "status": "Proposed implementation",
+      "parent": null,
+      "depends": [
+        "usage",
+        "connect-status"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "QuickBooks supplied existing invoices and balances.",
+          "after": "Stripe generates monthly invoices and collects recurring membership payments under the facility account; Avenue supplies plan/usage charges.",
+          "source": "Emails 3–4 and 9"
+        }
+      ]
+    },
+    {
+      "id": "collection",
+      "phase": "billing",
+      "title": "Collect payment through Stripe",
+      "summary": "Automatic collection updates the member’s balance and history.",
+      "tech": [
+        "Stripe",
+        "Verified webhooks",
+        "SharePoint Payments list"
+      ],
+      "actions": [
+        "Track success, authentication-needed and failure states.",
+        "Update Avenue from verified events, with source reconciliation."
+      ],
+      "rules": [
+        "Funds go to the connected facility; payout timing is controlled by Stripe/account settings.",
+        "A browser return page alone cannot mark an invoice paid."
+      ],
+      "data": [
+        "Payment status",
+        "Invoice balance",
+        "Event ledger"
+      ],
+      "checks": [
+        "Payment appears on connected account.",
+        "Repeat or out-of-order webhooks cannot corrupt the balance."
+      ],
+      "exception": "Surface failures to authorized users and retry under the agreed policy.",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "invoice"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "history",
+      "phase": "billing",
+      "title": "Show invoices and payment history",
+      "summary": "Give each member one place for past and upcoming charges.",
+      "tech": [
+        "SPFx / React",
+        "SharePoint Lists",
+        "Stripe references"
+      ],
+      "actions": [
+        "Show invoices, payments, outstanding balance and upcoming/estimated overages.",
+        "Show financial summaries to operator and permitted staff."
+      ],
+      "rules": [
+        "Members see only their own data.",
+        "B Street analytics can use approved operational financial data without collecting private bank credentials."
+      ],
+      "data": [
+        "Private payment projection",
+        "Last verified update"
+      ],
+      "checks": [
+        "Another member cannot retrieve the record directly.",
+        "Estimated and finalized charges are clearly distinguished."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "collection"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Members saw own invoices/balances synchronized from QuickBooks.",
+          "after": "Members see Stripe-based invoices, full payment history, upcoming charges and booking overages inside Avenue. Authorized operator/staff get permitted financial visibility without collecting private banking credentials.",
+          "source": "Emails 3, 5 and 7"
+        }
+      ]
+    },
+    {
+      "id": "overdue",
+      "phase": "billing",
+      "title": "Block booking for overdue balances",
+      "summary": "Apply the client’s owner-only override policy.",
+      "tech": [
+        "Power Automate",
+        "Power Apps",
+        "Booking eligibility check"
+      ],
+      "actions": [
+        "Update overdue state using the agreed due-date rule.",
+        "Block new booking actions and allow an audited Flavors-owner override."
+      ],
+      "rules": [
+        "Staff cannot override overdue/expired-document booking blocks.",
+        "The email specifies booking blocks, not a physical door-lock integration."
+      ],
+      "data": [
+        "Overdue status",
+        "Override record"
+      ],
+      "checks": [
+        "Server-side booking action enforces the block.",
+        "Payment reconciliation clears the block when appropriate."
+      ],
+      "exception": "Failed-payment retry timing and exact overdue boundary need approval.",
+      "status": "Needs decision",
+      "parent": "collection",
+      "depends": [],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "No automatic booking block for unpaid balances was specified.",
+          "after": "Overdue balances block booking. Only the Flavors owner may override, not staff. Exact overdue timing remains a configuration decision.",
+          "source": "Email 6"
+        }
+      ]
+    },
+    {
+      "id": "refund-dispute",
+      "phase": "billing",
+      "title": "Manage refunds and disputes",
+      "summary": "Handle adjustments under the reviewed account responsibility model.",
+      "tech": [
+        "Stripe Connect",
+        "Stripe Dashboard / API",
+        "Power Apps",
+        "Audit log"
+      ],
+      "actions": [
+        "Authorize refund requests and track their final status.",
+        "Record disputes and inform the designated responsible facility owner."
+      ],
+      "rules": [
+        "Cancellation credit restoration is not automatically a cash refund.",
+        "Flag any platform liability or fund-flow change before enabling."
+      ],
+      "data": [
+        "Refund reference",
+        "Dispute status",
+        "Authorized actor"
+      ],
+      "checks": [
+        "Test refund/dispute event handling in the allowed test environment.",
+        "Only permitted users initiate financial adjustments."
+      ],
+      "exception": "Refund authorization and exception procedures need documented ownership.",
+      "status": "Confirmed",
+      "parent": "collection",
+      "depends": [],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "expiry",
+      "phase": "compliance",
+      "title": "Review document expiry daily",
+      "summary": "Track required documents over the membership lifecycle.",
+      "tech": [
+        "SharePoint Document Libraries",
+        "Power Automate daily flow"
+      ],
+      "actions": [
+        "Set Current / Expiring / Expired using configured dates.",
+        "Identify missing requirements separately from expired uploads."
+      ],
+      "rules": [
+        "Original default warning window is 30 days, still to confirm.",
+        "Retain renewal history under an agreed retention policy."
+      ],
+      "data": [
+        "Document status",
+        "Expiry",
+        "Required types"
+      ],
+      "checks": [
+        "Date-only expiry boundary is consistent.",
+        "Status refresh does not send a new reminder every scan unintentionally."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "initial-docs"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "renew",
+      "phase": "compliance",
+      "title": "Request and record renewal",
+      "summary": "Members or authorized staff replace expiring documents.",
+      "tech": [
+        "SPFx upload UI",
+        "Power Apps",
+        "Power Automate",
+        "Microsoft 365 email"
+      ],
+      "actions": [
+        "Send an appropriate renewal notice with authenticated portal access.",
+        "Upload the new document and link it to the superseded version."
+      ],
+      "rules": [
+        "Staff on-behalf uploads require actor audit.",
+        "Do not delete compliance history without a retention decision."
+      ],
+      "data": [
+        "Renewal link",
+        "Document versions",
+        "Reminder state"
+      ],
+      "checks": [
+        "Private permissions apply to each replacement.",
+        "Eligibility reflects the authoritative current document."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "expiry"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "compliance-block",
+      "phase": "compliance",
+      "title": "Enforce expired-document booking blocks",
+      "summary": "Only the Flavors owner can grant a recorded exception.",
+      "tech": [
+        "Booking eligibility logic",
+        "Power Apps",
+        "SharePoint permissions"
+      ],
+      "actions": [
+        "Recheck compliance when a reservation is submitted/confirmed.",
+        "Record owner override reason and scope."
+      ],
+      "rules": [
+        "Restricted staff cannot override.",
+        "Treatment of already-confirmed future bookings after expiry needs a rule."
+      ],
+      "data": [
+        "Eligibility",
+        "Override",
+        "Affected bookings"
+      ],
+      "checks": [
+        "UI and direct requests obey the same control."
+      ],
+      "exception": "Do not cancel existing bookings automatically without an approved rule.",
+      "status": "Needs decision",
+      "parent": "expiry",
+      "depends": [],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Document expiry tracking and renewal nudges only; booking restriction unspecified.",
+          "after": "Expired documents block booking, with an override available only to the Flavors owner. Treatment of existing future bookings remains open.",
+          "source": "Email 6"
+        }
+      ]
+    },
+    {
+      "id": "sensor-map",
+      "phase": "monitoring",
+      "title": "Map sensors to facility units",
+      "summary": "Use supplied API access without repeating credentials in the map.",
+      "tech": [
+        "Swift Sensors API",
+        "Secure credential storage",
+        "SharePoint configuration"
+      ],
+      "actions": [
+        "Map device IDs to refrigerators/freezers and temperature units.",
+        "Configure the approved min/max threshold for each unit."
+      ],
+      "rules": [
+        "API access and documentation were supplied; monthly limit is 100,000 calls.",
+        "Sensor tracking is for Flavors only in the pilot."
+      ],
+      "data": [
+        "Sensor mapping",
+        "Unit labels",
+        "Thresholds"
+      ],
+      "checks": [
+        "Every displayed tile maps to the correct physical unit.",
+        "No secrets appear in frontend bundles, exports or logs."
+      ],
+      "exception": "Device mapping, limits per endpoint and thresholds still require validation.",
+      "status": "Needs decision",
+      "parent": null,
+      "depends": [
+        "backend"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Swift Sensors API access, documentation, limits and mapping were requested.",
+          "after": "API access and documentation were supplied with a 100,000-calls/month limit. Flavors is the only sensor-tracked client in the pilot. Unit mapping and thresholds still need validation. Credentials are not included in this artifact.",
+          "source": "Email 5"
+        }
+      ]
+    },
+    {
+      "id": "sensor-sync",
+      "phase": "monitoring",
+      "title": "Poll readings and append history",
+      "summary": "Scheduled ingestion maintains current and historical values.",
+      "tech": [
+        "Power Automate HTTP",
+        "Swift Sensors API",
+        "SharePoint Lists"
+      ],
+      "actions": [
+        "Poll within the API budget; deduplicate source readings.",
+        "Store source timestamp and update the latest value per unit."
+      ],
+      "rules": [
+        "Original proposed cadence is 15–30 minutes, subject to actual API limits.",
+        "Calls depend on endpoints, pagination and retries, not just sensor count."
+      ],
+      "data": [
+        "SensorReadings",
+        "Latest values",
+        "Sync runs",
+        "Call budget"
+      ],
+      "checks": [
+        "Duplicate polls do not duplicate history.",
+        "Reading time and retrieval time are distinguishable."
+      ],
+      "exception": "Rate limits trigger bounded retry; outages remain visible.",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "sensor-map"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "sensor-ui",
+      "phase": "monitoring",
+      "title": "Display temperatures and history",
+      "summary": "Show latest synchronized readings with range and freshness.",
+      "tech": [
+        "SPFx / React",
+        "Power Apps",
+        "SharePoint Lists"
+      ],
+      "actions": [
+        "Display units, source timestamp and Normal / Out-of-range status.",
+        "Provide authorized historical views and stale/unavailable indications."
+      ],
+      "rules": [
+        "Swift Sensors retains real-time breach alerts.",
+        "Avenue polling is not a replacement real-time alarm system."
+      ],
+      "data": [
+        "Temperature tiles",
+        "History",
+        "Last successful sync"
+      ],
+      "checks": [
+        "A stale normal reading is not presented as current.",
+        "Threshold boundaries and units are correct."
+      ],
+      "exception": "History backfill is conditional on provider API capabilities.",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "sensor-sync"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "notices",
+      "phase": "communication",
+      "title": "Publish announcements and newsletters",
+      "summary": "Staff publish to all members or an approved audience.",
+      "tech": [
+        "SharePoint News / Notices — choose canonical source",
+        "Power Apps",
+        "Power Automate"
+      ],
+      "actions": [
+        "Create, publish and update announcements.",
+        "Send the approved notification with a portal link."
+      ],
+      "rules": [
+        "Audience targeting is not a substitute for permissions on confidential content.",
+        "The original News-versus-Notices storage ambiguity must be resolved."
+      ],
+      "data": [
+        "Published content",
+        "Audience",
+        "Publication version"
+      ],
+      "checks": [
+        "Drafts stay private and publication nudges are deduplicated."
+      ],
+      "exception": "Choose one authoritative publishing model before implementation.",
+      "status": "Needs decision",
+      "parent": null,
+      "depends": [
+        "apps",
+        "security"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "admin",
+      "phase": "communication",
+      "title": "Manage members, plans and staff access",
+      "summary": "Operator controls facility operations without changing platform functionality.",
+      "tech": [
+        "Power Apps",
+        "Power Fx",
+        "SharePoint Lists",
+        "Entra / SharePoint permissions"
+      ],
+      "actions": [
+        "Edit member/plan configuration and assign staff visibility within allowed boundaries.",
+        "Support B Street super-admin and delegated representative actions."
+      ],
+      "rules": [
+        "Flavors receives one operator and one staff account for the pilot.",
+        "Additional accounts are a future commercial option, not unlimited free staff licensing."
+      ],
+      "data": [
+        "Roles",
+        "Plans",
+        "Member status",
+        "Audit"
+      ],
+      "checks": [
+        "Forbidden role/owner changes fail outside the UI.",
+        "Plan edits do not silently rewrite historical invoice calculations."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "apps",
+        "security"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Up to two operator-admin accounts with generic plan/member management.",
+          "after": "One Flavors operator account plus one staff account with selectable permissions. B Street retains full platform administration and may assign representatives; extra staff accounts are a future paid option.",
+          "source": "Emails 4–5"
+        }
+      ]
+    },
+    {
+      "id": "support",
+      "phase": "communication",
+      "title": "Route support requests to B Street",
+      "summary": "Client wants a way to request help or on-behalf changes during the pilot.",
+      "tech": [
+        "Avenue support entry — implementation to confirm",
+        "B Street staff access"
+      ],
+      "actions": [
+        "Record a support request and assigned representative.",
+        "Audit any action taken on behalf of operator/member."
+      ],
+      "rules": [
+        "The email requests ticket submission; no separate help-desk product is selected."
+      ],
+      "data": [
+        "Support case",
+        "Assignee",
+        "On-behalf audit"
+      ],
+      "checks": [
+        "Support users only access assigned/authorized facility data."
+      ],
+      "exception": "Confirm minimum ticket workflow and Phase 1 acceptance rather than adding a full help-desk product.",
+      "status": "Needs decision",
+      "parent": "admin",
+      "depends": [],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "No dedicated ticket/request workflow in the nine original modules.",
+          "after": "Client/staff should submit a support ticket to B Street for assistance or on-behalf updates during the pilot. Specific ticket-tool/workflow design is not selected.",
+          "source": "Emails 4–5"
+        }
+      ]
+    },
+    {
+      "id": "deactivate",
+      "phase": "communication",
+      "title": "Deactivate or revoke Avenue access",
+      "summary": "Retain records while stopping new operations and notifications.",
+      "tech": [
+        "Power Automate",
+        "Entra groups",
+        "SharePoint permissions",
+        "Power Apps"
+      ],
+      "actions": [
+        "Mark inactive, stop eligible nudges and remove Avenue-specific access.",
+        "Reconcile private grants and apply the agreed future-booking policy."
+      ],
+      "rules": [
+        "Do not delete a guest identity used by other client systems without approval.",
+        "Stripe subscription cancellation is a separate decision from login deactivation."
+      ],
+      "data": [
+        "Member lifecycle",
+        "Access audit",
+        "Billing lifecycle"
+      ],
+      "checks": [
+        "Inactive users cannot create new bookings.",
+        "Revocation does not destroy required financial/compliance history."
+      ],
+      "exception": "Future bookings and subscription termination rules need an approved policy.",
+      "status": "Needs decision",
+      "parent": null,
+      "depends": [
+        "admin"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "operator-dashboard",
+      "phase": "insights",
+      "title": "Build the Flavors operational dashboard",
+      "summary": "Provide facility summaries directly inside Avenue.",
+      "tech": [
+        "Power Apps / SharePoint reporting",
+        "Power Fx",
+        "SharePoint Lists"
+      ],
+      "actions": [
+        "Show bookings, utilization, peak hours, capacity, member activity and compliance.",
+        "Show financial summaries and outstanding charges according to staff permissions."
+      ],
+      "rules": [
+        "Build native operational summaries; do not assume embedding Power BI avoids viewer licensing.",
+        "Regular members do not need Power BI access."
+      ],
+      "data": [
+        "Operational aggregates",
+        "Financial summaries",
+        "Refresh timestamp"
+      ],
+      "checks": [
+        "Sample totals match source records beyond local query limits.",
+        "Do not label a delayed aggregate real-time without a defined freshness contract."
+      ],
+      "exception": "Metric aggregation and scale need a tested design; no arbitrary local-only totals.",
+      "status": "Proposed implementation",
+      "parent": null,
+      "depends": [
+        "history",
+        "exit",
+        "expiry",
+        "sensor-ui"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Compliance and usage dashboards were assigned to Power BI.",
+          "after": "Flavors needs facility bookings, utilization, activity, compliance and financial summaries inside the Avenue admin dashboard. Client asks to build these with Power Apps/SharePoint without another Power BI Pro seat if feasible.",
+          "source": "Emails 7–8"
+        }
+      ]
+    },
+    {
+      "id": "hq-reports",
+      "phase": "insights",
+      "title": "Create B Street Power BI analytics",
+      "summary": "Platform oversight for the pilot with future expansion kept explicit.",
+      "tech": [
+        "Power BI Pro",
+        "Power Query / M",
+        "DAX",
+        "SharePoint data"
+      ],
+      "actions": [
+        "Build revenue, booking, utilization and membership trends.",
+        "Prepare a facility-aware model; populate only actual pilot data."
+      ],
+      "rules": [
+        "Client prefers one B Street Pro seat plus temporary development licensing if needed.",
+        "Other interactive Power BI viewers require appropriate coverage."
+      ],
+      "data": [
+        "Semantic model",
+        "Measures",
+        "Report workspace"
+      ],
+      "checks": [
+        "Booked hours are distinguished from attended hours.",
+        "Monthly financial totals and compliance denominators have approved definitions."
+      ],
+      "exception": "Cross-location reports do not imply unapproved delivery of Phase 2 facilities.",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "operator-dashboard"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Power BI audience and final seat count were unresolved.",
+          "after": "Power BI primarily serves B Street’s business/platform analytics. Start with one B Street Pro seat plus temporary development coverage if needed. Ordinary members do not use Power BI.",
+          "source": "Emails 7–8"
+        }
+      ]
+    },
+    {
+      "id": "member-summary",
+      "phase": "insights",
+      "title": "Keep personal summaries in the member portal",
+      "summary": "Members review their own reservations, invoices and balances.",
+      "tech": [
+        "SPFx / React",
+        "SharePoint Lists",
+        "Private permissions"
+      ],
+      "actions": [
+        "Present personal operational and financial history.",
+        "Link back to permitted booking and renewal actions."
+      ],
+      "rules": [
+        "No member Power BI deployment.",
+        "No member-facing Power Apps license-dependent screen."
+      ],
+      "data": [
+        "My bookings",
+        "My documents",
+        "My account"
+      ],
+      "checks": [
+        "Personal records are complete, scoped and clearly timestamped."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "history",
+        "calendar",
+        "renew"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Member own-account views existed, but report distribution was unresolved.",
+          "after": "Members see individual reservations, invoices and balances directly in Avenue, not in Power BI.",
+          "source": "Emails 7–8"
+        }
+      ]
+    },
+    {
+      "id": "test-e2e",
+      "phase": "release",
+      "title": "Test every role and failure path",
+      "summary": "Validate the system as real guests and staff, not just a developer account.",
+      "tech": [
+        "Test identities",
+        "SharePoint",
+        "Power Apps",
+        "Stripe test mode",
+        "Power Automate"
+      ],
+      "actions": [
+        "Run paid enrollment → documents → booking → entry/exit → usage billing.",
+        "Exercise conflicts, restricted accounts, failures, refunds and API outages."
+      ],
+      "rules": [
+        "No cross-member file/payment/checklist exposure.",
+        "Test concurrent auto-booking and retry-safe financial/event processing."
+      ],
+      "data": [
+        "Acceptance evidence",
+        "Defects",
+        "Known limitations"
+      ],
+      "checks": [
+        "Operator summaries and B Street reports reconcile to reference examples.",
+        "Phone browser journeys and direct-access denials pass."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "hq-reports",
+        "member-summary",
+        "notices",
+        "deactivate"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "approval",
+      "phase": "release",
+      "title": "Obtain client test approval",
+      "summary": "Review the Stripe demo and the complete pilot acceptance results.",
+      "tech": [
+        "Client demonstration",
+        "Approval record",
+        "Updated scope"
+      ],
+      "actions": [
+        "Show the exact operator Stripe onboarding and payment flow.",
+        "Document responsibility settings, outstanding rules and release readiness."
+      ],
+      "rules": [
+        "No live Stripe activity before approval.",
+        "The email requests late-December training and January launch; readiness must be validated, not assumed."
+      ],
+      "data": [
+        "Signed-off test flow",
+        "Release checklist"
+      ],
+      "checks": [
+        "Approval is attributable and specific to the tested configuration."
+      ],
+      "exception": "If critical access or financial-integrity issues remain, keep test mode.",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "test-e2e",
+        "stripe-demo"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Generic UAT and handover; no explicit Stripe live approval gate.",
+          "after": "Client must approve the test onboarding/payment experience and responsibility configuration before live Stripe activation.",
+          "source": "Emails 9–10"
+        }
+      ]
+    },
+    {
+      "id": "go-live",
+      "phase": "release",
+      "title": "Connect the real operator and activate production",
+      "summary": "Use approved live configuration and a controlled first run.",
+      "tech": [
+        "Authenticated Avenue invitation",
+        "Stripe live configuration",
+        "Power Automate",
+        "SharePoint"
+      ],
+      "actions": [
+        "Send an Avenue start/invitation link for the operator.",
+        "After authentication generate Stripe onboarding, verify readiness, then enable approved live operations."
+      ],
+      "rules": [
+        "The forwarded link is not a raw reusable Stripe Account Link.",
+        "No secret keys, banking data or verification documents enter this artifact."
+      ],
+      "data": [
+        "Live connected-account mapping",
+        "Deployment version",
+        "Audit"
+      ],
+      "checks": [
+        "Verify the first approved live event in the correct account.",
+        "Pause schedules safely if verification fails."
+      ],
+      "exception": "Live setup requires the correct mode-specific credentials and explicit approval.",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "approval"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "No connected-account production setup or operator link handoff.",
+          "after": "After approval, provide secure operator onboarding access and confirm the live account configuration. A forwardable Avenue invitation is the proposed safe implementation; the client asked for a secure onboarding link.",
+          "source": "Emails 9–10"
+        }
+      ]
+    },
+    {
+      "id": "training",
+      "phase": "release",
+      "title": "Train operator and hand over ownership",
+      "summary": "Teach daily workflows and exception handling.",
+      "tech": [
+        "Avenue member portal",
+        "Power Apps admin",
+        "B Street reporting",
+        "Runbooks"
+      ],
+      "actions": [
+        "Demonstrate bookings, checklists, compliance, billing issues and owner-only exceptions.",
+        "Deliver artifacts, configuration inventory, connection owners and recovery instructions."
+      ],
+      "rules": [
+        "No unconditional eight-week or launch-date guarantee from this map.",
+        "Build identities and production operator permissions need deliberate handover."
+      ],
+      "data": [
+        "Training guide",
+        "Runbooks",
+        "Release exports",
+        "Account ownership"
+      ],
+      "checks": [
+        "A designated owner can resolve failed jobs and reconnect services.",
+        "Restore/rollback rehearsal does not lose records or resend payments."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "go-live"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "Approximately eight-week sequence, starting when prerequisites and advance are in place.",
+          "after": "Client requests operator training in the week of December 27 before a January 1 launch. This is a requested milestone, not evidence that a revised schedule has been validated.",
+          "source": "Email 3"
+        }
+      ]
+    },
+    {
+      "id": "health",
+      "phase": "operations",
+      "title": "Monitor failures and reconcile sources",
+      "summary": "Keep integrations and scheduled work observable.",
+      "tech": [
+        "Power Automate run history",
+        "SharePoint operational logs",
+        "Stripe webhooks",
+        "Swift Sensors"
+      ],
+      "actions": [
+        "Review failed flows, stale sensors, unmapped records and incomplete provisioning.",
+        "Reconcile payment status; replay safely and track API budget."
+      ],
+      "rules": [
+        "Never log secrets or broadly expose wellness answers.",
+        "Avenue is not an emergency response or physical access-control system."
+      ],
+      "data": [
+        "Health dashboard",
+        "Retry queue",
+        "Last successful sync"
+      ],
+      "checks": [
+        "A duplicate event or replay does not charge twice.",
+        "Failures have a named operational owner."
+      ],
+      "exception": "",
+      "status": "Confirmed",
+      "parent": null,
+      "depends": [
+        "training"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "retention",
+      "phase": "operations",
+      "title": "Maintain security and recoverability",
+      "summary": "Manage document/sensor history and account lifecycle over time.",
+      "tech": [
+        "SharePoint retention / versioning",
+        "Exported app / flow artifacts",
+        "Backup process — to agree"
+      ],
+      "actions": [
+        "Review private grants, service credentials and projected list/permission growth.",
+        "Apply approved retention, archive and recovery procedures."
+      ],
+      "rules": [
+        "Retention periods and support/warranty terms are not supplied.",
+        "A saved app version alone is not proof of full data recovery."
+      ],
+      "data": [
+        "Retention schedule",
+        "Recovery evidence",
+        "Access reviews"
+      ],
+      "checks": [
+        "Historical invoices and compliance records remain available as required."
+      ],
+      "exception": "Agree retention before deleting history or claiming legal compliance.",
+      "status": "Needs decision",
+      "parent": null,
+      "depends": [
+        "health"
+      ],
+      "locked": false,
+      "custom": false
+    },
+    {
+      "id": "phase2",
+      "phase": "operations",
+      "title": "Separate future platform expansion",
+      "summary": "Keep the long-term multi-client product distinct from the pilot.",
+      "tech": [
+        "Future architecture — not selected",
+        "Phase 2 backlog"
+      ],
+      "actions": [
+        "Capture lessons from Flavors and proposed school/client needs.",
+        "Plan facility isolation, configurable feature access and future AI separately."
+      ],
+      "rules": [
+        "Standalone multi-client platform, broader rollout and AI are aspirations in the trail.",
+        "Stripe’s multi-client capability is not proof those application features are delivered."
+      ],
+      "data": [
+        "Phase 2 backlog",
+        "Pilot lessons",
+        "Scope decisions"
+      ],
+      "checks": [
+        "New-client functionality is assessed before it is promised."
+      ],
+      "exception": "This node records future scope; it is not a committed Phase 1 deliverable.",
+      "status": "Future",
+      "parent": null,
+      "depends": [
+        "health"
+      ],
+      "locked": false,
+      "custom": false,
+      "changes": [
+        {
+          "kind": "Client",
+          "before": "A full multi-client platform was deferred to Phase 2.",
+          "after": "Client reiterates a future standalone configurable platform, mentions a potential school client and future AI, while using Flavors to learn. These are future directions, not automatically delivered Phase 1 features.",
+          "source": "Emails 4–5"
+        }
+      ]
+    }
+  ],
+  "frozen": false,
+  "revision": 3,
+  "savedAt": null
+}

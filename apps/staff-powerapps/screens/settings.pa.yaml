@@ -1,0 +1,417 @@
+- sBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- sBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- sBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- sDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- sBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- sTitle:
+    Control: Label
+    Properties:
+      Text: ="Settings"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- sNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- sNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- sNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- sNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- sNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- sNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 206
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- sNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- sTabBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =48
+      Width: =App.Width
+      Height: =32
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.58)
+- sTabEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =80
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(15,76,92,0.10)
+- sTabSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =24
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(91,99,112,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- sTabSettings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Settings"
+      X: =132
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen10)
+      Fill: =RGBA(15,76,92,0.10)
+      Color: =RGBA(15,76,92,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- tm_settings:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =28
+      Width: =10
+      Height: =10
+- sc_settings:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =88
+      Width: =App.Width
+      Height: =App.Height - 88
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_settings.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_settings:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =680
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - sHelp:
+            Control: Label
+            Properties:
+              Text: ="Facility settings used by Avenue's automations. Defaults are proposals until Flavors confirms them (Q-10)."
+              X: =20
+              Y: =0
+              Width: =1300
+              Height: =30
+              Color: =RGBA(96,94,92,1)
+              Size: =12
+        - sEntryLbl:
+            Control: Label
+            Properties:
+              Text: ="Minutes after the start before a missing entry checklist is chased"
+              X: =20
+              Y: =40
+              Width: =640
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+        - sEntry:
+            Control: Classic/TextInput
+            Properties:
+              Default: =Text(LookUp(AvenueFacilities, FacilityId = "flavors-hyattsville").EntryGraceMinutes)
+              Format: =TextFormat.Number
+              X: =20
+              Y: =65
+              Width: =160
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - sExitLbl:
+            Control: Label
+            Properties:
+              Text: ="Minutes after the end before a missing exit checklist is chased"
+              X: =20
+              Y: =110
+              Width: =640
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+        - sExit:
+            Control: Classic/TextInput
+            Properties:
+              Default: =Text(LookUp(AvenueFacilities, FacilityId = "flavors-hyattsville").ExitGraceMinutes)
+              Format: =TextFormat.Number
+              X: =20
+              Y: =135
+              Width: =160
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - sEmailLbl:
+            Control: Label
+            Properties:
+              Text: ="Staff alert e-mail (new requests, failed and overdue checklists). Empty = no staff e-mails."
+              X: =20
+              Y: =180
+              Width: =900
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+        - sEmail:
+            Control: Classic/TextInput
+            Properties:
+              Default: =LookUp(AvenueFacilities, FacilityId = "flavors-hyattsville").StaffAlertEmail
+              HintText: ="management@example.com"
+              X: =20
+              Y: =205
+              Width: =640
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - sSave:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save settings"
+              X: =20
+              Y: =260
+              Width: =200
+              Height: =40
+              OnSelect: |-
+                =If(!(Value(sEntry.Text) >= 0 && Value(sEntry.Text) <= 240 && Value(sExit.Text) >= 0 && Value(sExit.Text) <= 240), Notify("Minutes must be between 0 and 240.", NotificationType.Warning), !IsBlank(Trim(sEmail.Text)) && !IsMatch(Trim(sEmail.Text), Match.Email), Notify("Enter a valid e-mail or leave it empty.", NotificationType.Warning), IfError(Patch(AvenueFacilities, LookUp(AvenueFacilities, FacilityId = "flavors-hyattsville"), {EntryGraceMinutes: Value(sEntry.Text), ExitGraceMinutes: Value(sExit.Text), StaffAlertEmail: Lower(Trim(sEmail.Text))}); Refresh(AvenueFacilities); Notify("Settings saved.", NotificationType.Success), Notify("Could not save the settings.", NotificationType.Error)))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8

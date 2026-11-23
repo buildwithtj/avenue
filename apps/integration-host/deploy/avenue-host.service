@@ -1,0 +1,21 @@
+[Unit]
+Description=Avenue integration host (Stripe webhooks)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=avenue
+Group=avenue
+WorkingDirectory=/opt/avenue/apps/integration-host
+EnvironmentFile=/etc/avenue/host.env
+ExecStart=/usr/bin/node --disable-warning=ExperimentalWarning server.mjs
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/avenue
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "avenue-portal-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/avenuePortal/AvenuePortalWebPart.js",
+          "manifest": "./src/webparts/avenuePortal/AvenuePortalWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "AvenuePortalWebPartStrings": "lib/webparts/avenuePortal/loc/{locale}.js"
+  }
+}

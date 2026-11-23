@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avenue Phase 1 — Developer Flow · Doubleklick</title>
+<style>
+:root{
+  --teal:#0f4c5c;--teal-d:#0b3a46;--teal-l:#e6eef0;--gold:#c9a24d;--gold-d:#a8842f;
+  --ink:#1b2430;--muted:#51606e;--faint:#8a95a0;--line:#dfe6e9;--bg:#eef2f3;--card:#fff;
+  --pa:#c9a24d;--sp:#0f4c5c;--flow:#5b8a95;--ext:#8a6d3b;--ok:#0b6a0b;--bad:#a4262c;
+  --mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;padding:26px 18px 60px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto}
+header{text-align:center;margin-bottom:8px}
+.brand{font-family:var(--sans);font-weight:700;font-size:26px;letter-spacing:-.5px;color:var(--teal)}
+.brand span{color:var(--gold)}.brand sup{font-size:9px;color:var(--faint)}
+header h1{font-size:17px;font-weight:600;color:var(--ink);margin-top:2px}
+header p{font-size:12.5px;color:var(--muted);margin-top:3px}
+.legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:16px 0 26px;font-size:11.5px;color:var(--muted)}
+.legend .k{display:inline-flex;align-items:center;gap:6px}
+.legend .k i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px 24px;margin-bottom:22px;box-shadow:0 1px 3px rgba(15,76,92,.06)}
+.sec>h2{font-size:14px;font-weight:700;color:var(--teal);letter-spacing:.3px;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.sec>h2 .num{width:22px;height:22px;background:var(--teal);color:#fff;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:12px}
+.sec>.cap{font-size:12px;color:var(--muted);margin-bottom:18px}
+
+/* architecture layers */
+.arch{display:flex;flex-direction:column;gap:0}
+.layer{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center;padding:12px 0}
+.layer+.layer{border-top:1px dashed var(--line)}
+.layer .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--faint);text-align:right}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.node{border-radius:9px;padding:9px 13px;font-size:12px;font-weight:600;border:1.5px solid;background:#fff;min-width:96px}
+.node small{display:block;font-size:10px;font-weight:500;opacity:.7;margin-top:1px}
+.node.sp{border-color:var(--sp);color:var(--sp);background:#eef4f5}
+.node.pa{border-color:var(--pa);color:var(--gold-d);background:#fbf4e4}
+.node.flow{border-color:var(--flow);color:#3f6975;background:#eef4f6}
+.node.ext{border-color:var(--ext);color:var(--ext);background:#f6f0e6}
+.arrow-down{text-align:center;color:var(--faint);font-size:15px;line-height:1;margin:2px 0}
+
+/* data model */
+.ermap{display:flex;flex-wrap:wrap;gap:12px}
+.ent{border:1.5px solid var(--sp);border-radius:9px;overflow:hidden;min-width:150px;background:#fff;flex:1 1 150px;max-width:210px}
+.ent .et{background:var(--sp);color:#fff;font-size:11.5px;font-weight:700;padding:6px 10px;display:flex;justify-content:space-between;align-items:center}
+.ent .et .k{font-size:9px;opacity:.6;font-weight:500}
+.ent ul{list-style:none;padding:6px 10px}
+.ent li{font-size:10.5px;color:var(--muted);padding:1.5px 0;font-family:var(--mono)}
+.ent li b{color:var(--ink);font-weight:600}
+.ent li .fk{color:var(--gold-d)}
+
+/* user flows */
+.flowline{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin-bottom:6px}
+.step{background:#fff;border:1.5px solid var(--line);border-radius:9px;padding:8px 11px;font-size:11.5px;font-weight:600;color:var(--ink);display:flex;flex-direction:column;justify-content:center;min-width:92px;position:relative}
+.step small{display:block;font-size:9.5px;font-weight:500;color:var(--faint);margin-top:1px}
+.step.m{border-color:var(--sp);background:#eef4f5}
+.step.s{border-color:var(--pa);background:#fbf4e4}
+.step.f{border-color:var(--flow);background:#eef4f6}
+.step.end{border-color:var(--ok);background:#e9f6ec}
+.chev{display:flex;align-items:center;color:var(--faint);font-size:16px;padding:0 7px}
+.flowtitle{font-size:12px;font-weight:700;color:var(--teal);margin:14px 0 8px;display:flex;align-items:center;gap:7px}
+.flowtitle .tag{font-size:9px;font-weight:700;padding:1px 7px;border-radius:99px;background:var(--teal-l);color:var(--teal)}
+
+/* automate flows table */
+.flows{width:100%;border-collapse:collapse;font-size:11.5px}
+.flows th{background:var(--teal);color:#fff;text-align:left;padding:7px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.4px;font-weight:600}
+.flows td{padding:7px 10px;border-bottom:1px solid var(--line);color:var(--muted);vertical-align:top}
+.flows tr:last-child td{border-bottom:0}
+.flows td b{color:var(--ink)}
+.flows .trig{font-family:var(--mono);font-size:10.5px;color:var(--gold-d)}
+.pill{display:inline-block;font-size:9.5px;font-weight:700;padding:1px 7px;border-radius:99px;background:var(--teal-l);color:var(--teal);white-space:nowrap}
+
+.note{background:var(--teal-l);border-left:3px solid var(--teal);border-radius:0 7px 7px 0;padding:10px 14px;font-size:11.5px;color:#274b54;margin-top:16px}
+.note b{color:var(--teal)}
+.foot{text-align:center;font-size:10.5px;color:var(--faint);margin-top:10px}
+@media(max-width:720px){.layer{grid-template-columns:1fr}.layer .lbl{text-align:left}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand">A<span>v</span>enue<sup>&trade;</sup></div>
+  <h1>Phase 1 — Developer Build Flow</h1>
+  <p>SharePoint &amp; Power Platform · shared-kitchen facility · architecture, data model, user flows and automations</p>
+</header>
+
+<div class="legend">
+  <span class="k"><i style="background:#eef4f5;border:1.5px solid var(--sp)"></i> SharePoint (data)</span>
+  <span class="k"><i style="background:#fbf4e4;border:1.5px solid var(--pa)"></i> Power Apps (UI)</span>
+  <span class="k"><i style="background:#eef4f6;border:1.5px solid var(--flow)"></i> Power Automate (flow)</span>
+  <span class="k"><i style="background:#f6f0e6;border:1.5px solid var(--ext)"></i> External system</span>
+</div>
+
+<!-- 1. ARCHITECTURE -->
+<div class="sec">
+  <h2><span class="num">1</span> System architecture</h2>
+  <div class="cap">How the four layers connect. The Power Apps canvas app is the interface; it reads and writes SharePoint lists; Power Automate flows move data to and from external systems.</div>
+  <div class="arch">
+    <div class="layer">
+      <div class="lbl">Users</div>
+      <div class="row">
+        <div class="node pa">Member<small>guest login · web + mobile</small></div>
+        <div class="node pa">Staff / Operator<small>admin tier</small></div>
+        <div class="node pa">Super-admin<small>Doubleklick / Client</small></div>
+      </div>
+    </div>
+    <div class="arrow-down">&#9660;&nbsp; interact with</div>
+    <div class="layer">
+      <div class="lbl">Interface</div>
+      <div class="row">
+        <div class="node pa">Power Apps canvas app<small>responsive · role-aware</small></div>
+        <div class="node pa">SharePoint pages<small>Home · Notices · dashboards</small></div>
+        <div class="node pa">Power BI<small>reports</small></div>
+      </div>
+    </div>
+    <div class="arrow-down">&#9660;&nbsp; read / write</div>
+    <div class="layer">
+      <div class="lbl">Data</div>
+      <div class="row">
+        <div class="node sp">Lists<small>Members · Bookings · Checklists · Payments · Sensors · Notices</small></div>
+        <div class="node sp">Libraries<small>Compliance docs</small></div>
+      </div>
+    </div>
+    <div class="arrow-down">&#9650;&#9660;&nbsp; synced by</div>
+    <div class="layer">
+      <div class="lbl">Automation</div>
+      <div class="row">
+        <div class="node flow">Scheduled flows<small>sync · reminders · expiry</small></div>
+        <div class="node flow">Triggered flows<small>approval · nudge · access</small></div>
+      </div>
+    </div>
+    <div class="arrow-down">&#9650;&#9660;&nbsp; connect to</div>
+    <div class="layer">
+      <div class="lbl">External</div>
+      <div class="row">
+        <div class="node ext">QuickBooks Online<small>invoices · balances</small></div>
+        <div class="node ext">Swift Sensors<small>temperatures (HTTP)</small></div>
+        <div class="node ext">Email<small>generic nudges</small></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. DATA MODEL -->
+<div class="sec">
+  <h2><span class="num">2</span> Data model (SharePoint lists &amp; libraries)</h2>
+  <div class="cap">Core entities and their key fields. <b>Bold</b> = primary identity; <span style="color:var(--gold-d)">gold</span> = link to another list. A plain-text MemberEmail column is carried on member-scoped lists for reliable (delegable) filtering.</div>
+  <div class="ermap">
+    <div class="ent"><div class="et">Members <span class="k">list</span></div><ul>
+      <li><b>MemberEmail</b></li><li>BusinessName</li><li>Plan / Tier</li><li>Status</li><li class="fk">QBCustomerId</li></ul></div>
+    <div class="ent"><div class="et">Bookings <span class="k">list</span></div><ul>
+      <li><b>Id</b></li><li class="fk">MemberEmail</li><li>Resource · Equipment</li><li>Start / End</li><li>Status</li><li>Reminder flags</li></ul></div>
+    <div class="ent"><div class="et">Checklists <span class="k">list</span></div><ul>
+      <li><b>Id</b></li><li class="fk">BookingId</li><li class="fk">MemberEmail</li><li>Type (entry/exit)</li><li>Answers · Passed</li><li>SubmittedBy / At</li></ul></div>
+    <div class="ent"><div class="et">ComplianceDocs <span class="k">library</span></div><ul>
+      <li><b>File</b></li><li class="fk">MemberEmail</li><li>DocType</li><li>Expiry</li><li>Status</li></ul></div>
+    <div class="ent"><div class="et">Payments <span class="k">list</span></div><ul>
+      <li><b>QBInvoiceId</b></li><li class="fk">MemberEmail</li><li>Amount · Balance</li><li>Status · DueDate</li></ul></div>
+    <div class="ent"><div class="et">SensorReadings <span class="k">list</span></div><ul>
+      <li><b>Id</b></li><li>Unit · SensorId</li><li>Reading</li><li>ReadingTime</li><li>Status</li></ul></div>
+    <div class="ent"><div class="et">Notices <span class="k">list</span></div><ul>
+      <li><b>Id</b></li><li>Title · Body</li><li>Audience</li><li>Published · NudgeSent</li></ul></div>
+    <div class="ent"><div class="et">Onboarding <span class="k">list/form</span></div><ul>
+      <li><b>Id</b></li><li>BusinessInfo</li><li>Plan chosen</li><li>Documents</li><li>ApprovalStatus</li></ul></div>
+    <div class="ent"><div class="et">Staff <span class="k">list</span></div><ul>
+      <li><b>Email</b></li><li>DisplayName</li><li>Role tier</li></ul></div>
+  </div>
+</div>
+
+<!-- 3. USER FLOWS -->
+<div class="sec">
+  <h2><span class="num">3</span> Key user flows</h2>
+  <div class="cap">The main journeys through the app. <span class="step m" style="padding:1px 6px;min-width:0">member</span> <span class="step s" style="padding:1px 6px;min-width:0">staff</span> <span class="step f" style="padding:1px 6px;min-width:0">automated flow</span></div>
+
+  <div class="flowtitle">Onboarding <span class="tag">new member</span></div>
+  <div class="flowline">
+    <div class="step m">Apply<small>info · plan · docs</small></div><div class="chev">&rsaquo;</div>
+    <div class="step f">Record created<small>status: pending</small></div><div class="chev">&rsaquo;</div>
+    <div class="step s">Staff review<small>approve / reject</small></div><div class="chev">&rsaquo;</div>
+    <div class="step f">Provision access<small>guest invite</small></div><div class="chev">&rsaquo;</div>
+    <div class="step end">Member active<small>full access</small></div>
+  </div>
+
+  <div class="flowtitle">Booking <span class="tag">member or staff</span></div>
+  <div class="flowline">
+    <div class="step m">Open calendar<small>see availability</small></div><div class="chev">&rsaquo;</div>
+    <div class="step m">Request<small>resource · equipment · time</small></div><div class="chev">&rsaquo;</div>
+    <div class="step f">Overlap check<small>pre-submit</small></div><div class="chev">&rsaquo;</div>
+    <div class="step s">Staff approve<small>or on-behalf</small></div><div class="chev">&rsaquo;</div>
+    <div class="step end">Confirmed<small>on shared calendar</small></div>
+  </div>
+
+  <div class="flowtitle">Check-in / out &amp; alerts <span class="tag">per booking</span></div>
+  <div class="flowline">
+    <div class="step f">3/2/1-hr reminders<small>before start</small></div><div class="chev">&rsaquo;</div>
+    <div class="step m">Entry checklist<small>on arrival</small></div><div class="chev">&rsaquo;</div>
+    <div class="step f">Check-in monitor<small>missed? escalate</small></div><div class="chev">&rsaquo;</div>
+    <div class="step m">Exit checklist<small>or extend</small></div><div class="chev">&rsaquo;</div>
+    <div class="step f">Unresolved?<small>flag to staff</small></div><div class="chev">&rsaquo;</div>
+    <div class="step s">Staff escalation<small>logged outreach</small></div>
+  </div>
+
+  <div class="flowtitle">Compliance <span class="tag">documents</span></div>
+  <div class="flowline">
+    <div class="step m">Upload doc<small>type · expiry</small></div><div class="chev">&rsaquo;</div>
+    <div class="step f">Daily expiry scan<small>set status</small></div><div class="chev">&rsaquo;</div>
+    <div class="step f">Nudge if expiring<small>generic email</small></div><div class="chev">&rsaquo;</div>
+    <div class="step end">Member renews<small>status: current</small></div>
+  </div>
+</div>
+
+<!-- 4. AUTOMATE FLOWS -->
+<div class="sec">
+  <h2><span class="num">4</span> Power Automate flows</h2>
+  <div class="cap">The automations to build, with their trigger. Scheduled flows poll on a cadence; triggered flows fire on a list change.</div>
+  <table class="flows">
+    <thead><tr><th>Flow</th><th>Trigger</th><th>What it does</th><th>Type</th></tr></thead>
+    <tbody>
+      <tr><td><b>QuickBooks sync</b></td><td class="trig">every 6 h</td><td>Pull invoices/balances, match to member, upsert Payments, grant member read.</td><td><span class="pill">Scheduled</span></td></tr>
+      <tr><td><b>Swift Sensors sync</b></td><td class="trig">every 15–30 min</td><td>HTTP GET readings, map device→unit, set Normal/Out-of-range, append log.</td><td><span class="pill">Scheduled</span></td></tr>
+      <tr><td><b>Reminder engine</b></td><td class="trig">every 15 min</td><td>Find approved bookings; send 3/2/1-hr reminders once each (dedup flags).</td><td><span class="pill">Scheduled</span></td></tr>
+      <tr><td><b>Check-in monitor</b></td><td class="trig">every 15 min</td><td>Entry checklist missing after start → nudge member, then escalate to staff.</td><td><span class="pill">Scheduled</span></td></tr>
+      <tr><td><b>End-of-session</b></td><td class="trig">every 15 min</td><td>At end time, prompt exit-or-extend; unresolved → flag &amp; escalate.</td><td><span class="pill">Scheduled</span></td></tr>
+      <tr><td><b>Compliance expiry</b></td><td class="trig">daily</td><td>Scan documents; set Current/Expiring/Expired; nudge before lapse.</td><td><span class="pill">Scheduled</span></td></tr>
+      <tr><td><b>Booking approval</b></td><td class="trig">on Bookings change</td><td>Notify staff of requests; notify member on approve/deny; on-behalf access grant.</td><td><span class="pill">Triggered</span></td></tr>
+      <tr><td><b>Notice nudge</b></td><td class="trig">on Notice publish</td><td>Email active members a generic &ldquo;log in to view&rdquo; prompt.</td><td><span class="pill">Triggered</span></td></tr>
+      <tr><td><b>Onboarding approval</b></td><td class="trig">on Onboarding approve</td><td>Provision the member as a guest user and grant platform access.</td><td><span class="pill">Triggered</span></td></tr>
+      <tr><td><b>Access revoke</b></td><td class="trig">on Member inactive</td><td>Remove guest access; scheduled nudges stop (filtered on Active).</td><td><span class="pill">Triggered</span></td></tr>
+    </tbody>
+  </table>
+  <div class="note"><b>Security model:</b> member-scoped lists (Bookings is shared-read; Payments, Compliance, Checklists stay private) use SharePoint item-level permissions. The sync account creates Payments rows, so each member is granted item-level read via a reusable child flow. Filtering in the app runs on the plain-text <code>MemberEmail</code> column so it stays delegable.</div>
+</div>
+
+<!-- 5. BUILD ORDER -->
+<div class="sec">
+  <h2><span class="num">5</span> Build order</h2>
+  <div class="cap">Recommended sequence — foundation first, then module pairs, with the alert engine and onboarding last.</div>
+  <div class="flowline">
+    <div class="step f">1 · Foundation<small>site · security · lists · app shell</small></div><div class="chev">&rsaquo;</div>
+    <div class="step m">2 · Bookings + Comms<small>core testable</small></div><div class="chev">&rsaquo;</div>
+    <div class="step m">3 · Compliance + Payments<small>+ QB sync</small></div><div class="chev">&rsaquo;</div>
+    <div class="step m">4 · Monitoring + Alerts<small>+ engine</small></div><div class="chev">&rsaquo;</div>
+    <div class="step s">5 · Onboarding + Reporting<small>+ admin tier</small></div><div class="chev">&rsaquo;</div>
+    <div class="step end">6 · UAT &amp; handover<small>mobile · test · docs</small></div>
+  </div>
+</div>
+
+<div class="foot">Doubleklick Designs Pvt. Ltd. · Avenue Phase 1 Developer Flow · 30 October 2026 · single-site SharePoint build; multi-client platform is Phase 2.</div>
+</div>
+</body>
+</html>

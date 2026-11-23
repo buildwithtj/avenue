@@ -1,0 +1,701 @@
+- mBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- mBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- mBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- mDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- mBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- mTitle:
+    Control: Label
+    Properties:
+      Text: ="Members"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- mNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- mNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- mNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- mNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 422
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- mNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- mNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- mNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- mTabBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =48
+      Width: =App.Width
+      Height: =32
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.58)
+- mTabEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =80
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(15,76,92,0.10)
+- mTabMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =24
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(15,76,92,0.10)
+      Color: =RGBA(15,76,92,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- mTabCompliance:
+    Control: Classic/Button
+    Properties:
+      Text: ="Compliance"
+      X: =132
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen4)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(91,99,112,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- mTabCheckins:
+    Control: Classic/Button
+    Properties:
+      Text: ="Check-ins"
+      X: =240
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen5)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(91,99,112,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- mTabChecklist:
+    Control: Classic/Button
+    Properties:
+      Text: ="Checklist"
+      X: =348
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen7)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(91,99,112,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- tm_members:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =28
+      Width: =10
+      Height: =10
+- sc_members:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =88
+      Width: =App.Width
+      Height: =App.Height - 88
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_members.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_members:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =717
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - mListHead:
+            Control: Label
+            Properties:
+              Text: ="Members"
+              X: =20
+              Y: =0
+              Width: =640
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+        - mList:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =SortByColumns(Filter(AvenueMembers, FacilityId = "flavors-hyattsville"), "BusinessName", SortOrder.Ascending)
+              X: =20
+              Y: =35
+              Width: =640
+              Height: =650
+              TemplateSize: =60
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - mItemTitle:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.BusinessName, "(no business name)") & " · " & ThisItem.MemberId
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - mItemMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Status.Value & " · plan " & Coalesce(ThisItem.PlanId, "not set") & If(IsBlank(ThisItem.CollectionDay), "", " · day " & ThisItem.CollectionDay) & " · documents " & CountRows(Filter(Filter(AvenueRequiredDocTypes, Active = true) As r, !IsBlank(LookUp(AvenueMemberDocuments, MemberId = ThisItem.MemberId && DocType.Value = r.DocType.Value && IsBlank(SupersededBy) && DocStatus.Value <> "Expired")))) & " of " & CountRows(Filter(AvenueRequiredDocTypes, Active = true)) & If(IsBlank(ThisItem.PaymentStatus.Value), "", " · payment " & Switch(ThisItem.PaymentStatus.Value, "PastDue", "OVERDUE", "Unpaid", "UNPAID", "OwnerOverride", "owner override", ThisItem.PaymentStatus.Value))
+                    X: =8
+                    Y: =32
+                    Width: =600
+                    Height: =22
+                    Color: =If(ThisItem.Status.Value = "Inactive" || ThisItem.PaymentStatus.Value = "PastDue" || ThisItem.PaymentStatus.Value = "Unpaid", RGBA(164,38,44,1), RGBA(96,94,92,1))
+                    Size: =12
+              - mListSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =59
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - mSel:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(mList.Selected), "Select a member", mList.Selected.BusinessName & " · " & mList.Selected.Status.Value)
+              X: =690
+              Y: =0
+              Width: =640
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+        - mStatus:
+            Control: Classic/DropDown
+            Properties:
+              Items: =If(!IsBlank(mList.Selected) && mList.Selected.Status.Value = "Inactive", ["Inactive", "Invited", "Paid", "Onboarding", "Active"], ["Invited", "Paid", "Onboarding", "Active"])
+              Default: =If(IsBlank(mList.Selected), "Active", mList.Selected.Status.Value)
+              X: =690
+              Y: =35
+              Width: =200
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - mPlanEdit:
+            Control: Classic/TextInput
+            Properties:
+              Default: =If(IsBlank(mList.Selected), "", mList.Selected.PlanId)
+              HintText: ="Plan id"
+              X: =900
+              Y: =35
+              Width: =150
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - mDayEdit:
+            Control: Classic/TextInput
+            Properties:
+              Default: =If(IsBlank(mList.Selected) || IsBlank(mList.Selected.CollectionDay), "", Text(mList.Selected.CollectionDay))
+              HintText: ="Day 1-15"
+              Format: =TextFormat.Number
+              X: =1060
+              Y: =35
+              Width: =90
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - mReason:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Reason (needed to deactivate or reactivate)"
+              X: =1060
+              Y: =80
+              Width: =270
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - mSave:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save"
+              X: =1160
+              Y: =35
+              Width: =100
+              Height: =36
+              OnSelect: |-
+                =If(!IsBlank(mDayEdit.Text) && !(Value(mDayEdit.Text) >= 1 && Value(mDayEdit.Text) <= 15 && Value(mDayEdit.Text) = RoundDown(Value(mDayEdit.Text), 0)), Notify("Collection day must be a whole number from 1 to 15.", NotificationType.Warning), IfError(Patch(AvenueMembers, mList.Selected, {Status: {Value: mStatus.Selected.Value}, PlanId: Trim(mPlanEdit.Text), CollectionDay: If(IsBlank(mDayEdit.Text), Blank(), Value(mDayEdit.Text)), ChangeReason: If(IsBlank(Trim(mReason.Text)), mList.Selected.ChangeReason, Trim(mReason.Text) & " (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ")")}); Reset(mReason); Notify("Member saved. Their membership card updates within a minute.", NotificationType.Success), Notify("Could not save the member.", NotificationType.Error)))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(IsBlank(mList.Selected) || (!IsBlank(mList.Selected) && mList.Selected.Status.Value = "Inactive" && mStatus.Selected.Value <> "Inactive" && IsBlank(Trim(mReason.Text))), DisplayMode.Disabled, DisplayMode.Edit)
+        - mDeactivate:
+            Control: Classic/Button
+            Properties:
+              Text: ="Deactivate and cancel future bookings"
+              X: =690
+              Y: =80
+              Width: =360
+              Height: =36
+              OnSelect: |-
+                =With({m: mList.Selected}, IfError(Patch(AvenueMembers, m, {Status: {Value: "Inactive"}, ChangeReason: Trim(mReason.Text) & " (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ")"}); Reset(mReason); ForAll(Filter(AvenueBookings, MemberId = m.MemberId, StartUtc > Now(), Status.Value = "Approved" || Status.Value = "Pending") As b, Patch(AvenueBookings, b, {Status: {Value: "Cancelled"}, OverlapNote: "Cancelled because the membership was deactivated."})); If(!IsBlank(m.SubscriptionId), Patch(AvenueHostRequests, Defaults(AvenueHostRequests), {Title: "CancelSubscription", FacilityId: "flavors-hyattsville", RequestId: "cancel-" & Text(GUID()), Kind: {Value: "CancelSubscription"}, Payload: "{""memberEmail"":""" & m.MemberId & """}"})); Notify("Member deactivated; future bookings cancelled and hours returned. Their Stripe subscription ends at the end of the paid period.", NotificationType.Success), Notify("Could not deactivate the member.", NotificationType.Error)))
+              Fill: =RGBA(164,38,44,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(IsBlank(mList.Selected) || mList.Selected.Status.Value = "Inactive" || IsBlank(Trim(mReason.Text)), DisplayMode.Disabled, DisplayMode.Edit)
+        - mDeactHelp:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(mList.Selected), "", "Onboarding: " & CountRows(Filter(Filter(AvenueRequiredDocTypes, Active = true) As r, !IsBlank(LookUp(AvenueMemberDocuments, MemberId = mList.Selected.MemberId && DocType.Value = r.DocType.Value && IsBlank(SupersededBy) && DocStatus.Value <> "Expired")))) & " of " & CountRows(Filter(AvenueRequiredDocTypes, Active = true)) & " required documents on file. ") & "Removing their sign-in to the site is a SharePoint admin step (guest access); this keeps all history."
+              X: =690
+              Y: =118
+              Width: =640
+              Height: =38
+              Color: =RGBA(96,94,92,1)
+              Size: =11
+        - mUpHead:
+            Control: Label
+            Properties:
+              Text: ="Upcoming bookings"
+              X: =690
+              Y: =160
+              Width: =360
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+        - mOverride:
+            Control: Classic/Button
+            Properties:
+              Text: ="Allow bookings (owner override)"
+              X: =1060
+              Y: =156
+              Width: =270
+              Height: =34
+              OnSelect: |-
+                =IfError(Patch(AvenueMembers, mList.Selected, {PaymentStatus: {Value: "OwnerOverride"}, ChangeReason: "Overdue booking block lifted by " & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM")}); Notify("Override saved: new bookings are allowed until the next payment status change.", NotificationType.Success), Notify("Could not save the override.", NotificationType.Error))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =!IsBlank(mList.Selected) && (mList.Selected.PaymentStatus.Value = "PastDue" || mList.Selected.PaymentStatus.Value = "Unpaid") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - mUpcoming:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =If(IsBlank(mList.Selected), Blank(), SortByColumns(Filter(AvenueBookings, MemberId = mList.Selected.MemberId, StartUtc > Now()), "StartUtc", SortOrder.Ascending))
+              X: =690
+              Y: =194
+              Width: =640
+              Height: =196
+              TemplateSize: =40
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - mUpItem:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Space.Value & " · " & Text(ThisItem.StartUtc, "ddd d mmm, h:mm AM/PM") & " · " & ThisItem.Status.Value
+                    X: =8
+                    Y: =6
+                    Width: =600
+                    Height: =28
+                    Color: =RGBA(31,31,31,1)
+              - mUpcomingSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =39
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - mAddHead:
+            Control: Label
+            Properties:
+              Text: ="Add a member"
+              X: =690
+              Y: =405
+              Width: =640
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+        - mAddHelp:
+            Control: Label
+            Properties:
+              Text: ="Normally members join by paying first (Stripe, not set up yet). Use this for members who already pay outside Avenue. Site access is granted separately by a SharePoint admin."
+              X: =690
+              Y: =435
+              Width: =640
+              Height: =40
+              Color: =RGBA(96,94,92,1)
+              Size: =11
+        - mBiz:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Business name"
+              X: =690
+              Y: =480
+              Width: =640
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - mEmail:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Member sign-in e-mail"
+              X: =690
+              Y: =525
+              Width: =420
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - mPlan:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Plan id (optional)"
+              X: =1120
+              Y: =525
+              Width: =120
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - mDay:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Day 1-15"
+              Format: =TextFormat.Number
+              X: =1250
+              Y: =525
+              Width: =80
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - mAdd:
+            Control: Classic/Button
+            Properties:
+              Text: ="Add member"
+              X: =690
+              Y: =575
+              Width: =200
+              Height: =40
+              OnSelect: |-
+                =If(IsBlank(Trim(mBiz.Text)) || !IsMatch(Trim(mEmail.Text), Match.Email), Notify("Enter a business name and a valid e-mail.", NotificationType.Warning), !IsBlank(mDay.Text) && !(Value(mDay.Text) >= 1 && Value(mDay.Text) <= 15 && Value(mDay.Text) = RoundDown(Value(mDay.Text), 0)), Notify("Collection day must be a whole number from 1 to 15.", NotificationType.Warning), IfError(Patch(AvenueMembers, Defaults(AvenueMembers), {Title: Left(Trim(mBiz.Text), 255), FacilityId: "flavors-hyattsville", MemberId: Lower(Trim(mEmail.Text)), BusinessName: Trim(mBiz.Text), PlanId: Trim(mPlan.Text), CollectionDay: If(IsBlank(mDay.Text), Blank(), Value(mDay.Text)), Status: {Value: "Active"}}); Reset(mBiz); Reset(mEmail); Reset(mPlan); Reset(mDay); Notify("Member added.", NotificationType.Success), Notify("Could not add the member. The e-mail may already be registered.", NotificationType.Error)))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8

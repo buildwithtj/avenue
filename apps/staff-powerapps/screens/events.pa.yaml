@@ -1,0 +1,706 @@
+- evBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- evBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- evBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- evDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- evBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- evTitle:
+    Control: Label
+    Properties:
+      Text: ="Events"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- evNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- evNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- evNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- evNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- evNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- evNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- evNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 98
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- tm_events:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =4
+      Width: =10
+      Height: =10
+- sc_events:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =64
+      Width: =App.Width
+      Height: =App.Height - 64
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_events.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_events:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =704
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - evBack:
+            Control: Classic/Button
+            Properties:
+              Text: ="Back to More"
+              X: =20
+              Y: =0
+              Width: =140
+              Height: =34
+              OnSelect: =Navigate(Screen12)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+        - evHead:
+            Control: Label
+            Properties:
+              Text: ="Event requests"
+              X: =180
+              Y: =0
+              Width: =400
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =20
+              FontWeight: =FontWeight.Bold
+        - evRefresh:
+            Control: Classic/Button
+            Properties:
+              Text: ="Refresh"
+              X: =1190
+              Y: =0
+              Width: =140
+              Height: =34
+              OnSelect: =Refresh(AvenueEventCases)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+        - evChipAll:
+            Control: Classic/Button
+            Properties:
+              Text: ="All (" & Text(CountRows(Filter(AvenueEventCases, FacilityId = "flavors-hyattsville"))) & ")"
+              X: =20
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varEvStage, "All")
+              Fill: =If(Coalesce(varEvStage, "All") = "All", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varEvStage, "All") = "All", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varEvStage, "All") = "All", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varEvStage, "All") = "All", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - evChipRequested:
+            Control: Classic/Button
+            Properties:
+              Text: ="Requested (" & Text(CountRows(Filter(AvenueEventCases, FacilityId = "flavors-hyattsville", Status.Value = "Requested"))) & ")"
+              X: =156
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varEvStage, "Requested")
+              Fill: =If(Coalesce(varEvStage, "All") = "Requested", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varEvStage, "All") = "Requested", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varEvStage, "All") = "Requested", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varEvStage, "All") = "Requested", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - evChipApproved:
+            Control: Classic/Button
+            Properties:
+              Text: ="Approved (" & Text(CountRows(Filter(AvenueEventCases, FacilityId = "flavors-hyattsville", Status.Value = "Approved"))) & ")"
+              X: =292
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varEvStage, "Approved")
+              Fill: =If(Coalesce(varEvStage, "All") = "Approved", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varEvStage, "All") = "Approved", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varEvStage, "All") = "Approved", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varEvStage, "All") = "Approved", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - evChipInvoiced:
+            Control: Classic/Button
+            Properties:
+              Text: ="Invoiced (" & Text(CountRows(Filter(AvenueEventCases, FacilityId = "flavors-hyattsville", Status.Value = "Invoiced"))) & ")"
+              X: =428
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varEvStage, "Invoiced")
+              Fill: =If(Coalesce(varEvStage, "All") = "Invoiced", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varEvStage, "All") = "Invoiced", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varEvStage, "All") = "Invoiced", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varEvStage, "All") = "Invoiced", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - evChipDeclined:
+            Control: Classic/Button
+            Properties:
+              Text: ="Declined (" & Text(CountRows(Filter(AvenueEventCases, FacilityId = "flavors-hyattsville", Status.Value = "Declined"))) & ")"
+              X: =564
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varEvStage, "Declined")
+              Fill: =If(Coalesce(varEvStage, "All") = "Declined", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varEvStage, "All") = "Declined", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varEvStage, "All") = "Declined", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varEvStage, "All") = "Declined", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - evGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({st: Coalesce(varEvStage, "All")}, SortByColumns(AddColumns(If(st = "All", Filter(AvenueEventCases, FacilityId = "flavors-hyattsville"), Filter(AvenueEventCases, FacilityId = "flavors-hyattsville", Status.Value = st)), Rank, Switch(Status.Value, "Requested", 0, "Approved", 1, "Invoiced", 2, 3)), "Rank", SortOrder.Ascending, "EventDate", SortOrder.Ascending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =580
+              TemplateSize: =66
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - evItemTitle:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Package.Value & " · " & Coalesce(Text(ThisItem.Guests), "?") & " guests"
+                    X: =8
+                    Y: =4
+                    Width: =480
+                    Height: =28
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - evItemMeta:
+                  Control: Label
+                  Properties:
+                    Text: |-
+                      =With({t: ThisItem.EventDate}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "ddd d mmm yyyy"))))) & " · " & ThisItem.MemberId
+                    X: =8
+                    Y: =34
+                    Width: =480
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - evItemPill:
+                  Control: Classic/Button
+                  Properties:
+                    Text: =ThisItem.Status.Value
+                    X: =496
+                    Y: =20
+                    Width: =128
+                    Height: =24
+                    DisplayMode: =DisplayMode.Disabled
+                    Fill: =Switch(ThisItem.Status.Value, "Requested", RGBA(244,235,211,1), "Approved", RGBA(220,232,235,1), "Invoiced", RGBA(220,232,235,1), RGBA(229,231,235,1))
+                    DisabledFill: =Switch(ThisItem.Status.Value, "Requested", RGBA(244,235,211,1), "Approved", RGBA(220,232,235,1), "Invoiced", RGBA(220,232,235,1), RGBA(229,231,235,1))
+                    DisabledColor: =Switch(ThisItem.Status.Value, "Requested", RGBA(107,79,16,1), "Approved", RGBA(15,76,92,1), "Invoiced", RGBA(15,76,92,1), RGBA(91,99,112,1))
+                    Color: =Switch(ThisItem.Status.Value, "Requested", RGBA(107,79,16,1), "Approved", RGBA(15,76,92,1), "Invoiced", RGBA(15,76,92,1), RGBA(91,99,112,1))
+                    BorderThickness: =0
+                    Size: =10
+                    FontWeight: =FontWeight.Bold
+                    RadiusTopLeft: =12
+                    RadiusTopRight: =12
+                    RadiusBottomLeft: =12
+                    RadiusBottomRight: =12
+              - evGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =65
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - evEmpty:
+            Control: Label
+            Properties:
+              Text: ="No event requests yet. Members send them from Events in the portal."
+              X: =28
+              Y: =110
+              Width: =620
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              Visible: =CountRows(AvenueEventCases) = 0
+        - evSelHead:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(evGal.Selected), "Select a request", evGal.Selected.Package.Value & " · " & evGal.Selected.MemberId)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+        - evSelInfo:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(evGal.Selected), "", "Date: " & With({t: evGal.Selected.EventDate}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "ddd d mmm yyyy"))))) & " · " & Coalesce(Text(evGal.Selected.Guests), "?") & " guests · " & evGal.Selected.Status.Value & Char(10) & If(IsBlank(evGal.Selected.Notes), "No notes from the member.", "Notes: " & evGal.Selected.Notes) & If(IsBlank(evGal.Selected.DecidedBy), "", Char(10) & "Decided by " & evGal.Selected.DecidedBy & " · " & With({t: evGal.Selected.DecidedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "d mmm yyyy")))))))
+              X: =690
+              Y: =124
+              Width: =640
+              Height: =100
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+        - evRule:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Dining room only. A $500 refundable deposit is due now; the package balance is due 30 days before the event, or at once when booked less than 30 days ahead. The deposit is lost if cancelled under 30 days (Q8 and Q9 are open: no refund is built, refunds are done by the owner in Stripe)."
+              X: =690
+              Y: =230
+              Width: =640
+              Height: =60
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - evQuoteCap:
+            Control: Label
+            Properties:
+              Text: ="Quote in dollars (recorded with the request; the invoice uses the sheet price on the server)"
+              X: =690
+              Y: =298
+              Width: =640
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - evQuote:
+            Control: Classic/TextInput
+            Properties:
+              Default: |-
+                =If(IsBlank(evGal.Selected), "", Text(If(Coalesce(evGal.Selected.QuoteCents, 0) > 0, evGal.Selected.QuoteCents / 100, Coalesce(LookUp(Table({K: "Simplicity", H: 4, P: 950}, {K: "Opulence", H: 6, P: 1200}, {K: "Elevation", H: 8, P: 1400}, {K: "Platinum", H: 12, P: 1850}), K = evGal.Selected.Package.Value).P, 0)), "0.00"))
+              X: =690
+              Y: =320
+              Width: =200
+              Height: =34
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - evReason:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Reason (needed to decline)"
+              Mode: =TextMode.MultiLine
+              X: =690
+              Y: =364
+              Width: =640
+              Height: =60
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - evApprove:
+            Control: Classic/Button
+            Properties:
+              Text: ="Approve and request invoices"
+              X: =690
+              Y: =436
+              Width: =260
+              Height: =40
+              OnSelect: |-
+                =With({c: LookUp(AvenueEventCases, CaseId = evGal.Selected.CaseId), rid: "event-" & Text(GUID())}, IfError(Patch(AvenueEventCases, c, {Status: {Value: "Approved"}, QuoteCents: Round(Value(evQuote.Text) * 100, 0), DecidedBy: User().Email, DecidedAt: Now()}); Patch(AvenueHostRequests, Defaults(AvenueHostRequests), {Title: "EventInvoice", FacilityId: "flavors-hyattsville", RequestId: rid, Kind: {Value: "EventInvoice"}, Payload: "{""memberEmail"":""" & Lower(c.MemberId) & """,""packageName"":""" & c.Package.Value & """,""eventDate"":""" & With({t: c.EventDate}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "yyyy-mm-dd"))))) & """,""member"":true}"}); Set(varEvReq, rid); Notify("Approved. The invoice request went to the server: press Check again for its result.", NotificationType.Success), Notify("Could not approve or send the invoice request.", NotificationType.Error)))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(!IsBlank(evGal.Selected) && evGal.Selected.Status.Value = "Requested" && IsNumeric(evQuote.Text) && Value(evQuote.Text) >= 0 && evGal.Selected.EventDate > Now(), DisplayMode.Edit, DisplayMode.Disabled)
+              Visible: =!IsBlank(evGal.Selected) && evGal.Selected.Status.Value = "Requested"
+        - evDecline:
+            Control: Classic/Button
+            Properties:
+              Text: ="Decline"
+              X: =960
+              Y: =436
+              Width: =140
+              Height: =40
+              OnSelect: |-
+                =IfError(Patch(AvenueEventCases, LookUp(AvenueEventCases, CaseId = evGal.Selected.CaseId), {Status: {Value: "Declined"}, Notes: Trim(Coalesce(evGal.Selected.Notes, "") & Char(10) & "Declined: " & Trim(evReason.Text)), DecidedBy: User().Email, DecidedAt: Now()}); Reset(evReason); Notify("Declined.", NotificationType.Success), Notify("Could not save.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(155,44,44,1)
+              HoverFill: =RGBA(243,227,227,1)
+              HoverColor: =RGBA(155,44,44,1)
+              PressedFill: =RGBA(243,227,227,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(!IsBlank(evGal.Selected) && evGal.Selected.Status.Value = "Requested" && !IsBlank(Trim(evReason.Text)), DisplayMode.Edit, DisplayMode.Disabled)
+              Visible: =!IsBlank(evGal.Selected) && evGal.Selected.Status.Value = "Requested"
+              BorderColor: =RGBA(155,44,44,1)
+              HoverBorderColor: =RGBA(155,44,44,1)
+        - evInvoiced:
+            Control: Classic/Button
+            Properties:
+              Text: ="Mark invoiced"
+              X: =690
+              Y: =436
+              Width: =200
+              Height: =40
+              OnSelect: |-
+                =IfError(Patch(AvenueEventCases, LookUp(AvenueEventCases, CaseId = evGal.Selected.CaseId), {Status: {Value: "Invoiced"}}); Notify("Marked invoiced.", NotificationType.Success), Notify("Could not save.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =!IsBlank(evGal.Selected) && evGal.Selected.Status.Value = "Approved"
+        - evCheck:
+            Control: Classic/Button
+            Properties:
+              Text: ="Check again"
+              X: =1110
+              Y: =436
+              Width: =220
+              Height: =40
+              OnSelect: =Refresh(AvenueHostRequests); Refresh(AvenueEventCases)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+        - evOut:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(varEvReq), "", Coalesce(LookUp(AvenueHostRequests, RequestId = varEvReq).Outcome, "Waiting for the server... (press Check again)") & If(IsBlank(LookUp(AvenueHostRequests, RequestId = varEvReq).Link), "", Char(10) & LookUp(AvenueHostRequests, RequestId = varEvReq).Link))
+              X: =690
+              Y: =486
+              Width: =640
+              Height: =64
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - evHelp:
+            Control: Label
+            Properties:
+              Text: =If(evGal.Selected.EventDate <= Now(), "This event date has passed, so invoices cannot be requested.", "Approving needs a future event date. Payment stays in Stripe test mode until the client approves (STR-06).")
+              X: =690
+              Y: =556
+              Width: =640
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =!IsBlank(evGal.Selected)

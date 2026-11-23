@@ -1,0 +1,33 @@
+- txtNote:
+    Control: Classic/TextInput
+    Properties:
+      Visible: =!IsBlank(galQueue.Selected)
+      HintText: ="Note about this decision (recorded with the booking)"
+      Mode: =TextMode.MultiLine
+      Default: =""
+      X: =470
+      Y: =490
+      Width: =860
+      Height: =90
+- btnApprove:
+    Control: Button
+    Properties:
+      Visible: =!IsBlank(galQueue.Selected)
+      Text: ="Approve"
+      X: =470
+      Y: =600
+      Width: =200
+      Height: =48
+      OnSelect: |-
+        =Patch(AvenueBookings, galQueue.Selected, {Status: {Value: "Approved"}, DecidedBy: User().Email, DecidedAt: Now(), OverlapNote: txtNote.Text}); Reset(txtNote); Notify("Approved. It appears on the shared calendar shortly.", NotificationType.Success)
+- btnDecline:
+    Control: Button
+    Properties:
+      Visible: =!IsBlank(galQueue.Selected)
+      Text: ="Decline"
+      X: =690
+      Y: =600
+      Width: =200
+      Height: =48
+      OnSelect: |-
+        =Patch(AvenueBookings, galQueue.Selected, {Status: {Value: "Declined"}, DecidedBy: User().Email, DecidedAt: Now(), OverlapNote: txtNote.Text}); Reset(txtNote); Notify("Declined.", NotificationType.Information)

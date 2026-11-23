@@ -1,0 +1,956 @@
+- apBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- apBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- apBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- apDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- apBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- apTitle:
+    Control: Label
+    Properties:
+      Text: ="Approved bookings"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- apNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- apNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- apNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 530
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- apNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- apNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- apNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- apNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- apTabBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =48
+      Width: =App.Width
+      Height: =32
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.58)
+- apTabEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =80
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(15,76,92,0.10)
+- apTabRequests:
+    Control: Classic/Button
+    Properties:
+      Text: ="Requests"
+      X: =24
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(91,99,112,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- apTabApproved:
+    Control: Classic/Button
+    Properties:
+      Text: ="Approved"
+      X: =132
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen2)
+      Fill: =RGBA(15,76,92,0.10)
+      Color: =RGBA(15,76,92,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- apTabSchedule:
+    Control: Classic/Button
+    Properties:
+      Text: ="Schedule"
+      X: =240
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen19)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(91,99,112,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- apTabBook:
+    Control: Classic/Button
+    Properties:
+      Text: ="Book"
+      X: =348
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen9)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(91,99,112,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- tm_approved:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =0
+      Width: =10
+      Height: =10
+- sc_approved:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =88
+      Width: =App.Width
+      Height: =App.Height - 88
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_approved.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_approved:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =696
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - apPanelList:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =24
+              Y: =0
+              Width: =520
+              Height: =664
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - lblApprovedHead:
+            Control: Label
+            Properties:
+              Text: ="Approved · " & CountRows(Filter(AvenueBookings, Status.Value = "Approved"))
+              X: =44
+              Y: =10
+              Width: =380
+              Height: =32
+              Color: =RGBA(15,76,92,1)
+              Size: =16
+              FontWeight: =FontWeight.Bold
+              VerticalAlign: =VerticalAlign.Middle
+        - btnRefresh2:
+            Control: Classic/Button
+            Properties:
+              Text: ="Refresh"
+              X: =440
+              Y: =10
+              Width: =88
+              Height: =32
+              OnSelect: =Refresh(AvenueBookings); Refresh(AvenueFacilities)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =11
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+        - galApproved:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =SortByColumns(Filter(AvenueBookings, Status.Value = "Approved"), "StartUtc", SortOrder.Ascending)
+              X: =32
+              Y: =52
+              Width: =504
+              Height: =604
+              TemplateSize: =88
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - lblAppRow1:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(LookUp(AvenueMembers, MemberId = ThisItem.MemberId).BusinessName, ThisItem.MemberId)
+                    X: =8
+                    Y: =6
+                    Width: =330
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Bold
+                    Size: =13
+              - apRowChip:
+                  Control: Classic/Button
+                  Properties:
+                    Text: =If(!IsBlank(ThisItem.CancelRequestedAt), "Cancel requested", "Approved")
+                    X: =346
+                    Y: =8
+                    Width: =148
+                    Height: =24
+                    DisplayMode: =DisplayMode.Disabled
+                    Fill: =If(!IsBlank(ThisItem.CancelRequestedAt), RGBA(244,235,211,1), RGBA(220,232,235,1))
+                    DisabledFill: =If(!IsBlank(ThisItem.CancelRequestedAt), RGBA(244,235,211,1), RGBA(220,232,235,1))
+                    DisabledColor: =If(!IsBlank(ThisItem.CancelRequestedAt), RGBA(107,79,16,1), RGBA(15,76,92,1))
+                    Color: =If(!IsBlank(ThisItem.CancelRequestedAt), RGBA(107,79,16,1), RGBA(15,76,92,1))
+                    BorderThickness: =0
+                    Size: =10
+                    FontWeight: =FontWeight.Bold
+                    RadiusTopLeft: =12
+                    RadiusTopRight: =12
+                    RadiusBottomLeft: =12
+                    RadiusBottomRight: =12
+              - lblAppRow2:
+                  Control: Label
+                  Properties:
+                    Text: |-
+                      =With({s0: ThisItem.StartUtc}, If(IsBlank(s0), "Time unavailable", With({u: DateAdd(s0, TimeZoneOffset(s0), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, With({k: TimeZoneOffset(s0) - If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5) * 60}, Text(DateAdd(s0, k, TimeUnit.Minutes), "ddd d mmm") & " · " & Text(DateAdd(s0, k, TimeUnit.Minutes), "h:mm AM/PM") & "–" & Text(DateAdd(Coalesce(ThisItem.ActualEndUtc, ThisItem.EndUtc), k, TimeUnit.Minutes), "h:mm AM/PM")))))) & " · " & ThisItem.Space.Value
+                    X: =8
+                    Y: =32
+                    Width: =486
+                    Height: =20
+                    Color: =RGBA(31,31,31,1)
+                    Size: =11
+              - lblAppRow3:
+                  Control: Label
+                  Properties:
+                    Text: |-
+                      =With({f: LookUp(AvenueFacilities, FacilityId = "flavors-hyattsville")}, With({s0: ThisItem.StartUtc}, If(IsBlank(s0), "Time unavailable", With({u: DateAdd(s0, TimeZoneOffset(s0), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, With({k: TimeZoneOffset(s0) - If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5) * 60}, "In from " & Text(DateAdd(s0, k - Coalesce(f.EarlyEntryMinutes, 0), TimeUnit.Minutes), "h:mm AM/PM") & " · Clean-up until " & Text(DateAdd(Coalesce(ThisItem.ActualEndUtc, ThisItem.EndUtc), k + Coalesce(f.CleanupMinutes, 0), TimeUnit.Minutes), "h:mm AM/PM"))))))) & If(IsBlank(ThisItem.ActualEndUtc), "", " · departure corrected")
+                    X: =8
+                    Y: =56
+                    Width: =486
+                    Height: =20
+                    Color: =RGBA(91,99,112,1)
+                    Size: =10
+              - galApprovedSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =87
+                    Width: =472
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - apPanelDetail:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =560
+              Y: =0
+              Width: =782
+              Height: =664
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - apEmpty:
+            Control: Label
+            Properties:
+              Text: ="Select a booking on the left."
+              X: =580
+              Y: =120
+              Width: =742
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =16
+              Align: =Align.Center
+              Visible: =IsBlank(galApproved.Selected)
+        - apDetHead:
+            Control: Label
+            Properties:
+              Text: =Coalesce(LookUp(AvenueMembers, MemberId = galApproved.Selected.MemberId).BusinessName, galApproved.Selected.MemberId)
+              X: =580
+              Y: =14
+              Width: =590
+              Height: =36
+              Color: =RGBA(15,76,92,1)
+              Size: =20
+              FontWeight: =FontWeight.Bold
+              Visible: =!IsBlank(galApproved.Selected)
+        - apDetChip:
+            Control: Classic/Button
+            Properties:
+              Text: =Switch(galApproved.Selected.Status.Value, "Pending", "Waiting", "Approved", "Approved", "Declined", "Declined", "Cancelled", "Cancelled", galApproved.Selected.Status.Value)
+              X: =1194
+              Y: =20
+              Width: =128
+              Height: =24
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =Switch(galApproved.Selected.Status.Value, "Pending", RGBA(244,235,211,1), "Approved", RGBA(220,232,235,1), "Declined", RGBA(243,227,227,1), RGBA(229,231,235,1))
+              DisabledFill: =Switch(galApproved.Selected.Status.Value, "Pending", RGBA(244,235,211,1), "Approved", RGBA(220,232,235,1), "Declined", RGBA(243,227,227,1), RGBA(229,231,235,1))
+              DisabledColor: =Switch(galApproved.Selected.Status.Value, "Pending", RGBA(107,79,16,1), "Approved", RGBA(15,76,92,1), "Declined", RGBA(155,44,44,1), RGBA(91,99,112,1))
+              Color: =Switch(galApproved.Selected.Status.Value, "Pending", RGBA(107,79,16,1), "Approved", RGBA(15,76,92,1), "Declined", RGBA(155,44,44,1), RGBA(91,99,112,1))
+              BorderThickness: =0
+              Size: =10
+              FontWeight: =FontWeight.Bold
+              RadiusTopLeft: =12
+              RadiusTopRight: =12
+              RadiusBottomLeft: =12
+              RadiusBottomRight: =12
+              Visible: =!IsBlank(galApproved.Selected)
+        - lblSel:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Space: " & galApproved.Selected.Space.Value & Char(10) & "When: " & With({s0: galApproved.Selected.StartUtc}, If(IsBlank(s0), "Time unavailable", With({u: DateAdd(s0, TimeZoneOffset(s0), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, With({k: TimeZoneOffset(s0) - If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5) * 60}, Text(DateAdd(s0, k, TimeUnit.Minutes), "ddd d mmm") & " · " & Text(DateAdd(s0, k, TimeUnit.Minutes), "h:mm AM/PM") & "–" & Text(DateAdd(Coalesce(galApproved.Selected.ActualEndUtc, galApproved.Selected.EndUtc), k, TimeUnit.Minutes), "h:mm AM/PM")))))) & Char(10) & "Entry and clean-up: " & With({f: LookUp(AvenueFacilities, FacilityId = "flavors-hyattsville")}, With({s0: galApproved.Selected.StartUtc}, If(IsBlank(s0), "Time unavailable", With({u: DateAdd(s0, TimeZoneOffset(s0), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, With({k: TimeZoneOffset(s0) - If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5) * 60}, "In from " & Text(DateAdd(s0, k - Coalesce(f.EarlyEntryMinutes, 0), TimeUnit.Minutes), "h:mm AM/PM") & " · Booked " & Text(DateAdd(s0, k, TimeUnit.Minutes), "h:mm AM/PM") & "–" & Text(DateAdd(Coalesce(galApproved.Selected.ActualEndUtc, galApproved.Selected.EndUtc), k, TimeUnit.Minutes), "h:mm AM/PM") & " · Clean-up until " & Text(DateAdd(Coalesce(galApproved.Selected.ActualEndUtc, galApproved.Selected.EndUtc), k + Coalesce(f.CleanupMinutes, 0), TimeUnit.Minutes), "h:mm AM/PM"))))))) & Char(10) & If(!IsBlank(galApproved.Selected.CancelRequestedAt), "Cancel request: " & Coalesce(LookUp(AvenueBookingRequests, CancelBookingId = galApproved.Selected.BookingId && !IsBlank(Message)).Message, "no message"), "Member: " & galApproved.Selected.MemberId)
+              X: =580
+              Y: =56
+              Width: =742
+              Height: =88
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              Visible: =!IsBlank(galApproved.Selected)
+              VerticalAlign: =VerticalAlign.Top
+        - txtNote2:
+            Control: Classic/TextInput
+            Properties:
+              Visible: =!IsBlank(galApproved.Selected)
+              HintText: ="Note (recorded with the booking)"
+              Mode: =TextMode.MultiLine
+              Default: =""
+              X: =580
+              Y: =152
+              Width: =742
+              Height: =56
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - btnCancel:
+            Control: Classic/Button
+            Properties:
+              Text: ="Cancel booking (hours return)"
+              X: =580
+              Y: =220
+              Width: =260
+              Height: =44
+              OnSelect: |-
+                =Patch(AvenueBookings, galApproved.Selected, {Status: {Value: "Cancelled"}, DecidedBy: User().Email, DecidedAt: Now(), OverlapNote: txtNote2.Text}); Reset(txtNote2); Notify("Cancelled. Hours are returned and the calendar entry is removed shortly.", NotificationType.Success)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(155,44,44,1)
+              HoverFill: =RGBA(243,227,227,1)
+              HoverColor: =RGBA(155,44,44,1)
+              PressedFill: =RGBA(243,227,227,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(155,44,44,1)
+              HoverBorderColor: =RGBA(155,44,44,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =!IsBlank(galApproved.Selected)
+        - btnNoShow:
+            Control: Classic/Button
+            Properties:
+              Text: |-
+                =If(!IsBlank(galApproved.Selected.CancelRequestedAt), "Cancel, keep hours", "No-show: credit hours back")
+              X: =852
+              Y: =220
+              Width: =260
+              Height: =44
+              OnSelect: |-
+                =If(!IsBlank(galApproved.Selected.CancelRequestedAt), If(IsBlank(Trim(txtNote2.Text)), Notify("Write the reason for the member in the note first.", NotificationType.Warning), IfError(Patch(AvenueBookings, galApproved.Selected, {Status: {Value: "Cancelled (hours kept)"}, CancelRequestedAt: Blank(), DecidedBy: User().Email, DecidedAt: Now(), OverlapNote: Trim(txtNote2.Text)}); Reset(txtNote2); Notify("Cancelled. The hours stay used.", NotificationType.Success), Notify("Could not update the booking.", NotificationType.Error))), Patch(AvenueBookings, galApproved.Selected, {Status: {Value: "No-show credited"}, DecidedBy: User().Email, DecidedAt: Now(), OverlapNote: txtNote2.Text}); Reset(txtNote2); Notify("No-show credited. Hours are returned.", NotificationType.Success))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =!IsBlank(galApproved.Selected)
+        - btnKeep:
+            Control: Classic/Button
+            Properties:
+              Text: ="Keep booking"
+              X: =1124
+              Y: =220
+              Width: =198
+              Height: =44
+              OnSelect: |-
+                =If(IsBlank(Trim(txtNote2.Text)), Notify("Write the reason for the member in the note first.", NotificationType.Warning), IfError(Patch(AvenueBookings, galApproved.Selected, {CancelRequestedAt: Blank(), OverlapNote: Trim(txtNote2.Text)}); Reset(txtNote2); Notify("Booking kept. The member sees your note.", NotificationType.Success), Notify("Could not update the booking.", NotificationType.Error)))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =13
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =!IsBlank(galApproved.Selected) && !IsBlank(galApproved.Selected.CancelRequestedAt)
+        - apDiv1:
+            Control: Label
+            Properties:
+              Text: =""
+              X: =580
+              Y: =276
+              Width: =742
+              Height: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(225,228,233,1)
+        - apAdjHead:
+            Control: Label
+            Properties:
+              Text: ="Adjust departure"
+              X: =580
+              Y: =284
+              Width: =742
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+              Visible: =!IsBlank(galApproved.Selected)
+        - apAdjHelp:
+            Control: Label
+            Properties:
+              Text: ="When a member leaves later or earlier than booked, record the real departure (same day as the booked end, Eastern HH:MM). The hours ledger then uses it instead of the booked end."
+              X: =580
+              Y: =312
+              Width: =742
+              Height: =36
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =!IsBlank(galApproved.Selected)
+        - apAdjTime:
+            Control: Classic/TextInput
+            Properties:
+              Visible: =!IsBlank(galApproved.Selected)
+              HintText: ="HH:MM"
+              Default: =""
+              X: =580
+              Y: =352
+              Width: =100
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - apAdjWhy:
+            Control: Classic/TextInput
+            Properties:
+              Visible: =!IsBlank(galApproved.Selected)
+              HintText: ="Reason (required), e.g. left 6:40 PM per camera"
+              Default: =""
+              X: =690
+              Y: =352
+              Width: =470
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - apAdjBtn:
+            Control: Classic/Button
+            Properties:
+              Text: ="Adjust departure"
+              X: =1170
+              Y: =352
+              Width: =152
+              Height: =36
+              OnSelect: |-
+                =With({tt: With({d: DateValue(With({t: galApproved.Selected.EndUtc}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "yyyy-mm-dd"))))))}, DateAdd(With({dd: Coalesce(d, Today())}, With({d0: Date(Year(dd), Month(dd), Day(dd))}, With({m3: Date(Year(d0), 3, 1), n11: Date(Year(d0), 11, 1)}, DateAdd(d0, If(d0 > DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days) && d0 <= DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 4, 5) * 60 - TimeZoneOffset(d0), TimeUnit.Minutes)))), Value(Left(apAdjTime.Text, 2)) * 60 + Value(Right(apAdjTime.Text, 2)), TimeUnit.Minutes)), b: galApproved.Selected}, IfError(Patch(AvenueBookings, b, {ActualEndUtc: tt, OverlapNote: Trim(Coalesce(b.OverlapNote, "") & " · Departure corrected to " & With({t: tt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "h:mm AM/PM"))))) & " by " & User().Email & ": " & Trim(apAdjWhy.Text))}); Reset(apAdjTime); Reset(apAdjWhy); Refresh(AvenueBookings); Notify("Departure recorded. The hours ledger uses it.", NotificationType.Success), Notify("Could not record the departure.", NotificationType.Error)))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =11
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =!IsBlank(galApproved.Selected)
+              DisplayMode: |-
+                =If(!IsBlank(galApproved.Selected) && IsMatch(apAdjTime.Text, "([01][0-9]|2[0-3]):[0-5][0-9]") && !IsBlank(Trim(apAdjWhy.Text)) && With({d: DateValue(With({t: galApproved.Selected.EndUtc}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "yyyy-mm-dd"))))))}, DateAdd(With({dd: Coalesce(d, Today())}, With({d0: Date(Year(dd), Month(dd), Day(dd))}, With({m3: Date(Year(d0), 3, 1), n11: Date(Year(d0), 11, 1)}, DateAdd(d0, If(d0 > DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days) && d0 <= DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 4, 5) * 60 - TimeZoneOffset(d0), TimeUnit.Minutes)))), Value(Left(apAdjTime.Text, 2)) * 60 + Value(Right(apAdjTime.Text, 2)), TimeUnit.Minutes)) > galApproved.Selected.StartUtc, DisplayMode.Edit, DisplayMode.Disabled)
+        - apAdjMsg:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(!IsBlank(galApproved.Selected) && IsMatch(apAdjTime.Text, "([01][0-9]|2[0-3]):[0-5][0-9]"), "Will be recorded as " & With({t: With({d: DateValue(With({t: galApproved.Selected.EndUtc}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "yyyy-mm-dd"))))))}, DateAdd(With({dd: Coalesce(d, Today())}, With({d0: Date(Year(dd), Month(dd), Day(dd))}, With({m3: Date(Year(d0), 3, 1), n11: Date(Year(d0), 11, 1)}, DateAdd(d0, If(d0 > DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days) && d0 <= DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 4, 5) * 60 - TimeZoneOffset(d0), TimeUnit.Minutes)))), Value(Left(apAdjTime.Text, 2)) * 60 + Value(Right(apAdjTime.Text, 2)), TimeUnit.Minutes))}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "h:mm AM/PM"))))) & " (booked end " & With({t: galApproved.Selected.EndUtc}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "h:mm AM/PM"))))) & ")", "") & If(!IsBlank(galApproved.Selected) && !IsBlank(galApproved.Selected.ActualEndUtc), "  ·  currently corrected to " & With({t: galApproved.Selected.ActualEndUtc}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "h:mm AM/PM"))))), "")
+              X: =580
+              Y: =392
+              Width: =742
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - apDiv2:
+            Control: Label
+            Properties:
+              Text: =""
+              X: =580
+              Y: =420
+              Width: =742
+              Height: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(225,228,233,1)
+        - xHead:
+            Control: Label
+            Properties:
+              Text: ="Extra time requests (members)"
+              X: =580
+              Y: =428
+              Width: =742
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+        - xGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =SortByColumns(Filter(AvenueBookings, ExtensionDecision = "Pending"), "ExtensionRequestedAt", SortOrder.Ascending)
+              X: =580
+              Y: =456
+              Width: =742
+              Height: =84
+              TemplateSize: =56
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - xRow1:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.MemberId & " · " & ThisItem.Space.Value & " · ends " & Text(ThisItem.EndUtc, "ddd d mmm, h:mm AM/PM") & " → " & Text(ThisItem.ExtensionTo, "h:mm AM/PM")
+                    X: =8
+                    Y: =4
+                    Width: =722
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Bold
+              - xRow2:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.ExtensionConflict
+                    X: =8
+                    Y: =30
+                    Width: =722
+                    Height: =24
+                    Color: =If(StartsWith(ThisItem.ExtensionConflict, "No other"), RGBA(91,99,112,1), RGBA(155,44,44,1))
+                    Size: =11
+              - xGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =55
+                    Width: =710
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - xApprove:
+            Control: Classic/Button
+            Properties:
+              Text: ="Approve extra time"
+              X: =580
+              Y: =546
+              Width: =220
+              Height: =36
+              OnSelect: |-
+                =Patch(AvenueBookings, xGal.Selected, {ExtensionDecision: "Approved", ExtendedBy: User().Email, ExtendedAt: Now()}); Notify("Approved. The booking, calendar and hours update and the member is e-mailed within a minute.", NotificationType.Success)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(IsBlank(xGal.Selected), DisplayMode.Disabled, DisplayMode.Edit)
+        - xDecline:
+            Control: Classic/Button
+            Properties:
+              Text: ="Decline"
+              X: =812
+              Y: =546
+              Width: =140
+              Height: =36
+              OnSelect: |-
+                =Patch(AvenueBookings, xGal.Selected, {ExtensionDecision: "Declined", ExtendedBy: User().Email, ExtendedAt: Now()}); Notify("Declined. The member is e-mailed.", NotificationType.Information)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(155,44,44,1)
+              HoverFill: =RGBA(243,227,227,1)
+              HoverColor: =RGBA(155,44,44,1)
+              PressedFill: =RGBA(243,227,227,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(155,44,44,1)
+              HoverBorderColor: =RGBA(155,44,44,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              DisplayMode: =If(IsBlank(xGal.Selected), DisplayMode.Disabled, DisplayMode.Edit)
+        - xStaffHead:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Extend the selected booking (staff or owner): new end, HH:MM, same day"
+              X: =580
+              Y: =590
+              Width: =742
+              Height: =20
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - xNewEnd:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="HH:MM"
+              X: =580
+              Y: =612
+              Width: =100
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - xExtendNow:
+            Control: Classic/Button
+            Properties:
+              Text: ="Extend now"
+              X: =690
+              Y: =612
+              Width: =140
+              Height: =36
+              OnSelect: |-
+                =With({e: DateAdd(DateValue(Text(galApproved.Selected.EndUtc, "yyyy-mm-dd")), Value(Left(xNewEnd.Text, 2)) * 60 + Value(Right(xNewEnd.Text, 2)), TimeUnit.Minutes), b: galApproved.Selected}, Patch(AvenueBookings, b, {ExtensionTo: e, ExtensionRequestedAt: Now(), ExtensionRequestId: "staff-" & Text(GUID()), ExtensionConflict: If(CountRows(Filter(AvenueBookings, Status.Value = "Approved", BookingId <> b.BookingId, StartUtc < e, EndUtc > b.EndUtc)) > 0, "Extended by staff over an overlapping booking", "No other approved booking in the extra time"), ExtensionDecision: "Approved", ExtendedBy: User().Email, ExtendedAt: Now()}); Reset(xNewEnd); Notify("Extended. The calendar and hours update and the member is e-mailed within a minute.", NotificationType.Success))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              DisplayMode: =If(!IsBlank(galApproved.Selected) && IsMatch(xNewEnd.Text, "([01][0-9]|2[0-3]):[0-5][0-9]") && DateAdd(DateValue(Text(galApproved.Selected.EndUtc, "yyyy-mm-dd")), Value(Left(xNewEnd.Text, 2)) * 60 + Value(Right(xNewEnd.Text, 2)), TimeUnit.Minutes) > galApproved.Selected.EndUtc && galApproved.Selected.ExtensionDecision <> "Pending", DisplayMode.Edit, DisplayMode.Disabled)
+        - xExtOverlap:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(!IsBlank(galApproved.Selected) && IsMatch(xNewEnd.Text, "([01][0-9]|2[0-3]):[0-5][0-9]") && DateAdd(DateValue(Text(galApproved.Selected.EndUtc, "yyyy-mm-dd")), Value(Left(xNewEnd.Text, 2)) * 60 + Value(Right(xNewEnd.Text, 2)), TimeUnit.Minutes) > galApproved.Selected.EndUtc && galApproved.Selected.ExtensionDecision <> "Pending", With({e: DateAdd(DateValue(Text(galApproved.Selected.EndUtc, "yyyy-mm-dd")), Value(Left(xNewEnd.Text, 2)) * 60 + Value(Right(xNewEnd.Text, 2)), TimeUnit.Minutes), b: galApproved.Selected}, With({n: CountRows(Filter(AvenueBookings, Status.Value = "Approved", BookingId <> b.BookingId, StartUtc < e, EndUtc > b.EndUtc))}, If(n = 0, "No other approved booking in the extra time.", n & " approved booking(s) overlap the extra time."))), "")
+              X: =842
+              Y: =612
+              Width: =480
+              Height: =36
+              Color: =RGBA(91,99,112,1)
+              Size: =11

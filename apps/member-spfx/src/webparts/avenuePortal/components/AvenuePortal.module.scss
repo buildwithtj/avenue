@@ -1,0 +1,806 @@
+// Warm, food-forward palette. Every colour is a CSS custom property on the portal root (.avenuePortal) so the whole
+// portal can be re-themed in one place (Flavors' own brand colours arrive with Q-B16). SCSS names below just point at them.
+// Contrast (checked): text on surface/canvas >= 7:1, subtle text >= 5:1, white on primary >= 7:1, status text on its tint >= 4.5:1.
+
+$primary: var(--av-primary);
+$primaryDark: var(--av-primary-dark);
+$primaryTint: var(--av-primary-tint);
+$text: var(--av-text);
+$subtle: var(--av-subtle);
+$surface: var(--av-surface);
+$canvas: var(--av-canvas);
+$border: var(--av-border);
+$strong: var(--av-border-strong);
+$accent: var(--av-accent);
+$ok: var(--av-ok);
+$okTint: var(--av-ok-tint);
+$wait: var(--av-wait);
+$waitTint: var(--av-wait-tint);
+$bad: var(--av-bad);
+$badTint: var(--av-bad-tint);
+
+.avenuePortal {
+  // Palette: midnight navy ink, warm ivory canvas, champagne-gold accent (main action fill, thin rules; never gold text on ivory), deep teal = free, muted rose = taken and errors.
+  // gold: fills and rules only; text on it is navy (7.4:1)
+  // teal for text/links on ivory (5.4:1)
+  // deep teal = free
+  // muted rose = taken, errors
+  // Fluent buttons take the portal palette, so they match the bespoke ones.
+  color: $text;
+  // Body font on the shared root, so sheets and dialogs rendered outside the page body (portals) get it too.
+  font-family: var(--av-font);
+  font-feature-settings: "cv11", "ss01";
+  font-size: 16px;
+  line-height: 1.55;
+  margin: 0;
+  box-sizing: border-box;
+  *, *::before, *::after { box-sizing: border-box; }
+  :where(h1, h2, h3) { margin: 0; font-weight: 700; letter-spacing: -.02em; font-family: var(--av-heading-font); }
+  :focus-visible { outline: 3px solid var(--av-accent); outline-offset: 2px; box-shadow: 0 0 0 2px var(--av-ink); }
+  :global(.ms-Button--primary) { background: $primary !important; border-color: $primary !important; color: #fff !important; border-radius: 999px; }
+@media (hover: hover) { :global(.ms-Button--primary:hover) { background: $primaryDark !important; border-color: $primaryDark !important; } }
+  :global(.ms-Button--primary:active) { background: $primaryDark !important; border-color: $primaryDark !important; }
+  :global(.ms-Button--default) { border-color: $strong; color: $text; border-radius: 999px; background: $surface; }
+@media (hover: hover) { :global(.ms-Button--default:hover) { background: $primaryTint; color: $text; } }
+  :global(.ms-Button--primary.is-disabled), :global(.ms-Button--default.is-disabled) { opacity: .6; }
+}
+
+.eyebrow { color: $primaryDark; font-size: 14px; font-weight: 700; text-transform: none; }
+
+.stack { display: grid; gap: 16px; }
+
+.card { background: $surface; border: 1px solid $border; padding: 20px 22px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04); }
+
+.cardHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px 16px;
+  margin-bottom: 12px;
+}
+
+.cardTitle { font-size: 17px; }
+.cardActions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.muted { color: $subtle; margin: 2px 0 0; }
+.empty { color: $subtle; margin: 8px 0; }
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px 16px;
+    padding: 12px 0;
+    border-top: 1px solid $border;
+  }
+
+  > li:first-child { border-top: none; }
+}
+
+.rowMain { display: grid; gap: 2px; min-width: 0; }
+.rowTitle { font-weight: 600; }
+.rowMeta { color: $subtle; overflow-wrap: anywhere; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badgePending { background: $waitTint; color: $wait; }
+.badgeApproved { background: $okTint; color: $ok; }
+.badgeDeclined { background: $badTint; color: $bad; }
+.badgeMuted { background: #ECE8DD; color: #2E3445; }
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px 16px;
+  align-items: end;
+}
+
+.formWide { grid-column: 1 / -1; }
+
+.fieldLabel { display: block; font-weight: 600; margin-bottom: 4px; }
+
+.nativeInput { font: inherit; border: 1px solid $strong; background: $surface; color: $text; }
+
+.error { color: #8E3445; }
+.hint { color: $subtle; margin: 4px 0; }
+
+[data-size='phone'] {
+  
+  
+  
+  .card { padding: 14px; }
+  
+}
+
+/* Appended styles for Billing, Membership, and Join views */
+.summaryCard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 16px;
+  background: $canvas;
+  border-radius: 6px;
+  border: 1px solid $border;
+  margin-bottom: 12px;
+}
+
+.summaryTile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summaryLabel {
+  font-size: 12px;
+  color: $subtle;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summaryValue { color: $text; }
+
+.summaryMeta {
+  font-size: 13px;
+  color: $subtle;
+}
+
+.invoiceCard {
+  border: 1px solid $border;
+  border-radius: 6px;
+  padding: 14px 16px;
+  background: #ffffff;
+}
+
+.invoiceHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.invoiceMain {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.invoiceTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.invoiceMeta {
+  font-size: 12px;
+  color: $subtle;
+}
+
+.estimateCallout {
+  font-size: 12px;
+  color: #6B4F10;
+  background: #F4EBD3;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px dashed #C9A24D;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.invoiceRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.invoiceAmount {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.smallButton {
+  min-width: 80px;
+}
+
+.invoiceLines {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid $border;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.linesHeader {
+  font-size: 12px;
+  font-weight: 600;
+  color: $subtle;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.invoiceLine {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 4px 0;
+  border-bottom: 1px dashed $border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.lineAmount {
+  font-weight: 600;
+}
+
+.wizardSteps {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid $border;
+}
+
+.wizardStep {
+  font-size: 13px;
+  font-weight: 600;
+  color: $subtle;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: $canvas;
+}
+
+.wizardStepActive {
+  background: $primary;
+  color: #ffffff;
+}
+
+.wizardErrors {
+  margin-bottom: 12px;
+}
+
+.planCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.planCard {
+  border: 2px solid $border;
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.15s ease-in-out;
+
+@media (hover: hover) { &:hover {
+    border-color: $primary;
+  } }
+}
+
+.planCardSelected {
+  border-color: $primary;
+  background: #EEF7F8;
+}
+
+.planCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.planCardTitle {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.planCardHours {
+  font-size: 12px;
+  font-weight: 600;
+  color: $primary;
+}
+
+.planCardDesc {
+  font-size: 12px;
+  color: $subtle;
+  margin: 0;
+  flex: 1;
+}
+
+.planCardPrice {
+  font-size: 12px;
+  font-style: italic;
+  color: $subtle;
+  border-top: 1px dashed $border;
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+.wizardActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.reviewSummary {
+  background: $canvas;
+  border: 1px solid $border;
+  border-radius: 6px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reviewRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 2px 0;
+}
+
+.paymentSection {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px dashed $border;
+  border-radius: 6px;
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.disabledPayButton {
+  align-self: flex-start;
+}
+
+/* ---- Member home redesign (14 Nov 2026) ----
+   Colours still come from the SharePoint site theme tokens above; no brand is hard-coded. Status colours (green, amber,
+   red) are fixed on purpose so state reads the same under any theme. */
+
+.main { padding-bottom: 24px; order: 1; }
+
+.nextActions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.bigButton { min-height: 48px; min-width: 140px; border-radius: 999px; font-size: 16px; }
+.statusPill { padding: 2px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; }
+
+.statusWaiting { background: $waitTint; color: $wait; }
+
+.sectionLabel { font-size: 15px; font-weight: 700; letter-spacing: 0; text-transform: none; color: $text; margin: 6px 2px 8px !important; }
+
+.summaryRow { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.summaryButton {
+  display: grid;
+  gap: 4px;
+  text-align: left;
+  padding: 16px;
+  border-radius: 4px;
+  border: 1px solid $border;
+  background: $surface;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  min-height: 96px;
+@media (hover: hover) { &:hover { border-color: $primary; } }
+}
+.summaryKey { font-size: 13px; font-weight: 700; color: $subtle; text-transform: none; letter-spacing: .05em; }
+.summaryValue { font-size: 24px; font-weight: 700; }
+.summaryNote { color: $subtle; font-size: 13px; }
+.meter { display: block; height: 8px; border-radius: 4px; background: $border; overflow: hidden; }
+.meterFill { display: block; height: 100%; background: $primary; border-radius: 4px; transition: width .4s ease; }
+.meterOver { background: $wait; }
+
+.errorPanel {
+  display: grid; gap: 8px; justify-items: start; padding: 18px; border-radius: 4px; background: $badTint; border: 1px solid $bad;
+}
+
+.skeleton { background-size: 200% 100%; }
+
+@keyframes avShimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+.navIcon { font-size: 20px; line-height: 1; }
+
+[data-size='phone'] {
+  
+  
+  
+  .nextActions .bigButton { flex: 1 1 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+  .meterFill { transition: none; }
+}
+
+/* ---- Documents and Bookings (14 Nov 2026) ---- */
+.statusBad { background: $badTint; color: $bad; }
+.docHead { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.docCards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.docCard { display: grid; gap: 6px; padding: 16px; border-radius: 4px; border: 1px solid $border; background: $surface; border-left: 6px solid $ok; }
+.docExpired { border-left-color: $bad; background: $badTint; }
+.docTop { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 17px; }
+.docDate { font-size: 20px; font-weight: 700; }
+.history { margin-top: 14px; summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; color: $primary; } }
+
+.bookCard { display: flex; gap: 14px; align-items: flex-start; padding: 14px; border-radius: 4px; border: 1px solid $border; background: $surface; list-style: none; }
+
+.bookBody { flex: 1; min-width: 0; display: grid; gap: 4px; overflow-wrap: anywhere; }
+
+.bookGroup { display: grid; gap: 10px; padding: 0; margin: 0; }
+[data-size='phone'] { .bookCard { flex-direction: column; }  }
+
+/* ---- Check-in (14 Nov 2026) ---- */
+.segment { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.segmentBtn { min-height: 52px; border-radius: 4px; border: 2px solid $border; background: $surface; font: inherit; font-weight: 600; cursor: pointer; color: $text; }
+.segmentOn { border-color: $primary; background: $primaryTint; color: $primaryDark; }
+.checkProgress { font-size: 14px; color: $subtle; font-weight: 700; }
+.questionList { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.questionCard { display: grid; gap: 10px; padding: 14px; border-radius: 4px; border: 1px solid $border; background: $surface; }
+.questionText { font-weight: 600; overflow-wrap: anywhere; }
+.yesNo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.yesNoBtn { min-height: 52px; border-radius: 4px; border: 2px solid $border; background: $surface; font: inherit; font-size: 17px; font-weight: 700; cursor: pointer; color: $text; }
+.yesOn { border-color: $ok; background: $okTint; color: $ok; }
+.noOn { border-color: $bad; background: $badTint; color: $bad; }
+
+.notConnected { display: grid; gap: 4px; padding: 16px; border-radius: 4px; background: $canvas; border: 1px dashed $border; span { color: $subtle; } }
+
+/* ---- Notices, Membership, Calendar (14 Nov 2026) ---- */
+.memberHero { display: grid; gap: 6px; padding: 22px; border-radius: 4px; background: $primary; color: #fff; .eyebrow { color: rgba(255, 255, 255, 0.85); } }
+.memberName { font-size: 26px; margin: 0; overflow-wrap: anywhere; }
+.memberMeta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.factList { margin: 0; display: grid; gap: 0; border: 1px solid $border; border-radius: 4px; background: $surface; overflow: hidden;
+  > div { display: flex; justify-content: space-between; gap: 16px; padding: 14px 16px; border-bottom: 1px solid $border; &:last-child { border-bottom: 0; } }
+  dt { color: $subtle; } dd { margin: 0; font-weight: 600; text-align: right; overflow-wrap: anywhere; } }
+
+[data-size='phone'] { .factList > div { flex-direction: column; gap: 2px; } .factList dd { text-align: left; } .memberHero { padding: 18px; } }
+
+/* ---- Phone pass (14 Nov 2026) ---- */
+[data-size='phone'] {
+  .avenuePortal { padding-left: 12px; padding-right: 12px; }
+  .bookCard { flex-direction: row; gap: 12px; }
+  
+  .docHead { flex-wrap: wrap; }
+  
+  
+}
+
+/* Keep the bottom bar at the bottom on short pages (phones and tablets). */
+[data-size='phone'], [data-size='mid'] {
+  
+  .main { flex: 1 0 auto; }
+}
+
+/* ================= Kitchen Bookings + Communication redesign (18 Nov 2026) ================= */
+
+.srOnly { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.nativeInput { min-height: 48px; border-radius: 4px; padding: 8px 12px; font-size: 16px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.errorPanel ul { margin: 0; padding-left: 18px; }
+
+/* Buttons: native, 48px high, one family. */
+.btn {
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: 4px;
+  border: 2px solid $strong;
+  background: $surface;
+  color: $text;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+@media (hover: hover) { &:hover:not(:disabled) { background: $primaryTint; } }
+  &:disabled { opacity: .55; cursor: not-allowed; }
+}
+
+/* Wizard */
+.bookForm { display: grid; gap: 16px; padding-bottom: 8px; }
+
+.hoursLine { margin: 0; padding: 10px 12px; border-radius: 10px; background: $primaryTint; }
+
+/* Summary bar: sticky above the navigation bar on phones. */
+
+.sentCard { display: grid; gap: 8px; padding: 22px; border-radius: 4px; border: 2px solid $border; background: $surface; }
+.sentOk { border-color: $ok; background: $okTint; }
+.sentBad { border-color: $bad; background: $badTint; }
+
+.nextActions .btn { flex: 1 1 160px; }
+
+/* Day timeline (busy bar) */
+
+/* Schedule board */
+
+.weekDay { border: 1px solid $border; border-radius: 4px; background: $surface; padding: 14px; min-width: 0;
+  p { color: $subtle; font-size: 14px; margin: 12px 0 4px; }
+  ul { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 8px; }
+  li { border-left: 3px solid $primary; background: $canvas; border-radius: 4px 8px 8px 4px; padding: 8px 10px; display: grid; gap: 2px; overflow-wrap: anywhere; }
+  li span { color: $subtle; font-size: 13px; }
+}
+.weekDayHead { display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  strong { font-family: var(--av-heading-font); font-size: 18px; }
+  button { border: 0; background: transparent; color: $primary; cursor: pointer; font: inherit; font-weight: 700; min-height: 44px; }
+}
+[data-size='wide'] {  .weekDayHead { align-items: flex-start; flex-direction: column; } }
+
+.board { display: none; }
+
+.wfBanner {
+  padding: 14px 16px;
+  border-radius: 4px;
+  background: $accent;
+  ul { margin: 6px 0 0; padding-left: 18px; }
+}
+
+/* Home */
+
+/* My bookings */
+.bookCard { border-radius: var(--av-radius); }
+
+/* Notices */
+
+.noticeMeta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.unreadDot { width: 12px; height: 12px; border-radius: 50%; background: $accent; flex: 0 0 auto; }
+
+.noticeBody {
+  overflow-wrap: anywhere;
+  p { margin: 0 0 8px; white-space: pre-line; }
+}
+
+.catGeneral { background: #ECE8DD; color: #2E3445; }
+.catMaintenance { background: $waitTint; color: $wait; }
+.catSchedule { background: #dcebf5; color: #1C4257; }
+.catUrgent { background: $badTint; color: $bad; border: 1px solid $bad; }
+
+[data-size='mid'], [data-size='wide'] {
+  
+  
+  
+  .board { display: grid; grid-template-columns: 170px 1fr; border: 1px solid $border; border-radius: var(--av-radius); background: $surface; overflow: hidden; }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+}
+
+/* Two-column wizard and Home are decided by the portal's own width (data-layout, see motion.ts), not the viewport: see the layout section at the end. */
+
+/* Still used by Check-in. */
+.spaceCards { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.spaceCard { display: grid; gap: 2px; padding: 14px; border-radius: 4px; border: 2px solid $border; background: $surface; cursor: pointer; min-height: 72px; position: relative;
+  input { position: absolute; opacity: 0; } span { color: $subtle; font-size: 13px; } &:focus-within { outline: 3px solid $accent; outline-offset: 2px; } }
+.spaceOn { border-color: $primary; background: $primaryTint; }
+.stepActions { display: flex; flex-wrap: wrap; gap: 10px; padding: 8px 0; }
+
+/* ================= Visual and motion pass (Nov 2026) =================
+   Colours are the --av-* tokens on .avenuePortal. Motion is CSS only and uses transform/opacity (plus clip-path, stroke-dashoffset and
+   one max-height). Animations use fill-mode "backwards" so hover transforms still work once an entrance has finished.
+   Reduced motion: motion.ts drops the animation classes, data-motion="reduce" and the media query below switch every animation and
+   transition off. Contrast: ink/cream text >= 12:1, ink on citrus 5.2:1, white on olive >= 5.4:1, status text on tints >= 4.5:1. */
+
+@keyframes avRise { from { opacity: 0; transform: translate3d(0, 14px, 0); } to { opacity: 1; transform: none; } }
+@keyframes avFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes avPaneFwd { from { opacity: 0; transform: translate3d(28px, 0, 0); } to { opacity: 1; transform: none; } }
+@keyframes avPaneBack { from { opacity: 0; transform: translate3d(-28px, 0, 0); } to { opacity: 1; transform: none; } }
+@keyframes avPop { from { opacity: 0; transform: scale(.88); } to { opacity: 1; transform: none; } }
+@keyframes avDraw { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
+@keyframes avDot { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(3); opacity: 0; } }
+@keyframes avGrowX { from { transform: scaleX(0); opacity: .2; } to { transform: scaleX(1); opacity: 1; } }
+@keyframes avWipe { from { clip-path: inset(0 100% 0 0 round 10px); } to { clip-path: inset(0 0 0 0 round 10px); } }
+@keyframes avNow { 0% { transform: scale(.6); opacity: .8; } 100% { transform: scale(3); opacity: 0; } }
+@keyframes avSheen { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+@keyframes avSpin { to { transform: rotate(360deg); } }
+@keyframes avRing { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(1.9); opacity: 0; } }
+@keyframes avBarIn { from { opacity: 0; transform: translate3d(0, 44px, 0); } to { opacity: 1; transform: none; } }
+
+.rise { animation: avRise .5s var(--av-ease) backwards; animation-delay: calc(var(--i, 0) * 55ms); }
+
+/* ---- Canvas, hero, type ---- */
+.avenuePortal {
+  --av-ink: #0F4C5C;
+  --av-ink-2: #0B3A47;
+  --av-primary: #0B3A47;
+  --av-primary-dark: #0F4C5C;
+  --av-primary-tint: #E3ECEE;
+  --av-text: #1F1F1F;
+  --av-subtle: #5B6370;
+  --av-surface: #ffffff;
+  --av-canvas: #F4F5F7;
+  --av-border: #E1E4E9;
+  --av-border-strong: #6B7280;
+  --av-accent: #C9A24D;
+  --av-accent-deep: #0F4C5C;
+  --av-accent-tint: #F4EBD3;
+  --av-on-accent: #0F4C5C;
+  --av-free: #0F4C5C;
+  --av-free-tint: #DCE8EB;
+  --av-taken: #6B7280;
+  --av-taken-tint: #E8EAED;
+  --av-ease: cubic-bezier(.2, .8, .2, 1);
+  --av-spring: cubic-bezier(.34, 1.56, .64, 1);
+  --av-shadow-1: 0 1px 2px rgba(31, 31, 31, .06), 0 2px 8px rgba(31, 31, 31, .05);
+  --av-shadow-2: 0 2px 4px rgba(31, 31, 31, .06), 0 10px 26px rgba(31, 31, 31, .11);
+  --av-shadow-3: 0 4px 8px rgba(31, 31, 31, .10), 0 20px 44px rgba(31, 31, 31, .20);
+  --av-nav-h: 58px;
+  --av-ok: #0F4C5C;
+  --av-ok-tint: #DCE8EB;
+  --av-wait: #6B4F10;
+  --av-wait-tint: #F6EDD3;
+  --av-bad: #8E3445;
+  --av-bad-tint: #E8EAED;
+  --av-radius: 4px;
+  // Design tokens (plan docs/MEMBER_PORTAL_AUDIT_AND_UI_PLAN.md, phase 0). One family, one scale; later phases use these.
+  --av-font: "Avenue Sans", "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+  --av-heading-font: var(--av-font);
+  --av-fs-caption: 12px;  // the floor: nothing smaller
+  --av-fs-small: 14px;
+  --av-fs-body: 16px;
+  --av-fs-h3: 18px;
+  --av-fs-h2: 24px;
+  --av-fs-h1: clamp(28px, 1.2rem + 1.6vw, 32px);
+  --av-fs-display: clamp(40px, 1.6rem + 3vw, 60px);
+  --av-space-1: 4px; --av-space-2: 8px; --av-space-3: 12px; --av-space-4: 16px; --av-space-5: 24px; --av-space-6: 32px; --av-space-7: 48px;
+  --av-r-sm: 6px; --av-r-md: 10px; --av-r-lg: 16px; --av-r-xl: 24px;
+  --av-ease-enter: cubic-bezier(.05, .7, .1, 1);
+  --av-ease-exit: cubic-bezier(.3, 0, .8, .15);
+  --av-ease-std: cubic-bezier(.2, 0, 0, 1);
+  --av-d-1: 120ms; --av-d-2: 200ms; --av-d-3: 300ms; --av-d-4: 400ms;
+  max-width: none;
+  background: $canvas;
+  padding: 16px;
+  border-radius: 4px;
+  overflow-x: clip;
+  position: relative;
+  h1, h2, h3 { letter-spacing: -.015em; }
+}
+
+.pageTitle { line-height: 1.2; font-size: clamp(26px, 3vw, 34px); letter-spacing: -.02em; }
+
+.eyebrow { letter-spacing: .12em; }
+
+.card, .bookCard { box-shadow: var(--av-shadow-1); }
+.card { border-radius: var(--av-radius); }
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #ECE8DD;
+  animation: none;
+  border-radius: 4px;
+  &::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .75), transparent); animation: avSheen 1.4s linear infinite; }
+}
+.nativeInput {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  transition: border-color .2s, box-shadow .2s;
+  &:focus { border-color: $primary; box-shadow: 0 0 0 3px rgba(23, 35, 59, .22); outline: none; }
+}
+
+/* ---- Buttons ---- */
+.btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform .18s var(--av-ease), box-shadow .25s var(--av-ease), background-color .2s, border-color .2s;
+@media (hover: hover) { &:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--av-shadow-2); } }
+  &:active:not(:disabled) { transform: scale(.97); box-shadow: none; }
+  &::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; transform: scale(.3);
+    background: radial-gradient(circle at center, rgba(255, 255, 255, .45) 0, transparent 62%); transition: transform .5s var(--av-ease), opacity .5s var(--av-ease); }
+  &:active:not(:disabled)::after { opacity: 1; transform: scale(1.7); transition-duration: 0s; }
+}
+
+.wfBanner { color: var(--av-on-accent); }
+
+/* ---- Navigation ---- */
+
+.navIcon { transition: transform .3s var(--av-spring); }
+
+/* ---- Home ---- */
+
+.summaryButton {
+  box-shadow: var(--av-shadow-1);
+  transition: transform .25s var(--av-ease), box-shadow .3s var(--av-ease), border-color .2s;
+@media (hover: hover) { &:hover { transform: translateY(-3px); box-shadow: var(--av-shadow-2); } }
+  &:active { transform: scale(.98); }
+}
+.summaryValue { font-family: var(--av-heading-font); letter-spacing: -.02em; }
+
+/* ---- Wizard: stepper (a line that fills, numbered dots, a check that draws) ---- */
+
+.tick { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; path { stroke-dasharray: 24; stroke-dashoffset: 0; } }
+
+/* ---- Wizard: step transition, mode cards, equipment cards ---- */
+
+.statusPill { display: inline-flex; align-items: center; }
+.statusOk { background: var(--av-free-tint); color: #0F4C5C; }
+
+.dot { position: relative; display: inline-block; flex: 0 0 auto; width: 8px; height: 8px; margin-right: 7px; border-radius: 50%; background: var(--av-free); }
+
+/* ---- Wizard: day strip ---- */
+
+/* ---- Wizard: review, success ---- */
+
+.sentCard { justify-items: center; text-align: center; padding: 34px 22px; box-shadow: var(--av-shadow-2); .nextActions { justify-content: center; } }
+
+.sentTitle { font-size: clamp(26px, 3vw, 34px); letter-spacing: -.02em; }
+
+/* ---- Timeline bars and schedule board ---- */
+
+.nowPulse::after { content: ''; position: absolute; left: 50%; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--av-accent); animation: avNow 2s var(--av-ease) infinite; pointer-events: none; }
+
+.board { box-shadow: var(--av-shadow-1); }
+
+/* ---- Notices ---- */
+
+.noticeBody { overflow: hidden; transition: max-height .45s var(--av-ease); }
+
+ // ponytail: a fixed ceiling so max-height can animate; notices longer than ~120em would clip, raise it if that ever happens
+
+/* ---- Reduced motion: no animation, no transitions, no movement. Opacity/colour changes are instant. ---- */
+.avenuePortal[data-motion='reduce'] {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .btn, .modeCard, .equipCard, .dayChip, .dayChipOn, .noticeCard, .roundBtn, .chipBtn, .summaryButton, .modeTick, .progressNum, .navIcon, .exitFull { transform: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .avenuePortal {
+    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    .btn, .modeCard, .equipCard, .dayChip, .dayChipOn, .noticeCard, .roundBtn, .chipBtn, .summaryButton, .modeTick, .progressNum, .navIcon, .exitFull { transform: none !important; }
+  }
+}
+
+/* ---- Phones: nothing may force a horizontal scroll at 360 to 430px ---- */
+[data-size='phone'] {
+  .avenuePortal { padding: 10px 10px 16px; border-radius: 4px; }
+  
+  
+  
+  
+  
+  
+  
+}
+
+// Phone fix (found live 18 Nov at 390px): the scrolling day strip made its grid column as wide as all 14 days,
+// so the whole step spilled past the right edge. Every grid/flex child may shrink; only the strip scrolls.
+.stack { min-width: 0; max-width: 100%; }
+
+.avenuePortal main, .avenuePortal main > * { min-width: 0; max-width: 100%; }
+// Second phone fix: grid tracks sized by max-content let the date/time fields grow with the day strip. Every track may shrink.
+.stack { grid-template-columns: minmax(0, 1fr); }
+.stack > * { min-width: 0; max-width: 100%; }
+

@@ -1,0 +1,615 @@
+- stoBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- stoBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- stoBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- stoDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- stoBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- stoTitle:
+    Control: Label
+    Properties:
+      Text: ="Storage"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- stoNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- stoNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- stoNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- stoNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- stoNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- stoNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- stoNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 98
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- tm_storage:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =4
+      Width: =10
+      Height: =10
+- sc_storage:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =64
+      Width: =App.Width
+      Height: =App.Height - 64
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_storage.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_storage:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =704
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - stoBack:
+            Control: Classic/Button
+            Properties:
+              Text: ="Back to More"
+              X: =20
+              Y: =0
+              Width: =140
+              Height: =34
+              OnSelect: =Navigate(Screen12)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+        - stoHead:
+            Control: Label
+            Properties:
+              Text: ="Storage requests"
+              X: =180
+              Y: =0
+              Width: =400
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =20
+              FontWeight: =FontWeight.Bold
+        - stoRefresh:
+            Control: Classic/Button
+            Properties:
+              Text: ="Refresh"
+              X: =1190
+              Y: =0
+              Width: =140
+              Height: =34
+              OnSelect: =Refresh(AvenueStorageCases)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+        - stoChipAll:
+            Control: Classic/Button
+            Properties:
+              Text: ="All (" & Text(CountRows(Filter(AvenueStorageCases, FacilityId = "flavors-hyattsville"))) & ")"
+              X: =20
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varStoStage, "All")
+              Fill: =If(Coalesce(varStoStage, "All") = "All", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varStoStage, "All") = "All", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varStoStage, "All") = "All", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varStoStage, "All") = "All", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - stoChipRequested:
+            Control: Classic/Button
+            Properties:
+              Text: ="Requested (" & Text(CountRows(Filter(AvenueStorageCases, FacilityId = "flavors-hyattsville", Status.Value = "Requested"))) & ")"
+              X: =156
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varStoStage, "Requested")
+              Fill: =If(Coalesce(varStoStage, "All") = "Requested", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varStoStage, "All") = "Requested", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varStoStage, "All") = "Requested", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varStoStage, "All") = "Requested", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - stoChipApproved:
+            Control: Classic/Button
+            Properties:
+              Text: ="Approved (" & Text(CountRows(Filter(AvenueStorageCases, FacilityId = "flavors-hyattsville", Status.Value = "Approved"))) & ")"
+              X: =292
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varStoStage, "Approved")
+              Fill: =If(Coalesce(varStoStage, "All") = "Approved", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varStoStage, "All") = "Approved", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varStoStage, "All") = "Approved", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varStoStage, "All") = "Approved", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - stoChipDeclined:
+            Control: Classic/Button
+            Properties:
+              Text: ="Declined (" & Text(CountRows(Filter(AvenueStorageCases, FacilityId = "flavors-hyattsville", Status.Value = "Declined"))) & ")"
+              X: =428
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varStoStage, "Declined")
+              Fill: =If(Coalesce(varStoStage, "All") = "Declined", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varStoStage, "All") = "Declined", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varStoStage, "All") = "Declined", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varStoStage, "All") = "Declined", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - stoGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({st: Coalesce(varStoStage, "All")}, SortByColumns(AddColumns(If(st = "All", Filter(AvenueStorageCases, FacilityId = "flavors-hyattsville"), Filter(AvenueStorageCases, FacilityId = "flavors-hyattsville", Status.Value = st)), Rank, Switch(Status.Value, "Requested", 0, "Approved", 1, 2)), "Rank", SortOrder.Ascending, "DecidedAt", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =580
+              TemplateSize: =66
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - stoItemTitle:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Item.Value & " × " & Coalesce(Text(ThisItem.Quantity), "?")
+                    X: =8
+                    Y: =4
+                    Width: =480
+                    Height: =28
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - stoItemMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.MemberId & If(Coalesce(ThisItem.MonthlyCents, 0) > 0, " · $" & Text(ThisItem.MonthlyCents / 100, "#,##0.00") & " a month", "")
+                    X: =8
+                    Y: =34
+                    Width: =480
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - stoItemPill:
+                  Control: Classic/Button
+                  Properties:
+                    Text: =ThisItem.Status.Value
+                    X: =496
+                    Y: =20
+                    Width: =128
+                    Height: =24
+                    DisplayMode: =DisplayMode.Disabled
+                    Fill: =Switch(ThisItem.Status.Value, "Requested", RGBA(244,235,211,1), "Approved", RGBA(220,232,235,1), RGBA(229,231,235,1))
+                    DisabledFill: =Switch(ThisItem.Status.Value, "Requested", RGBA(244,235,211,1), "Approved", RGBA(220,232,235,1), RGBA(229,231,235,1))
+                    DisabledColor: =Switch(ThisItem.Status.Value, "Requested", RGBA(107,79,16,1), "Approved", RGBA(15,76,92,1), RGBA(91,99,112,1))
+                    Color: =Switch(ThisItem.Status.Value, "Requested", RGBA(107,79,16,1), "Approved", RGBA(15,76,92,1), RGBA(91,99,112,1))
+                    BorderThickness: =0
+                    Size: =10
+                    FontWeight: =FontWeight.Bold
+                    RadiusTopLeft: =12
+                    RadiusTopRight: =12
+                    RadiusBottomLeft: =12
+                    RadiusBottomRight: =12
+              - stoGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =65
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - stoEmpty:
+            Control: Label
+            Properties:
+              Text: ="No storage requests yet. Members send them from Storage in the portal."
+              X: =28
+              Y: =110
+              Width: =620
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              Visible: =CountRows(AvenueStorageCases) = 0
+        - stoSelHead:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(stoGal.Selected), "Select a request", stoGal.Selected.Item.Value & " × " & Coalesce(Text(stoGal.Selected.Quantity), "?"))
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+        - stoSelInfo:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(stoGal.Selected), "", "From " & stoGal.Selected.MemberId & " · " & stoGal.Selected.Status.Value & Char(10) & If(IsBlank(stoGal.Selected.Notes), "No notes from the member.", "Notes: " & stoGal.Selected.Notes) & If(IsBlank(stoGal.Selected.DecidedBy), "", Char(10) & "Decided by " & stoGal.Selected.DecidedBy & " · " & With({t: stoGal.Selected.DecidedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "d mmm yyyy")))))))
+              X: =690
+              Y: =124
+              Width: =640
+              Height: =90
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+        - stoPrices:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Sheet prices: half-door fridge or freezer $250 per door; full door $400 per door or $700 per unit; dry shelf $250 (single unit) or $135 a shelf, $450 and $235 for a double unit; daily dry $50 and daily cold $75 per shelf. The sheet is ambiguous in places: confirm the amount with Flavors before approving."
+              X: =690
+              Y: =220
+              Width: =640
+              Height: =76
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - stoAmtCap:
+            Control: Label
+            Properties:
+              Text: ="Monthly amount in dollars"
+              X: =690
+              Y: =304
+              Width: =300
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - stoAmt:
+            Control: Classic/TextInput
+            Properties:
+              Default: =If(IsBlank(stoGal.Selected) || Coalesce(stoGal.Selected.MonthlyCents, 0) <= 0, "", Text(stoGal.Selected.MonthlyCents / 100, "0.00"))
+              HintText: ="e.g. 250.00"
+              X: =690
+              Y: =326
+              Width: =200
+              Height: =34
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - stoReason:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Reason (needed to decline)"
+              Mode: =TextMode.MultiLine
+              X: =690
+              Y: =370
+              Width: =640
+              Height: =60
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - stoApprove:
+            Control: Classic/Button
+            Properties:
+              Text: ="Approve"
+              X: =690
+              Y: =442
+              Width: =200
+              Height: =40
+              OnSelect: |-
+                =IfError(Patch(AvenueStorageCases, LookUp(AvenueStorageCases, CaseId = stoGal.Selected.CaseId), {Status: {Value: "Approved"}, MonthlyCents: Round(Value(stoAmt.Text) * 100, 0), DecidedBy: User().Email, DecidedAt: Now()}); Notify("Approved. Billing is done by hand.", NotificationType.Success), Notify("Could not save.", NotificationType.Error))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(!IsBlank(stoGal.Selected) && stoGal.Selected.Status.Value = "Requested" && IsNumeric(stoAmt.Text) && Value(stoAmt.Text) > 0, DisplayMode.Edit, DisplayMode.Disabled)
+              Visible: =!IsBlank(stoGal.Selected) && stoGal.Selected.Status.Value = "Requested"
+        - stoDecline:
+            Control: Classic/Button
+            Properties:
+              Text: ="Decline"
+              X: =900
+              Y: =442
+              Width: =140
+              Height: =40
+              OnSelect: |-
+                =IfError(Patch(AvenueStorageCases, LookUp(AvenueStorageCases, CaseId = stoGal.Selected.CaseId), {Status: {Value: "Declined"}, Notes: Trim(Coalesce(stoGal.Selected.Notes, "") & Char(10) & "Declined: " & Trim(stoReason.Text)), DecidedBy: User().Email, DecidedAt: Now()}); Reset(stoReason); Notify("Declined.", NotificationType.Success), Notify("Could not save.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(155,44,44,1)
+              HoverFill: =RGBA(243,227,227,1)
+              HoverColor: =RGBA(155,44,44,1)
+              PressedFill: =RGBA(243,227,227,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(!IsBlank(stoGal.Selected) && stoGal.Selected.Status.Value = "Requested" && !IsBlank(Trim(stoReason.Text)), DisplayMode.Edit, DisplayMode.Disabled)
+              Visible: =!IsBlank(stoGal.Selected) && stoGal.Selected.Status.Value = "Requested"
+              BorderColor: =RGBA(155,44,44,1)
+              HoverBorderColor: =RGBA(155,44,44,1)
+        - stoHelp:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Nothing is charged or invoiced from this screen: the owner bills storage by hand (Q-25: storage is not confirmed for Phase 1)."
+              X: =690
+              Y: =492
+              Width: =640
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11

@@ -1,0 +1,552 @@
+<title>Avenue Clickable Prototype</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: dark presenter bar + tour strip on top; one product frame below.
+   Member frame = SharePoint page hosting one SPFx web part. Staff frame = Power Apps canvas (1366x768, scaled).
+   Single light look on purpose: it shows the product as the Microsoft hosts render it. */
+:root{
+  --brand:#0f5e4d; --brand-2:#0a4638; --brand-soft:#e4f0ec; --accent:#e39a2d; --accent-soft:#fdf1dc;
+  --ink:#1f1d1a; --ink2:#5f5b55; --ink3:#8d887f; --line:#e7e3dc; --line2:#cfcac1; --bg:#f6f4f0; --card:#ffffff; --stage:#dedad3; --bar:#201f1d;
+  --ok:#17723a; --ok-bg:#e3f4e8; --warn:#8a5a00; --warn-bg:#fff3d1; --bad:#a4262c; --bad-bg:#fde8ea; --mute-bg:#efede8;
+  --font:"Segoe UI","Segoe UI Web (West European)",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+  --sh1:0 1px 2px rgba(31,29,26,.08),0 2px 6px rgba(31,29,26,.06); --sh2:0 8px 28px rgba(31,29,26,.18);
+}
+html,body{background:var(--stage);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.45}
+*{box-sizing:border-box} [hidden]{display:none!important}
+h1,h2,h3,h4,p,dl,dd{margin:0} h1,h2,h3{text-wrap:balance}
+button,select,input,textarea{font:inherit;color:inherit} button{cursor:pointer}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{max-width:1340px;margin:0 auto;padding-block:14px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:10px}
+.ic{flex:none;vertical-align:-3px}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- presenter chrome (not part of the product) ---------- */
+.pbar{background:var(--bar);color:#f4f1ea;border-radius:10px;padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.pbar .name{font-weight:700;font-size:15px;letter-spacing:.01em} .pbar .grow{flex:1 1 20px}
+.seg{display:inline-flex;background:#34322f;border-radius:7px;padding:2px}
+.seg button{background:transparent;color:#d9d5cc;border:0;padding:5px 12px;border-radius:5px}
+.seg button[aria-pressed="true"]{background:#f4f1ea;color:var(--ink);font-weight:600}
+.pbtn{background:#34322f;color:#f4f1ea;border:0;border-radius:7px;padding:6px 12px}
+.pbtn.go{background:var(--accent);color:#231a08;font-weight:700}
+.pbtn:disabled{opacity:.4;cursor:default}
+.opts{background:#fbfaf7;border-radius:10px;padding:14px 16px;display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center}
+.opts label{display:inline-flex;gap:6px;align-items:center}
+.opts select{border:1px solid var(--line2);border-radius:6px;padding:5px 8px;background:#fff}
+.tour{background:var(--accent-soft);border:1px solid #f1d49b;border-radius:10px;padding:10px 14px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.tour b{white-space:nowrap} .tour span{flex:1 1 320px;min-width:0}
+.truth{background:#fbfaf7;border-radius:10px;padding:16px 18px;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))}
+.truth h3{font-size:14px;margin-bottom:6px} .truth ul{margin:0;padding-left:18px;color:var(--ink2);display:grid;gap:4px}
+.caption{color:#55514a;font-size:12px}
+
+/* ---------- frames ---------- */
+.frame{position:relative;background:var(--bg);border-radius:10px;box-shadow:var(--sh2);overflow:hidden;width:100%;margin:0 auto}
+.frame.phone{width:min(390px,100%);height:800px;border-radius:34px;border:9px solid #1b1a18;display:flex;flex-direction:column}
+.frame.phone .scroll{flex:1;overflow-y:auto;min-height:0}
+.hide-open .tbc,.hide-ex .ex{display:none}
+.tbc{display:inline-block;font-size:11px;font-weight:600;color:var(--warn);background:var(--warn-bg);border:1px dashed #cfa32a;border-radius:4px;padding:0 6px;white-space:nowrap;vertical-align:1px}
+.ex{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3);border:1px solid var(--line2);border-radius:4px;padding:0 4px;vertical-align:2px;margin-left:4px;background:#fff}
+
+/* ---------- SharePoint host chrome (illustrative) ---------- */
+.sp-suite{height:48px;background:var(--brand);color:#fff;display:flex;align-items:center;gap:12px;padding:0 14px}
+.waffle{display:grid;grid-template-columns:repeat(3,4px);gap:3px} .waffle i{width:4px;height:4px;background:currentColor;border-radius:1px}
+.sp-suite .search{flex:1;max-width:440px;height:32px;border-radius:4px;background:rgba(255,255,255,.88);color:var(--ink2);display:flex;align-items:center;padding:0 10px;font-size:13px;min-width:0;white-space:nowrap;overflow:hidden}
+.avatar{width:32px;height:32px;border-radius:50%;background:#fff;color:var(--brand-2);display:grid;place-items:center;font-weight:700;font-size:12px;flex:none}
+.sp-suite .avatar{margin-left:auto}
+.sp-site{display:flex;align-items:center;gap:12px;padding:12px 28px;background:#fff;border-bottom:1px solid var(--line)}
+.mark{width:40px;height:40px;border-radius:9px;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:19px;font-weight:700;flex:none}
+.sp-site h2{font-size:19px;font-weight:600} .sp-site .sitename{color:var(--ink2)}
+.phone .sp-suite .search,.phone .sp-site .sitename{display:none} .phone .sp-site{padding:8px 16px} .phone .mark{width:32px;height:32px;font-size:15px;border-radius:7px}
+
+/* ---------- member web part ---------- */
+.wp{padding:0 28px 36px;display:flex;flex-direction:column;gap:18px;min-height:600px}
+.phone .wp{padding:0 16px 96px;gap:14px;min-height:0}
+.wpnav{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);margin:0 -28px;padding:0 28px;background:#fff;position:sticky;top:0;z-index:3}
+.phone .wpnav{margin:0 -16px;padding:8px 16px}
+.tabs{display:flex;gap:2px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:13px 12px 10px;display:flex;gap:7px;align-items:center;color:var(--ink2);white-space:nowrap}
+.tabs button:hover{color:var(--ink);background:var(--bg)} .tabs button[aria-selected="true"]{color:var(--brand-2);border-bottom-color:var(--brand);font-weight:600}
+.iconbtn{position:relative;width:36px;height:36px;border-radius:50%;border:0;background:none;display:grid;place-items:center;color:var(--ink2);flex:none} .iconbtn:hover{background:var(--bg)}
+.dot{position:absolute;top:6px;right:7px;width:8px;height:8px;border-radius:50%;background:var(--accent);border:2px solid #fff}
+.bnav{display:flex;background:#fff;border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+.bnav button{flex:1;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--ink3);padding:4px 0}
+.bnav button[aria-selected="true"]{color:var(--brand);font-weight:600}
+.fab{position:absolute;right:16px;bottom:74px;height:52px;padding:0 20px;border-radius:26px;border:0;background:var(--brand);color:#fff;font-weight:700;display:flex;gap:8px;align-items:center;box-shadow:var(--sh2);z-index:4}
+.h1{font-size:26px;font-weight:700;letter-spacing:-.01em} .phone .h1{font-size:22px}
+.sub{color:var(--ink2)} .small{font-size:12px} .muted{color:var(--ink2)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center} .between{justify-content:space-between}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))} .grid.three{grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:var(--sh1);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.card h3{font-size:15px;font-weight:600;display:flex;gap:8px;align-items:center} .card h3 .grow{flex:1}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+.btn{min-height:36px;padding:0 16px;border-radius:6px;border:1px solid var(--line2);background:#fff;font-weight:600;white-space:nowrap;display:inline-flex;gap:7px;align-items:center;justify-content:center}
+.btn:hover{background:var(--bg)} .btn.primary{background:var(--brand);border-color:var(--brand);color:#fff} .btn.primary:hover{background:var(--brand-2)}
+.btn.danger{background:var(--bad);border-color:var(--bad);color:#fff} .btn.link{border:0;background:none;color:var(--brand-2);padding:0 6px;min-height:28px}
+.btn.onhero{background:#fff;border-color:#fff;color:var(--brand-2)} .btn.ghosthero{background:transparent;border-color:rgba(255,255,255,.55);color:#fff}
+.btn.block{width:100%} .btn.lg{min-height:44px;font-size:15px} .btn:disabled{opacity:.45;cursor:not-allowed}
+.pill{display:inline-flex;gap:5px;align-items:center;font-size:12px;font-weight:600;border-radius:999px;padding:2px 10px;white-space:nowrap}
+.pill.ok{background:var(--ok-bg);color:var(--ok)} .pill.warn{background:var(--warn-bg);color:var(--warn)} .pill.bad{background:var(--bad-bg);color:var(--bad)} .pill.info{background:var(--brand-soft);color:var(--brand-2)} .pill.mute{background:var(--mute-bg);color:var(--ink2)}
+.hero{border-radius:14px;padding:24px;color:#fff;background:linear-gradient(120deg,var(--brand-2),var(--brand) 60%,#1c7a63);display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;box-shadow:var(--sh1)}
+.hero .l{flex:1 1 300px;display:flex;flex-direction:column;gap:6px;min-width:0} .hero .eyebrow{color:rgba(255,255,255,.75)}
+.hero .big{font-size:28px;font-weight:700;letter-spacing:-.01em;line-height:1.15} .phone .hero .big{font-size:22px} .phone .hero{padding:18px}
+.hero .meta{display:flex;flex-wrap:wrap;gap:6px 16px;color:rgba(255,255,255,.9)} .hero .meta span{display:inline-flex;gap:6px;align-items:center}
+.hero.bad{background:linear-gradient(120deg,#7d1d22,var(--bad))} .hero.plain{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.stat .v{font-size:26px;font-weight:700;letter-spacing:-.01em} .stat .v small{font-size:14px;font-weight:600;color:var(--ink2)}
+.ring{flex:none} .meter{height:8px;border-radius:4px;background:var(--mute-bg);overflow:hidden;display:flex} .meter i{display:block;height:100%;background:var(--brand)} .meter i.x{background:var(--accent)} .meter i.bad{background:var(--bad)} .meter i.warn{background:var(--accent)}
+.li{display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)} .li:last-child{border-bottom:0;padding-bottom:0} .li:first-child{padding-top:0} .li .grow{flex:1;min-width:0}
+.datebox{width:46px;height:50px;border-radius:8px;background:var(--brand-soft);color:var(--brand-2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:700;text-transform:uppercase;flex:none;line-height:1.15} .datebox b{font-size:18px}
+.banner{border-radius:10px;padding:12px 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center} .banner .grow{flex:1 1 220px;min-width:0}
+.banner.ok{background:var(--ok-bg);color:#0f4a25} .banner.warn{background:var(--warn-bg);color:#5c3c00} .banner.bad{background:var(--bad-bg);color:#6d181c} .banner.info{background:var(--mute-bg)}
+.kv{display:grid;grid-template-columns:minmax(96px,auto) 1fr;gap:7px 14px} .kv dt{color:var(--ink2)} .kv dd{font-weight:600;text-align:right}
+.days{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.days button{flex:1 0 64px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 6px;text-align:center;line-height:1.2;color:var(--ink2)}
+.days button b{display:block;font-size:18px;color:var(--ink)} .days button[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff} .days button[aria-pressed="true"] b{color:#fff}
+.days .today{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+/* timeline */
+.tl{display:grid;grid-template-columns:128px 1fr;row-gap:8px;align-items:center;min-width:640px}
+.tl .hours{grid-column:2;display:grid;grid-template-columns:repeat(8,1fr);font-size:11px;color:var(--ink3)}
+.tl .lab{font-weight:600;font-size:13px;padding-right:10px;line-height:1.2} .tl .lab small{display:block;font-weight:400;color:var(--ink3)}
+.lane{position:relative;height:50px;border-radius:8px;border:1px solid var(--line);background:repeating-linear-gradient(90deg,#fff 0,#fff calc(6.25% - 1px),#f1eee8 calc(6.25% - 1px),#f1eee8 6.25%);overflow:hidden}
+.lane.pick{cursor:copy} .lane.pick:hover{border-color:var(--brand)}
+.bk{position:absolute;top:4px;bottom:4px;border-radius:6px;background:#e3dfd6;color:var(--ink);font-size:11px;line-height:1.3;padding:4px 8px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;border:0;text-align:left;cursor:default}
+.bk b{display:block;overflow:hidden;text-overflow:ellipsis} .bk.mine{background:var(--brand);color:#fff;cursor:pointer} .bk.pend{background:var(--warn-bg);color:var(--warn);outline:1px dashed #cfa32a;outline-offset:-1px}
+.lane .bk.pend{top:52%;padding-top:1px;padding-bottom:0;z-index:1;line-height:1.5} .bk.pend b{display:inline;margin-right:6px}
+.nowline{position:absolute;top:0;bottom:0;width:2px;background:var(--accent);z-index:1}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--ink2);align-items:center} .sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+/* panel + toast */
+.scrim{position:absolute;inset:0;background:rgba(31,29,26,.38);z-index:8;border:0;padding:0}
+.panel{position:absolute;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;z-index:9;box-shadow:var(--sh2)}
+.phone .panel{width:100%}
+.panel .in{position:sticky;top:0;max-height:min(100%,100vh);display:flex;flex-direction:column}
+.panel header{display:flex;align-items:center;gap:8px;padding:16px 20px 8px} .panel header h2{font-size:20px;font-weight:700;flex:1}
+.panel .body{padding:8px 20px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:16px;flex:1;min-height:0}
+.panel footer{padding:14px 20px;border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap}
+.fl{display:flex;flex-direction:column;gap:6px;min-width:0} .fl>label,.fl>span.lbl{font-weight:600;font-size:13px}
+.fl select,.fl input,.fl textarea{min-height:38px;border:1px solid var(--line2);border-radius:6px;padding:6px 10px;background:#fff;width:100%}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{display:flex;flex-wrap:wrap;gap:8px} .opt button{border:1px solid var(--line2);background:#fff;border-radius:8px;padding:8px 12px;font-weight:600;display:inline-flex;gap:6px;align-items:center}
+.opt button[aria-pressed="true"]{background:var(--brand-soft);border-color:var(--brand);color:var(--brand-2)}
+.yn{display:inline-flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden;flex:none} .yn button{border:0;background:#fff;padding:8px 18px;font-weight:600} .yn button+button{border-left:1px solid var(--line2)} .yn button[aria-pressed="true"]{background:var(--brand);color:#fff}
+.success{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:18px 0 6px} .success .o{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:var(--ok-bg);color:var(--ok)} .success .o.w{background:var(--warn-bg);color:var(--warn)}
+.mail{border:1px solid var(--line);border-radius:10px;overflow:hidden} .mail .mh{padding:8px 12px;background:var(--bg);font-size:12px;color:var(--ink2)} .mail .mb{padding:12px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.toast{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:8px;padding:10px 16px;z-index:12;box-shadow:var(--sh2);display:flex;gap:8px;align-items:center;max-width:calc(100% - 32px)} .phone .toast{bottom:86px}
+.placeholder{border:2px dashed var(--line2);border-radius:12px;padding:26px 18px;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center;background:#fff}
+.drop{border:2px dashed var(--line2);border-radius:10px;padding:18px;display:flex;gap:12px;align-items:center;color:var(--ink2);background:#fff}
+.plan.sel{border-color:var(--brand);box-shadow:0 0 0 2px var(--brand-soft),var(--sh1)} .plan .price{font-size:28px;font-weight:700}
+table{border-collapse:collapse;width:100%} th{font-size:12px;font-weight:600;color:var(--ink2);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line2);white-space:nowrap} td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:middle} tr:last-child td{border-bottom:0}
+.tscroll{overflow-x:auto}
+.person{width:34px;height:34px;border-radius:50%;background:var(--brand-soft);color:var(--brand-2);display:grid;place-items:center;font-weight:700;font-size:12px;flex:none}
+
+/* ---------- Power Apps canvas (illustrative) ---------- */
+.pa-top{height:40px;background:#2f2e2c;color:#fff;display:flex;align-items:center;gap:10px;padding:0 14px;font-size:13px}
+.scaler{overflow:hidden;background:var(--bg)}
+.canvas{position:relative;width:1366px;height:768px;transform-origin:0 0;display:grid;grid-template-columns:228px 1fr;grid-template-rows:60px 1fr;background:var(--bg)}
+.cv-head{grid-column:1/3;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:0 20px}
+.cv-head .mark{width:34px;height:34px;font-size:16px;border-radius:8px} .cv-head b{font-size:17px} .cv-head .who{margin-left:auto;display:flex;gap:10px;align-items:center}
+.cv-nav{background:#fff;border-right:1px solid var(--line);padding:12px 10px;display:flex;flex-direction:column;gap:2px;overflow:auto}
+.cv-nav button{border:0;background:none;text-align:left;padding:9px 12px;border-radius:8px;display:flex;gap:10px;align-items:center;color:var(--ink2)}
+.cv-nav button span.t{flex:1} .cv-nav button:hover{background:var(--bg)} .cv-nav button[aria-current="true"]{background:var(--brand-soft);color:var(--brand-2);font-weight:600}
+.cv-nav .sep{font-size:11px;color:var(--ink3);padding:10px 12px 4px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.cv-main{padding:20px 24px;overflow:auto;display:flex;flex-direction:column;gap:16px;min-height:0}
+.canvas .grid{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))} .canvas .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.canvas .tl{grid-template-columns:104px 1fr;row-gap:5px;min-width:0} .canvas .lane{height:34px} .canvas .bk{font-size:10px;padding:2px 6px} .canvas .tl .lab small{display:none}
+.bars{display:flex;align-items:flex-end;gap:12px;height:120px} .bars div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;color:var(--ink2);justify-content:flex-end;height:100%} .bars i{width:100%;background:var(--brand);border-radius:4px 4px 0 0;min-height:2px}
+.toggle{width:42px;height:22px;border-radius:11px;border:1px solid var(--ink3);background:#fff;position:relative;flex:none} .toggle::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--ink3)} .toggle[aria-pressed="true"]{background:var(--brand);border-color:var(--brand)} .toggle[aria-pressed="true"]::after{left:23px;background:#fff}
+.md{display:grid;grid-template-columns:320px 1fr;gap:16px;align-items:start} .pickrow{border:0;background:none;text-align:left;width:100%;padding:10px 12px;border-radius:8px;display:flex;gap:10px;align-items:center} .pickrow[aria-current="true"]{background:var(--brand-soft)} .pickrow:hover{background:var(--bg)}
+.dlg{position:absolute;inset:60px 0 0 0;background:rgba(31,29,26,.38);display:grid;place-items:center;z-index:5} .dlg .card{width:460px;box-shadow:var(--sh2)}
+.cmp{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch} .cmp>div{border:1px solid var(--line);border-radius:10px;padding:12px} .cmp .vs{border:0;display:grid;place-items:center;color:var(--ink3);font-weight:700;padding:0}
+.spark{width:100%;height:56px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.phone .kpis{grid-template-columns:1fr 1fr;gap:10px} .phone .md,.phone .cmp{grid-template-columns:1fr} .phone .grid{grid-template-columns:1fr!important}
+.phone .staffp .li{flex-wrap:wrap} .phone .dlg{inset:0;padding:12px} .dlg .card{max-width:100%}
+.staffhead{display:flex;align-items:center;gap:10px;padding:10px 16px;background:#fff;border-bottom:1px solid var(--line)}
+.staffp{padding:14px 16px 28px;display:flex;flex-direction:column;gap:14px}
+.sheet{position:absolute;inset:0;background:rgba(31,29,26,.38);z-index:6;display:flex;align-items:flex-end} .sheet .card{width:100%;border-radius:16px 16px 0 0;max-height:80%;overflow:auto;gap:2px}
+.ms{min-height:600px;display:grid;place-items:center;padding:24px 16px;background:#f3f2f1} .ms .card{width:min(430px,100%)}
+.opt button .small{font-weight:400;margin-left:4px}
+@media (prefers-reduced-motion:no-preference){.btn,.tabs button,.cv-nav button,.lane{transition:background .12s,border-color .12s}.panel{animation:slide .18s ease-out}.toast{animation:pop .18s ease-out}
+ @keyframes slide{from{transform:translateX(24px);opacity:.6}to{transform:none;opacity:1}} @keyframes pop{from{transform:translate(-50%,8px);opacity:0}to{transform:translate(-50%,0);opacity:1}}}
+</style>
+
+<div class="wrap">
+  <div class="pbar" role="toolbar" aria-label="Presenter controls">
+    <span class="name">Avenue · demo</span>
+    <span class="seg" id="segSurface"><button data-act="surface" data-v="member">Member portal</button><button data-act="surface" data-v="staff">Staff app</button></span>
+    <span class="seg" id="segDevice"><button data-act="device" data-v="desktop">Desktop</button><button data-act="device" data-v="phone">Phone</button></span>
+    <span class="grow"></span>
+    <button class="pbtn" data-act="tourPrev" id="btnPrev">‹ Back</button>
+    <button class="pbtn go" data-act="tourNext" id="btnNext">Start tour ›</button>
+    <button class="pbtn" data-act="optsToggle" id="btnOpts" aria-expanded="false">Demo options</button>
+    <button class="pbtn" data-act="truth" id="btnTruth" aria-expanded="false">What is real here</button>
+  </div>
+  <div class="tour" id="tour" hidden><b id="tourStep"></b><span id="tourSay"></span></div>
+  <div class="opts" id="opts" hidden>
+    <label>Member scenario <select id="selScenario" data-chg="scenario"><option value="ok">In good standing</option><option value="doc">Insurance expired</option><option value="due">Balance overdue</option><option value="new">New applicant</option><option value="out">Signed out</option></select></label>
+    <label>Staff app signed in as <select id="selRole" data-chg="role"><option value="owner">Flavors owner</option><option value="staff">Flavors staff account</option><option value="hq">B Street HQ</option></select></label>
+    
+    <label><input type="checkbox" id="chkOpen" data-chg="open" checked> Show “to confirm” markers</label>
+    <button class="btn" data-act="reset">Reset demo</button>
+  </div>
+  <div class="truth" id="truth" hidden>
+    <div><h3>What this is</h3><ul><li>A clickable design prototype in HTML. It is not the built application and is connected to nothing.</li><li>Members, bookings, readings and invoices are sample entries so the screens are not empty.</li><li>Every feature shown comes from the client’s scope documents and emails. No prices, allowances or rates are shown, because none have been supplied. “Plan A–C”, “Station 1–3”, “Equipment 1–2” and “Sample Member A–D” are placeholder labels.</li><li>The green theme and “A” mark are proposals. Brand files have not been supplied.</li></ul></div>
+    <div><h3>Member portal: buildable as shown</h3><ul><li>One custom web part (SPFx, React, Fluent UI) on a SharePoint page. SharePoint’s own top bar and site header stay visible, as drawn.</li><li>Tabs, side panel, timeline, cards and the phone layout are ordinary React and CSS, which a web part allows.</li><li>Icons shown are stand-ins for Fluent UI icons.</li><li>Members sign in on Microsoft’s own page as guest accounts. The demo shows a stand-in with no password field.</li></ul></div>
+    <div><h3>Staff app: buildable, with limits</h3><ul><li>A Power Apps canvas app using lists, forms, toggles, dialogs and simple charts.</li><li>On desktop it is shown at 1366×768 scaled to the window. The phone layout shown needs a separate responsive layout in Power Apps, which is extra build effort.</li><li>Dashboard totals need a summary list refreshed on a schedule, so they are minutes old, not live.</li></ul></div>
+    <div><h3>Not ours to design</h3><ul><li>Stripe’s payment and onboarding pages. The demo simulates those steps so the flow can be followed; the real pages are Stripe’s design, not this one.</li><li>Payments, refunds, retries and emails here are simulated. No money moves and nothing is sent.</li><li>Emails are simple messages from Microsoft 365 Outlook.</li><li>B Street’s Power BI reports. The Analytics screen is a stand-in; the real report uses Power BI’s own design.</li><li>Only the 15-day and 7-day event cancellation rules come from the client. Nothing is shown for other notice periods.</li></ul></div>
+    <div><h3>Still to decide</h3><ul><li>Amber “to confirm” markers flag rules or values the client has not supplied. Numbers match docs/OPEN_QUESTIONS.md.</li><li>How a new applicant reaches plan selection and payment before having a sign-in (Q-20).</li><li>How team members are identified at check-in (Q-10).</li></ul></div>
+  </div>
+  <div class="caption" id="frameCaption"></div>
+  <div id="app"></div>
+</div>
+
+<script>
+/* ===== data ===== */
+const DAYS=[['Mon',16],['Tue',17],['Wed',18],['Thu',19],['Fri',20],['Sat',21],['Sun',22]], TODAY=3, NOW=13.83, H0=6, H1=22;
+const RES=[['st1','Station 1',''],['st2','Station 2',''],['st3','Station 3',''],['mixer','Equipment 1','Equipment'],['oven','Equipment 2','Equipment'],['dining','Dining / event space','']];
+const STATIONS=['st1','st2','st3','dining'], EQUIP=['mixer','oven'];
+const ME='Sample Member A', HT='Sample Member B', GL='Sample Member C', BD='Sample Member D';
+const EVD=[['Thu 26 Nov',7],['Sun 29 Nov',10],['Sat 12 Dec',23]], EVFEE=0, EVDEP=0;
+const PLANS={'Plan A':{},'Plan B':{},'Plan C':{}};
+const ICON={home:'M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',cal:'M4 6h16v15H4zM4 10h16M8 3v4M16 3v4',check:'M4 12.5l5 5L20 6.5',checkc:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8 12.5l3 3 5-6',doc:'M6 3h8l4 4v14H6zM14 3v4h4M9 13h6M9 17h6',card:'M3 6h18v12H3zM3 10h18M7 15h4',bell:'M6 16v-5a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0',plus:'M12 5v14M5 12h14',users:'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 6.5M18 14.5a6 6 0 0 1 3.5 5.5',temp:'M10 4a2 2 0 0 1 4 0v9.5a4 4 0 1 1-4 0zM12 9v8',shield:'M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z',alert:'M12 4l9 16H3zM12 10v4M12 17.5v.5',chart:'M4 20V10M10 20V4M16 20v-7M22 20H2',clock:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2',x:'M6 6l12 12M18 6 6 18',mail:'M3 6h18v12H3zM3 7l9 6 9-6',lock:'M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3',help:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17v.5',sliders:'M4 7h10M18 7h2M4 17h4M12 17h8M16 5v4M10 15v4',flag:'M5 21V4M5 4h12l-2 4 2 4H5',chev:'M9 6l6 6-6 6',upload:'M12 16V5M7 9l5-5 5 5M4 19h16',speak:'M4 10v4h3l6 4V6l-6 4zM17 9a4 4 0 0 1 0 6',pin:'M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5'};
+const ic=(n,s=18)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${ICON[n]}"/></svg>`;
+const fresh=()=>({surface:'member',device:'desktop',scenario:'ok',role:'owner',open:true,ex:false,tab:'home',stab:'dash',day:TODAY,step:-1,panel:null,toast:null,
+  join:0,plan:'Plan B',cday:8,form:{res:'st1',day:TODAY+1,s:13,e:17,eq:[]},last:null,override:{},dlg:null,msel:ME,
+  checkin:{Jordan:true,Sam:false},exit:false,answers:{},docRenewed:false,paid:false,approved:false,read:{},
+  ms:null,more:false,events:[],ev:{d:2,s:17,e:22},
+  onb:null,payFail:false,docsExtra:[],exitForm:false,call:false,follow:false,noshowBack:false,stripeReady:false,invited:false,gate:{resp:false,hooks:false},refunds:{},retry:false,
+  mail:[{w:'Today 1:00 PM',s:'Your kitchen booking starts in 1 hour',b:'Open Avenue to see your booking and check in.'},{w:'Today 12:00 PM',s:'Your kitchen booking starts in 2 hours',b:'Open Avenue to see your booking and check in.'},{w:'Today 11:00 AM',s:'Your kitchen booking starts in 3 hours',b:'Open Avenue to see your booking and check in.'},{w:'Tue 17 Nov',s:'A document needs your attention',b:'Sign in to Avenue to view it.'},{w:'Mon 9 Nov',s:'New notice from Flavors',b:'Sign in to Avenue to read it.'}],
+  members:[{n:ME,owner:'Member A owner',team:'2 people'},{n:HT,plan:'Plan C',pay:['Payment failed','bad'],doc:['Current','ok'],bk:['Can book','ok'],owner:'Member B owner',team:'5 people'},{n:GL,plan:'Plan A',pay:['Overdue','bad'],doc:['Expiring','warn'],bk:['Blocked','bad'],owner:'Member C owner',team:'1 person'},{n:BD,plan:'Plan B',pay:['Paid','ok'],doc:['Missing','mute'],bk:['Onboarding','info'],owner:'Member D owner',team:'3 people'}],
+  tickets:[{id:'T-1',t:'Sample support request',d:'Request details appear here.',st:'Resolved',by:'Owner',when:'3 Nov'}],
+  perm:{conf:true,behalf:true,late:true,docs:true,fin:true,notice:true},
+  notices:[{id:'n1',t:'Sample announcement',d:'9 Nov',b:'Announcement text written by Flavors staff appears here.'},{id:'n2',t:'Sample notice',d:'2 Nov',b:'Notice text written by Flavors staff appears here.'},{id:'n3',t:'Sample newsletter',d:'1 Nov',b:'Newsletter text written by Flavors staff appears here.'}],
+  bookings:[
+   {id:'B-1031',res:'st1',day:0,s:9,e:13,who:HT,eq:['mixer'],st:'confirmed'},{id:'B-1033',res:'st2',day:0,s:14,e:18,who:ME,eq:[],st:'confirmed'},
+   {id:'B-1036',res:'st1',day:1,s:7,e:11,who:GL,eq:[],st:'confirmed'},{id:'B-1038',res:'st3',day:2,s:8,e:12,who:HT,eq:['oven'],st:'confirmed'},
+   {id:'B-1040',res:'st3',day:3,s:8,e:12,who:GL,eq:[],st:'confirmed'},{id:'B-1042',res:'st2',day:3,s:14,e:18,who:ME,eq:['oven'],st:'confirmed'},
+   {id:'B-1044',res:'st1',day:3,s:18,e:22,who:HT,eq:[],st:'confirmed'},{id:'B-1047',res:'st3',day:4,s:8,e:12,who:GL,eq:[],st:'confirmed'},
+   {id:'B-1049',res:'st2',day:4,s:9,e:12,who:HT,eq:['mixer'],st:'confirmed'},{id:'B-1050',res:'dining',day:5,s:10,e:16,who:HT,eq:[],st:'confirmed'},
+   {id:'B-1051',res:'st2',day:3,s:16,e:20,who:GL,eq:[],st:'conflict'}]});
+let S=fresh(), toastTimer;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hr=h=>{const m=h%1?':30':':00',x=Math.floor(h),p=x>=12?'PM':'AM';return ((x+11)%12+1)+m+' '+p};
+const span=b=>`${hr(b.s)}–${hr(b.e)}`;
+const dn=i=>`${DAYS[i][0]} ${DAYS[i][1]} Nov`, rn=id=>(RES.find(r=>r[0]===id)||[,id])[1];
+const where=b=>rn(b.res)+(b.eq.length?' + '+b.eq.map(rn).join(', '):'');
+const tbc=(q,t)=>`<span class="tbc" title="${t}">To confirm · ${q}</span>`;
+const pill=(t,c,i)=>`<span class="pill ${c}">${i?ic(i,13):''}${t}</span>`;
+const money=()=>'<span class="muted">Set by Flavors</span>';
+const EST={confirmed:['Confirmed','ok'],cancelled:['Cancelled · full refund','mute'],forfeit:['Cancelled · deposit forfeited','mute'],asked:['Cancellation with Flavors','warn']};
+const ST={confirmed:['Confirmed','ok'],conflict:['With Flavors staff','warn'],declined:['Declined','bad'],cancelled:['Cancelled','mute'],latecancel:['Late cancel · with staff','warn']};
+const plan=()=>PLANS[S.plan];
+const blocked=()=>!S.override[ME]&&(S.scenario==='doc'&&!S.docRenewed?'doc':S.scenario==='due'&&!S.paid?'due':null);
+const uses=x=>[x.res,...x.eq];
+const clash=(b,skip)=>S.bookings.find(o=>o!==skip&&o.id!==b.id&&o.st==='confirmed'&&o.day===b.day&&o.s<b.e&&b.s<o.e&&uses(o).some(u=>uses(b).includes(u)));
+const mine=()=>S.bookings.filter(b=>b.who===ME&&b.st!=='cancelled').sort((a,b)=>a.day-b.day||a.s-b.s);
+const usedHours=()=>S.bookings.filter(b=>b.who===ME&&b.st==='confirmed').reduce((a,b)=>a+b.e-b.s,0);
+const mail=(s,b)=>S.mail.unshift({w:'Today 1:50 PM',s,b});
+const toast=t=>{S.toast=t;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{S.toast=null;render()},3200)};
+
+/* ===== shared pieces ===== */
+function timeline(day,pick){const pct=h=>(h-H0)/(H1-H0)*100;
+  return `<div class="tl"><span></span><div class="hours">${[6,8,10,12,14,16,18,20].map(h=>`<span>${hr(h).replace(':00','')}</span>`).join('')}</div>
+  ${RES.map(([id,name,kind])=>`<span class="lab">${name}<small>${kind}</small></span><div class="lane ${pick?'pick':''}" ${pick?`data-act="slot" data-res="${id}" title="Click a free time to book"`:''}>${day===TODAY?`<i class="nowline" style="left:${pct(NOW)}%"></i>`:''}${S.bookings.filter(b=>b.day===day&&uses(b).includes(id)&&(b.st==='confirmed'||(b.st==='conflict'&&(b.who===ME||!pick)))).map(b=>`<button class="bk ${b.who===ME&&pick?'mine':''} ${b.st==='conflict'?'pend':''}" style="left:${pct(b.s)}%;width:calc(${pct(b.e)-pct(b.s)}% - 2px)" ${pick&&b.who===ME?`data-act="detail" data-v="${b.id}"`:'data-act="noop" tabindex="-1"'} title="${b.who} · ${span(b)}"><b>${b.who}</b>${span(b)}</button>`).join('')}</div>`).join('')}</div>`}
+const dayStrip=()=>`<div class="days">${DAYS.map((d,i)=>`<button aria-pressed="${S.day===i}" data-act="day" data-v="${i}">${i===TODAY?'<span class="today">Today</span>':d[0]}<b>${d[1]}</b></button>`).join('')}</div>`;
+function ring(used,total){const r=30,c=2*Math.PI*r,f=Math.min(1,used/total);return `<svg class="ring" width="76" height="76" viewBox="0 0 76 76" role="img" aria-label="${used} of ${total} hours"><circle cx="38" cy="38" r="${r}" fill="none" stroke="var(--mute-bg)" stroke-width="8"/><circle cx="38" cy="38" r="${r}" fill="none" stroke="var(--brand)" stroke-width="8" stroke-linecap="round" stroke-dasharray="${c*f} ${c}" transform="rotate(-90 38 38)"/><text x="38" y="43" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">${Math.round(f*100)}%</text></svg>`}
+
+/* ===== MEMBER PORTAL ===== */
+const TABS=[['home','Home','home'],['cal','Calendar','cal'],['checkin','Check-in','checkc'],['docs','Documents','doc'],['bill','Billing','card'],['notices','Notices','bell']];
+function msFrame(){return `<div class="frame ${S.device==='phone'?'phone':''}"><div class="scroll"><div class="ms"><div class="card"><div class="banner info">${ic('lock',20)}<span class="grow"><b>Simulation.</b> In the real app this is Microsoft’s own sign-in page. Avenue never sees a password.</span></div><h3 style="font-size:20px">Pick an account</h3><button class="pickrow" style="border:1px solid var(--line)" data-act="msPick"><span class="person">A</span><span style="flex:1"><b>Member account</b><br><span class="muted small">owner@member-a.example · guest user</span></span>${ic('chev')}</button><p class="muted small">Opening the Avenue link while signed out goes straight here. Members use the email Flavors invited.</p></div></div></div></div>`}
+function memberFrame(){if(S.ms)return msFrame();const phone=S.device==='phone', isNew=S.scenario==='new', unread=S.notices.filter(n=>!S.read[n.id]).length;
+  const tabs=TABS.filter(t=>!phone||t[0]!=='notices');
+  const nav=phone?`<div class="wpnav"><span class="person">A</span><b style="flex:1">${ME}</b><button class="iconbtn" data-act="tab" data-v="notices" aria-label="Notices">${ic('bell',20)}${unread?'<i class="dot"></i>':''}</button></div>`
+   :`<div class="wpnav"><div class="tabs" role="tablist">${tabs.map(([k,l,i])=>`<button role="tab" aria-selected="${S.tab===k}" data-act="tab" data-v="${k}">${ic(i)}${l}${k==='notices'&&unread?pill(unread,'warn'):''}</button>`).join('')}</div><button class="btn primary" data-act="openBook">${ic('plus')}Book the kitchen</button></div>`;
+  return `<div class="frame ${phone?'phone':''} ${S.open?'':'hide-open'} ${S.ex?'':'hide-ex'}"><div class="scroll" id="mscroll">
+   <div class="sp-suite"><span class="waffle" aria-hidden="true">${'<i></i>'.repeat(9)}</span><span>SharePoint</span><span class="search">Search this site</span><span class="avatar" title="Signed-in guest">${isNew?'?':'A'}</span></div>
+   <div class="sp-site"><span class="mark">A</span><h2>Avenue</h2><span class="sitename">Flavors Culinary Hub Hyattsville</span></div>
+   <div class="wp">${isNew?`<span></span>${joinFlow()}`:S.onb?setup():nav+({home,cal,checkin,docs,bill,notices})[S.tab]()}</div></div>
+   ${phone&&!isNew&&!S.onb?`<button class="fab" data-act="openBook">${ic('plus',20)}Book</button><div class="bnav" role="tablist">${tabs.map(([k,l,i])=>`<button role="tab" aria-selected="${S.tab===k}" data-act="tab" data-v="${k}">${ic(i,22)}${l}</button>`).join('')}</div>`:''}
+   ${panel()}${S.toast?`<div class="toast" role="status">${ic('checkc')}${S.toast}</div>`:''}</div>`}
+function home(){const b=blocked(), list=mine(), next=list.find(x=>x.st==='confirmed'&&(x.day>TODAY||(x.day===TODAY&&x.e>NOW))), exp=S.scenario==='doc'&&!S.docRenewed;
+  const hero=b?`<div class="hero bad"><div class="l"><span class="eyebrow">Booking blocked</span><div class="big">${b==='doc'?'A document has expired':'Your balance is overdue'}</div><div class="meta"><span>${b==='doc'?'Upload the renewal to book again.':'Pay the balance to book again.'} Only the Flavors owner can override this.</span></div><div>${b==='doc'?tbc('Q-11','What happens to existing bookings after a document expires is not decided'):tbc('Q-07','When a balance counts as overdue is not decided')}</div></div><button class="btn onhero lg" data-act="tab" data-v="${b==='doc'?'docs':'bill'}">${b==='doc'?ic('upload')+'Upload renewal':ic('card')+'Go to billing'}</button></div>`
+   :next?`<div class="hero"><div class="l"><span class="eyebrow">Your next booking</span><div class="big">${next.day===TODAY?'Today':dn(next.day)}, ${span(next)}</div><div class="meta"><span>${ic('pin',16)}${where(next)}</span></div></div><div class="row">${next.day===TODAY?`<button class="btn onhero lg" data-act="tab" data-v="checkin">${ic('checkc')}Check in</button>`:''}<button class="btn ghosthero lg" data-act="detail" data-v="${next.id}">View booking</button></div></div>`
+   :`<div class="hero plain"><div class="l"><div class="big">No upcoming booking</div></div><button class="btn primary lg" data-act="openBook">${ic('plus')}Book the kitchen</button></div>`;
+  return `<div style="padding-top:4px"><div class="h1">Home</div><div class="sub">${ME} · ${S.plan}${S.override[ME]?' · '+pill('Booking allowed by the Flavors owner','warn'):''}</div></div>${hero}
+  <div class="grid three">
+   <div class="card stat"><span class="eyebrow">Hours booked this week</span><div class="v num">${usedHours()} h</div><div class="muted small">Included hours depend on your plan. ${tbc('Q-04','Plans, included hours and extra-hour rates not supplied')}</div></div>
+   <div class="card stat"><span class="eyebrow">Balance</span><div class="v">${S.scenario==='due'&&!S.paid?'Overdue':'Nothing due'}</div><div class="muted small">Collected on day ${S.cday} of each month</div><button class="btn link" style="align-self:flex-start" data-act="tab" data-v="bill">Invoices and payments</button></div>
+   <div class="card stat"><span class="eyebrow">Documents</span><div class="v">${exp?'1 expired':S.docRenewed?'All current':'1 expiring'}</div><button class="btn link" style="align-self:flex-start" data-act="tab" data-v="docs">View documents</button></div>
+  </div>
+  <div class="grid"><div class="card"><h3><span class="grow">Your bookings</span><button class="btn link" data-act="tab" data-v="cal">Open calendar</button></h3><div>${list.map(x=>`<div class="li"><span class="datebox">${DAYS[x.day][0]}<b>${DAYS[x.day][1]}</b></span><span class="grow"><b>${span(x)}</b><br><span class="muted small">${where(x)}${x.note?' · '+x.note:''}</span></span>${pill(...ST[x.st])}<button class="iconbtn" data-act="detail" data-v="${x.id}" aria-label="Open booking">${ic('chev')}</button></div>`).join('')||'<p class="muted">No bookings.</p>'}</div></div>
+   <div class="card"><h3><span class="grow">Notices</span><button class="btn link" data-act="tab" data-v="notices">All notices</button></h3><div>${S.notices.slice(0,3).map(n=>`<div class="li"><span class="grow"><b>${esc(n.t)}</b><br><span class="muted small">Posted ${n.d}</span></span>${S.read[n.id]?'':pill('New','info')}</div>`).join('')}</div></div></div>${S.events.length?`<div class="card"><h3>Your events</h3><div>${S.events.map(e=>{const L=EVD[e.d][0].split(' ');return `<div class="li"><span class="datebox">${L[0]}<b>${L[1]}</b></span><span class="grow"><b>${EVD[e.d][0]} · ${hr(e.s)}–${hr(e.e)}</b><br><span class="muted small">Dining / event space · deposit paid</span></span>${pill(...EST[e.st])}<button class="iconbtn" data-act="evOpen" data-v="${e.id}" aria-label="Open event">${ic('chev')}</button></div>`}).join('')}</div></div>`:''}`}
+function freeSlots(res,day){const busy=S.bookings.filter(b=>b.day===day&&b.st==='confirmed'&&uses(b).includes(res)).sort((a,b)=>a.s-b.s), out=[];let t=day===TODAY?Math.ceil(NOW):H0;
+  for(const b of busy){if(b.s-t>=1)out.push([t,b.s]);t=Math.max(t,b.e)} if(H1-t>=1)out.push([t,H1]);return {busy,free:day<TODAY?[]:out}}
+function cal(){const phone=S.device==='phone';
+  const body=phone?STATIONS.map(id=>{const f=freeSlots(id,S.day);return `<div class="card"><h3>${rn(id)}</h3><div>${f.busy.map(b=>`<div class="li"><span class="grow"><b>${span(b)}</b><br><span class="muted small">${b.who}</span></span>${b.who===ME?pill('Yours','info'):pill('Booked','mute')}</div>`).join('')}${f.free.map(([s,e])=>`<div class="li"><span class="grow"><b style="color:var(--ok)">Free ${hr(s)}–${hr(e)}</b></span><button class="btn" data-act="slotAt" data-res="${id}" data-s="${s}">Book</button></div>`).join('')}${f.busy.length+f.free.length?'':'<div class="li"><span class="muted">Nothing to show</span></div>'}</div></div>`}).join('')
+   :`<div class="card"><div class="tscroll">${timeline(S.day,true)}</div><div class="legend"><span><i class="sw" style="background:var(--brand)"></i>Your bookings</span><span><i class="sw" style="background:#e3dfd6"></i>Other members</span>${S.day===TODAY?'<span><i class="sw" style="background:var(--accent)"></i>Now</span>':''}<span>Click any free time to book it.</span></div></div>`;
+  return `<div style="padding-top:4px"><div class="h1">Kitchen calendar</div><div class="sub">Week of 16 November 2026 · Flavors time (Eastern)</div></div>${dayStrip()}${body}
+  <p class="muted small">Everyone sees member name, station, equipment and time. Nothing else is shared. ${tbc('Q-19','Whether the calendar shows the business name or the person’s name is not decided')} ${tbc('Q-04','Station and equipment names are placeholders until Flavors supplies its list')}</p>`}
+function panel(){const p=S.panel;if(!p)return '';
+  const shell=(title,body,foot)=>`<button class="scrim" data-act="closePanel" aria-label="Close"></button><aside class="panel" role="dialog" aria-label="${title}"><div class="in"><header><h2>${title}</h2><button class="iconbtn" data-act="closePanel" aria-label="Close">${ic('x',20)}</button></header><div class="body">${body}</div>${foot?`<footer>${foot}</footer>`:''}</div></aside>`;
+  if(p.type==='mail')return shell('Emails Avenue sent you',`<p class="muted small">Sent from Flavors’ Microsoft 365 mailbox. Apart from booking confirmations, emails only ask you to sign in.</p><div>${S.mail.map(m=>`<div class="li"><span style="color:var(--ink3)">${ic('mail')}</span><span class="grow"><b>${esc(m.s)}</b><br><span class="muted small">${esc(m.b)}</span></span><span class="muted small" style="white-space:nowrap">${m.w}</span></div>`).join('')}</div><p class="muted small">Reminders go out 3, 2 and 1 hour before a booking. ${tbc('Q-10','Reminder catch-up for late bookings and missed check-in grace periods are not supplied')}</p>`);
+  if(p.type==='book'&&S.form.res==='dining'&&!blocked()){const hsel=(id,n)=>`<select id="${id}">${Array.from({length:H1-H0+1},(_,i)=>H0+i).map(h=>`<option value="${h}" ${h===n?'selected':''}>${hr(h)}</option>`).join('')}</select>`;
+    return shell('Book the dining / event space',`<div class="fl"><span class="lbl">Station or space</span><div class="opt">${STATIONS.map(id=>`<button aria-pressed="${S.form.res===id}" data-act="fres" data-v="${id}">${rn(id)}</button>`).join('')}</div></div>
+     <div class="banner info">${ic('users',20)}<span class="grow"><b>The dining / event space is booked as an event</b>, with a security deposit.</span></div>
+     <div class="fl"><span class="lbl">Event date</span><div class="opt">${EVD.map((e,i)=>`<button aria-pressed="${S.ev.d===i}" data-act="evd" data-v="${i}">${e[0]}<span class="muted small">in ${e[1]} days</span></button>`).join('')}</div></div>
+     <div class="two"><div class="fl"><label for="evS">Start</label>${hsel('evS',S.ev.s)}</div><div class="fl"><label for="evE">End</label>${hsel('evE',S.ev.e)}</div></div>
+     <div class="card" style="box-shadow:none;background:var(--bg)"><dl class="kv"><dt>Security deposit</dt><dd>${money()}</dd></dl><p class="muted small">15 or more days’ notice: full refund. At 7 days’ notice: the security deposit and payments already made are forfeited, with no further balance owed. ${tbc('Q-08','Rules between 8 and 14 days and under 7 days are not supplied')} ${tbc('Q-04','Event prices, deposit amount and payment schedule are not supplied')}</p></div>`,
+     `<button class="btn primary block lg" data-act="evPay">${ic('lock')}Pay deposit on Stripe</button>`)}
+  if(p.type==='event'){const e=S.events.find(x=>x.id===p.id), E=EVD[e.d], n=E[1];
+    return shell('Event · '+E[0],`<div class="row">${pill(...EST[e.st])}<span class="muted">${e.id}</span></div><dl class="kv"><dt>Time</dt><dd>${hr(e.s)}–${hr(e.e)}</dd><dt>Space</dt><dd>Dining / event space</dd><dt>Security deposit</dt><dd>Paid</dd></dl>
+     ${e.st==='confirmed'?`<div class="card" style="box-shadow:none"><h3>Cancel this event</h3>${n>=15?`<p class="muted">${n} days away. 15 or more days’ notice: full refund.</p><button class="btn danger" data-act="evCancel" data-id="${e.id}" data-v="cancelled">Cancel · full refund</button>`:n===7?`<p class="muted">7 days away. The security deposit and payments already made are forfeited, with no further balance owed.</p><button class="btn danger" data-act="evCancel" data-id="${e.id}" data-v="forfeit">Cancel · deposit forfeited</button>`:`<p class="muted">${n} days away. The client has not supplied a rule for this notice period, so no cancellation outcome is shown. ${tbc('Q-08','Rules between 8 and 14 days and under 7 days are not supplied')}</p>`}</div>`:''}`)}
+  if(p.type==='pay'){const K={event:[`Security deposit · dining / event space, ${EVD[S.ev.d][0]}`,EVDEP,''],join:[`${S.plan} membership · first payment`,plan().p,tbc('Q-06','First payment amount and proration not decided')],invoice:[`Invoice INV-0098 · ${S.plan} membership`,plan().p,''],card:['Update the card used for monthly collection',0,'']}[p.kind];
+    return shell('Secure payment',`<div class="banner info">${ic('lock',20)}<span class="grow"><b>Simulation.</b> In the real app this step is Stripe’s own page, with Stripe’s design. Card details are typed there and never reach Avenue.</span></div>
+     <div class="card" style="box-shadow:none"><div class="row between"><b>Flavors Culinary Hub Hyattsville</b>${pill('Test mode','mute')}</div><dl class="kv"><dt>${K[0]}</dt><dd>${K[1]?money(K[1]):'No charge'}</dd>${K[1]?`<dt><b>Total today</b></dt><dd>${money(K[1])}</dd>`:''}</dl>${K[2]?`<div>${K[2]}</div>`:''}</div>`,
+     `<button class="btn primary block lg" data-act="payOk">Simulate: ${p.kind==='card'?'card saved':'payment succeeds'}</button><button class="btn block" data-act="payFail">Simulate: card declined</button>`)}
+  if(p.type==='upload'){const types=['Permit','Licence','Insurance','Certification'];
+    return shell(p.doc?'Upload: '+p.doc:'Add a document',`<div class="fl"><label for="uT">Document type</label><select id="uT">${types.map(t=>`<option ${t===p.doc?'selected':''}>${t}</option>`).join('')}</select></div><div class="two"><div class="fl"><label for="uI">Issue date</label><input id="uI" type="date" value="2026-11-19"></div><div class="fl"><label for="uE">Expiry date</label><input id="uE" type="date" value="2027-11-19"></div></div>
+     <div class="drop">${ic('doc',26)}<span><b style="color:var(--ink)">sample-file.pdf</b><br>Sample file for this demo</span></div><p class="muted small">${tbc('Q-11','Document types are not confirmed')}</p>`,
+     `<button class="btn primary block lg" data-act="uploadSave">Save document</button>`)}
+  if(p.type==='inv'){const due=S.scenario==='due'&&!S.paid, I={'INV-0098':[`${S.cday} Nov 2026`,[[S.plan+' membership',plan().p]],due],'INV-0061':[`${S.cday} Oct 2026`,[[S.plan+' membership',0],['Extra hours',0]],false],'INV-0032':[`${S.cday} Sep 2026`,[[S.plan+' membership',plan().p]],false]}[p.id];
+    return shell('Invoice '+p.id,`<div class="row">${I[2]?pill('Overdue','bad'):pill('Paid','ok','check')}<span class="muted">${I[0]}</span></div><dl class="kv">${I[1].map(l=>`<dt>${l[0]}</dt><dd>${money(l[1])}</dd>`).join('')}<dt><b>Total</b></dt><dd>${money(I[1].reduce((a,l)=>a+l[1],0))}</dd></dl><p class="muted small">${I[2]?'Collection failed. Pay to lift the booking pause.':'Paid through Stripe.'}</p>`,I[2]?`<button class="btn primary block lg" data-act="openPay" data-v="invoice">Pay now on Stripe</button>`:'')}
+  if(p.type==='book'){const b=blocked();if(b)return shell('Book the kitchen',`<div class="banner bad"><span class="grow"><b>New bookings are paused.</b> ${b==='doc'?'Your insurance document has expired.':'An invoice is overdue.'} Only the Flavors owner can grant an exception.</span></div>`,`<button class="btn primary block lg" data-act="tab" data-v="${b==='doc'?'docs':'bill'}">${b==='doc'?'Upload renewal':'Go to billing'}</button>`);
+    const f=S.form, bad=f.e<=f.s, hit=!bad&&clash({id:'new',res:f.res,day:f.day,s:f.s,e:f.e,eq:f.eq}), L=f.e-f.s, left=Math.max(0,plan().h-usedHours()), over=Math.max(0,L-left);
+    const hours=n=>Array.from({length:(H1-H0)*2+1},(_,i)=>H0+i/2).map(h=>`<option value="${h}" ${h===n?'selected':''}>${hr(h)}</option>`).join('');
+    return shell('Book the kitchen',`
+     <div class="fl"><span class="lbl">Station or space</span><div class="opt">${STATIONS.map(id=>`<button aria-pressed="${f.res===id}" data-act="fres" data-v="${id}">${rn(id)}</button>`).join('')}</div></div>
+     <div class="fl"><label for="fDay">Day</label><select id="fDay" data-chg="f" data-k="day">${DAYS.map((d,i)=>i>=TODAY?`<option value="${i}" ${f.day===i?'selected':''}>${i===TODAY?'Today, ':''}${dn(i)}</option>`:'').join('')}</select></div>
+     <div class="two"><div class="fl"><label for="fS">Start</label><select id="fS" data-chg="f" data-k="s">${hours(f.s)}</select></div><div class="fl"><label for="fE">End</label><select id="fE" data-chg="f" data-k="e">${hours(f.e)}</select></div></div>
+     <div class="fl"><span class="lbl">Add equipment</span><div class="opt">${EQUIP.map(id=>`<button aria-pressed="${f.eq.includes(id)}" data-act="feq" data-v="${id}">${f.eq.includes(id)?ic('check',15):ic('plus',15)}${rn(id)}</button>`).join('')}</div></div>
+     ${bad?`<div class="banner bad"><span class="grow"><b>The end time must be after the start time.</b></span></div>`:hit?`<div class="banner warn">${ic('alert',20)}<span class="grow"><b>This overlaps ${hit.who}</b> (${span(hit)}). You can still send it. It goes to Flavors staff to resolve.</span></div>`:`<div class="banner ok">${ic('checkc',20)}<span class="grow"><b>Available.</b> It is confirmed automatically.</span></div>`}
+     <div class="card" style="box-shadow:none;background:var(--bg)"><dl class="kv"><dt>Length</dt><dd class="num">${bad?'—':L+' h'}</dd></dl><p class="muted small">Hours, equipment and storage beyond your plan are charged on your invoice. ${tbc('Q-04','Rates and rounding not supplied')} ${tbc('Q-06','Which invoice late-month usage goes on is not decided')}</p></div>`,
+     `<button class="btn primary block lg" data-act="confirm" ${bad?'disabled':''}>${hit?'Send to Flavors staff':'Confirm booking'}</button>`)}
+  if(p.type==='done'){const x=S.last, ok=x.st==='confirmed';
+    return shell(ok?'You’re booked':'Sent to Flavors staff',`<div class="success"><span class="o ${ok?'':'w'}">${ic(ok?'check':'clock',32)}</span><div class="h1" style="font-size:22px">${ok?dn(x.day):'Waiting for Flavors staff'}</div><div class="muted">${ok?`${span(x)} · ${where(x)}`:`${dn(x.day)}, ${span(x)} · ${where(x)}. You will see the answer on your home screen.`}</div></div>
+     ${ok?`<div class="mail"><div class="mh">${ic('mail',14)} Confirmation email · “Your booking is confirmed”</div><div class="mb"><span>${dn(x.day)} · ${span(x)} · ${where(x)}</span><button class="btn primary" data-act="detail" data-v="${x.id}">View, change or cancel</button></div></div>`:''}`,
+     `<button class="btn primary block lg" data-act="closePanel">Done</button>`)}
+  const b=S.bookings.find(x=>x.id===p.id), away=(b.day-TODAY)*24+(b.s-NOW), late=away<24, live=b.st==='confirmed'&&(b.day>TODAY||(b.day===TODAY&&b.e>NOW));
+  const free=b.e<H1&&!S.bookings.some(o=>o!==b&&o.st==='confirmed'&&o.day===b.day&&uses(o).some(u=>uses(b).includes(u))&&o.s<b.e+1&&b.e<o.e);
+  return shell(`${dn(b.day)}`,`<div class="row">${pill(...ST[b.st])}<span class="muted">${b.id}</span></div>
+   <dl class="kv"><dt>Time</dt><dd>${span(b)}</dd><dt>Length</dt><dd class="num">${b.e-b.s} h</dd><dt>Station</dt><dd>${rn(b.res)}</dd><dt>Equipment</dt><dd>${b.eq.map(rn).join(', ')||'None'}</dd></dl>
+   ${b.note?`<div class="banner info"><span class="grow">${b.note}</span></div>`:''}
+   ${live?`<div class="card" style="box-shadow:none"><h3>Need more time?</h3>${free?`<p class="muted">The hour after is free.</p><button class="btn" data-act="extend" data-v="${b.id}">${ic('plus')}Extend to ${hr(b.e+1)}</button>`:b.ext?`<p class="muted">${b.ext==='asked'?'Your request for an extra hour is with Flavors staff.':'Flavors staff declined the extra hour.'}</p>`:`<p class="muted">The next hour is taken. You can ask Flavors staff.</p><button class="btn" data-act="extAsk" data-v="${b.id}">Ask Flavors staff for an extra hour</button>`}</div>
+   <div class="card" style="box-shadow:none"><h3>Cancel</h3>${late?`<p class="muted">Less than 24 hours away, so Flavors staff decide whether your hours are returned.</p><button class="btn" data-act="cancel" data-v="${b.id}">Request late cancellation</button>`:`<p class="muted">More than 24 hours away. Your hours are returned and the slot is released.</p><button class="btn danger" data-act="cancel" data-v="${b.id}">Cancel booking</button>`}<p class="muted small">Leaving early does not return hours.</p></div>`:''}
+   ${b.res==='dining'?`<p class="muted small">Events: 15 or more days’ notice gives a full refund. At 7 days’ notice the deposit and payments made are kept. ${tbc('Q-08','Rules for 8–14 days and under 7 days not supplied')}</p>`:''}`)}
+function checkin(){const t=mine().find(b=>b.day===TODAY&&b.st==='confirmed'&&b.e>NOW);
+  if(!t)return `<div style="padding-top:4px"><div class="h1">Check in</div></div><div class="card"><p class="muted">You have no booking left today.</p></div>`;
+  const Q=[['q1','Food-safety item'],['q2','Food-safety item'],['q3','Wellness item']], all=Q.every(q=>S.answers[q[0]]), fail=Q.some(q=>S.answers[q[0]]==='No'), done=S.checkin.Sam, prog=Math.max(0,Math.min(1,(NOW-t.s)/(t.e-t.s)));
+  return `<div style="padding-top:4px"><div class="h1">Check in</div><div class="sub">Today, ${span(t)} · ${where(t)}</div></div>
+  <div class="grid"><div class="card"><h3>Team check-in</h3><div><div class="li"><span class="person">1</span><span class="grow"><b>Team member 1</b><br><span class="muted small">1:46 PM</span></span>${pill('Checked in','ok','check')}</div><div class="li"><span class="person">2</span><span class="grow"><b>Team member 2</b></span>${done?(fail?pill('Follow-up needed','warn','alert'):pill('Checked in','ok','check')):pill('Not yet','mute')}</div></div><p class="muted small">Every team member checks in on arrival. ${tbc('Q-10','How each team member is identified and signs in is not decided')}</p></div>
+  ${done?`<div class="card"><h3>${fail?'Recorded, with follow-up':'Everyone is checked in'}</h3><div class="banner ${fail?'warn':'ok'}"><span class="grow">${fail?'The member business owner and the Flavors owner/staff have been notified for correction and follow-up.':'Answers are visible only to your business and Flavors staff.'}</span></div>
+    ${S.exit?`<div class="banner ok">${ic('checkc',20)}<span class="grow"><b>Checked out.</b> Session closed.</span></div>`:S.exitForm?`<div>${[['e1','Exit question'],['e2','Exit question']].map(([k,l],i)=>`<div class="li"><span class="grow"><b>${i+1}. ${l}</b><br><span class="muted small">Wording to come from Flavors</span></span><span class="yn">${['Yes','No'].map(v=>`<button aria-pressed="${S.answers[k]===v}" data-act="ans" data-k="${k}" data-v="${v}">${v}</button>`).join('')}</span></div>`).join('')}</div><button class="btn primary" data-act="exit" ${S.answers.e1&&S.answers.e2?'':'disabled'}>Submit check-out</button>`:`<div class="row"><button class="btn primary" data-act="exitForm">${ic('checkc')}Check out</button><button class="btn" data-act="detail" data-v="${t.id}">Need more time?</button></div><p class="muted small">Checking out never extends a booking. ${tbc('Q-10','Whether check-out is per person or per booking is not decided')}</p>`}</div>`
+   :`<div class="card"><h3>Entry checklist · Team member 2</h3><div>${Q.map(([k,l],i)=>`<div class="li"><span class="grow"><b>${i+1}. ${l}</b><br><span class="muted small">Wording to come from Flavors</span></span><span class="yn">${['Yes','No'].map(v=>`<button aria-pressed="${S.answers[k]===v}" data-act="ans" data-k="${k}" data-v="${v}">${v}</button>`).join('')}</span></div>`).join('')}</div><p class="muted small">${tbc('Q-10','Checklist questions and pass/fail rules not supplied')}</p><button class="btn primary lg" data-act="submitCheck" ${all?'':'disabled'}>Submit check-in</button></div>`}</div>`}
+function docs(){const exp=S.scenario==='doc'&&!S.docRenewed;
+  const D=[['Permit','2 Feb 2027','ok','Current'],['Licence','15 Jan 2027','ok','Current'],['Insurance',S.docRenewed?'1 Dec 2027':exp?'1 Nov 2026':'1 Dec 2026',exp?'bad':S.docRenewed?'ok':'warn',exp?'Expired':S.docRenewed?'Current':'Expiring soon'],['Certification','10 Mar 2027','ok','Current']];
+  return `<div style="padding-top:4px"><div class="h1">Compliance documents</div><div class="sub">Visible only to ${ME} and Flavors staff</div></div>
+  ${exp?`<div class="banner bad">${ic('alert',20)}<span class="grow"><b>A document has expired.</b> New bookings are blocked until you upload the renewal.</span></div>`:''}
+  <div class="grid">${D.map(d=>`<div class="card"><h3>${ic('doc')}<span class="grow">${d[0]}</span>${pill(d[3],d[2])}</h3><div class="row between"><span class="muted">Expires</span><b class="num">${d[1]}</b></div>${d[2]==='ok'?`<button class="btn link" style="align-self:flex-start" data-act="openUpload" data-v="${d[0]}">Upload a new version</button>`:`<button class="btn primary" style="align-self:flex-start" data-act="openUpload" data-v="${d[0]}">${ic('upload')}Upload renewal</button>`}</div>`).join('')}${S.docsExtra.map(d=>`<div class="card"><h3>${ic('doc')}<span class="grow">${esc(d[0])}</span>${pill('Current','ok')}</h3><div class="row between"><span class="muted">Expires</span><b class="num">${esc(d[1])}</b></div></div>`).join('')}</div>
+  <div class="row"><button class="btn" data-act="openUpload">${ic('upload')}Upload a document</button></div>
+  <p class="muted small">Each document is stored with its type, issue date and expiry date, and is marked Current, Expiring soon or Expired. Flavors staff can upload on your behalf. ${tbc('Q-11','Which document types are tracked and the expiry-warning window (30 days in the original scope) are not confirmed')}</p>`}
+function bill(){const due=S.scenario==='due'&&!S.paid;
+  const inv=[['INV-0098',`${S.cday} Nov 2026`,`${S.plan} membership`,due?['Overdue','bad']:['Paid','ok']],['INV-0061',`${S.cday} Oct 2026`,`${S.plan} membership + extra hours`,['Paid','ok']],['INV-0032',`${S.cday} Sep 2026`,`${S.plan} membership`,['Paid','ok']]];
+  return `<div style="padding-top:4px"><div class="h1">Billing</div><div class="sub">Invoices are generated and collected by Stripe for Flavors Culinary Hub.</div></div>
+  ${due?`<div class="banner bad">${ic('alert',20)}<span class="grow"><b>Your balance is overdue.</b> New bookings are blocked until it is paid. ${tbc('Q-07','When a balance counts as overdue is not decided')}</span><button class="btn primary" data-act="openPay" data-v="invoice">Pay now on Stripe</button></div>`:''}
+  <div class="grid"><div class="card stat"><span class="eyebrow">Balance</span><div class="v">${due?'Overdue':'Nothing due'}</div><span class="muted">Collected on day ${S.cday} of each month</span></div>
+   <div class="card"><h3>Upcoming charges</h3><div><div class="li"><span class="grow"><b>${S.plan} membership</b><br><span class="muted small">Monthly invoice · ${S.cday} Dec 2026</span></span>${money()}</div><div class="li"><span class="grow"><b>Extra hours, equipment and storage</b><br><span class="muted small">Calculated by Avenue and added to the invoice</span></span>${money()}</div></div><p class="muted small">${tbc('Q-04','Prices and rates not supplied')} ${tbc('Q-06','How usage after your collection day is invoiced is not decided')}</p></div></div>
+  <div class="card"><h3>Invoices and payment history</h3><div class="tscroll"><table><thead><tr><th>Invoice</th><th>Date</th><th>For</th><th>Status</th><th></th></tr></thead><tbody>${inv.map(r=>`<tr><td><b>${r[0]}</b></td><td class="num">${r[1]}</td><td>${r[2]}</td><td>${pill(...r[3])}</td><td><button class="btn link" data-act="openInv" data-v="${r[0]}">View</button></td></tr>`).join('')}</tbody></table></div></div>`}
+function notices(){return `<div style="padding-top:4px"><div class="h1">Notices</div><div class="sub">Announcements and newsletters from Flavors</div></div>${S.notices.map(n=>`<div class="card"><h3><span class="grow">${esc(n.t)}</span>${S.read[n.id]?'':pill('New','info')}</h3><span class="muted small">Posted ${n.d} by Flavors</span>${S.read[n.id]?`<p>${esc(n.b)}</p>`:`<button class="btn link" style="align-self:flex-start" data-act="read" data-v="${n.id}">Read</button>`}</div>`).join('')}<p class="muted small">When something is posted you get a generic email asking you to log in to view it.</p>`}
+function setup(){const T=['Permit','Licence','Insurance','Certification'];
+  return `<div style="padding-top:18px"><div class="h1">Onboarding</div><div class="sub">Your payment is confirmed. Enter your details and upload your documents.</div></div>
+  <div class="card"><h3>Your details</h3><div class="fl"><label for="pB">Business name</label><input id="pB" value="${ME}"></div><p class="muted small">${tbc('Q-05','Whether Flavors staff approve a new member after payment is not decided')}</p></div>
+  <div class="card"><h3>Compliance documents</h3><div>${T.map(t=>`<div class="li">${ic('doc')}<span class="grow"><b>${t}</b></span>${S.onb.docs[t]?pill('Uploaded','ok','check'):`<button class="btn" data-act="openUpload" data-v="${t}">${ic('upload')}Upload</button>`}</div>`).join('')}</div><p class="muted small">${tbc('Q-11','Which document types are required is not confirmed')}</p></div>
+  <div class="row"><button class="btn primary lg" data-act="finishSetup">Finish</button></div>`}
+function joinFlow(){const head=`<div class="row">${['Choose plan','Pay','Set up'].map((s,i)=>pill((i+1)+' · '+s,i===Math.min(S.join,2)?'info':i<S.join?'ok':'mute')).join('')}</div>`;
+  if(S.join===0)return `<div><div class="h1">Join Flavors Culinary Hub</div><div class="sub">Choose a plan and a monthly payment day. Onboarding starts once your payment is confirmed.</div></div>${head}
+   <div class="grid three">${Object.entries(PLANS).map(([n,p])=>`<div class="card plan ${S.plan===n?'sel':''}"><h3><span class="grow">${n}<span class="ex">example</span></span>${S.plan===n?pill('Selected','info','check'):''}</h3><div class="price">${S.ex?`$${p.p}`:'—'}<span class="muted" style="font-size:14px;font-weight:400"> / month</span></div><div class="muted">Included hours and extra-hour rate for this tier</div><button class="btn ${S.plan===n?'':'primary'}" data-act="plan" data-v="${n}">${S.plan===n?'Selected':'Choose '+n}</button></div>`).join('')}</div>
+   <p class="muted small">${tbc('Q-04','Plan names, prices, hours and rates have not been supplied by Flavors')} ${tbc('Q-20','How an applicant reaches this page before having a sign-in is not designed')}</p>
+   <div class="card"><h3>Monthly payment day</h3><p class="muted">Any day from the 1st to the 15th.</p><div class="days" style="flex-wrap:wrap">${Array.from({length:15},(_,i)=>`<button style="flex:0 0 44px" aria-pressed="${S.cday===i+1}" data-act="cday" data-v="${i+1}"><b>${i+1}</b></button>`).join('')}</div><p class="muted small">${tbc('Q-06','First payment amount and proration not decided')}</p></div>
+   <div class="row"><button class="btn primary lg" data-act="join" data-v="1">Continue to payment</button></div>`;
+  if(S.join===1)return `<div><div class="h1">Pay for ${S.plan}</div><div class="sub">Your first payment starts your membership.</div></div>${head}${S.payFail?`<div class="banner bad">${ic('alert',20)}<span class="grow"><b>The card was declined.</b> Nothing was charged and no access was given. Try again.</span></div>`:''}
+   <div class="card"><dl class="kv"><dt>${S.plan} membership<span class="ex">example</span></dt><dd>${money(plan().p)} / month</dd><dt>Collected on</dt><dd>Day ${S.cday} of each month</dd><dt>Paid to</dt><dd>Flavors Culinary Hub</dd></dl><p class="muted small">${tbc('Q-06','First payment amount and proration not decided')}</p><div class="row"><button class="btn primary lg" data-act="openPay" data-v="join">${ic('lock')}Pay with Stripe</button><button class="btn" data-act="join" data-v="0">Back</button></div></div>`;
+  return `<div><div class="h1">Welcome to Flavors</div></div>${head}<div class="banner ok">${ic('checkc',20)}<span class="grow"><b>Stripe confirmed your payment.</b> A sign-in invitation is on its way to your email.</span></div>
+   <div class="card"><h3>What happens next</h3><div><div class="li"><span class="grow">Membership paid</span>${pill('Done','ok','check')}</div><div class="li"><span class="grow">Flavors approval ${tbc('Q-05','Whether staff approve new members after payment is not decided')}</span>${pill('To confirm','mute')}</div><div class="li"><span class="grow">Sign in, add your team, upload your documents</span>${pill('Next','info')}</div></div></div>
+   <div class="placeholder">${ic('lock',28)}<b>Microsoft’s sign-in page opens here</b><span class="muted">Guest sign-in is Microsoft’s own page.</span><button class="btn primary" data-act="msOpen" data-v="join">Continue to Microsoft sign-in</button></div>`}
+
+/* ===== STAFF APP (Power Apps canvas) ===== */
+const SNAV=[['dash','Dashboard','home'],['conf','Bookings','cal'],['blocks','Booking blocks','lock'],['members','Members','users'],['comp','Compliance','shield'],['sess','Check-ins','checkc'],['temp','Temperatures','temp'],['fin','Payments','card'],['stripe','Stripe connection','sliders'],['pub','Notices','speak'],['perm','Staff permissions','sliders'],['help','Get help','help']];
+const HNAV=[['gate','Facilities & go-live','flag'],['bi','Analytics','chart'],['support','Support queue','help']];
+const conflicts=()=>S.bookings.filter(b=>b.st==='conflict'), lates=()=>S.bookings.filter(b=>b.st==='latecancel');
+const BLOCKS=()=>[[GL,'Overdue balance','18 Nov'],...(blocked()||S.override[ME]?[[ME,S.scenario==='doc'?'Expired insurance document':'Overdue balance',S.scenario==='doc'?'1 Nov':'18 Nov']]:[])];
+function staffFrame(){const hq=S.role==='hq', nav=hq?HNAV:SNAV.filter(n=>!(S.role==='staff'&&(['perm','stripe'].includes(n[0])||(n[0]==='fin'&&!S.perm.fin)||(n[0]==='pub'&&!S.perm.notice))));
+  if(!nav.some(n=>n[0]===S.stab))S.stab=nav[0][0];
+  const who={owner:['Flavors owner','FO'],staff:['Flavors staff','FS'],hq:['B Street HQ','BS']}[S.role], cnt={conf:conflicts().length+lates().length+S.events.filter(e=>e.st==='asked').length,blocks:BLOCKS().filter(b=>!S.override[b[0]]).length};
+  const view=({dash,conf,blocks,members,comp,sess,temp,fin,stripe,pub,perm,help,gate,support,bi})[S.stab](), tst=S.toast?`<div class="toast" role="status">${ic('checkc')}${S.toast}</div>`:'';
+  if(S.device==='phone'){const tabs=hq?nav:nav.filter(n=>['dash','conf','members','sess'].includes(n[0])), rest=nav.filter(n=>!tabs.includes(n));
+    return `<div class="frame phone ${S.open?'':'hide-open'} ${S.ex?'':'hide-ex'}"><div class="pa-top"><span class="waffle" aria-hidden="true">${'<i></i>'.repeat(9)}</span><span>Power Apps</span><span style="opacity:.6">|</span><span>Avenue Staff</span></div>
+    <div class="scroll" id="cvmain"><div class="staffhead"><span class="mark" style="width:32px;height:32px;font-size:15px;border-radius:7px">A</span><b style="flex:1">Avenue</b><span class="person">${who[1]}</span><span class="small muted">${who[0]}</span></div><div class="staffp">${view}</div></div>
+    <div class="bnav">${tabs.map(([k,l,i])=>`<button aria-selected="${S.stab===k}" data-act="stab" data-v="${k}">${ic(i,22)}${l.split(' ')[0]}${cnt[k]?' · '+cnt[k]:''}</button>`).join('')}${rest.length?`<button aria-selected="${rest.some(n=>n[0]===S.stab)}" data-act="more">${ic('sliders',22)}More</button>`:''}</div>
+    ${S.more?`<div class="sheet" data-act="more"><div class="card">${rest.map(([k,l,i])=>`<button class="pickrow" data-act="stab" data-v="${k}">${ic(i)}<span style="flex:1">${l}</span>${cnt[k]?pill(cnt[k],'warn'):''}</button>`).join('')}</div></div>`:''}${dialog()}${tst}</div>`}
+  return `<div class="frame ${S.open?'':'hide-open'} ${S.ex?'':'hide-ex'}"><div class="pa-top"><span class="waffle" aria-hidden="true">${'<i></i>'.repeat(9)}</span><span>Power Apps</span><span style="opacity:.6">|</span><span>Avenue Staff</span></div>
+  <div class="scaler" id="scaler"><div class="canvas" id="canvas"><div class="cv-head"><span class="mark">A</span><b>Avenue</b><span class="muted">${hq?'Platform administration':'Flavors Culinary Hub Hyattsville'}</span><span class="who"><span class="muted">Thu 19 Nov · 1:50 PM</span><span class="person">${who[1]}</span><b style="font-size:14px">${who[0]}</b></span></div>
+  <div class="cv-nav"><span class="sep">${hq?'B Street':'Facility'}</span>${nav.map(([k,l,i])=>`<button aria-current="${S.stab===k}" data-act="stab" data-v="${k}">${ic(i)}<span class="t">${l}</span>${cnt[k]?pill(cnt[k],'warn'):''}</button>`).join('')}</div>
+  <div class="cv-main" id="cvmain">${view}</div>${dialog()}${tst}</div></div></div>`}
+const kpi=(l,v,n,i)=>`<div class="card stat" style="gap:4px"><span class="eyebrow">${l}</span><div class="row between"><div class="v num">${v}</div><span style="color:var(--ink3)">${ic(i,26)}</span></div><span class="muted small">${n}</span></div>`;
+function dash(){const cf=S.bookings.filter(b=>b.st==='confirmed'), h=f=>cf.filter(f).reduce((a,b)=>a+b.e-b.s,0), exp=S.scenario==='doc'&&!S.docRenewed, due=S.scenario==='due'&&!S.paid;
+  const bars=rows=>{const mx=Math.max(...rows.map(r=>r[1]),1);return `<div class="bars">${rows.map(r=>`<div><span class="num">${r[1]}</span><i style="height:${r[1]/mx*100}%"></i><span>${r[0]}</span></div>`).join('')}</div>`};
+  return `<div class="row between"><div class="h1">Dashboard</div><span class="muted small">Sample data</span></div>
+  <div class="kpis">${kpi('Bookings this week',cf.length,'Confirmed','cal')}${kpi('Hours booked',h(()=>true)+' h','All members','clock')}${kpi('Expired documents',exp?1:0,'Booking blocked','shield')}${kpi('Overdue balances',due?2:1,'Booking blocked','card')}</div>
+  <div class="grid"><div class="card"><h3>Bookings and utilisation · hours by station</h3>${bars(STATIONS.map(r=>[rn(r).replace(' / event space',''),h(b=>b.res===r)]))}<p class="muted small">${tbc('Q-16','How utilisation is measured is not agreed')}</p></div>
+  <div class="card"><h3>Member activity · hours booked per member</h3>${bars([ME,HT,GL,BD].map(n=>[n.replace('Sample ',''),h(b=>b.who===n)]))}</div></div>
+  <div class="grid"><div class="card"><h3>Equipment usage · hours</h3>${bars(EQUIP.map(r=>[rn(r),h(b=>b.eq.includes(r))]))}</div>
+  <div class="card"><h3>Compliance</h3><div><div class="li"><span class="grow">Current</span><b class="num">${exp?12:13}</b></div><div class="li"><span class="grow">Expiring soon</span><b class="num">${S.docRenewed||exp?1:2}</b></div><div class="li"><span class="grow">Expired</span><b class="num">${exp?1:0}</b></div></div></div>
+  <div class="card"><h3>Financial summary</h3><div><div class="li"><span class="grow">Invoices paid</span><b class="num">${due?1:2}</b></div><div class="li"><span class="grow">Overdue</span><b class="num">${due?2:1}</b></div><div class="li"><span class="grow">Payment failed</span><b class="num">1</b></div></div></div></div>`}
+function conf(){const can=S.role==='owner'||S.perm.conf, canLate=S.role==='owner'||S.perm.late;
+  const alt=b=>STATIONS.filter(r=>r!=='dining'&&r!==b.res&&!clash({...b,res:r,id:'x'},b));
+  return `<div><div class="h1">Bookings</div><div class="sub">Free slots confirm on their own. Only overlaps and late cancellations reach you.</div></div>
+  ${conflicts().map(b=>{const c=clash(b,b),a=alt(b);return `<div class="card"><h3>${ic('alert')}<span class="grow">Conflict · ${dn(b.day)}</span>${pill('Waiting','warn')}</h3><div class="cmp"><div><span class="eyebrow">Requested</span><br><b>${b.who}</b><br>${span(b)} · ${where(b)}</div><div class="vs">vs</div><div><span class="eyebrow">Already confirmed</span><br><b>${c?c.who:'Nothing now'}</b><br>${c?span(c)+' · '+where(c):'The slot has become free'}</div></div>
+   <div class="row">${can?(!c?`<button class="btn primary" data-act="resolve" data-id="${b.id}" data-v="${b.res}">Confirm as requested</button>`:a.map(r=>`<button class="btn primary" data-act="resolve" data-id="${b.id}" data-v="${r}">Move to ${rn(r)}</button>`).join(''))+`<button class="btn" data-act="resolve" data-id="${b.id}" data-v="">Decline</button>`:pill('Your account cannot resolve conflicts','mute','lock')}<span class="muted small">Only free stations are offered. A confirmed booking is never overridden.</span></div></div>`}).join('')||`<div class="card"><h3>${ic('checkc')}No conflicts waiting</h3><p class="muted">Send an overlapping request from the member portal to see one here.</p></div>`}
+  ${S.events.filter(e=>e.st==='asked').map(e=>`<div class="card"><h3>${ic('users')}<span class="grow">Event cancellation · ${EVD[e.d][0]}</span>${pill('Waiting','warn')}</h3><div class="row between"><span class="muted">${ME} · dining / event space · ${EVD[e.d][1]} days’ notice · deposit ${S.ex?'$'+EVDEP:'paid'}. No rule is set for this notice period. ${tbc('Q-08','Rules between 8 and 14 days are not supplied')}</span>${canLate?`<span class="row"><button class="btn" data-act="evDecide" data-id="${e.id}" data-v="cancelled">Refund deposit</button><button class="btn" data-act="evDecide" data-id="${e.id}" data-v="forfeit">Keep deposit</button></span>`:pill('No permission','mute','lock')}</div></div>`).join('')}
+  ${S.bookings.filter(b=>b.ext==='asked').map(b=>`<div class="card"><h3>${ic('clock')}<span class="grow">Extra hour requested · ${dn(b.day)}</span>${pill('Waiting','warn')}</h3><div class="row between"><span class="muted">${b.who} · ${span(b)} · ${rn(b.res)}. The hour after is booked by another member.</span>${can?`<button class="btn" data-act="extNo" data-id="${b.id}">Decline</button>`:pill('No permission','mute','lock')}</div></div>`).join('')}
+  <div class="grid"><div class="card"><h3>Late cancellations</h3><div>${lates().map(b=>`<div class="li"><span class="grow"><b>${b.who}</b><br><span class="muted small">${dn(b.day)} · ${span(b)} · ${rn(b.res)} · under 24 hours’ notice</span></span>${canLate?`<button class="btn" data-act="late" data-id="${b.id}" data-v="returned">Return hours</button><button class="btn" data-act="late" data-id="${b.id}" data-v="lost">Hours lost</button>`:pill('No permission','mute','lock')}</div>`).join('')||'<p class="muted">None waiting.</p>'}</div></div>
+  <div class="card"><h3>No-shows</h3><div><div class="li"><span class="grow"><b>${GL}</b><br><span class="muted small">Tue 17 Nov · 7:00–11:00 AM · Station 1 · ${S.noshowBack?'4 hours returned by '+(S.role==='owner'?'the owner':'staff'):'4 hours lost'}</span></span>${S.noshowBack?pill('Returned','ok','check'):canLate?`<button class="btn" data-act="noshowBack">Return hours</button>`:pill('No permission','mute','lock')}</div></div><p class="muted small">${tbc('Q-09','When a booking counts as a no-show is not decided')}</p></div></div>`}
+function blocks(){const owner=S.role==='owner';
+  return `<div><div class="h1">Booking blocks</div><div class="sub">Members who cannot make new bookings</div></div><div class="banner info">${ic('lock',20)}<span class="grow"><b>Owner only.</b> Only the Flavors owner can override a block for an expired document or overdue balance. Staff cannot.</span></div>
+  ${BLOCKS().map(r=>`<div class="card"><h3><span class="grow">${r[0]}</span>${S.override[r[0]]?pill('Overridden by owner','warn'):pill('Blocked','bad','lock')}</h3><div class="row between"><span class="muted">${r[1]} · since ${r[2]}${S.override[r[0]]?' · overridden by the Flavors owner':''}</span>${S.override[r[0]]?'':owner?`<button class="btn danger" data-act="dlgOpen" data-t="override" data-v="${r[0]}">Override block</button>`:pill('Owner only','mute','lock')}</div></div>`).join('')}
+  <p class="muted small">${tbc('Q-07','When a balance counts as overdue is not decided')}</p>`}
+function dialog(){const d=S.dlg;if(!d)return '';
+  const box=(title,body,ok,cls='primary')=>`<div class="dlg"><div class="card"><h3>${title}</h3>${body}<div class="row" style="justify-content:flex-end"><button class="btn" data-act="dlgClose">Cancel</button><button class="btn ${cls}" data-act="dlgOk">${ok}</button></div></div></div>`;
+  const planSel=`<div class="fl"><label for="dP">Plan</label><select id="dP">${Object.keys(PLANS).map(p=>`<option>${p}</option>`).join('')}</select></div>`;
+  const hrs=(id,n)=>`<select id="${id}">${Array.from({length:H1-H0+1},(_,i)=>H0+i).map(h=>`<option value="${h}" ${h===n?'selected':''}>${hr(h)}</option>`).join('')}</select>`;
+  const who=esc(d.who||'');
+  switch(d.t){
+   case 'override':return box(`Override the booking block for ${who}?`,`<p class="muted">Only the Flavors owner can do this.</p>`,'Override','danger');
+   case 'addMember':return box('Add a member',`<div class="fl"><label for="dB">Business name</label><input id="dB" value="New member"></div><div class="fl"><label for="dE">Owner’s email</label><input id="dE" value="owner@example.com"></div>${planSel}<p class="muted small">${tbc('Q-21','How B Street onboards the existing members for January billing is not described')}</p>`,'Send invitation');
+   case 'changePlan':return box(`Change plan · ${who}`,`${planSel}<p class="muted small">Past invoices are not changed. ${tbc('Q-06','When a plan change takes effect and any proration are not decided')}</p>`,'Change plan');
+   case 'bookFor':return box(`Book for ${who}`,`<div class="two"><div class="fl"><label for="dR">Station</label><select id="dR">${STATIONS.map(r=>`<option value="${r}">${rn(r)}</option>`).join('')}</select></div><div class="fl"><label for="dD">Day</label><select id="dD">${DAYS.map((x,i)=>i>=TODAY?`<option value="${i}" ${i===TODAY+2?'selected':''}>${dn(i)}</option>`:'').join('')}</select></div><div class="fl"><label for="dS">Start</label>${hrs('dS',9)}</div><div class="fl"><label for="dEn">End</label>${hrs('dEn',12)}</div></div><p class="muted small">Recorded as booked by you on the member’s behalf.</p>`,'Book');
+   case 'deactivate':return box(`Deactivate ${who}?`,`<p class="muted">They can no longer sign in to Avenue or book. Their history is kept. ${tbc('Q-14','What happens to future bookings and the Stripe subscription is not decided')}</p>`,'Deactivate','danger');
+   case 'refund':return box(`Refund ${who}`,`<dl class="kv"><dt>Invoice ${d.inv}</dt><dd>${money(d.amt)}</dd></dl><div class="fl"><label for="why">Reason</label><input id="why" placeholder="For example: charged in error"></div><p class="muted small">Sent through Stripe from Flavors’ balance. Simulated here. ${tbc('Q-02','Who may issue refunds is not decided')}</p>`,'Send refund','danger');
+   case 'connect':return box('Stripe onboarding (simulation)',`<div class="banner info">${ic('lock',20)}<span class="grow">In the real app these are Stripe’s own pages. Bank and identity details are entered there and never reach Avenue.</span></div><div><div class="li"><span class="grow">Business details</span>${pill('Entered on Stripe','ok','check')}</div><div class="li"><span class="grow">Business representative</span>${pill('Needed','warn')}</div><div class="li"><span class="grow">Bank account for payouts</span>${pill('Needed','warn')}</div></div>`,'Simulate: completed on Stripe');
+  }return ''}
+function members(){const own=S.role==='owner', M=S.members.map(m=>m.n===ME?{...m,plan:S.plan,pay:S.scenario==='due'&&!S.paid?['Overdue','bad']:['Paid','ok'],doc:S.scenario==='doc'&&!S.docRenewed?['Expired','bad']:['Current','ok'],bk:m.bk?m.bk:blocked()?['Blocked','bad']:S.override[ME]?['Exception','warn']:['Can book','ok']}:m.n===GL&&S.override[GL]&&m.bk[0]==='Blocked'?{...m,bk:['Exception','warn']}:m), m=M.find(x=>x.n===S.msel)||M[0], off=m.bk[0]==='Deactivated', n=esc(m.n);
+  return `<div class="row between"><div class="h1">Members</div><button class="btn primary" data-act="dlgOpen" data-t="addMember">${ic('plus')}Add member</button></div><div class="md"><div class="card" style="gap:4px;padding:10px">${M.map(x=>`<button class="pickrow" aria-current="${x.n===m.n}" data-act="msel" data-v="${esc(x.n)}"><span class="person">${esc(x.n.split(' ').map(w=>w[0]).slice(0,2).join(''))}</span><span style="flex:1"><b>${esc(x.n)}</b><br><span class="muted small">${x.plan}</span></span>${pill(...x.bk)}</button>`).join('')}</div>
+  <div class="card"><h3><span class="grow" style="font-size:18px">${n}</span>${pill(...m.bk)}</h3><dl class="kv" style="grid-template-columns:160px 1fr"><dt>Owner</dt><dd style="text-align:left">${esc(m.owner)}</dd><dt>Team</dt><dd style="text-align:left">${m.team}</dd><dt>Plan</dt><dd style="text-align:left">${m.plan}<span class="ex">example</span></dd><dt>Payment</dt><dd style="text-align:left">${pill(...m.pay)}</dd><dt>Documents</dt><dd style="text-align:left">${pill(...m.doc)}</dd></dl>
+  <div class="row">${off?'<span class="muted">Deactivated today by the Flavors owner. History is kept.</span>':`<button class="btn" data-act="dlgOpen" data-t="changePlan" data-v="${n}">Change plan</button>${own||S.perm.behalf?`<button class="btn" data-act="dlgOpen" data-t="bookFor" data-v="${n}">Book for this member</button>`:''}${own||S.perm.docs?`<button class="btn" data-act="upFor" data-v="${n}">Upload a document</button>`:''}${own?`<button class="btn danger" data-act="dlgOpen" data-t="deactivate" data-v="${n}">Deactivate</button>`:''}`}</div><p class="muted small">Anything done on a member’s behalf is recorded with your name. ${tbc('Q-14','What deactivation does to future bookings and the Stripe subscription is not decided')}</p></div></div>`}
+function comp(){const exp=S.scenario==='doc'&&!S.docRenewed, D=[[ME,'Insurance',S.docRenewed?'1 Dec 2027':exp?'1 Nov 2026':'1 Dec 2026',S.docRenewed?['Current','ok']:exp?['Expired','bad']:['Expiring soon','warn']],[GL,'Permit','30 Dec 2026',['Expiring soon','warn']]];
+  return `<div class="h1">Compliance documents</div><div class="kpis">${kpi('Current',exp?12:13,'All members','checkc')}${kpi('Expiring soon',S.docRenewed||exp?1:2,'','clock')}${kpi('Expired',exp?1:0,'Booking blocked','alert')}${kpi('Members',S.members.length,'','users')}</div>
+  <div class="card"><h3>Expiring and expired</h3><div>${D.map(d=>`<div class="li"><span class="grow"><b>${d[0]}</b><br><span class="muted small">${d[1]} · expires ${d[2]}</span></span>${pill(...d[3])}${S.role==='owner'||S.perm.docs?`<button class="btn" data-act="upFor" data-v="${d[0]}">Upload for member</button>`:''}</div>`).join('')}</div><p class="muted small">Status is checked daily and members are reminded before a document expires. ${tbc('Q-11','Document types and the warning window are not confirmed')}</p></div>`}
+function sess(){const sam=S.checkin.Sam, fail=['q1','q2','q3'].some(k=>S.answers[k]==='No');
+  const R=[[GL,'Station 3','8:00 AM–12:00 PM',['Entry checklist missing','bad'],['—','mute'],S.call?pill('Reminder sent and logged','ok','check'):`<button class="btn" data-act="call">Send one-off reminder</button>`,'Contact: owner@member-c.example'],[ME,'Station 2','2:00–6:00 PM',sam?(fail?['Failed','bad']:['Complete','ok']):['In progress','info'],S.exit?['Complete','ok']:['—','mute'],fail&&sam?pill('Member owner and Flavors notified','warn'):'','Contact: owner@member-a.example'],[HT,'Station 1','6:00–10:00 PM',['Not started','mute'],['—','mute'],'','Contact: owner@member-b.example']];
+  return `<div><div class="h1">Check-in and check-out</div><div class="sub">Today’s bookings. Missed checklists are escalated here.</div></div><div class="card"><div>${R.map(r=>`<div class="li"><span class="grow"><b>${r[0]}</b><br><span class="muted small">${r[1]} · ${r[2]} · ${r[6]}</span></span><span class="muted small">Entry</span>${pill(...r[3])}<span class="muted small">Exit</span>${pill(...r[4])}<span style="width:190px;text-align:right">${r[5]}</span></div>`).join('')}</div>
+  <p class="muted small">Members are reminded 3, 2 and 1 hour before a booking. A missed checklist is flagged to the member, then shown here. ${tbc('Q-10','Checklist questions, grace periods and escalation contacts are not supplied')}</p></div>`}
+function temp(){const U=[['Refrigerator 1','3.1','Normal','ok'],['Refrigerator 2','6.2','Out of range','bad'],['Freezer 1','−18.4','Normal','ok'],['Freezer 2','−17.9','Normal','ok']];
+  return `<div><div class="h1">Temperatures</div><div class="sub">Read from Swift Sensors</div></div><div class="banner info">${ic('temp',20)}<span class="grow"><b>Display only.</b> Swift Sensors keeps the real-time breach alerts.</span></div>
+  <div class="kpis">${U.map(u=>`<div class="card stat" style="gap:6px"><span class="eyebrow">${u[0]}</span><div class="v num">${u[1]} °C</div><div>${pill(u[2],u[3])}</div></div>`).join('')}</div>
+  <div class="card"><h3>Historical log</h3><table><thead><tr><th>Time</th><th>Unit</th><th>Reading</th><th>Status</th></tr></thead><tbody>${[['1:40 PM','Refrigerator 1','3.1','Normal','ok'],['1:40 PM','Refrigerator 2','6.2','Out of range','bad'],['1:40 PM','Freezer 1','−18.4','Normal','ok'],['1:10 PM','Refrigerator 1','3.3','Normal','ok'],['1:10 PM','Refrigerator 2','4.8','Normal','ok']].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td class="num">${r[2]} °C</td><td>${pill(r[3],r[4])}</td></tr>`).join('')}</tbody></table><p class="muted small">Sample readings. ${tbc('Q-12','Sensor-to-unit mapping and temperature thresholds are not supplied')}</p></div>`}
+function fin(){const R=[[ME,'INV-0098',`${S.cday} Nov`,S.scenario==='due'&&!S.paid?['Overdue','bad']:['Paid','ok']],[HT,'INV-0107','5 Nov',['Payment failed','bad']],[GL,'INV-0094','1 Nov',['Overdue','bad']],[BD,'INV-0110','12 Nov',['Paid','ok']]], c=x=>R.filter(r=>r[3][0]===x).length;
+  return `<div><div class="h1">Payments</div><div class="sub">Member payments are collected by Stripe into Flavors’ own account</div></div><div class="kpis">${kpi('Paid',c('Paid'),'Invoices','checkc')}${kpi('Overdue',c('Overdue'),'Booking blocked','alert')}${kpi('Payment failed',c('Payment failed'),'','x')}${kpi('Members',S.members.length,'','users')}</div>
+  <div class="card"><h3>Invoices</h3><div>${R.map(r=>`<div class="li"><span class="grow"><b>${r[0]}</b><br><span class="muted small">${r[1]} · ${r[2]}</span></span>${money()}${pill(...r[3])}</div>`).join('')}</div><p class="muted small">${tbc('Q-04','Prices not supplied')} ${tbc('Q-02','Responsibility for refunds and disputes is not confirmed')}</p></div>`}
+function stripe(){const ok=S.stripeReady;return `<div class="h1">Stripe connection</div><div class="banner warn">${ic('alert',20)}<span class="grow"><b>Test mode.</b> Live payments stay off until the client approves the tested flow.</span></div><div class="grid"><div class="card"><h3>Flavors’ Stripe account</h3><div><div class="li"><span class="grow">Account created</span>${pill('Done','ok','check')}</div><div class="li"><span class="grow">Business and bank details</span>${ok?pill('Complete','ok','check'):pill('Stripe needs more','warn')}</div><div class="li"><span class="grow">Ready to take payments</span>${ok?pill('Ready · test mode','ok','check'):pill('Not yet','mute')}</div><div class="li"><span class="grow">Payouts to Flavors’ bank</span>${ok?pill('Enabled · test mode','ok','check'):pill('Not yet','mute')}</div></div>${ok?`<p class="muted small">Avenue read this status from Stripe. Returning from Stripe’s pages alone does not mark the account ready.</p>`:`<div class="placeholder" style="padding:16px">${ic('lock',24)}<b>Stripe’s onboarding pages open here</b><span class="muted small">Bank and identity details go to Stripe only. Avenue never sees them.</span><button class="btn primary" data-act="dlgOpen" data-t="connect">Continue on Stripe</button></div>`}</div>
+  <div class="card"><h3>Who is responsible</h3><div>${['Stripe fees','Refunds','Disputes','Negative balances'].map(x=>`<div class="li"><span class="grow">${x}</span><span class="muted">Client wants: Flavors</span>${pill('To verify','warn')}</div>`).join('')}</div><p class="muted small">${tbc('Q-02','B Street’s Stripe platform settings and agreement have not been inspected')}</p></div></div>`}
+function pub(){return `<div class="h1">Notices</div><div class="grid"><div class="card"><h3>New notice</h3><div class="fl"><label for="nT">Title</label><input id="nT" value="Sample announcement"></div><div class="fl"><label for="nB">Message</label><textarea id="nB" rows="3">Announcement text.</textarea></div><div class="fl"><label for="nA">Audience</label><select id="nA"><option>All members</option><option>Selected audience</option></select></div><div class="row"><button class="btn primary" data-act="publish">${ic('speak')}Publish</button></div><p class="muted small">On publish, members get a generic email asking them to log in to view. ${tbc('Q-13','Where notices are stored and how audiences are defined are not decided')}</p></div>
+  <div class="card"><h3>Published</h3><div>${S.notices.map(n=>`<div class="li"><span class="grow"><b>${esc(n.t)}</b><br><span class="muted small">${n.d} · ${n.a||'All members'}</span></span>${pill('Published','ok')}</div>`).join('')}</div></div></div>`}
+function perm(){return `<div><div class="h1">Staff permissions</div><div class="sub">One operator account and one staff account</div></div><div class="card"><div><div class="li"><span class="grow"><b>Staff account permissions</b><br><span class="muted small">The operator selects what the staff account can do.</span></span>${tbc('Q-15','The list of selectable staff permissions has not been supplied')}</div><div class="li"><span class="grow"><b>Override a booking block for an expired document or overdue balance</b></span>${pill('Owner only','mute','lock')}</div></div></div>`}
+function help(){return `<div class="h1">Get help from B Street</div><div class="grid"><div class="card"><h3>New request</h3><div class="fl"><label for="hT">What do you need?</label><input id="hT" value="Sample support request"></div><div class="fl"><label for="hD">Details</label><textarea id="hD" rows="3">Request details.</textarea></div><div class="row"><button class="btn primary" data-act="ticket">Send request</button></div><p class="muted small">${tbc('Q-13','How support requests are sent is not selected')}</p></div><div class="card"><h3>Your requests</h3><div>${S.tickets.map(t=>`<div class="li"><span class="grow"><b>${esc(t.t)}</b><br><span class="muted small">${t.id} · ${t.when}</span></span>${pill(t.st,t.st==='Open'?'info':'ok')}</div>`).join('')}</div></div></div>`}
+function gate(){const G=[['resp','Responsibilities reviewed: fees, refunds, disputes, losses and verification','Q-02'],[0,'Test onboarding demonstrated to the client'],[0,'Test payment appears under the connected account and its status returns to Avenue']], ready=S.gate.resp;
+  return `<div class="h1">Facilities & go-live</div><div class="card"><div class="li"><span class="mark" style="width:38px;height:38px;font-size:16px">F</span><span class="grow"><b>Flavors Culinary Hub Hyattsville</b><br><span class="muted small">Pilot facility</span></span>${pill('Stripe: test mode','info')}${S.approved?pill('Live approved','ok','check'):pill('Live locked','mute','lock')}</div></div>
+  <div class="card"><h3>Approval before live Stripe activation</h3><div>${G.map(x=>{const done=!x[0]||S.gate[x[0]];return `<div class="li"><span class="grow">${x[1]} ${x[2]&&!done?tbc(x[2],'Open item'):''}</span>${done?pill('Done','ok','check'):`<button class="btn" data-act="gateDone" data-v="${x[0]}">Mark done</button>`}</div>`}).join('')}<div class="li"><span class="grow"><b>Client approval</b></span>${S.approved?pill('Recorded','ok','check'):`<button class="btn primary" data-act="approve" ${ready?'':'disabled'}>Record client approval</button>`}</div></div><div class="row">${S.invited?pill('Onboarding link sent','ok','check'):`<button class="btn" data-act="invite" ${S.approved?'':'disabled'}>${ic('mail')}Send secure onboarding link to the operator</button>`}<span class="muted small">Available only after approval.</span></div></div>`}
+function bi(){const cf=S.bookings.filter(b=>b.st==='confirmed'), h=f=>cf.filter(f).reduce((a,b)=>a+b.e-b.s,0), bars=rows=>{const mx=Math.max(...rows.map(r=>r[1]),1);return `<div class="bars">${rows.map(r=>`<div><span class="num">${r[1]}</span><i style="height:${r[1]/mx*100}%"></i><span>${r[0]}</span></div>`).join('')}</div>`};
+  return `<div><div class="h1">Analytics</div><div class="sub">B Street HQ</div></div><div class="banner info">${ic('chart',20)}<span class="grow"><b>Simulation of a Power BI report.</b> The real report opens in Power BI with Power BI’s own design. Sample data.</span></div>
+  <div class="kpis">${kpi('Revenue',money(),'From Stripe','card')}${kpi('Bookings',cf.length,'This week','cal')}${kpi('Hours booked',h(()=>true)+' h','Utilisation','clock')}${kpi('Members',S.members.length,'Membership','users')}</div>
+  <div class="grid"><div class="card"><h3>Bookings · by day</h3>${bars(DAYS.map((d,i)=>[d[0],cf.filter(b=>b.day===i).length]))}</div><div class="card"><h3>Utilisation · hours by station</h3>${bars(['st1','st2','st3'].map(r=>[rn(r),h(b=>b.res===r)]))}</div></div>
+  <div class="grid"><div class="card"><h3>Membership · members by plan</h3>${bars(Object.keys(PLANS).map(k=>[k,S.members.filter(m=>(m.n===ME?S.plan:m.plan)===k).length]))}</div><div class="card"><h3>Platform adoption</h3><div><div class="li"><span class="grow">Members who have booked this week</span><b class="num">${new Set(cf.map(b=>b.who)).size} of ${S.members.length}</b></div></div><p class="muted small">${tbc('Q-16','Report measures are not defined')}</p></div></div>`}
+function support(){return `<div class="h1">Support queue</div><div class="card"><div>${S.tickets.map(t=>`<div class="li"><span class="grow"><b>${esc(t.t)}</b><br><span class="muted small">${t.id} · Flavors · ${t.by} · ${t.when}<br>${esc(t.d)}</span></span>${pill(t.st,t.st==='Open'?'info':'ok')}${t.st==='Open'?`<button class="btn" data-act="ticketDone" data-v="${t.id}">Mark resolved</button>`:''}</div>`).join('')}</div><p class="muted small">Changes made on a facility’s behalf are recorded with who made them and when. ${tbc('Q-13','How support requests are sent is not selected')}</p></div>`}
+
+/* ===== guided tour ===== */
+const go=o=>Object.assign(S,{panel:null,dlg:null,ms:null,more:false},o);
+const TOUR=[
+ ['Signing in','Members sign in as guest users with their own email, on Microsoft’s sign-in page. This screen is a stand-in. Pick the account to continue.',()=>go({surface:'member',device:'desktop',scenario:'out',ms:'in',onb:null})],
+ ['Member home','The member sees their own bookings, balance, documents and notices.',()=>go({surface:'member',scenario:'ok',tab:'home'})],
+ ['Request a booking','Pick a station, equipment and time. If station, equipment and time are available, it is confirmed automatically, first come first served.',()=>go({surface:'member',scenario:'ok',tab:'cal',day:TODAY+1})],
+ ['A conflict','This request overlaps another booking, so it is sent to Flavors staff.',()=>{go({surface:'member',scenario:'ok',tab:'cal',day:TODAY});S.form={res:'st1',day:TODAY,s:19,e:21,eq:[]};S.panel={type:'book'}}],
+ ['Staff resolve the conflict','Only conflicts reach staff. The member sees the outcome in the portal.',()=>go({surface:'staff',role:'owner',stab:'conf'})],
+ ['Check-in','Every team member checks in on arrival with the entry checklist, including wellness items. A failed checklist notifies the member business owner and Flavors owner/staff.',()=>go({surface:'member',scenario:'ok',tab:'checkin'})],
+ ['Expired document','An expired document blocks new bookings.',()=>go({surface:'member',scenario:'doc',docRenewed:false,tab:'home'})],
+ ['Owner-only override','Only the Flavors owner can override a block for an expired document or overdue balance. Staff cannot.',()=>go({surface:'staff',role:'owner',stab:'blocks'})],
+ ['Billing','Members see their invoices, payment history, balance and upcoming charges. Stripe generates the monthly invoice and collects it.',()=>go({surface:'member',scenario:'ok',tab:'bill'})],
+ ['Event booking','Dining and event bookings follow their own cancellation rule: full refund with 15 or more days’ notice; at 7 days the deposit and payments made are forfeited.',()=>{go({surface:'member',scenario:'ok',tab:'home'});S.form={...S.form,res:'dining'};S.panel={type:'book'}}],
+ ['A new member','Select a plan and a collection day from the 1st to the 15th, then pay. Onboarding and document upload start only after payment.',()=>go({surface:'member',scenario:'new',join:0,onb:null,payFail:false})],
+ ['Staff app on a phone','The staff app in a phone browser.',()=>go({surface:'staff',role:'owner',stab:'dash',device:'phone'})],
+ ['B Street analytics','Power BI for B Street: revenue, bookings, utilisation, membership and platform adoption. This screen is a stand-in.',()=>go({surface:'staff',role:'hq',stab:'bi',device:'desktop'})],
+ ['Go-live approval','The test flow and responsibility settings are demonstrated and approved by the client before live Stripe activation. Then the operator gets a secure onboarding link.',()=>go({surface:'staff',role:'hq',stab:'gate'})]];
+
+/* ===== actions ===== */
+const A={
+  noop:()=>false,
+  surface:d=>go({surface:d.v}), device:d=>S.device=d.v, tab:d=>go({tab:d.v}), stab:d=>go({stab:d.v}), day:d=>S.day=+d.v,
+  openBook:()=>{S.panel={type:'book'}}, closePanel:()=>S.panel=null, detail:d=>S.panel={type:'detail',id:d.v},
+  slot:(d,e,el)=>{const r=el.getBoundingClientRect(), h=Math.max(H0,Math.min(H1-1,H0+Math.floor((e.clientX-r.left)/r.width*(H1-H0))));A.slotAt({res:d.res,s:h})},
+  slotAt:d=>{const s=+d.s, eqp=EQUIP.includes(d.res);if(S.day<TODAY||(S.day===TODAY&&s<NOW)){toast('That time has passed. Pick a later one.');return}S.form={res:eqp?'st1':d.res,day:S.day,s,e:Math.min(H1,s+2),eq:eqp?[d.res]:[]};S.panel={type:'book'}},
+  fres:d=>S.form.res=d.v, feq:d=>{const i=S.form.eq.indexOf(d.v);i<0?S.form.eq.push(d.v):S.form.eq.splice(i,1)},
+  confirm:()=>{const f=S.form,b={id:'B-'+(1041+S.bookings.length),res:f.res,day:f.day,s:f.s,e:f.e,eq:[...f.eq],who:ME};b.st=clash(b)?'conflict':'confirmed';S.bookings.push(b);S.last=b;S.day=f.day;S.panel={type:'done'};if(b.st==='confirmed')mail('Your Flavors booking is confirmed',dn(b.day)+' · '+span(b)+' · '+where(b))},
+  extend:d=>{const b=S.bookings.find(x=>x.id===d.v);b.e+=1;b.note='Extended by 1 hour';toast('Extended to '+hr(b.e))},
+  cancel:d=>{const b=S.bookings.find(x=>x.id===d.v),late=(b.day-TODAY)*24+(b.s-NOW)<24;b.st=late?'latecancel':'cancelled';S.panel=null;toast(late?'Sent to Flavors staff':'Booking cancelled. Hours returned.')},
+  ans:d=>S.answers[d.k]=d.v, submitCheck:()=>{S.checkin.Sam=true;toast('Checked in')}, exit:()=>{S.exit=true;toast('Checked out')},
+  read:d=>S.read[d.v]=true,
+  msOpen:d=>S.ms=d.v, msPick:()=>{const j=S.ms==='join';if(j){go({scenario:'ok',tab:'home',onb:{docs:{}}});toast('Signed in. Finish setting up.')}else{go({scenario:'ok',tab:'home'});toast('Signed in')}},
+  more:()=>S.more=!S.more, evd:d=>{S.ev.s=+$('evS').value;S.ev.e=+$('evE').value;S.ev.d=+d.v}, evOpen:d=>S.panel={type:'event',id:d.v},
+  evPay:()=>{S.ev.s=+$('evS').value;S.ev.e=+$('evE').value;if(S.ev.e<=S.ev.s){toast('End must be after start');return}S.panel={type:'pay',kind:'event'}},
+  evCancel:d=>{const e=S.events.find(x=>x.id===d.id);e.st=d.v;S.panel=null;toast(d.v==='cancelled'?'Event cancelled. Full refund (simulated).':d.v==='forfeit'?'Event cancelled. Deposit forfeited.':'Sent to Flavors to decide')},
+  evDecide:d=>{const e=S.events.find(x=>x.id===d.id);e.st=d.v;mail('There is an update on your event booking','Sign in to Avenue to view it.');toast(d.v==='cancelled'?'Deposit refunded through Stripe (simulated)':'Recorded: deposit kept')},
+  openPay:d=>S.panel={type:'pay',kind:d.v}, openMail:()=>{S.panel={type:'mail'}}, openUpload:d=>S.panel={type:'upload',doc:d.v||''}, openInv:d=>S.panel={type:'inv',id:d.v},
+  payOk:()=>{const k=S.panel.kind;S.panel=null;S.payFail=false;if(k==='join')S.join=2;else if(k==='event'){S.events.push({id:'E-'+(201+S.events.length),d:S.ev.d,s:S.ev.s,e:S.ev.e,st:'confirmed'});S.tab='home';mail('Your Flavors event booking is confirmed',EVD[S.ev.d][0]+' · '+hr(S.ev.s)+'–'+hr(S.ev.e)+' · Dining / event space');toast('Deposit paid. Event confirmed.')}else if(k==='invoice'){S.paid=true;mail('Payment received','Stripe has emailed your receipt. Sign in to Avenue to view your invoices.');toast('Payment confirmed by Stripe')}else toast('Card updated on Stripe')},
+  payFail:()=>{const k=S.panel.kind;S.panel=null;if(k==='join')S.payFail=true;else toast(k==='event'?'Card declined. The event is not booked.':k==='invoice'?'Card declined. The invoice is still overdue.':'Card declined. Your current card is unchanged.')},
+  uploadSave:()=>{const t=$('uT').value;if(S.onb)S.onb.docs[t]=true;else if(t==='Insurance')S.docRenewed=true;else S.docsExtra.push([t,$('uE').value]);S.panel=null;toast(t+' saved')},
+  addTeam:()=>{const el=$('tmN');if(!el.value.trim()){el.focus();return false}S.team.push([el.value.trim(),'Team member · invited'])},
+  finishSetup:()=>{S.onb=null;S.tab='home';toast('Setup complete. You can book the kitchen.')}, exitForm:()=>S.exitForm=true,
+  extAsk:d=>{const b=S.bookings.find(x=>x.id===d.v);b.ext='asked';b.note='Extra hour requested · with Flavors staff';toast('Request sent to Flavors staff')},
+  extNo:d=>{const b=S.bookings.find(x=>x.id===d.id);b.ext='no';b.note='Extra hour declined by Flavors staff';if(b.who===ME)mail('There is an update on your booking','Sign in to Avenue to view it.');toast('Declined. '+b.who+' has been told.')},
+  call:()=>{S.call=true;toast('Reminder sent and logged')}, follow:()=>{S.follow=true;toast('Follow-up recorded')}, noshowBack:()=>{S.noshowBack=true;toast('4 hours returned to Sample Member C')},
+  remind:d=>{if(d.v===ME)mail('A document needs your attention','Sign in to Avenue to view it.');toast('Reminder emailed to '+d.v)}, upFor:d=>toast('Upload recorded for '+d.v+' under your name'),
+  retry:()=>{S.retry=true;toast('Stripe retried the card: paid (simulated)')},
+  ticket:()=>{S.tickets.unshift({id:'T-'+(S.tickets.length+1),t:$('hT').value,d:$('hD').value,st:'Open',by:S.role==='owner'?'Owner':'Staff account',when:'Today'});toast('Request sent to B Street')},
+  ticketDone:d=>{S.tickets.find(t=>t.id===d.v).st='Resolved';toast('Marked resolved. Flavors can see it.')},
+  gateDone:d=>S.gate[d.v]=true, invite:()=>{S.invited=true;toast('Invitation sent to the Flavors owner')},
+  plan:d=>S.plan=d.v, cday:d=>S.cday=+d.v, join:d=>S.join=+d.v, signin:()=>{go({scenario:'ok',tab:'home',onb:{docs:{}}});toast('Signed in. Finish setting up.')},
+  resolve:d=>{const b=S.bookings.find(x=>x.id===d.id);if(d.v){if(d.v!==b.res)b.note='Moved to '+rn(d.v)+' by Flavors staff';b.res=d.v;b.st='confirmed';toast(b.who+' confirmed on '+rn(d.v))}else{b.st='declined';b.note='Declined by Flavors staff';toast('Request declined. '+b.who+' has been told.')}if(b.who===ME)mail('There is an update on your booking request','Sign in to Avenue to view it.')},
+  late:d=>{const b=S.bookings.find(x=>x.id===d.id);b.st='cancelled';b.note='Late cancellation: hours '+d.v;toast('Recorded: hours '+d.v)},
+  dlgOpen:d=>S.dlg={t:d.t||'override',who:d.v,inv:d.inv,amt:+d.amt}, dlgClose:()=>S.dlg=null,
+  dlgOk:()=>{const d=S.dlg, m=S.members.find(x=>x.n===d.who);
+    if(d.t==='override'){S.override[d.who]='owner';toast(d.who+' can book again')}
+    else if(d.t==='addMember'){const n=$('dB').value.trim()||'New member';S.members.push({n,plan:$('dP').value,pay:['Awaiting payment','mute'],doc:['Missing','mute'],bk:['Invited','info'],owner:$('dE').value,team:'Not set up'});S.msel=n;toast('Invitation sent')}
+    else if(d.t==='changePlan'){if(d.who===ME)S.plan=$('dP').value;else m.plan=$('dP').value;toast('Plan changed to '+$('dP').value)}
+    else if(d.t==='bookFor'){const b={id:'B-'+(1041+S.bookings.length),res:$('dR').value,day:+$('dD').value,s:+$('dS').value,e:+$('dEn').value,eq:[],who:d.who,st:'confirmed',note:'Booked by Flavors staff'};if(b.e<=b.s||clash(b)){toast(b.e<=b.s?'End must be after start':'That time is already booked');return}S.bookings.push(b);toast('Booked '+rn(b.res)+' for '+d.who)}
+    else if(d.t==='deactivate'){m.bk=['Deactivated','mute'];toast(d.who+' deactivated')}
+    else if(d.t==='connect'){S.stripeReady=true;toast('Stripe reports the account ready (test)')}
+    S.dlg=null},
+  msel:d=>S.msel=d.v, perm:d=>S.perm[d.v]=!S.perm[d.v], approve:()=>{S.approved=true;toast('Client approval recorded')},
+  publish:()=>{S.notices.unshift({id:'n'+Date.now(),t:$('nT').value,d:'19 Nov',b:$('nB').value,a:$('nA').value});mail('New notice from Flavors','Sign in to Avenue to read it.');toast('Published')},
+  tourNext:()=>{S.step=Math.min(TOUR.length-1,S.step+1);TOUR[S.step][2]()}, tourPrev:()=>{S.step=Math.max(0,S.step-1);TOUR[S.step][2]()},
+  optsToggle:()=>{$('opts').hidden=!$('opts').hidden;$('btnOpts').setAttribute('aria-expanded',!$('opts').hidden)},
+  truth:()=>{$('truth').hidden=!$('truth').hidden;$('btnTruth').setAttribute('aria-expanded',!$('truth').hidden)},
+  reset:()=>{S=fresh();$('chkOpen').checked=true}
+};
+const C={scenario:v=>go({scenario:v,surface:'member',join:0,tab:'home',docRenewed:false,paid:false,onb:null,ms:v==='out'?'in':null}),role:v=>go({role:v,surface:'staff'}),open:(v,el)=>S.open=el.checked,ex:(v,el)=>S.ex=el.checked,f:(v,el)=>S.form[el.dataset.k]=+v};
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el||el.disabled)return;if(A[el.dataset.act](el.dataset,e,el)!==false)render()});
+document.addEventListener('change',e=>{const el=e.target.closest('[data-chg]');if(!el)return;C[el.dataset.chg](el.value,el);render()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&(S.panel||S.dlg||S.more)){S.panel=S.dlg=null;S.more=false;render()}});
+function fit(){const c=$('canvas');if(!c)return;const k=Math.min(1,$('scaler').clientWidth/1366);c.style.transform=`scale(${k})`;$('scaler').style.height=768*k+'px'}
+let lastKey='';
+function render(){
+  const key=S.surface+S.tab+S.stab+S.device, sc=$('mscroll')||$('cvmain'), top=sc&&key===lastKey?sc.scrollTop:0, keep=document.activeElement&&document.activeElement.id;
+  $('app').innerHTML=S.surface==='member'?memberFrame():staffFrame();
+  const ns=$('mscroll')||$('cvmain');if(ns)ns.scrollTop=top;lastKey=key;
+  for(const b of $('segSurface').children)b.setAttribute('aria-pressed',b.dataset.v===S.surface);
+  for(const b of $('segDevice').children)b.setAttribute('aria-pressed',b.dataset.v===S.device);
+  $('selScenario').value=S.scenario==='out'&&!S.ms?'ok':S.scenario;$('selRole').value=S.role;
+  const t=S.step>=0?TOUR[S.step]:null;$('tour').hidden=!t;if(t){$('tourStep').textContent=`Step ${S.step+1} of ${TOUR.length} · ${t[0]}`;$('tourSay').textContent=t[1]}
+  $('btnPrev').hidden=S.step<1;$('btnNext').textContent=S.step<0?'Start tour ›':S.step===TOUR.length-1?'End of tour':'Next ›';$('btnNext').disabled=S.step===TOUR.length-1;
+  $('frameCaption').textContent=S.surface==='member'?'Member portal: a custom web part on a SharePoint page, in the browser. SharePoint’s own top bar and site header are shown for context.':S.device==='phone'?'Staff app on a phone. This needs a separate responsive layout in Power Apps, which is extra build effort. Sample data.':'Staff app: a Power Apps canvas app, 1366×768 scaled to fit. Sample data.';
+  fit();if(keep&&$(keep))$(keep).focus();
+}
+window.addEventListener('resize',fit);
+const start=()=>render();
+window.claude?.hot?.ready?window.claude.hot.ready(start):start();
+</script>

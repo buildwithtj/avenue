@@ -1,0 +1,9 @@
+{
+  "name": "billing-core",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Host-independent Stripe webhook verification and idempotent event handling. No network, no secrets, no dependencies.",
+  "scripts": { "test": "node --test" },
+  "engines": { "node": ">=22.14" }
+}

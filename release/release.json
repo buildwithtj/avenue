@@ -1,0 +1,1 @@
+{"release": "delivery-1", "modules": ["booking", "calendar", "notices", "documents", "billing", "payments", "applicants", "checkin", "sensors", "support", "permissions", "reports", "events", "storage", "team"]}

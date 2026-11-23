@@ -1,0 +1,2197 @@
+{
+  "version": "2-draft-2026-11-13",
+  "status": "PROPOSED. Applied to https://bstreethq.sharepoint.com/sites/Avenue on 2026-11-11 by the developer via REST (see docs/evidence/day2-provisioning.md). Equipment, plans and table values are still awaited (Q-04, Q-22, Q-25).",
+  "groups": [
+    {
+      "name": "Avenue Members",
+      "description": "Member guest users. Read-only on catalog and calendar; add own requests only; no access to private lists."
+    },
+    {
+      "name": "Avenue Flavors Staff",
+      "description": "Flavors staff account."
+    },
+    {
+      "name": "Avenue Flavors Owner",
+      "description": "Flavors owner/operator account."
+    }
+  ],
+  "access": {
+    "catalog": {
+      "Avenue Members": "Read",
+      "Avenue Flavors Staff": "Contribute",
+      "Avenue Flavors Owner": "Contribute"
+    },
+    "calendar": {
+      "Avenue Members": "Read",
+      "Avenue Flavors Staff": "Read",
+      "Avenue Flavors Owner": "Read"
+    },
+    "private": {
+      "Avenue Flavors Staff": "Contribute",
+      "Avenue Flavors Owner": "Contribute"
+    },
+    "intake": {
+      "Avenue Members": "Contribute",
+      "Avenue Flavors Staff": "Contribute",
+      "Avenue Flavors Owner": "Contribute"
+    },
+    "ownerWrite": {
+      "Avenue Flavors Staff": "Read",
+      "Avenue Flavors Owner": "Contribute"
+    }
+  },
+  "lists": [
+    {
+      "title": "AvenueFacilities",
+      "access": "catalog",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "TimeZone",
+          "type": "Text"
+        },
+        {
+          "name": "EntryGraceMinutes",
+          "type": "Number"
+        },
+        {
+          "name": "ExitGraceMinutes",
+          "type": "Number"
+        },
+        {
+          "name": "StaffAlertEmail",
+          "type": "Text"
+        },
+        {
+          "name": "EarlyEntryMinutes",
+          "type": "Number"
+        },
+        {
+          "name": "CleanupMinutes",
+          "type": "Number"
+        },
+        {
+          "name": "MinBookingMinutes",
+          "type": "Number"
+        },
+        {
+          "name": "MaxBookingMinutes",
+          "type": "Number"
+        },
+        {
+          "name": "BookingStepMinutes",
+          "type": "Number"
+        },
+        {
+          "name": "MaxCompaniesInKitchen",
+          "type": "Number"
+        },
+        {
+          "name": "CheckoutAlertMinutes",
+          "type": "Number"
+        },
+        {
+          "name": "MinPrepTables",
+          "type": "Number"
+        },
+        {
+          "name": "AutoApproveWhenFree",
+          "type": "Boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "title": "AvenueEquipment",
+      "access": "catalog",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "EquipmentId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "Kind",
+          "type": "Choice",
+          "choices": [
+            "Equipment",
+            "Prep table"
+          ]
+        },
+        {
+          "name": "Active",
+          "type": "Boolean"
+        },
+        {
+          "name": "Category",
+          "type": "Choice",
+          "choices": [
+            "Stove",
+            "Grill",
+            "Oven",
+            "Warmer",
+            "Pizza oven",
+            "Fridge",
+            "Mixer",
+            "Prep table",
+            "Other"
+          ],
+          "indexed": true
+        },
+        {
+          "name": "Description",
+          "type": "Note"
+        },
+        {
+          "name": "Location",
+          "type": "Text"
+        },
+        {
+          "name": "PhotoUrl",
+          "type": "Text"
+        },
+        {
+          "name": "SortOrder",
+          "type": "Number"
+        },
+        {
+          "name": "BookableByMembers",
+          "type": "Boolean"
+        },
+        {
+          "name": "GroupId",
+          "type": "Text"
+        }
+      ]
+    },
+    {
+      "title": "AvenueDiningTables",
+      "access": "catalog",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "TableId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "Seats",
+          "type": "Number"
+        },
+        {
+          "name": "Active",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "title": "AvenuePlans",
+      "access": "catalog",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "PlanId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "MonthlyHours",
+          "type": "Number"
+        },
+        {
+          "name": "ExtraHourRate",
+          "type": "Number"
+        },
+        {
+          "name": "Active",
+          "type": "Boolean"
+        },
+        {
+          "name": "PriceCents",
+          "type": "Number"
+        },
+        {
+          "name": "CardPriceCents",
+          "type": "Number"
+        },
+        {
+          "name": "PlanGroup",
+          "type": "Choice",
+          "choices": [
+            "Emerging",
+            "Mobile Kitchen",
+            "Legacy"
+          ]
+        },
+        {
+          "name": "OpenToNew",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "title": "AvenueCalendar",
+      "access": "calendar",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "BookingId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "ResourceId",
+          "type": "Text"
+        },
+        {
+          "name": "Space",
+          "type": "Choice",
+          "choices": [
+            "Kitchen",
+            "Dining",
+            "Whole facility"
+          ]
+        },
+        {
+          "name": "EquipmentIds",
+          "type": "Text"
+        },
+        {
+          "name": "MemberDisplayName",
+          "type": "Text"
+        },
+        {
+          "name": "StartUtc",
+          "type": "DateTime",
+          "indexed": true
+        },
+        {
+          "name": "EndUtc",
+          "type": "DateTime"
+        }
+      ]
+    },
+    {
+      "title": "AvenueMembers",
+      "access": "private",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "BusinessName",
+          "type": "Text"
+        },
+        {
+          "name": "PlanId",
+          "type": "Text"
+        },
+        {
+          "name": "CollectionDay",
+          "type": "Number"
+        },
+        {
+          "name": "Status",
+          "type": "Choice",
+          "choices": [
+            "Invited",
+            "Paid",
+            "Onboarding",
+            "Active",
+            "Inactive"
+          ]
+        },
+        {
+          "name": "ChangeReason",
+          "type": "Note"
+        },
+        {
+          "name": "StripeCustomerId",
+          "type": "Text"
+        },
+        {
+          "name": "SubscriptionId",
+          "type": "Text"
+        },
+        {
+          "name": "PayMethod",
+          "type": "Choice",
+          "choices": [
+            "Bank",
+            "Card"
+          ]
+        },
+        {
+          "name": "PaymentStatus",
+          "type": "Choice",
+          "choices": [
+            "Current",
+            "PastDue",
+            "Unpaid",
+            "Cancelled",
+            "OwnerOverride"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "AvenueBookings",
+      "access": "private",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "BookingId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Space",
+          "type": "Choice",
+          "choices": [
+            "Kitchen",
+            "Dining",
+            "Whole facility"
+          ]
+        },
+        {
+          "name": "EquipmentIds",
+          "type": "Text"
+        },
+        {
+          "name": "PeopleCount",
+          "type": "Number"
+        },
+        {
+          "name": "StartUtc",
+          "type": "DateTime",
+          "indexed": true
+        },
+        {
+          "name": "EndUtc",
+          "type": "DateTime"
+        },
+        {
+          "name": "Status",
+          "type": "Choice",
+          "choices": [
+            "Pending",
+            "Approved",
+            "Declined",
+            "Cancelled",
+            "No-show credited",
+            "Cancelled (hours kept)"
+          ]
+        },
+        {
+          "name": "OverlapNote",
+          "type": "Note"
+        },
+        {
+          "name": "RequestedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "DecidedBy",
+          "type": "Text"
+        },
+        {
+          "name": "DecidedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "CancelRequestedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "RemindersSent",
+          "type": "Text"
+        },
+        {
+          "name": "MissedCheckInAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "OutreachAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "OutreachBy",
+          "type": "Text"
+        },
+        {
+          "name": "OutreachNote",
+          "type": "Note"
+        },
+        {
+          "name": "DecisionNotified",
+          "type": "Text"
+        },
+        {
+          "name": "ExitFlaggedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "ExitOutreachAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "ExitOutreachBy",
+          "type": "Text"
+        },
+        {
+          "name": "ExitOutreachNote",
+          "type": "Note"
+        },
+        {
+          "name": "BookedBy",
+          "type": "Text"
+        },
+        {
+          "name": "ExtensionTo",
+          "type": "DateTime"
+        },
+        {
+          "name": "ExtensionRequestedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "ExtensionRequestId",
+          "type": "Text"
+        },
+        {
+          "name": "ExtensionConflict",
+          "type": "Text"
+        },
+        {
+          "name": "ExtensionDecision",
+          "type": "Text"
+        },
+        {
+          "name": "ExtendedBy",
+          "type": "Text"
+        },
+        {
+          "name": "ExtendedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "OverlapNotified",
+          "type": "Text"
+        },
+        {
+          "name": "EndAlertSentAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "ActualEndUtc",
+          "type": "DateTime"
+        }
+      ]
+    },
+    {
+      "title": "AvenueBookingRequests",
+      "access": "intake",
+      "itemLevel": true,
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "RequestId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Space",
+          "type": "Choice",
+          "choices": [
+            "Kitchen",
+            "Dining",
+            "Whole facility"
+          ]
+        },
+        {
+          "name": "EquipmentIds",
+          "type": "Text"
+        },
+        {
+          "name": "PeopleCount",
+          "type": "Number"
+        },
+        {
+          "name": "StartUtc",
+          "type": "DateTime",
+          "indexed": true
+        },
+        {
+          "name": "EndUtc",
+          "type": "DateTime"
+        },
+        {
+          "name": "CancelBookingId",
+          "type": "Text"
+        },
+        {
+          "name": "Outcome",
+          "type": "Text"
+        },
+        {
+          "name": "ExtendBookingId",
+          "type": "Text"
+        },
+        {
+          "name": "OnBehalfOf",
+          "type": "Text"
+        },
+        {
+          "name": "StaffNote",
+          "type": "Note"
+        },
+        {
+          "name": "Message",
+          "type": "Note"
+        }
+      ]
+    },
+    {
+      "title": "AvenueHoursLedger",
+      "access": "private",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "EntryId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "BookingId",
+          "type": "Text"
+        },
+        {
+          "name": "Period",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Hours",
+          "type": "Number"
+        },
+        {
+          "name": "Reason",
+          "type": "Choice",
+          "choices": [
+            "Used",
+            "Credit back",
+            "Overage",
+            "Adjustment"
+          ]
+        },
+        {
+          "name": "ChargeKey",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "Note",
+          "type": "Note"
+        }
+      ]
+    },
+    {
+      "title": "AvenueMemberDocuments",
+      "access": "private",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "DocType",
+          "type": "Choice",
+          "choices": [
+            "Permit",
+            "Licence",
+            "Insurance",
+            "Certification",
+            "County food permit",
+            "MD good standing",
+            "Liability insurance",
+            "Workers comp or waiver",
+            "Food safety manager",
+            "Food manager card",
+            "Food handler card"
+          ]
+        },
+        {
+          "name": "IssueDate",
+          "type": "DateTime",
+          "dateOnly": true
+        },
+        {
+          "name": "ExpiryDate",
+          "type": "DateTime",
+          "dateOnly": true
+        },
+        {
+          "name": "DocStatus",
+          "type": "Choice",
+          "choices": [
+            "Current",
+            "Expiring",
+            "Expired"
+          ]
+        },
+        {
+          "name": "SourceSubmissionId",
+          "type": "Text"
+        },
+        {
+          "name": "Verified",
+          "type": "Boolean"
+        },
+        {
+          "name": "SupersededBy",
+          "type": "Text"
+        },
+        {
+          "name": "UploadedBy",
+          "type": "Text"
+        },
+        {
+          "name": "RenewalReminderAt",
+          "type": "DateTime"
+        }
+      ]
+    },
+    {
+      "title": "AvenueComplianceOverrides",
+      "access": "ownerWrite",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Reason",
+          "type": "Note"
+        },
+        {
+          "name": "Active",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "title": "AvenueDocumentSubmissions",
+      "access": "intake",
+      "itemLevel": true,
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "SubmissionId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "DocType",
+          "type": "Choice",
+          "choices": [
+            "Permit",
+            "Licence",
+            "Insurance",
+            "Certification",
+            "County food permit",
+            "MD good standing",
+            "Liability insurance",
+            "Workers comp or waiver",
+            "Food safety manager",
+            "Food manager card",
+            "Food handler card"
+          ]
+        },
+        {
+          "name": "IssueDate",
+          "type": "DateTime",
+          "dateOnly": true
+        },
+        {
+          "name": "ExpiryDate",
+          "type": "DateTime",
+          "dateOnly": true
+        },
+        {
+          "name": "Outcome",
+          "type": "Text"
+        },
+        {
+          "name": "OnBehalfOf",
+          "type": "Text"
+        }
+      ]
+    },
+    {
+      "title": "AvenueCheckInSubmissions",
+      "access": "intake",
+      "itemLevel": true,
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "SubmissionId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "BookingId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Kind",
+          "type": "Choice",
+          "choices": [
+            "Entry",
+            "Exit",
+            "Wellness"
+          ]
+        },
+        {
+          "name": "Answers",
+          "type": "Note"
+        },
+        {
+          "name": "AllPassed",
+          "type": "Boolean"
+        },
+        {
+          "name": "Outcome",
+          "type": "Text"
+        },
+        {
+          "name": "PersonName",
+          "type": "Text"
+        }
+      ]
+    },
+    {
+      "title": "AvenueCheckIns",
+      "access": "private",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "BookingId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Kind",
+          "type": "Choice",
+          "choices": [
+            "Entry",
+            "Exit",
+            "Wellness"
+          ]
+        },
+        {
+          "name": "Answers",
+          "type": "Note"
+        },
+        {
+          "name": "AllPassed",
+          "type": "Boolean"
+        },
+        {
+          "name": "SubmittedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "SubmissionId",
+          "type": "Text"
+        },
+        {
+          "name": "AlertSentAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "ResolvedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "ResolvedBy",
+          "type": "Text"
+        },
+        {
+          "name": "ResolutionNote",
+          "type": "Note"
+        },
+        {
+          "name": "PersonName",
+          "type": "Text"
+        }
+      ]
+    },
+    {
+      "title": "AvenueChecklistQuestions",
+      "access": "catalog",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Kind",
+          "type": "Choice",
+          "choices": [
+            "Entry",
+            "Exit",
+            "Wellness"
+          ]
+        },
+        {
+          "name": "Question",
+          "type": "Note"
+        },
+        {
+          "name": "SortOrder",
+          "type": "Number"
+        },
+        {
+          "name": "Active",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "title": "AvenueNotices",
+      "access": "catalog",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Body",
+          "type": "Note"
+        },
+        {
+          "name": "PublishedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "Active",
+          "type": "Boolean"
+        },
+        {
+          "name": "NotifiedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "Category",
+          "type": "Choice",
+          "choices": [
+            "General",
+            "Maintenance",
+            "Schedule",
+            "Urgent"
+          ]
+        },
+        {
+          "name": "Pinned",
+          "type": "Boolean",
+          "default": false
+        },
+        {
+          "name": "ExpiresAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "Audience",
+          "type": "Text"
+        },
+        {
+          "name": "AudienceValue",
+          "type": "Text"
+        },
+        {
+          "name": "PublishAt",
+          "type": "DateTime"
+        }
+      ]
+    },
+    {
+      "title": "AvenueDocumentFiles",
+      "access": "private",
+      "library": true,
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "DocType",
+          "type": "Choice",
+          "choices": [
+            "Permit",
+            "Licence",
+            "Insurance",
+            "Certification",
+            "County food permit",
+            "MD good standing",
+            "Liability insurance",
+            "Workers comp or waiver",
+            "Food safety manager",
+            "Food manager card",
+            "Food handler card"
+          ]
+        },
+        {
+          "name": "SourceSubmissionId",
+          "type": "Text"
+        }
+      ]
+    },
+    {
+      "title": "AvenueMyMembership",
+      "access": "private",
+      "description": "Member-visible copy of each member's own membership. Maintained by the flow \"Avenue - Membership card\"; each row is shared (read) only with that member. List-level: staff and owner only.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "BusinessName",
+          "type": "Text"
+        },
+        {
+          "name": "PlanId",
+          "type": "Text"
+        },
+        {
+          "name": "CollectionDay",
+          "type": "Number"
+        },
+        {
+          "name": "Status",
+          "type": "Text"
+        },
+        {
+          "name": "PaymentStatus",
+          "type": "Text"
+        },
+        {
+          "name": "PayMethod",
+          "type": "Text"
+        }
+      ]
+    },
+    {
+      "title": "AvenueNoticeDrafts",
+      "access": "private",
+      "description": "Staff-only drafts and withdrawn notices. Publishing copies a draft to AvenueNotices; withdrawing moves the notice back here, so members can no longer read it (SOP-08).",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Body",
+          "type": "Note"
+        },
+        {
+          "name": "State",
+          "type": "Choice",
+          "choices": [
+            "Draft",
+            "Withdrawn"
+          ]
+        },
+        {
+          "name": "PublishedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "WithdrawnAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "WithdrawnBy",
+          "type": "Text"
+        },
+        {
+          "name": "Category",
+          "type": "Choice",
+          "choices": [
+            "General",
+            "Maintenance",
+            "Schedule",
+            "Urgent"
+          ]
+        },
+        {
+          "name": "Pinned",
+          "type": "Boolean",
+          "default": false
+        },
+        {
+          "name": "ExpiresAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "Audience",
+          "type": "Text"
+        },
+        {
+          "name": "AudienceValue",
+          "type": "Text"
+        },
+        {
+          "name": "PublishAt",
+          "type": "DateTime"
+        }
+      ]
+    },
+    {
+      "title": "AvenueRequiredDocTypes",
+      "access": "catalog",
+      "description": "Document types every active member must hold (CMP-01). Left empty until Flavors answers Q-11; the staff Compliance screen lists members missing any active type.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "DocType",
+          "type": "Choice",
+          "choices": [
+            "Permit",
+            "Licence",
+            "Insurance",
+            "Certification",
+            "County food permit",
+            "MD good standing",
+            "Liability insurance",
+            "Workers comp or waiver",
+            "Food safety manager",
+            "Food manager card",
+            "Food handler card"
+          ]
+        },
+        {
+          "name": "Active",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "title": "AvenueComplianceFlags",
+      "access": "intake",
+      "itemLevel": true,
+      "description": "A member says a compliance document needs staff attention. Own items only. A flow copies it to AvenueComplianceCases for staff; a second flow echoes the staff decision into Outcome (display only).",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "SubmissionId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "DocType",
+          "type": "Choice",
+          "choices": [
+            "Permit",
+            "Licence",
+            "Insurance",
+            "Certification",
+            "County food permit",
+            "MD good standing",
+            "Liability insurance",
+            "Workers comp or waiver",
+            "Food safety manager",
+            "Food manager card",
+            "Food handler card"
+          ]
+        },
+        {
+          "name": "Reason",
+          "type": "Choice",
+          "choices": [
+            "Name or business differs",
+            "Coverage or limits below requirement",
+            "Additional insured missing",
+            "Document unclear or looks altered",
+            "I need help deciding",
+            "Other"
+          ]
+        },
+        {
+          "name": "Note",
+          "type": "Note"
+        },
+        {
+          "name": "Outcome",
+          "type": "Text"
+        }
+      ]
+    },
+    {
+      "title": "AvenueComplianceCases",
+      "access": "private",
+      "description": "Authoritative compliance case (private). Created by a flow from a member flag, or by staff. Status is the staff decision; Active = a booking hold, which the booking-request flow enforces (refuses new bookings).",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "DocType",
+          "type": "Choice",
+          "choices": [
+            "Permit",
+            "Licence",
+            "Insurance",
+            "Certification",
+            "County food permit",
+            "MD good standing",
+            "Liability insurance",
+            "Workers comp or waiver",
+            "Food safety manager",
+            "Food manager card",
+            "Food handler card"
+          ]
+        },
+        {
+          "name": "FlagSubmissionId",
+          "type": "Text"
+        },
+        {
+          "name": "Active",
+          "type": "Boolean"
+        },
+        {
+          "name": "Reason",
+          "type": "Note"
+        },
+        {
+          "name": "Status",
+          "type": "Choice",
+          "choices": [
+            "Open",
+            "More information",
+            "Hold",
+            "Cleared",
+            "Released"
+          ]
+        },
+        {
+          "name": "StaffMessage",
+          "type": "Note"
+        }
+      ]
+    },
+    {
+      "title": "AvenueApplicants",
+      "access": "private",
+      "description": "Membership applications (portal Join wizard or the public join page). Written by the integration host through the bridge flow; staff approve or reject in the Applicants screen. Members have no access.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "ApplicantId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "Email",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "BusinessName",
+          "type": "Text"
+        },
+        {
+          "name": "ContactName",
+          "type": "Text"
+        },
+        {
+          "name": "Phone",
+          "type": "Text"
+        },
+        {
+          "name": "PlanId",
+          "type": "Text"
+        },
+        {
+          "name": "CollectionDay",
+          "type": "Number"
+        },
+        {
+          "name": "TeamSize",
+          "type": "Number"
+        },
+        {
+          "name": "PayMethod",
+          "type": "Choice",
+          "choices": [
+            "Bank",
+            "Card"
+          ]
+        },
+        {
+          "name": "Stage",
+          "type": "Choice",
+          "choices": [
+            "PaymentPending",
+            "Paid",
+            "InviteNeeded",
+            "Onboarding",
+            "Active",
+            "Rejected",
+            "Expired"
+          ]
+        },
+        {
+          "name": "Source",
+          "type": "Choice",
+          "choices": [
+            "Portal",
+            "Public"
+          ]
+        },
+        {
+          "name": "StripeCustomerId",
+          "type": "Text"
+        },
+        {
+          "name": "SubscriptionId",
+          "type": "Text"
+        },
+        {
+          "name": "PaidAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "ExpiresAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "DecidedBy",
+          "type": "Text"
+        },
+        {
+          "name": "DecidedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "Note",
+          "type": "Note"
+        }
+      ]
+    },
+    {
+      "title": "AvenueHostRequests",
+      "access": "intake",
+      "itemLevel": true,
+      "description": "Requests to the integration host (join payment link, payment-method portal, Stripe account link, event invoice, cancel subscription). Own items only. The flow \"Avenue - Host requests\" forwards each item with its author and staff check, then writes Outcome and Link back (display only).",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "RequestId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Kind",
+          "type": "Choice",
+          "choices": [
+            "Join",
+            "PaymentPortal",
+            "AccountLink",
+            "EventInvoice",
+            "CancelSubscription"
+          ]
+        },
+        {
+          "name": "Payload",
+          "type": "Note"
+        },
+        {
+          "name": "Outcome",
+          "type": "Text"
+        },
+        {
+          "name": "Link",
+          "type": "Note"
+        }
+      ]
+    },
+    {
+      "title": "AvenueInvoices",
+      "access": "private",
+      "description": "Mirror of Stripe invoices on the facility connected account (test mode). Written by the host through the bridge flow, which grants each row read to its member only (item level, like AvenueMyMembership). Staff read all.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "InvoiceId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Number",
+          "type": "Text"
+        },
+        {
+          "name": "Kind",
+          "type": "Choice",
+          "choices": [
+            "Membership",
+            "Overage",
+            "Event",
+            "Other"
+          ]
+        },
+        {
+          "name": "Status",
+          "type": "Choice",
+          "choices": [
+            "draft",
+            "open",
+            "paid",
+            "void",
+            "uncollectible"
+          ]
+        },
+        {
+          "name": "AmountDueCents",
+          "type": "Number"
+        },
+        {
+          "name": "AmountPaidCents",
+          "type": "Number"
+        },
+        {
+          "name": "Currency",
+          "type": "Text"
+        },
+        {
+          "name": "DueDate",
+          "type": "DateTime"
+        },
+        {
+          "name": "PeriodStart",
+          "type": "DateTime"
+        },
+        {
+          "name": "PeriodEnd",
+          "type": "DateTime"
+        },
+        {
+          "name": "HostedUrl",
+          "type": "Note"
+        },
+        {
+          "name": "PdfUrl",
+          "type": "Note"
+        },
+        {
+          "name": "Lines",
+          "type": "Note"
+        },
+        {
+          "name": "StripeCreated",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "title": "AvenueSensors",
+      "access": "private",
+      "description": "Swift Sensors units and their safe ranges (docs/ENVIRONMENT_PLAN.md). Loaded from the client sheet; the owner edits ranges. Read by the integration host to classify readings. Staff only.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "SensorId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "Model",
+          "type": "Text"
+        },
+        {
+          "name": "UnitName",
+          "type": "Text"
+        },
+        {
+          "name": "UnitType",
+          "type": "Choice",
+          "choices": [
+            "Fridge",
+            "Freezer"
+          ]
+        },
+        {
+          "name": "Room",
+          "type": "Text"
+        },
+        {
+          "name": "MinF",
+          "type": "Number"
+        },
+        {
+          "name": "MaxF",
+          "type": "Number"
+        },
+        {
+          "name": "EquipmentId",
+          "type": "Text"
+        },
+        {
+          "name": "Active",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "title": "AvenueSensorLatest",
+      "access": "private",
+      "description": "Latest reading per sensor (one row each), updated in place by the integration host. Status only, never an alarm (SEN-03). Staff only.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "SensorId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "ReadAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "ValueF",
+          "type": "Number"
+        },
+        {
+          "name": "State",
+          "type": "Choice",
+          "choices": [
+            "Normal",
+            "OutOfRange",
+            "Stale",
+            "Offline"
+          ]
+        },
+        {
+          "name": "Battery",
+          "type": "Number"
+        },
+        {
+          "name": "Signal",
+          "type": "Number"
+        },
+        {
+          "name": "UpdatedAt",
+          "type": "DateTime"
+        }
+      ]
+    },
+    {
+      "title": "AvenueSensorHourly",
+      "access": "private",
+      "description": "One summary row per sensor per completed UTC hour (min, max, average, count), written idempotently by the integration host. Compliance record (SEN-02). Staff only.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "HourKey",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "SensorId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "HourUtc",
+          "type": "DateTime",
+          "indexed": true
+        },
+        {
+          "name": "MinF",
+          "type": "Number"
+        },
+        {
+          "name": "MaxF",
+          "type": "Number"
+        },
+        {
+          "name": "AvgF",
+          "type": "Number"
+        },
+        {
+          "name": "Count",
+          "type": "Number"
+        },
+        {
+          "name": "OutOfRangeCount",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "title": "AvenueTempExcursions",
+      "access": "private",
+      "description": "Out-of-range episodes (opened after 2 consecutive out-of-range readings). Staff acknowledge and record the corrective action. Staff only.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "ExcursionId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "SensorId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "StartedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "EndedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "PeakF",
+          "type": "Number"
+        },
+        {
+          "name": "Minutes",
+          "type": "Number"
+        },
+        {
+          "name": "State",
+          "type": "Choice",
+          "choices": [
+            "Open",
+            "Closed",
+            "Acknowledged"
+          ]
+        },
+        {
+          "name": "AcknowledgedBy",
+          "type": "Text"
+        },
+        {
+          "name": "AcknowledgedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "CorrectiveAction",
+          "type": "Note"
+        }
+      ]
+    },
+    {
+      "title": "AvenueSupportMessages",
+      "access": "intake",
+      "itemLevel": true,
+      "description": "A member message to Flavors (\"Messages with Flavors\"). Own items only. A flow copies it to AvenueSupportCases for staff; a second flow echoes the staff reply into Reply and Outcome (display only). [PROPOSED] 23 Nov 2026, not on the live site.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "MessageId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "ThreadId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Category",
+          "type": "Choice",
+          "choices": [
+            "Booking",
+            "Billing",
+            "Documents",
+            "Equipment",
+            "Other"
+          ]
+        },
+        {
+          "name": "Subject",
+          "type": "Text"
+        },
+        {
+          "name": "Body",
+          "type": "Note"
+        },
+        {
+          "name": "Outcome",
+          "type": "Text"
+        },
+        {
+          "name": "Reply",
+          "type": "Note"
+        }
+      ]
+    },
+    {
+      "title": "AvenueEventRequests",
+      "access": "intake",
+      "itemLevel": true,
+      "description": "A member asks to book a private event (dining room). Own items only. A flow copies it to AvenueEventCases; a decision flow echoes Reply and Outcome (display only). [PROPOSED] 23 Nov 2026, not on the live site.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "RequestId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Package",
+          "type": "Choice",
+          "choices": [
+            "Simplicity",
+            "Opulence",
+            "Elevation",
+            "Platinum"
+          ]
+        },
+        {
+          "name": "EventDate",
+          "type": "DateTime"
+        },
+        {
+          "name": "Guests",
+          "type": "Number"
+        },
+        {
+          "name": "Notes",
+          "type": "Note"
+        },
+        {
+          "name": "Outcome",
+          "type": "Text"
+        },
+        {
+          "name": "Reply",
+          "type": "Note"
+        }
+      ]
+    },
+    {
+      "title": "AvenueStorageRequests",
+      "access": "intake",
+      "itemLevel": true,
+      "description": "A member asks to rent storage. Own items only. A flow copies it to AvenueStorageCases; staff bill by hand, nothing is created in Stripe. [PROPOSED] 23 Nov 2026, not on the live site.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "RequestId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Item",
+          "type": "Choice",
+          "choices": [
+            "Half-door fridge",
+            "Half-door freezer",
+            "Full-door fridge",
+            "Full-door freezer",
+            "Dry shelf single",
+            "Dry shelf double",
+            "Daily dry shelf",
+            "Daily cold shelf"
+          ]
+        },
+        {
+          "name": "Quantity",
+          "type": "Number"
+        },
+        {
+          "name": "Notes",
+          "type": "Note"
+        },
+        {
+          "name": "Outcome",
+          "type": "Text"
+        },
+        {
+          "name": "Reply",
+          "type": "Note"
+        }
+      ]
+    },
+    {
+      "title": "AvenueTeamMembers",
+      "access": "intake",
+      "itemLevel": true,
+      "description": "A member business's own team roster, used to prefill the team wellness check. Own items only; the roster is the member's convenience, not an access list. [PROPOSED] 23 Nov 2026, not on the live site.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "TeamMemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "PersonName",
+          "type": "Text"
+        },
+        {
+          "name": "Role",
+          "type": "Choice",
+          "choices": [
+            "Lead",
+            "Member"
+          ]
+        },
+        {
+          "name": "Active",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "title": "AvenueSupportCases",
+      "access": "private",
+      "description": "Staff-side copy of member support messages, one row per conversation (ThreadId). Written by the support flows; staff set StaffReply. [PROPOSED] 23 Nov 2026, not on the live site.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "CaseId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "ThreadId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Category",
+          "type": "Choice",
+          "choices": [
+            "Booking",
+            "Billing",
+            "Documents",
+            "Equipment",
+            "Other"
+          ]
+        },
+        {
+          "name": "Subject",
+          "type": "Text"
+        },
+        {
+          "name": "LastMessage",
+          "type": "Note"
+        },
+        {
+          "name": "Status",
+          "type": "Choice",
+          "choices": [
+            "Open",
+            "Answered",
+            "Closed"
+          ]
+        },
+        {
+          "name": "StaffReply",
+          "type": "Note"
+        },
+        {
+          "name": "RepliedBy",
+          "type": "Text"
+        },
+        {
+          "name": "RepliedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "CreatedAt",
+          "type": "DateTime"
+        }
+      ]
+    },
+    {
+      "title": "AvenueEventCases",
+      "access": "private",
+      "description": "Staff-side copy of private-event requests with the quote from the member price table. Staff approve; approval creates an EventInvoice host request. [PROPOSED] 23 Nov 2026, not on the live site.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "CaseId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "RequestId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Package",
+          "type": "Choice",
+          "choices": [
+            "Simplicity",
+            "Opulence",
+            "Elevation",
+            "Platinum"
+          ]
+        },
+        {
+          "name": "EventDate",
+          "type": "DateTime"
+        },
+        {
+          "name": "Guests",
+          "type": "Number"
+        },
+        {
+          "name": "Notes",
+          "type": "Note"
+        },
+        {
+          "name": "QuoteCents",
+          "type": "Number"
+        },
+        {
+          "name": "Status",
+          "type": "Choice",
+          "choices": [
+            "Requested",
+            "Approved",
+            "Declined",
+            "Invoiced"
+          ]
+        },
+        {
+          "name": "DecidedBy",
+          "type": "Text"
+        },
+        {
+          "name": "DecidedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "InvoiceId",
+          "type": "Text"
+        }
+      ]
+    },
+    {
+      "title": "AvenueStorageCases",
+      "access": "private",
+      "description": "Staff-side copy of storage requests. Staff approve or decline and enter the monthly amount; billing is by hand. [PROPOSED] 23 Nov 2026, not on the live site.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "CaseId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "RequestId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Item",
+          "type": "Choice",
+          "choices": [
+            "Half-door fridge",
+            "Half-door freezer",
+            "Full-door fridge",
+            "Full-door freezer",
+            "Dry shelf single",
+            "Dry shelf double",
+            "Daily dry shelf",
+            "Daily cold shelf"
+          ]
+        },
+        {
+          "name": "Quantity",
+          "type": "Number"
+        },
+        {
+          "name": "Notes",
+          "type": "Note"
+        },
+        {
+          "name": "MonthlyCents",
+          "type": "Number"
+        },
+        {
+          "name": "Status",
+          "type": "Choice",
+          "choices": [
+            "Requested",
+            "Approved",
+            "Declined"
+          ]
+        },
+        {
+          "name": "DecidedBy",
+          "type": "Text"
+        },
+        {
+          "name": "DecidedAt",
+          "type": "DateTime"
+        }
+      ]
+    },
+    {
+      "title": "AvenueStaffCapabilities",
+      "access": "ownerWrite",
+      "description": "What each Flavors staff e-mail may do in the staff app. The owner edits it; staff read it. The capability set is [PROPOSED] (Q-15). The staff app hides controls from it; real enforcement still needs list or flow checks. 23 Nov 2026, not on the live site.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "StaffEmail",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "ApproveBookings",
+          "type": "Boolean"
+        },
+        {
+          "name": "ManageDocuments",
+          "type": "Boolean"
+        },
+        {
+          "name": "ViewPayments",
+          "type": "Boolean"
+        },
+        {
+          "name": "ManageMembers",
+          "type": "Boolean"
+        },
+        {
+          "name": "PostNotices",
+          "type": "Boolean"
+        },
+        {
+          "name": "ManageEquipment",
+          "type": "Boolean"
+        },
+        {
+          "name": "ViewEnvironment",
+          "type": "Boolean"
+        },
+        {
+          "name": "Note",
+          "type": "Text"
+        }
+      ]
+    }
+  ]
+}

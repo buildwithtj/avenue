@@ -1,0 +1,623 @@
+- supBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- supBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- supBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- supDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- supBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- supTitle:
+    Control: Label
+    Properties:
+      Text: ="Support"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- supNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- supNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- supNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- supNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- supNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- supNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- supNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 98
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- tm_support:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =4
+      Width: =10
+      Height: =10
+- sc_support:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =64
+      Width: =App.Width
+      Height: =App.Height - 64
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_support.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_support:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =704
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - supBack:
+            Control: Classic/Button
+            Properties:
+              Text: ="Back to More"
+              X: =20
+              Y: =0
+              Width: =140
+              Height: =34
+              OnSelect: =Navigate(Screen12)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+        - supHead:
+            Control: Label
+            Properties:
+              Text: ="Messages from members"
+              X: =180
+              Y: =0
+              Width: =400
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =20
+              FontWeight: =FontWeight.Bold
+        - supRefresh:
+            Control: Classic/Button
+            Properties:
+              Text: ="Refresh"
+              X: =1190
+              Y: =0
+              Width: =140
+              Height: =34
+              OnSelect: =Refresh(AvenueSupportCases)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+        - supChipAll:
+            Control: Classic/Button
+            Properties:
+              Text: ="All (" & Text(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville"))) & ")"
+              X: =20
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varSupStage, "All")
+              Fill: =If(Coalesce(varSupStage, "All") = "All", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varSupStage, "All") = "All", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varSupStage, "All") = "All", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varSupStage, "All") = "All", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - supChipOpen:
+            Control: Classic/Button
+            Properties:
+              Text: ="Open (" & Text(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value = "Open"))) & ")"
+              X: =156
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varSupStage, "Open")
+              Fill: =If(Coalesce(varSupStage, "All") = "Open", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varSupStage, "All") = "Open", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varSupStage, "All") = "Open", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varSupStage, "All") = "Open", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - supChipAnswered:
+            Control: Classic/Button
+            Properties:
+              Text: ="Answered (" & Text(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value = "Answered"))) & ")"
+              X: =292
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varSupStage, "Answered")
+              Fill: =If(Coalesce(varSupStage, "All") = "Answered", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varSupStage, "All") = "Answered", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varSupStage, "All") = "Answered", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varSupStage, "All") = "Answered", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - supChipClosed:
+            Control: Classic/Button
+            Properties:
+              Text: ="Closed (" & Text(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value = "Closed"))) & ")"
+              X: =428
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varSupStage, "Closed")
+              Fill: =If(Coalesce(varSupStage, "All") = "Closed", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varSupStage, "All") = "Closed", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varSupStage, "All") = "Closed", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varSupStage, "All") = "Closed", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - supGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({st: Coalesce(varSupStage, "All")}, SortByColumns(AddColumns(If(st = "All", Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville"), Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value = st)), Rank, Switch(Status.Value, "Open", 0, "Answered", 1, 2)), "Rank", SortOrder.Ascending, "CreatedAt", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =580
+              TemplateSize: =66
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - supItemTitle:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Subject, "(no subject)")
+                    X: =8
+                    Y: =4
+                    Width: =480
+                    Height: =28
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - supItemMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Category.Value, "-") & " · " & ThisItem.MemberId
+                    X: =8
+                    Y: =34
+                    Width: =480
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - supItemPill:
+                  Control: Classic/Button
+                  Properties:
+                    Text: =ThisItem.Status.Value
+                    X: =496
+                    Y: =20
+                    Width: =128
+                    Height: =24
+                    DisplayMode: =DisplayMode.Disabled
+                    Fill: =Switch(ThisItem.Status.Value, "Open", RGBA(244,235,211,1), "Answered", RGBA(220,232,235,1), RGBA(229,231,235,1))
+                    DisabledFill: =Switch(ThisItem.Status.Value, "Open", RGBA(244,235,211,1), "Answered", RGBA(220,232,235,1), RGBA(229,231,235,1))
+                    DisabledColor: =Switch(ThisItem.Status.Value, "Open", RGBA(107,79,16,1), "Answered", RGBA(15,76,92,1), RGBA(91,99,112,1))
+                    Color: =Switch(ThisItem.Status.Value, "Open", RGBA(107,79,16,1), "Answered", RGBA(15,76,92,1), RGBA(91,99,112,1))
+                    BorderThickness: =0
+                    Size: =10
+                    FontWeight: =FontWeight.Bold
+                    RadiusTopLeft: =12
+                    RadiusTopRight: =12
+                    RadiusBottomLeft: =12
+                    RadiusBottomRight: =12
+              - supGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =65
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - supEmpty:
+            Control: Label
+            Properties:
+              Text: ="No conversations in this view yet. Members start them from Messages with Flavors in the portal."
+              X: =28
+              Y: =110
+              Width: =620
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              Visible: =CountRows(AvenueSupportCases) = 0
+        - supSelHead:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(supGal.Selected), "Select a conversation", supGal.Selected.Subject)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+        - supSelInfo:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(supGal.Selected), "", "From " & supGal.Selected.MemberId & " · " & Coalesce(supGal.Selected.Category.Value, "-") & " · " & supGal.Selected.Status.Value & Char(10) & "Opened " & With({t: supGal.Selected.CreatedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "ddd d mmm, h:mm AM/PM"))))) & If(IsBlank(supGal.Selected.RepliedAt), "", Char(10) & "Last reply by " & supGal.Selected.RepliedBy & " · " & With({t: supGal.Selected.RepliedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "ddd d mmm, h:mm AM/PM")))))))
+              X: =690
+              Y: =124
+              Width: =640
+              Height: =56
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+        - supMsgCap:
+            Control: Label
+            Properties:
+              Text: ="Member's last message"
+              X: =690
+              Y: =186
+              Width: =300
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - supMsg:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(supGal.Selected), "", Coalesce(supGal.Selected.LastMessage, ""))
+              X: =690
+              Y: =208
+              Width: =640
+              Height: =110
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+        - supPrevCap:
+            Control: Label
+            Properties:
+              Text: ="Your last reply"
+              X: =690
+              Y: =324
+              Width: =300
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+              Visible: =!IsBlank(supGal.Selected) && !IsBlank(supGal.Selected.StaffReply)
+        - supPrev:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(supGal.Selected), "", Coalesce(supGal.Selected.StaffReply, ""))
+              X: =690
+              Y: =346
+              Width: =640
+              Height: =60
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              Visible: =!IsBlank(supGal.Selected) && !IsBlank(supGal.Selected.StaffReply)
+        - supReplyIn:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Reply to the member (required)"
+              Mode: =TextMode.MultiLine
+              X: =690
+              Y: =414
+              Width: =640
+              Height: =90
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - supSend:
+            Control: Classic/Button
+            Properties:
+              Text: ="Send reply"
+              X: =690
+              Y: =516
+              Width: =200
+              Height: =38
+              OnSelect: |-
+                =IfError(Patch(AvenueSupportCases, LookUp(AvenueSupportCases, CaseId = supGal.Selected.CaseId), {StaffReply: Trim(supReplyIn.Text), RepliedBy: User().Email, RepliedAt: Now(), Status: {Value: "Answered"}}); Reset(supReplyIn); Notify("Reply saved. The member sees it in the portal.", NotificationType.Success), Notify("Could not save the reply.", NotificationType.Error))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(!IsBlank(supGal.Selected) && supGal.Selected.Status.Value <> "Closed" && !IsBlank(Trim(supReplyIn.Text)), DisplayMode.Edit, DisplayMode.Disabled)
+        - supClose:
+            Control: Classic/Button
+            Properties:
+              Text: ="Close conversation"
+              X: =900
+              Y: =516
+              Width: =200
+              Height: =38
+              OnSelect: |-
+                =IfError(Patch(AvenueSupportCases, LookUp(AvenueSupportCases, CaseId = supGal.Selected.CaseId), {Status: {Value: "Closed"}}); Notify("Closed.", NotificationType.Success), Notify("Could not close it.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              DisplayMode: =If(!IsBlank(supGal.Selected) && supGal.Selected.Status.Value <> "Closed", DisplayMode.Edit, DisplayMode.Disabled)
+        - supHelp:
+            Control: Label
+            Properties:
+              Text: ="Replies are shown to the member in the portal. Nobody is promised a reply time and no contact details are published (Q-13 and Q-P1 are open). The reply text must not be empty."
+              X: =690
+              Y: =564
+              Width: =640
+              Height: =44
+              Color: =RGBA(91,99,112,1)
+              Size: =11

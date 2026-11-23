@@ -1,0 +1,22 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "whichFolder": "subdir",
+    "solutionName": "member-spfx",
+    "environment": "spo",
+    "packageManager": "npm",
+    "useGulp": false,
+    "componentType": "webpart",
+    "template": "react",
+    "componentName": "AvenuePortal",
+    "componentDescription": "Avenue member portal",
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "22.23.2",
+    "sdksVersions": {},
+    "version": "1.24.1",
+    "libraryName": "member-spfx",
+    "libraryId": "6a7c7ab4-da56-4cca-b6eb-8f52994dbe6f",
+    "solutionShortDescription": "member-spfx description",
+    "skipFeatureDeployment": true
+  }
+}

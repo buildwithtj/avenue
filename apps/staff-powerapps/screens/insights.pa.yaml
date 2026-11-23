@@ -1,0 +1,1277 @@
+- ixBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- ixBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- ixBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- ixDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- ixBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- ixTitle:
+    Control: Label
+    Properties:
+      Text: ="Insights"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- ixNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- ixNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 638
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- ixNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- ixNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- ixNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- ixNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- ixNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- ixTabBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =48
+      Width: =App.Width
+      Height: =32
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.58)
+- ixTabEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =80
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(15,76,92,0.10)
+- ixTabDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =24
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(91,99,112,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- ixTabInsights:
+    Control: Classic/Button
+    Properties:
+      Text: ="Insights"
+      X: =132
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen20)
+      Fill: =RGBA(15,76,92,0.10)
+      Color: =RGBA(15,76,92,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- tm_insights:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =0
+      Width: =10
+      Height: =10
+- sc_insights:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =88
+      Width: =App.Width
+      Height: =App.Height - 88
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_insights.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_insights:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =712
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - ixKpiP0:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =24
+              Y: =0
+              Width: =208
+              Height: =84
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixKpiCap0:
+            Control: Label
+            Properties:
+              Text: ="Approved, next 7 days"
+              X: =38
+              Y: =8
+              Width: =182
+              Height: =18
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - ixKpiVal0:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueBookings, Status.Value = "Approved", StartUtc >= Now(), StartUtc <= DateAdd(Now(), 7, TimeUnit.Days)))
+              X: =38
+              Y: =26
+              Width: =182
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =24
+              FontWeight: =FontWeight.Bold
+        - ixKpiSub0:
+            Control: Label
+            Properties:
+              Text: ="upcoming"
+              X: =38
+              Y: =62
+              Width: =182
+              Height: =16
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+        - ixKpiP1:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =246
+              Y: =0
+              Width: =208
+              Height: =84
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixKpiCap1:
+            Control: Label
+            Properties:
+              Text: ="Waiting for approval"
+              X: =260
+              Y: =8
+              Width: =182
+              Height: =18
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - ixKpiVal1:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueBookings, Status.Value = "Pending"))
+              X: =260
+              Y: =26
+              Width: =182
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =24
+              FontWeight: =FontWeight.Bold
+        - ixKpiSub1:
+            Control: Label
+            Properties:
+              Text: ="requests to decide"
+              X: =260
+              Y: =62
+              Width: =182
+              Height: =16
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+        - ixKpiP2:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =468
+              Y: =0
+              Width: =208
+              Height: =84
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixKpiCap2:
+            Control: Label
+            Properties:
+              Text: ="Bookings this month"
+              X: =482
+              Y: =8
+              Width: =182
+              Height: =18
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - ixKpiVal2:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueBookings, Status.Value = "Approved", StartUtc >= Date(Year(Today()), Month(Today()), 1), StartUtc < DateAdd(Date(Year(Today()), Month(Today()), 1), 1, TimeUnit.Months)))
+              X: =482
+              Y: =26
+              Width: =182
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =24
+              FontWeight: =FontWeight.Bold
+        - ixKpiSub2:
+            Control: Label
+            Properties:
+              Text: ="approved, facility month"
+              X: =482
+              Y: =62
+              Width: =182
+              Height: =16
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+        - ixKpiP3:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =690
+              Y: =0
+              Width: =208
+              Height: =84
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixKpiCap3:
+            Control: Label
+            Properties:
+              Text: ="Hours used this month"
+              X: =704
+              Y: =8
+              Width: =182
+              Height: =18
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - ixKpiVal3:
+            Control: Label
+            Properties:
+              Text: |-
+                =Text(Round(With({p: With({u: DateAdd(Now(), TimeZoneOffset(Now()), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "yyyy-mm")))}, Coalesce(Sum(Filter(AvenueHoursLedger, Period = p), Hours), 0)), 1)) & " h"
+              X: =704
+              Y: =26
+              Width: =182
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =24
+              FontWeight: =FontWeight.Bold
+        - ixKpiSub3:
+            Control: Label
+            Properties:
+              Text: ="all members"
+              X: =704
+              Y: =62
+              Width: =182
+              Height: =16
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+        - ixKpiP4:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =912
+              Y: =0
+              Width: =208
+              Height: =84
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixKpiCap4:
+            Control: Label
+            Properties:
+              Text: ="Plan hours available"
+              X: =926
+              Y: =8
+              Width: =182
+              Height: =18
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - ixKpiVal4:
+            Control: Label
+            Properties:
+              Text: |-
+                =Text(Sum(ForAll(Filter(AvenueMembers, FacilityId = "flavors-hyattsville", Status.Value = "Active") As m, {V: Coalesce(LookUp(AvenuePlans, PlanId = m.PlanId).MonthlyHours, 0)}), V)) & " h"
+              X: =926
+              Y: =26
+              Width: =182
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =24
+              FontWeight: =FontWeight.Bold
+        - ixKpiSub4:
+            Control: Label
+            Properties:
+              Text: ="active members, per month"
+              X: =926
+              Y: =62
+              Width: =182
+              Height: =16
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+        - ixKpiP5:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =1134
+              Y: =0
+              Width: =208
+              Height: =84
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixKpiCap5:
+            Control: Label
+            Properties:
+              Text: ="Utilisation"
+              X: =1148
+              Y: =8
+              Width: =182
+              Height: =18
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - ixKpiVal5:
+            Control: Label
+            Properties:
+              Text: |-
+                =With({ph: Sum(ForAll(Filter(AvenueMembers, FacilityId = "flavors-hyattsville", Status.Value = "Active") As m, {V: Coalesce(LookUp(AvenuePlans, PlanId = m.PlanId).MonthlyHours, 0)}), V)}, If(ph = 0, "n/a", Text(Round(100 * With({p: With({u: DateAdd(Now(), TimeZoneOffset(Now()), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "yyyy-mm")))}, Coalesce(Sum(Filter(AvenueHoursLedger, Period = p), Hours), 0)) / ph, 0)) & "%"))
+              X: =1148
+              Y: =26
+              Width: =182
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =24
+              FontWeight: =FontWeight.Bold
+        - ixKpiSub5:
+            Control: Label
+            Properties:
+              Text: ="hours used / plan hours"
+              X: =1148
+              Y: =62
+              Width: =182
+              Height: =16
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+        - ixKpiP6:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =24
+              Y: =96
+              Width: =208
+              Height: =84
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixKpiCap6:
+            Control: Label
+            Properties:
+              Text: ="Active members"
+              X: =38
+              Y: =104
+              Width: =182
+              Height: =18
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - ixKpiVal6:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueMembers, FacilityId = "flavors-hyattsville", Status.Value = "Active"))
+              X: =38
+              Y: =122
+              Width: =182
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =24
+              FontWeight: =FontWeight.Bold
+        - ixKpiSub6:
+            Control: Label
+            Properties:
+              Text: ="on a plan today"
+              X: =38
+              Y: =158
+              Width: =182
+              Height: =16
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+        - ixKpiP7:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =246
+              Y: =96
+              Width: =208
+              Height: =84
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixKpiCap7:
+            Control: Label
+            Properties:
+              Text: ="Members who booked"
+              X: =260
+              Y: =104
+              Width: =182
+              Height: =18
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - ixKpiVal7:
+            Control: Label
+            Properties:
+              Text: |-
+                =With({p: With({u: DateAdd(Now(), TimeZoneOffset(Now()), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "yyyy-mm")))}, Text(CountRows(GroupBy(Filter(AvenueHoursLedger, Period = p), MemberId, Rows))) & " of " & Text(CountRows(Filter(AvenueMembers, FacilityId = "flavors-hyattsville", Status.Value = "Active"))))
+              X: =260
+              Y: =122
+              Width: =182
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =24
+              FontWeight: =FontWeight.Bold
+        - ixKpiSub7:
+            Control: Label
+            Properties:
+              Text: ="this month"
+              X: =260
+              Y: =158
+              Width: =182
+              Height: =16
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+        - ixKpiP8:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =468
+              Y: =96
+              Width: =208
+              Height: =84
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixKpiCap8:
+            Control: Label
+            Properties:
+              Text: ="Average booking"
+              X: =482
+              Y: =104
+              Width: =182
+              Height: =18
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - ixKpiVal8:
+            Control: Label
+            Properties:
+              Text: |-
+                =With({r: Filter(AvenueBookings, Status.Value = "Approved", StartUtc >= Date(Year(Today()), Month(Today()), 1), StartUtc < DateAdd(Date(Year(Today()), Month(Today()), 1), 1, TimeUnit.Months))}, If(CountRows(r) = 0, "n/a", Text(Round(Sum(r, DateDiff(StartUtc, EndUtc, TimeUnit.Minutes)) / 60 / CountRows(r), 1)) & " h"))
+              X: =482
+              Y: =122
+              Width: =182
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =24
+              FontWeight: =FontWeight.Bold
+        - ixKpiSub8:
+            Control: Label
+            Properties:
+              Text: ="length this month"
+              X: =482
+              Y: =158
+              Width: =182
+              Height: =16
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+        - ixKpiP9:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =690
+              Y: =96
+              Width: =208
+              Height: =84
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixKpiCap9:
+            Control: Label
+            Properties:
+              Text: ="Approval rate"
+              X: =704
+              Y: =104
+              Width: =182
+              Height: =18
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - ixKpiVal9:
+            Control: Label
+            Properties:
+              Text: |-
+                =With({a: CountRows(Filter(AvenueBookings, Status.Value = "Approved")), d: CountRows(Filter(AvenueBookings, Status.Value = "Declined"))}, If(a + d = 0, "n/a", Text(Round(100 * a / (a + d), 0)) & "%"))
+              X: =704
+              Y: =122
+              Width: =182
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =24
+              FontWeight: =FontWeight.Bold
+        - ixKpiSub9:
+            Control: Label
+            Properties:
+              Text: ="approved of decided"
+              X: =704
+              Y: =158
+              Width: =182
+              Height: =16
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+        - ixKpiP10:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =912
+              Y: =96
+              Width: =208
+              Height: =84
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixKpiCap10:
+            Control: Label
+            Properties:
+              Text: ="Cancel rate"
+              X: =926
+              Y: =104
+              Width: =182
+              Height: =18
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - ixKpiVal10:
+            Control: Label
+            Properties:
+              Text: |-
+                =With({a: CountRows(AvenueBookings), d: CountRows(Filter(AvenueBookings, Status.Value = "Cancelled"))}, If(a = 0, "n/a", Text(Round(100 * d / a, 0)) & "%"))
+              X: =926
+              Y: =122
+              Width: =182
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =24
+              FontWeight: =FontWeight.Bold
+        - ixKpiSub10:
+            Control: Label
+            Properties:
+              Text: ="of all requests"
+              X: =926
+              Y: =158
+              Width: =182
+              Height: =16
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+        - ixKpiP11:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =1134
+              Y: =96
+              Width: =208
+              Height: =84
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixKpiCap11:
+            Control: Label
+            Properties:
+              Text: ="Late cancel requests"
+              X: =1148
+              Y: =104
+              Width: =182
+              Height: =18
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - ixKpiVal11:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueBookings, !IsBlank(CancelRequestedAt)))
+              X: =1148
+              Y: =122
+              Width: =182
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =24
+              FontWeight: =FontWeight.Bold
+        - ixKpiSub11:
+            Control: Label
+            Properties:
+              Text: ="under 24 h, to decide"
+              X: =1148
+              Y: =158
+              Width: =182
+              Height: =16
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+        - ixPanelWeek:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =24
+              Y: =204
+              Width: =640
+              Height: =232
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixWeekHead:
+            Control: Label
+            Properties:
+              Text: ="Approved bookings, next 7 days"
+              X: =44
+              Y: =212
+              Width: =600
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+        - ixWeekGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =ForAll(Sequence(7) As q, {D: DateAdd(Today(), q.Value - 1, TimeUnit.Days), N: CountRows(Filter(AvenueBookings, Status.Value = "Approved", StartUtc >= DateAdd(Today(), q.Value - 1, TimeUnit.Days), StartUtc < DateAdd(Today(), q.Value, TimeUnit.Days)))})
+              X: =32
+              Y: =244
+              Width: =624
+              Height: =184
+              TemplateSize: =25
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - ixWkDay:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.D, "ddd d mmm")
+                    X: =8
+                    Y: =2
+                    Width: =110
+                    Height: =20
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - ixWkBar:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =128
+                    Y: =6
+                    Width: =Max(4, Min(380, ThisItem.N * 380 / Max(1, 6)))
+                    Height: =12
+                    Color: =RGBA(31,31,31,1)
+                    Fill: =If(ThisItem.N > 0, RGBA(15,76,92,1), RGBA(225,228,233,1))
+              - ixWkN:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.N)
+                    X: =540
+                    Y: =2
+                    Width: =70
+                    Height: =20
+                    Color: =RGBA(31,31,31,1)
+                    Size: =11
+                    FontWeight: =FontWeight.Bold
+                    Align: =Align.Right
+              - ixWeekGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =24
+                    Width: =592
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - ixPanelMix:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =680
+              Y: =204
+              Width: =662
+              Height: =232
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixMixHead:
+            Control: Label
+            Properties:
+              Text: ="Requests by status"
+              X: =700
+              Y: =212
+              Width: =620
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+        - ixMixGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =ForAll(Table({S: "Pending"}, {S: "Approved"}, {S: "Declined"}, {S: "Cancelled"}) As q, {S: q.S, N: CountRows(Filter(AvenueBookings, Status.Value = q.S))})
+              X: =688
+              Y: =244
+              Width: =646
+              Height: =184
+              TemplateSize: =42
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - ixMxName:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.S
+                    X: =8
+                    Y: =8
+                    Width: =150
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    Size: =13
+              - ixMxBar:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =168
+                    Y: =14
+                    Width: =Max(4, Min(380, ThisItem.N * 380 / Max(1, 20)))
+                    Height: =14
+                    Color: =RGBA(31,31,31,1)
+                    Fill: =If(ThisItem.S = "Approved", RGBA(15,76,92,1), If(ThisItem.S = "Pending", RGBA(201,162,77,1), If(ThisItem.S = "Declined", RGBA(155,44,44,1), RGBA(91,99,112,1))))
+              - ixMxN:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.N)
+                    X: =556
+                    Y: =8
+                    Width: =70
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    Size: =14
+                    FontWeight: =FontWeight.Bold
+                    Align: =Align.Right
+              - ixMixGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =41
+                    Width: =614
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - ixPanelPlans:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =24
+              Y: =448
+              Width: =640
+              Height: =232
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixPlansHead:
+            Control: Label
+            Properties:
+              Text: ="Active members by plan"
+              X: =44
+              Y: =456
+              Width: =600
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+        - ixPlansGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =ForAll(Filter(AvenuePlans, FacilityId = "flavors-hyattsville", Active = true) As q, {Name: q.Title, N: CountRows(Filter(AvenueMembers, FacilityId = "flavors-hyattsville", PlanId = q.PlanId, Status.Value = "Active"))})
+              X: =32
+              Y: =488
+              Width: =624
+              Height: =184
+              TemplateSize: =25
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - ixPlName:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Name
+                    X: =8
+                    Y: =2
+                    Width: =270
+                    Height: =20
+                    Color: =RGBA(31,31,31,1)
+                    Size: =10
+              - ixPlBar:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =288
+                    Y: =6
+                    Width: =Max(4, Min(270, ThisItem.N * 270 / Max(1, 10)))
+                    Height: =12
+                    Color: =RGBA(31,31,31,1)
+                    Fill: =RGBA(15,76,92,1)
+              - ixPlN:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.N)
+                    X: =560
+                    Y: =2
+                    Width: =50
+                    Height: =20
+                    Color: =RGBA(31,31,31,1)
+                    Size: =11
+                    FontWeight: =FontWeight.Bold
+                    Align: =Align.Right
+              - ixPlansGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =24
+                    Width: =592
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - ixPanelEq:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =680
+              Y: =448
+              Width: =662
+              Height: =232
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - ixEqHead:
+            Control: Label
+            Properties:
+              Text: ="Booked hours by equipment, last 30 days"
+              X: =700
+              Y: =456
+              Width: =620
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+        - ixEqGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =ForAll(Filter(AvenueEquipment, FacilityId = "flavors-hyattsville", Active = true, Kind.Value = "Equipment", Category.Value <> "Fridge") As q, {Name: q.Title, N: Sum(Filter(Filter(AvenueBookings, Status.Value = "Approved", StartUtc >= DateAdd(Today(), -30, TimeUnit.Days)), q.EquipmentId in Split(EquipmentIds, ";")), DateDiff(StartUtc, EndUtc, TimeUnit.Minutes)) / 60})
+              X: =688
+              Y: =488
+              Width: =646
+              Height: =184
+              TemplateSize: =25
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - ixEqName:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Name
+                    X: =8
+                    Y: =2
+                    Width: =320
+                    Height: =20
+                    Color: =RGBA(31,31,31,1)
+                    Size: =10
+              - ixEqBar:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =336
+                    Y: =6
+                    Width: =Max(4, Min(200, ThisItem.N * 200 / Max(1, 20)))
+                    Height: =12
+                    Color: =RGBA(31,31,31,1)
+                    Fill: =RGBA(15,76,92,1)
+              - ixEqN:
+                  Control: Label
+                  Properties:
+                    Text: =Text(Round(ThisItem.N, 1)) & " h"
+                    X: =560
+                    Y: =2
+                    Width: =70
+                    Height: =20
+                    Color: =RGBA(31,31,31,1)
+                    Size: =11
+                    FontWeight: =FontWeight.Bold
+                    Align: =Align.Right
+              - ixEqGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =24
+                    Width: =614
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)

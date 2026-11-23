@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avenue Phase 1 — Scope &amp; Modules · Doubleklick for the Client</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#0f4c5c;--teal-d:#0b3a46;--gold:#c9a24d;--gold-l:#e8d5a8;
+  --ink:#101828;--charcoal:#1f1f1f;--muted:#4a5565;--faint:#8a95a0;
+  --line:#e5e7eb;--line-s:#f0f2f2;--paper:#fff;--wash:#f7f9f9;
+  --ok:#008236;--ok-bg:#dcfce7;--warn:#9a6b00;--warn-bg:#fffbeb;--warn-line:#fee685;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --disp:'Poppins',sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);color:var(--charcoal);background:var(--wash);line-height:1.6;-webkit-font-smoothing:antialiased}
+.doc{max-width:920px;margin:0 auto;background:var(--paper);box-shadow:0 1px 3px rgba(15,76,92,.08)}
+
+.cover{background:linear-gradient(158deg,var(--teal),var(--teal-d));color:#fff;padding:58px 56px 44px;position:relative;overflow:hidden}
+.cover::after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,77,.22),transparent 68%)}
+.brand{font-family:var(--disp);font-weight:500;font-size:30px;letter-spacing:-.8px;margin-bottom:30px}
+.brand i{font-style:normal;color:var(--gold)}.brand sup{font-size:9px;opacity:.6}
+.cover h1{font-family:var(--disp);font-weight:600;font-size:34px;line-height:1.16;letter-spacing:-1px;max-width:640px}
+.cover .sub{font-size:15px;color:#a9cdd6;margin-top:12px;max-width:600px}
+.stack-row{display:flex;gap:9px;margin-top:24px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#e6f2f5;font-size:12px;font-weight:500;padding:5px 12px;border-radius:99px;letter-spacing:.2px}
+.parties{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:32px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.14);border-radius:10px;overflow:hidden}
+.party{background:rgba(11,58,70,.55);padding:16px 18px}
+.party dt{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold-l);margin-bottom:6px}
+.party .nm{font-size:15px;font-weight:600;color:#fff;line-height:1.35}
+.party .rl{font-size:12px;color:#a9cdd6;margin-top:1px}
+.party .ad{font-size:11.5px;color:#8fb6bf;margin-top:7px;line-height:1.5}
+.cover .meta{display:flex;gap:36px;margin-top:26px;padding-top:20px;border-top:1px solid rgba(255,255,255,.16);flex-wrap:wrap}
+.cover .meta dt{color:#7ba9b5;letter-spacing:.5px;text-transform:uppercase;font-size:10px;font-weight:600;margin-bottom:3px}
+.cover .meta dd{color:#fff;font-weight:500;font-size:13px}
+
+section{padding:40px 56px;border-bottom:1px solid var(--line-s)}
+section:last-of-type{border:0}
+.eyebrow{font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold);margin-bottom:9px}
+h2{font-family:var(--disp);font-weight:600;font-size:23px;letter-spacing:-.4px;color:var(--teal);margin-bottom:8px}
+h3{font-size:15px;font-weight:600;color:var(--ink);margin:24px 0 9px}
+p{font-size:14px;color:var(--muted);margin-bottom:12px;max-width:76ch}
+p strong{color:var(--ink);font-weight:600}
+code{font-family:var(--mono);font-size:12.5px;background:var(--wash);padding:1px 5px;border-radius:4px;color:var(--teal)}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:20px 0 4px}
+.stat{background:var(--paper);padding:18px 16px}
+.stat dt{font-size:10px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--faint);margin-bottom:7px}
+.stat dd{font-family:var(--disp);font-size:26px;font-weight:600;color:var(--teal);letter-spacing:-.7px;line-height:1}
+.stat dd em{font-style:normal;font-size:13px;color:var(--muted);font-weight:400;margin-left:3px}
+.stat .fine{font-size:11px;color:var(--faint);margin-top:5px}
+
+.mod{border:1px solid var(--line);border-radius:12px;margin:14px 0;overflow:hidden}
+.mod-h{display:flex;align-items:center;gap:14px;padding:14px 18px;background:linear-gradient(180deg,rgba(15,76,92,.035),transparent);border-bottom:1px solid var(--line-s)}
+.mod-n{font-family:var(--disp);font-weight:600;font-size:13px;color:#fff;background:var(--teal);min-width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.mod-t{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--ink);letter-spacing:-.2px;flex:1}
+.mod-d{font-family:var(--disp);font-weight:600;font-size:15px;color:var(--teal);white-space:nowrap}
+.mod-d em{font-style:normal;font-size:11px;color:var(--faint);font-weight:400;margin-left:2px}
+.mod-sum{padding:12px 18px 4px;font-size:13px;color:var(--muted);border-bottom:1px solid var(--line-s);background:#fcfdfd;line-height:1.55}
+.mod-b{padding:4px 18px 12px}
+.feat{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:11px 0;border-bottom:1px solid var(--line-s)}
+.feat:last-child{border:0}
+.feat .ft{flex:1}
+.feat .ft b{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.feat .ft span{font-size:12.5px;color:var(--muted);line-height:1.5}
+.feat .dd{font-family:var(--mono);font-size:12px;color:var(--teal);font-weight:500;white-space:nowrap;padding-top:1px}
+.tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.4px;padding:1px 6px;border-radius:99px;margin-left:6px;vertical-align:middle;background:var(--warn-bg);color:var(--warn)}
+
+table{width:100%;border-collapse:collapse;margin:14px 0 6px;font-size:13px}
+th{background:var(--teal);color:#fff;font-weight:600;font-size:11px;letter-spacing:.4px;text-transform:uppercase;padding:9px 11px;text-align:left}
+th.n,td.n{text-align:right}
+td{padding:9px 11px;border-bottom:1px solid var(--line-s);color:var(--muted);vertical-align:top}
+tr:nth-child(even) td{background:#fcfdfd}
+td b{color:var(--ink);font-weight:600}
+tfoot td{border-top:2px solid var(--teal);border-bottom:0;font-weight:600;color:var(--ink);background:var(--wash)!important}
+
+pre{background:var(--teal-d);color:#cfe6ec;font-family:var(--mono);font-size:11.5px;line-height:1.6;padding:20px 22px;border-radius:10px;overflow-x:auto;margin:16px 0}
+pre b{color:var(--gold);font-weight:500}
+
+.callout{border-left:3px solid var(--gold);background:var(--warn-bg);padding:15px 20px;border-radius:0 8px 8px 0;margin:16px 0}
+.callout h4{font-size:13px;font-weight:700;color:#6b4e00;margin-bottom:5px}
+.callout p{font-size:13px;color:#6b4e00;margin:0;max-width:none}
+
+.gantt{margin:18px 0;font-size:11.5px}
+.gantt .hd{display:grid;grid-template-columns:150px 1fr;gap:10px;color:var(--faint);font-size:10px;font-weight:600;letter-spacing:.5px;margin-bottom:7px}
+.gantt .hd .sc{display:flex;justify-content:space-between}
+.gr{display:grid;grid-template-columns:150px 1fr;gap:10px;align-items:center;margin-bottom:5px}
+.gr .lbl{color:var(--ink);font-weight:500;font-size:12px}
+.gr .lbl em{font-style:normal;color:var(--faint);font-size:11px}
+.trk{background:var(--wash);border-radius:5px;height:22px;position:relative;border:1px solid var(--line-s)}
+.bar{position:absolute;top:2px;bottom:2px;border-radius:4px;background:var(--teal);display:flex;align-items:center;padding:0 8px;color:#fff;font-size:9px;font-weight:600;letter-spacing:.2px;overflow:hidden;white-space:nowrap}
+.bar.g{background:var(--gold)}.bar.o{background:#7a9aa4}.bar.p{background:#5b8a95}
+.mk{position:absolute;top:-4px;bottom:-4px;width:2px;background:#ba1a1a}
+.mk span{position:absolute;top:-15px;left:-16px;font-size:9px;font-weight:700;color:#ba1a1a;white-space:nowrap}
+
+.foot{background:var(--teal-d);color:#8fb6bf;padding:24px 56px;font-size:11.5px;line-height:1.7}
+.foot b{color:#fff}
+
+@media print{
+  body{background:#fff}.doc{box-shadow:none;max-width:none}
+  section{padding:24px 0;break-inside:avoid}.cover{padding:34px 0}.foot{padding-left:0;padding-right:0}
+  h2{break-after:avoid}.mod,table,.callout,.stats,.gantt{break-inside:avoid}
+}
+@media(max-width:760px){
+  .stats{grid-template-columns:repeat(2,1fr)}.parties{grid-template-columns:1fr}
+  section,.cover,.foot{padding-left:22px;padding-right:22px}
+  .cover h1{font-size:26px}.gantt .hd,.gr{grid-template-columns:104px 1fr}
+}
+</style>
+
+</head>
+
+<body>
+<div class="doc">
+
+<div class="cover">
+  <div class="brand">A<i>v</i>enue<sup>&trade;</sup></div>
+  <h1>Phase&nbsp;1 &mdash; Scope &amp; Module Specification</h1>
+  <div class="sub">Interim operating system on SharePoint &amp; Power Platform for a shared-kitchen facility. This document describes every module and how it works, for review and sign-off.</div>
+  <div class="stack-row">
+    <span class="chip">SharePoint Online</span>
+    <span class="chip">Power Apps</span>
+    <span class="chip">Power Automate</span>
+    <span class="chip">Power BI</span>
+    <span class="chip">Mobile</span>
+  </div>
+  <dl class="parties">
+    <div class="party">
+      <dt>Prepared for</dt>
+      <div class="nm">[Client Name]</div>
+      <div class="rl">[Title / Organization]</div>
+      <div class="ad">[Address]<br>[City, State ZIP]<br>[Phone]</div>
+    </div>
+    <div class="party">
+      <dt>Prepared by</dt>
+      <div class="nm">Doubleklick Designs Pvt. Ltd.</div>
+      <div class="rl">Product engineering &amp; delivery</div>
+      <div class="ad">Phase&nbsp;1 scope specification<br>30 October 2026<br>[email] · [phone]</div>
+    </div>
+  </dl>
+  <div class="cover meta">
+    <div><dt>Document</dt><dd>Scope</dd></div>
+    <div><dt>Date</dt><dd>30 Oct 2026</dd></div>
+    <div><dt>Phase</dt><dd>1 of 2</dd></div>
+    <div><dt>Delivery</dt><dd>~8 weeks</dd></div>
+  </div>
+</div>
+
+<section>
+  <div class="eyebrow">Overview</div>
+  <h2>What Phase&nbsp;1 is</h2>
+  <p>Phase&nbsp;1 is an interim operating system for a shared-kitchen facility, built entirely inside Microsoft&nbsp;365 &mdash; SharePoint, Power Apps, Power Automate and Power BI. It gives members and staff a single, branded place to book the kitchen, stay compliant, check in and out, see payments and temperatures, and communicate &mdash; usable in a browser on desktop and mobile with no app install.</p>
+  <p>It is a <strong>single-site pilot</strong>: one facility, configured for the facility, designed to validate the workflows with real users. The full multi-client Avenue platform is Phase&nbsp;2.</p>
+  <dl class="stats">
+    <div class="stat"><dt>Core modules</dt><dd>6</dd><div class="fine">per the RFQ</div></div>
+    <div class="stat"><dt>Added modules</dt><dd>3</dd><div class="fine">onboarding · reporting · admin</div></div>
+    <div class="stat"><dt>Roles</dt><dd>3</dd><div class="fine">member · staff · super-admin</div></div>
+    <div class="stat"><dt>Access</dt><dd>Web</dd><div class="fine">desktop + mobile browser</div></div>
+  </dl>
+</section>
+
+<section>
+  <div class="eyebrow">Modules</div>
+  <h2>Core modules</h2>
+  <p>The six core modules requested in the RFQ. Each is described with what it does, who uses it, and how it is built inside Microsoft&nbsp;365.</p>
+
+  <div class="mod">
+    <div class="mod-h"><div class="mod-n">1</div><div class="mod-t">Kitchen Bookings</div></div>
+    <div class="mod-sum">Members request a station, table or equipment for a date and time. A shared calendar shows who has booked which station and equipment, and when &mdash; so members can plan around a busy kitchen. Staff approve requests and manage conflicts, and can book on a member&rsquo;s behalf.</div>
+    <div class="mod-b">
+      <div class="feat"><div class="ft"><b>Request a booking</b><span>Pick resource, equipment add-ons, date and time; the app checks for overlaps before submitting.</span></div><div class="dd">Power Apps</div></div>
+      <div class="feat"><div class="ft"><b>Shared calendar</b><span>All members see member name, station, equipment and time; private data stays private.</span></div><div class="dd">SharePoint list</div></div>
+      <div class="feat"><div class="ft"><b>Staff approval &amp; on-behalf</b><span>Staff approve/deny, resolve conflicts, and create bookings for a member with an audit stamp.</span></div><div class="dd">Power Automate</div></div>
+    </div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><div class="mod-n">2</div><div class="mod-t">Check-In / Check-Out &amp; Booking Alerts</div></div>
+    <div class="mod-sum">Every booking requires an entry and exit checklist (wellness and food-safety items). Timed reminders go out before the booking; missed checklists are flagged to the member and escalated to staff. This is the timed-alert and escalation engine.</div>
+    <div class="mod-b">
+      <div class="feat"><div class="ft"><b>Entry &amp; exit checklists</b><span>Fixed question set, submitted in the app and logged with the member&rsquo;s name and time.</span></div><div class="dd">Power Apps</div></div>
+      <div class="feat"><div class="ft"><b>Timed reminders (3/2/1 hr)</b><span>Scheduled flows remind the member before start; each fires once, no duplicates.</span></div><div class="dd">Power Automate</div></div>
+      <div class="feat"><div class="ft"><b>Escalation &amp; staff outreach</b><span>Overdue checklists appear in a staff view with contact details and a logged one-off reminder.</span></div><div class="dd">Power Automate</div></div>
+    </div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><div class="mod-n">3</div><div class="mod-t">Compliance Documents</div></div>
+    <div class="mod-sum">Members (or staff on their behalf) upload permits, licenses, insurance and certifications. The system tracks expiration and flags each as current, expiring soon or expired, with generic reminder nudges to renew.</div>
+    <div class="mod-b">
+      <div class="feat"><div class="ft"><b>Document upload</b><span>Store documents with type, issue and expiry metadata; staff can upload on behalf of a member.</span></div><div class="dd">SharePoint library</div></div>
+      <div class="feat"><div class="ft"><b>Expiry tracking &amp; flags</b><span>A daily flow sets Current / Expiring / Expired status and nudges before anything lapses.</span></div><div class="dd">Power Automate</div></div>
+    </div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><div class="mod-n">4</div><div class="mod-t">Payments Dashboard</div></div>
+    <div class="mod-sum">A read-only view of invoices, payments and balances synced automatically from QuickBooks Online. Members see only their own balance; staff see all. Payment is made in QuickBooks as today &mdash; this is visibility, not a payment gateway.</div>
+    <div class="mod-b">
+      <div class="feat"><div class="ft"><b>QuickBooks sync</b><span>Scheduled pull of invoices and balances, matched to each member; read-only.</span></div><div class="dd">Power Automate</div></div>
+      <div class="feat"><div class="ft"><b>Member-scoped balances</b><span>Each member sees their own invoices and status; staff get oversight of all accounts.</span></div><div class="dd">SharePoint list</div></div>
+    </div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><div class="mod-n">5</div><div class="mod-t">Environmental Monitoring</div></div>
+    <div class="mod-sum">A read-only display of refrigerator and freezer temperatures pulled from the existing Swift Sensors system, with a historical log for compliance recordkeeping. Swift Sensors keeps ownership of real-time breach alerting.</div>
+    <div class="mod-b">
+      <div class="feat"><div class="ft"><b>Live temperature tiles</b><span>Latest reading per unit with Normal / Out-of-range status.</span></div><div class="dd">Power Automate (HTTP)</div></div>
+      <div class="feat"><div class="ft"><b>Historical log</b><span>Readings stored over time in SharePoint for compliance records and reporting.</span></div><div class="dd">SharePoint list</div></div>
+    </div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><div class="mod-n">6</div><div class="mod-t">Communication</div></div>
+    <div class="mod-sum">Announcements, notices and newsletters posted centrally by staff. Members receive a generic email nudge to log in &mdash; no operational content is ever placed in the email body.</div>
+    <div class="mod-b">
+      <div class="feat"><div class="ft"><b>Announcements &amp; notices</b><span>Staff publish to all members or by audience; content lives in the app.</span></div><div class="dd">SharePoint News</div></div>
+      <div class="feat"><div class="ft"><b>Generic email nudge</b><span>On publish, a flow emails members a content-free &ldquo;log in to view&rdquo; prompt.</span></div><div class="dd">Power Automate</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">Modules</div>
+  <h2>Added modules</h2>
+  <p>Three additions confirmed after the demo, included in the Phase&nbsp;1 scope.</p>
+
+  <div class="mod">
+    <div class="mod-h"><div class="mod-n">7</div><div class="mod-t">Member Onboarding <span class="tag">ADDED</span></div></div>
+    <div class="mod-sum">A new member enters their details, selects a membership, and uploads their initial permits and documents. Once staff approve, the member gains full access to the rest of Avenue. Desktop/web only, as recommended &mdash; not a mobile function.</div>
+    <div class="mod-b">
+      <div class="feat"><div class="ft"><b>Self-service application</b><span>Prospective member submits business info, membership choice and initial documents.</span></div><div class="dd">External form</div></div>
+      <div class="feat"><div class="ft"><b>Staff approval &amp; access grant</b><span>Staff review and approve; the member is provisioned and gains platform access.</span></div><div class="dd">Power Automate</div></div>
+    </div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><div class="mod-n">8</div><div class="mod-t">Reporting &amp; Analytics <span class="tag">ADDED</span></div></div>
+    <div class="mod-sum">Dashboards for document-compliance status, monthly hours booked (per member and across the whole member base), and equipment usage to inform maintenance scheduling and life-expectancy planning.</div>
+    <div class="mod-b">
+      <div class="feat"><div class="ft"><b>Compliance &amp; usage dashboards</b><span>At-a-glance status across members, bookings and equipment.</span></div><div class="dd">Power BI</div></div>
+      <div class="feat"><div class="ft"><b>Hours &amp; equipment reporting</b><span>Monthly booked hours per member and member-wide; equipment usage trends.</span></div><div class="dd">Power BI</div></div>
+    </div>
+  </div>
+
+  <div class="mod">
+    <div class="mod-h"><div class="mod-n">9</div><div class="mod-t">Operator Self-Service (Admin) <span class="tag">ADDED</span></div></div>
+    <div class="mod-sum">The site operator gets an admin tier: up to two admin accounts who can add and edit users, update membership plans, and post announcements for their facility. Doubleklick / the Client retains the super-admin role for major changes.</div>
+    <div class="mod-b">
+      <div class="feat"><div class="ft"><b>User &amp; plan management</b><span>Operator admins add/edit members and adjust membership plans for their site.</span></div><div class="dd">Power Apps</div></div>
+      <div class="feat"><div class="ft"><b>Role tiers</b><span>Member, operator-admin and super-admin, each scoped to the right level of control.</span></div><div class="dd">SharePoint roles</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">Access model</div>
+  <h2>Who sees and does what</h2>
+  <table>
+    <thead><tr><th>Area</th><th>How it works</th></tr></thead>
+    <tbody>
+      <tr><td><b>Member login</b></td><td>Members sign in with their own personal email as external/guest users. Email authenticates identity only.</td></tr>
+      <tr><td><b>Shared booking visibility</b></td><td>All members see the full booking calendar &mdash; name, station, equipment, date and time &mdash; to plan around a busy kitchen.</td></tr>
+      <tr><td><b>What stays private</b></td><td>Invoices and balances, compliance documents, and checklist answers are visible only to the member and staff.</td></tr>
+      <tr><td><b>Staff / operator admin</b></td><td>Manage bookings, approvals, users and plans across all member records; act on a member&rsquo;s behalf with an audit trail.</td></tr>
+      <tr><td><b>Super-admin</b></td><td>Retained by Doubleklick / the Client for major configuration and changes.</td></tr>
+      <tr><td><b>Mobile</b></td><td>The Power Apps app runs on phones via browser or Microsoft&rsquo;s free Power Apps app &mdash; bookings, payments, communication, sensors and check-in/out. Onboarding stays on desktop.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <div class="eyebrow">Delivery</div>
+  <h2>Eight-week sequence</h2>
+  <p>Delivered over approximately eight weeks. The core members use first is delivered early so onboarding and training can begin; the alert engine, reporting and onboarding complete toward the end.</p>
+  <table>
+    <thead><tr><th>Week</th><th>Deliverables</th></tr></thead>
+    <tbody>
+      <tr><td><b>Week&nbsp;1</b></td><td>Site provisioning &amp; Avenue branding, service account and security model, all SharePoint lists and libraries, Power Apps app shell with role detection.</td></tr>
+      <tr><td><b>Week&nbsp;2&ndash;3</b></td><td>Kitchen Bookings (calendar, request, approval, on-behalf) and Communication. Core testable from here.</td></tr>
+      <tr><td><b>Week&nbsp;4</b></td><td>Compliance Documents and Payments Dashboard (QuickBooks sync).</td></tr>
+      <tr><td><b>Week&nbsp;5&ndash;6</b></td><td>Environmental Monitoring (Swift Sensors) and the Check-In/Out &amp; alert engine.</td></tr>
+      <tr><td><b>Week&nbsp;7&ndash;8</b></td><td>Member Onboarding, Reporting &amp; Analytics, operator self-service; mobile pass, testing, UAT and handover.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <div class="eyebrow">Non-goals</div>
+  <h2>Not in Phase&nbsp;1</h2>
+  <p>Deliberately out of scope for this interim pilot, to keep it focused.</p>
+  <table>
+    <thead><tr><th>#</th><th>Not in this build</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>No database-level double-booking lock &mdash; the app flags overlaps and staff approve.</td></tr>
+      <tr><td>2</td><td>No payment gateway &mdash; payments stay in QuickBooks; the dashboard is read-only.</td></tr>
+      <tr><td>3</td><td>No custom app-store app &mdash; mobile via browser or the Power Apps app; a branded native app is Phase&nbsp;2.</td></tr>
+      <tr><td>4</td><td>No multi-tenant / multi-client architecture &mdash; a single-site build for the Client [City].</td></tr>
+      <tr><td>5</td><td>No duplicate real-time temperature alerting &mdash; Swift Sensors remains the system of record.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="foot">
+  <b>Doubleklick Designs Pvt. Ltd.</b> &middot; Avenue Phase&nbsp;1 &mdash; Scope &amp; Module Specification &middot; 30 October 2026<br>
+  Microsoft&nbsp;365 &middot; SharePoint Online &middot; Power Apps &middot; Power Automate &middot; Power BI. A single-site interim operating system; the multi-client Avenue platform is Phase&nbsp;2.
+</div>
+
+</div>
+</body>
+</html>

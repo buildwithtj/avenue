@@ -1,0 +1,1673 @@
+- dBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- dBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- dBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- dDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- dBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- dTitle:
+    Control: Label
+    Properties:
+      Text: ="Dashboard"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- dNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- dNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 638
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- dNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- dNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- dNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- dNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- dNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- dTabBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =48
+      Width: =App.Width
+      Height: =32
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.58)
+- dTabEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =80
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(15,76,92,0.10)
+- dTabDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =24
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(15,76,92,0.10)
+      Color: =RGBA(15,76,92,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- dTabInsights:
+    Control: Classic/Button
+    Properties:
+      Text: ="Insights"
+      X: =132
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen20)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(91,99,112,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- tm_dashboard:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =0
+      Width: =10
+      Height: =10
+- sc_dashboard:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =88
+      Width: =App.Width
+      Height: =App.Height - 88
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_dashboard.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_dashboard:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =1294
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - dKpi0:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =24
+              Y: =0
+              Width: =316
+              Height: =104
+              OnSelect: =Navigate(Screen1)
+              Fill: =RGBA(255,255,255,0.64)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(255,255,255,0.86)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              BorderColor: =RGBA(15,76,92,0.10)
+              HoverBorderColor: =RGBA(15,76,92,1)
+        - dKpiCap0:
+            Control: Label
+            Properties:
+              Text: ="Waiting for approval"
+              X: =44
+              Y: =12
+              Width: =276
+              Height: =24
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+              OnSelect: =Navigate(Screen1)
+        - dKpiVal0:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueBookings, Status.Value = "Pending"))
+              X: =44
+              Y: =36
+              Width: =276
+              Height: =44
+              Color: =RGBA(15,76,92,1)
+              Size: =32
+              FontWeight: =FontWeight.Bold
+              OnSelect: =Navigate(Screen1)
+        - dKpiSub0:
+            Control: Label
+            Properties:
+              Text: ="requests to decide"
+              X: =44
+              Y: =76
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              OnSelect: =Navigate(Screen1)
+        - dKpi1:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =356
+              Y: =0
+              Width: =316
+              Height: =104
+              OnSelect: =Navigate(Screen1)
+              Fill: =RGBA(255,255,255,0.64)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(255,255,255,0.86)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              BorderColor: =RGBA(15,76,92,0.10)
+              HoverBorderColor: =RGBA(15,76,92,1)
+        - dKpiCap1:
+            Control: Label
+            Properties:
+              Text: ="Conflicts"
+              X: =376
+              Y: =12
+              Width: =276
+              Height: =24
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+              OnSelect: =Navigate(Screen1)
+        - dKpiVal1:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(Filter(AvenueBookings, Status.Value = "Pending") As p, CountRows(Filter(Filter(AvenueBookings, FacilityId = "flavors-hyattsville", Status.Value = "Approved", StartUtc < p.EndUtc, EndUtc > p.StartUtc) As b, CountRows(Filter(Split(b.EquipmentIds, ";"), Trim(Value) in Split(p.EquipmentIds, ";"))) > 0)) > 0))
+              X: =376
+              Y: =36
+              Width: =276
+              Height: =44
+              Color: =If(Value(Self.Text) > 0, RGBA(155,44,44,1), RGBA(15,76,92,1))
+              Size: =32
+              FontWeight: =FontWeight.Bold
+              OnSelect: =Navigate(Screen1)
+        - dKpiSub1:
+            Control: Label
+            Properties:
+              Text: ="pending requests that clash"
+              X: =376
+              Y: =76
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              OnSelect: =Navigate(Screen1)
+        - dKpi2:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =688
+              Y: =0
+              Width: =316
+              Height: =104
+              OnSelect: =Navigate(Screen19)
+              Fill: =RGBA(255,255,255,0.64)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(255,255,255,0.86)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              BorderColor: =RGBA(15,76,92,0.10)
+              HoverBorderColor: =RGBA(15,76,92,1)
+        - dKpiCap2:
+            Control: Label
+            Properties:
+              Text: ="Starting soon"
+              X: =708
+              Y: =12
+              Width: =276
+              Height: =24
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+              OnSelect: =Navigate(Screen19)
+        - dKpiVal2:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueBookings, Status.Value = "Approved", StartUtc >= Now(), StartUtc <= DateAdd(Now(), 2, TimeUnit.Hours)))
+              X: =708
+              Y: =36
+              Width: =276
+              Height: =44
+              Color: =RGBA(15,76,92,1)
+              Size: =32
+              FontWeight: =FontWeight.Bold
+              OnSelect: =Navigate(Screen19)
+        - dKpiSub2:
+            Control: Label
+            Properties:
+              Text: ="approved, within 2 hours"
+              X: =708
+              Y: =76
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              OnSelect: =Navigate(Screen19)
+        - dKpi3:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =1020
+              Y: =0
+              Width: =316
+              Height: =104
+              OnSelect: =Navigate(Screen2)
+              Fill: =RGBA(255,255,255,0.64)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(255,255,255,0.86)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              BorderColor: =RGBA(15,76,92,0.10)
+              HoverBorderColor: =RGBA(15,76,92,1)
+        - dKpiCap3:
+            Control: Label
+            Properties:
+              Text: ="Ending soon"
+              X: =1040
+              Y: =12
+              Width: =276
+              Height: =24
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+              OnSelect: =Navigate(Screen2)
+        - dKpiVal3:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueBookings, Status.Value = "Approved", StartUtc <= Now(), EndUtc >= Now(), EndUtc <= DateAdd(Now(), Coalesce(LookUp(AvenueFacilities, FacilityId = "flavors-hyattsville").CheckoutAlertMinutes, 0), TimeUnit.Minutes)))
+              X: =1040
+              Y: =36
+              Width: =276
+              Height: =44
+              Color: =RGBA(15,76,92,1)
+              Size: =32
+              FontWeight: =FontWeight.Bold
+              OnSelect: =Navigate(Screen2)
+        - dKpiSub3:
+            Control: Label
+            Properties:
+              Text: ="in progress, ending within " & Coalesce(LookUp(AvenueFacilities, FacilityId = "flavors-hyattsville").CheckoutAlertMinutes, 0) & " min"
+              X: =1040
+              Y: =76
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              OnSelect: =Navigate(Screen2)
+        - dPanelOps:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =24
+              Y: =120
+              Width: =640
+              Height: =540
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - dOpsHead:
+            Control: Label
+            Properties:
+              Text: ="Operations"
+              X: =44
+              Y: =130
+              Width: =400
+              Height: =30
+              Color: =RGBA(15,76,92,1)
+              Size: =16
+              FontWeight: =FontWeight.Bold
+        - dOp0:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =32
+              Y: =172
+              Width: =624
+              Height: =32
+              OnSelect: =Navigate(Screen2)
+              Fill: =RGBA(0,0,0,0)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(241,243,228,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =6
+              RadiusTopRight: =6
+              RadiusBottomLeft: =6
+              RadiusBottomRight: =6
+        - dOpCap0:
+            Control: Label
+            Properties:
+              Text: ="Approved, next 7 days"
+              X: =44
+              Y: =176
+              Width: =440
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              OnSelect: =Navigate(Screen2)
+        - dOpVal0:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueBookings, Status.Value = "Approved", StartUtc >= Now(), StartUtc <= DateAdd(Now(), 7, TimeUnit.Days)))
+              X: =500
+              Y: =176
+              Width: =148
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Align: =Align.Right
+              OnSelect: =Navigate(Screen2)
+        - dOp1:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =32
+              Y: =204
+              Width: =624
+              Height: =32
+              OnSelect: =Navigate(Screen2)
+              Fill: =RGBA(0,0,0,0)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(241,243,228,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =6
+              RadiusTopRight: =6
+              RadiusBottomLeft: =6
+              RadiusBottomRight: =6
+        - dOpCap1:
+            Control: Label
+            Properties:
+              Text: ="Asked to cancel (under 24 h)"
+              X: =44
+              Y: =208
+              Width: =440
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              OnSelect: =Navigate(Screen2)
+        - dOpVal1:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueBookings, Status.Value = "Approved", !IsBlank(CancelRequestedAt)))
+              X: =500
+              Y: =208
+              Width: =148
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Align: =Align.Right
+              OnSelect: =Navigate(Screen2)
+        - dOp2:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =32
+              Y: =236
+              Width: =624
+              Height: =32
+              OnSelect: =Navigate(Screen3)
+              Fill: =RGBA(0,0,0,0)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(241,243,228,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =6
+              RadiusTopRight: =6
+              RadiusBottomLeft: =6
+              RadiusBottomRight: =6
+        - dOpCap2:
+            Control: Label
+            Properties:
+              Text: ="Hours used this month"
+              X: =44
+              Y: =240
+              Width: =440
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              OnSelect: =Navigate(Screen3)
+        - dOpVal2:
+            Control: Label
+            Properties:
+              Text: |-
+                =Text(Round(With({p: With({u: DateAdd(Now(), TimeZoneOffset(Now()), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "yyyy-mm")))}, Coalesce(Sum(Filter(AvenueHoursLedger, Period = p), Hours), 0)), 1))
+              X: =500
+              Y: =240
+              Width: =148
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Align: =Align.Right
+              OnSelect: =Navigate(Screen3)
+        - dOp3:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =32
+              Y: =268
+              Width: =624
+              Height: =32
+              OnSelect: =Navigate(Screen4)
+              Fill: =RGBA(0,0,0,0)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(241,243,228,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =6
+              RadiusTopRight: =6
+              RadiusBottomLeft: =6
+              RadiusBottomRight: =6
+        - dOpCap3:
+            Control: Label
+            Properties:
+              Text: ="Documents expired (not renewed)"
+              X: =44
+              Y: =272
+              Width: =440
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              OnSelect: =Navigate(Screen4)
+        - dOpVal3:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueMemberDocuments, DocStatus.Value = "Expired", IsBlank(SupersededBy)))
+              X: =500
+              Y: =272
+              Width: =148
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Align: =Align.Right
+              OnSelect: =Navigate(Screen4)
+        - dOp4:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =32
+              Y: =300
+              Width: =624
+              Height: =32
+              OnSelect: =Navigate(Screen4)
+              Fill: =RGBA(0,0,0,0)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(241,243,228,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =6
+              RadiusTopRight: =6
+              RadiusBottomLeft: =6
+              RadiusBottomRight: =6
+        - dOpCap4:
+            Control: Label
+            Properties:
+              Text: ="Documents expiring (30 days)"
+              X: =44
+              Y: =304
+              Width: =440
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              OnSelect: =Navigate(Screen4)
+        - dOpVal4:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueMemberDocuments, DocStatus.Value = "Expiring", IsBlank(SupersededBy)))
+              X: =500
+              Y: =304
+              Width: =148
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Align: =Align.Right
+              OnSelect: =Navigate(Screen4)
+        - dOp5:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =32
+              Y: =332
+              Width: =624
+              Height: =32
+              OnSelect: =Navigate(Screen4)
+              Fill: =RGBA(0,0,0,0)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(241,243,228,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =6
+              RadiusTopRight: =6
+              RadiusBottomLeft: =6
+              RadiusBottomRight: =6
+        - dOpCap5:
+            Control: Label
+            Properties:
+              Text: ="Documents to verify"
+              X: =44
+              Y: =336
+              Width: =440
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              OnSelect: =Navigate(Screen4)
+        - dOpVal5:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueMemberDocuments, Verified = false))
+              X: =500
+              Y: =336
+              Width: =148
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Align: =Align.Right
+              OnSelect: =Navigate(Screen4)
+        - dOp6:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =32
+              Y: =364
+              Width: =624
+              Height: =32
+              OnSelect: =Navigate(Screen5)
+              Fill: =RGBA(0,0,0,0)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(241,243,228,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =6
+              RadiusTopRight: =6
+              RadiusBottomLeft: =6
+              RadiusBottomRight: =6
+        - dOpCap6:
+            Control: Label
+            Properties:
+              Text: ="Failed checklists to follow up (7 days)"
+              X: =44
+              Y: =368
+              Width: =440
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              OnSelect: =Navigate(Screen5)
+        - dOpVal6:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueCheckIns, AllPassed = false, IsBlank(ResolvedAt), SubmittedAt >= DateAdd(Now(), -7, TimeUnit.Days)))
+              X: =500
+              Y: =368
+              Width: =148
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Align: =Align.Right
+              OnSelect: =Navigate(Screen5)
+        - dOp7:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =32
+              Y: =396
+              Width: =624
+              Height: =32
+              OnSelect: =Navigate(Screen5)
+              Fill: =RGBA(0,0,0,0)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(241,243,228,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =6
+              RadiusTopRight: =6
+              RadiusBottomLeft: =6
+              RadiusBottomRight: =6
+        - dOpCap7:
+            Control: Label
+            Properties:
+              Text: ="Missed entry checklists, open"
+              X: =44
+              Y: =400
+              Width: =440
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              OnSelect: =Navigate(Screen5)
+        - dOpVal7:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(Filter(AvenueBookings, Status.Value = "Approved", StartUtc <= Now(), EndUtc >= DateAdd(Now(), -12, TimeUnit.Hours)) As b, !IsBlank(b.MissedCheckInAt) && IsBlank(b.OutreachAt) && IsBlank(LookUp(AvenueCheckIns, BookingId = b.BookingId && Kind.Value = "Entry"))))
+              X: =500
+              Y: =400
+              Width: =148
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Align: =Align.Right
+              OnSelect: =Navigate(Screen5)
+        - dOp8:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =32
+              Y: =428
+              Width: =624
+              Height: =32
+              OnSelect: =Navigate(Screen5)
+              Fill: =RGBA(0,0,0,0)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(241,243,228,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =6
+              RadiusTopRight: =6
+              RadiusBottomLeft: =6
+              RadiusBottomRight: =6
+        - dOpCap8:
+            Control: Label
+            Properties:
+              Text: ="Exit checklists overdue, open"
+              X: =44
+              Y: =432
+              Width: =440
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              OnSelect: =Navigate(Screen5)
+        - dOpVal8:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(Filter(AvenueBookings, Status.Value = "Approved", EndUtc <= Now(), EndUtc >= DateAdd(Now(), -24, TimeUnit.Hours)) As b, !IsBlank(b.ExitFlaggedAt) && IsBlank(b.ExitOutreachAt) && IsBlank(LookUp(AvenueCheckIns, BookingId = b.BookingId && Kind.Value = "Exit"))))
+              X: =500
+              Y: =432
+              Width: =148
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Align: =Align.Right
+              OnSelect: =Navigate(Screen5)
+        - dOp9:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =32
+              Y: =460
+              Width: =624
+              Height: =32
+              OnSelect: =Navigate(Screen4)
+              Fill: =RGBA(0,0,0,0)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(241,243,228,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =6
+              RadiusTopRight: =6
+              RadiusBottomLeft: =6
+              RadiusBottomRight: =6
+        - dOpCap9:
+            Control: Label
+            Properties:
+              Text: ="Compliance cases to review"
+              X: =44
+              Y: =464
+              Width: =440
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              OnSelect: =Navigate(Screen4)
+        - dOpVal9:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueComplianceCases, FacilityId = "flavors-hyattsville", Status.Value = "Open"))
+              X: =500
+              Y: =464
+              Width: =148
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Align: =Align.Right
+              OnSelect: =Navigate(Screen4)
+        - dOp10:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =32
+              Y: =492
+              Width: =624
+              Height: =32
+              OnSelect: =Navigate(Screen4)
+              Fill: =RGBA(0,0,0,0)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(241,243,228,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =6
+              RadiusTopRight: =6
+              RadiusBottomLeft: =6
+              RadiusBottomRight: =6
+        - dOpCap10:
+            Control: Label
+            Properties:
+              Text: ="Booking holds active"
+              X: =44
+              Y: =496
+              Width: =440
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              OnSelect: =Navigate(Screen4)
+        - dOpVal10:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueComplianceCases, FacilityId = "flavors-hyattsville", Active = true))
+              X: =500
+              Y: =496
+              Width: =148
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Align: =Align.Right
+              OnSelect: =Navigate(Screen4)
+        - dOp11:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =32
+              Y: =524
+              Width: =624
+              Height: =32
+              OnSelect: =Navigate(Screen8)
+              Fill: =RGBA(0,0,0,0)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(241,243,228,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =6
+              RadiusTopRight: =6
+              RadiusBottomLeft: =6
+              RadiusBottomRight: =6
+        - dOpCap11:
+            Control: Label
+            Properties:
+              Text: ="Active members"
+              X: =44
+              Y: =528
+              Width: =440
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              OnSelect: =Navigate(Screen8)
+        - dOpVal11:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueMembers, FacilityId = "flavors-hyattsville", Status.Value = "Active"))
+              X: =500
+              Y: =528
+              Width: =148
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Align: =Align.Right
+              OnSelect: =Navigate(Screen8)
+        - dOp12:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =32
+              Y: =556
+              Width: =624
+              Height: =32
+              OnSelect: =Navigate(Screen16)
+              Fill: =RGBA(0,0,0,0)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(241,243,228,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =6
+              RadiusTopRight: =6
+              RadiusBottomLeft: =6
+              RadiusBottomRight: =6
+        - dOpCap12:
+            Control: Label
+            Properties:
+              Text: ="Applicants waiting (onboarding or invite)"
+              X: =44
+              Y: =560
+              Width: =440
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              OnSelect: =Navigate(Screen16)
+        - dOpVal12:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueApplicants, FacilityId = "flavors-hyattsville", Stage.Value = "Onboarding" || Stage.Value = "InviteNeeded"))
+              X: =500
+              Y: =560
+              Width: =148
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Align: =Align.Right
+              OnSelect: =Navigate(Screen16)
+        - dOp13:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =32
+              Y: =588
+              Width: =624
+              Height: =32
+              OnSelect: =Navigate(Screen13)
+              Fill: =RGBA(0,0,0,0)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(241,243,228,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =6
+              RadiusTopRight: =6
+              RadiusBottomLeft: =6
+              RadiusBottomRight: =6
+        - dOpCap13:
+            Control: Label
+            Properties:
+              Text: ="Invoices overdue"
+              X: =44
+              Y: =592
+              Width: =440
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              OnSelect: =Navigate(Screen13)
+        - dOpVal13:
+            Control: Label
+            Properties:
+              Text: =CountRows(Filter(AvenueInvoices, FacilityId = "flavors-hyattsville", Status.Value = "open", DueDate < Today()))
+              X: =500
+              Y: =592
+              Width: =148
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Align: =Align.Right
+              OnSelect: =Navigate(Screen13)
+        - dOp14:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =32
+              Y: =620
+              Width: =624
+              Height: =32
+              OnSelect: =Navigate(Screen10)
+              Fill: =RGBA(0,0,0,0)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(241,243,228,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =6
+              RadiusTopRight: =6
+              RadiusBottomLeft: =6
+              RadiusBottomRight: =6
+        - dOpCap14:
+            Control: Label
+            Properties:
+              Text: ="Staff alert e-mail"
+              X: =44
+              Y: =624
+              Width: =440
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              OnSelect: =Navigate(Screen10)
+        - dOpVal14:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(LookUp(AvenueFacilities, FacilityId = "flavors-hyattsville").StaffAlertEmail), "Not set", "Set")
+              X: =500
+              Y: =624
+              Width: =148
+              Height: =24
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Align: =Align.Right
+              OnSelect: =Navigate(Screen10)
+        - dRefresh:
+            Control: Classic/Button
+            Properties:
+              Text: ="Refresh data"
+              X: =24
+              Y: =676
+              Width: =160
+              Height: =40
+              OnSelect: =Refresh(AvenueBookings); Refresh(AvenueHoursLedger); Refresh(AvenueMemberDocuments); Refresh(AvenueCheckIns); Refresh(AvenueMembers); Refresh(AvenueFacilities); Refresh(AvenuePlans); Refresh(AvenueApplicants); Refresh(AvenueInvoices); Set(varRefreshed, Now())
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+        - dRefreshed:
+            Control: Label
+            Properties:
+              Text: ="Figures as of " & If(IsBlank(varRefreshed), "when the app was opened (press Refresh data to update)", Text(varRefreshed, "h:mm:ss AM/PM"))
+              X: =196
+              Y: =684
+              Width: =468
+              Height: =24
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - dPanelHours:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =680
+              Y: =120
+              Width: =662
+              Height: =200
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - dHoursHead:
+            Control: Label
+            Properties:
+              Text: ="Hours used this month, by member"
+              X: =700
+              Y: =130
+              Width: =620
+              Height: =30
+              Color: =RGBA(15,76,92,1)
+              Size: =16
+              FontWeight: =FontWeight.Bold
+        - dHoursGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({p: With({u: DateAdd(Now(), TimeZoneOffset(Now()), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "yyyy-mm")))}, SortByColumns(AddColumns(GroupBy(Filter(AvenueHoursLedger, Period = p), MemberId, Rows), Total, Sum(Rows, Hours)), "Total", SortOrder.Descending))
+              X: =688
+              Y: =172
+              Width: =646
+              Height: =140
+              TemplateSize: =40
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - dHoursMember:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(LookUp(AvenueMembers, MemberId = ThisItem.MemberId).BusinessName, If(IsBlank(Find("@", ThisItem.MemberId)), ThisItem.MemberId, Left(ThisItem.MemberId, Find("@", ThisItem.MemberId) - 1)))
+                    X: =8
+                    Y: =6
+                    Width: =330
+                    Height: =28
+                    Color: =RGBA(31,31,31,1)
+              - dHoursTotal:
+                  Control: Label
+                  Properties:
+                    Text: =Text(Round(ThisItem.Total, 1)) & " h"
+                    X: =340
+                    Y: =6
+                    Width: =90
+                    Height: =28
+                    Color: =RGBA(31,31,31,1)
+                    Align: =Align.Right
+              - dHoursOver:
+                  Control: Label
+                  Properties:
+                    Text: |-
+                      =With({pl: LookUp(AvenuePlans, PlanId = LookUp(AvenueMembers, MemberId = ThisItem.MemberId).PlanId)}, If(IsBlank(pl), "plan hours not set", If(ThisItem.Total > pl.MonthlyHours, "about " & Text(Round(ThisItem.Total - pl.MonthlyHours, 1)) & " h over", "within plan")))
+                    X: =440
+                    Y: =6
+                    Width: =190
+                    Height: =28
+                    Color: =If(Right(Self.Text, 4) = "over", RGBA(155,44,44,1), RGBA(91,99,112,1))
+                    Size: =11
+              - dHoursGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =39
+                    Width: =614
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - dPanelEq:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =680
+              Y: =336
+              Width: =662
+              Height: =324
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - dEquipHead:
+            Control: Label
+            Properties:
+              Text: ="Equipment, booked hours this month"
+              X: =700
+              Y: =346
+              Width: =620
+              Height: =30
+              Color: =RGBA(15,76,92,1)
+              Size: =16
+              FontWeight: =FontWeight.Bold
+        - dEquipGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =ForAll(Filter(AvenueEquipment, FacilityId = "flavors-hyattsville", Active = true) As q, {Id: q.EquipmentId, Name: q.Title, Cat: q.Category.Value, Photo: q.PhotoUrl, Hours: Sum(Filter(Filter(AvenueBookings, Status.Value = "Approved", StartUtc >= DateValue(Text(Today(), "yyyy-mm") & "-01")), q.EquipmentId in EquipmentIds), DateDiff(StartUtc, EndUtc, TimeUnit.Minutes) / 60)})
+              X: =688
+              Y: =388
+              Width: =646
+              Height: =264
+              TemplateSize: =40
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - dEqImg:
+                  Control: Image
+                  Properties:
+                    Image: =If(!IsBlank(ThisItem.Photo), ThisItem.Photo, Blank())
+                    Visible: =!IsBlank(ThisItem.Photo)
+                    X: =8
+                    Y: =6
+                    Width: =28
+                    Height: =28
+              - dEqTile:
+                  Control: Label
+                  Properties:
+                    Text: =If(IsBlank(ThisItem.Cat), "-", Upper(Left(ThisItem.Cat, 1)))
+                    Visible: =IsBlank(ThisItem.Photo)
+                    X: =8
+                    Y: =6
+                    Width: =28
+                    Height: =28
+                    Fill: =RGBA(229,231,235,1)
+                    Color: =RGBA(15,76,92,1)
+                    Size: =14
+                    Align: =Align.Center
+                    VerticalAlign: =VerticalAlign.Middle
+              - dEquipId:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Name
+                    X: =48
+                    Y: =6
+                    Width: =400
+                    Height: =28
+                    Color: =RGBA(31,31,31,1)
+              - dEquipHours:
+                  Control: Label
+                  Properties:
+                    Text: =Text(Round(ThisItem.Hours, 1)) & " h"
+                    X: =460
+                    Y: =6
+                    Width: =170
+                    Height: =28
+                    Color: =RGBA(31,31,31,1)
+                    Align: =Align.Right
+              - dEquipGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =39
+                    Width: =614
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - dNote:
+            Control: Label
+            Properties:
+              Text: ="Overage is shown in hours (hours used minus the plan's monthly hours), an estimate. Money amounts need the extra-hour rate (Q-04) and Stripe. Month = facility (Eastern) month."
+              X: =24
+              Y: =724
+              Width: =640
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - dPanelRecent:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =24
+              Y: =776
+              Width: =1318
+              Height: =486
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - dRecentHead:
+            Control: Label
+            Properties:
+              Text: ="Recent requests"
+              X: =44
+              Y: =788
+              Width: =600
+              Height: =30
+              Color: =RGBA(15,76,92,1)
+              Size: =16
+              FontWeight: =FontWeight.Bold
+        - dRecentSub:
+            Control: Label
+            Properties:
+              Text: ="Latest 8 by request time. Select Bookings to decide or review."
+              X: =700
+              Y: =792
+              Width: =620
+              Height: =24
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Align: =Align.Right
+        - dRecCol0:
+            Control: Label
+            Properties:
+              Text: ="MEMBER"
+              X: =52
+              Y: =828
+              Width: =260
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+              FontWeight: =FontWeight.Bold
+        - dRecCol1:
+            Control: Label
+            Properties:
+              Text: ="WHEN (EASTERN)"
+              X: =332
+              Y: =828
+              Width: =300
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+              FontWeight: =FontWeight.Bold
+        - dRecCol2:
+            Control: Label
+            Properties:
+              Text: ="SPACE"
+              X: =652
+              Y: =828
+              Width: =160
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+              FontWeight: =FontWeight.Bold
+        - dRecCol3:
+            Control: Label
+            Properties:
+              Text: ="STATUS"
+              X: =832
+              Y: =828
+              Width: =160
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+              FontWeight: =FontWeight.Bold
+        - dRecentGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =FirstN(SortByColumns(AvenueBookings, "RequestedAt", SortOrder.Descending), 8)
+              X: =32
+              Y: =852
+              Width: =1294
+              Height: =368
+              TemplateSize: =46
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - dRecMember:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(LookUp(AvenueMembers, MemberId = ThisItem.MemberId).BusinessName, ThisItem.MemberId)
+                    X: =12
+                    Y: =10
+                    Width: =270
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    Size: =13
+                    FontWeight: =FontWeight.Semibold
+              - dRecWhen:
+                  Control: Label
+                  Properties:
+                    Text: |-
+                      =With({s0: ThisItem.StartUtc}, If(IsBlank(s0), "Time unavailable", With({u: DateAdd(s0, TimeZoneOffset(s0), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, With({k: TimeZoneOffset(s0) - If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5) * 60}, Text(DateAdd(s0, k, TimeUnit.Minutes), "ddd d mmm") & " · " & Text(DateAdd(s0, k, TimeUnit.Minutes), "h:mm AM/PM") & "–" & Text(DateAdd(ThisItem.EndUtc, k, TimeUnit.Minutes), "h:mm AM/PM"))))))
+                    X: =300
+                    Y: =10
+                    Width: =300
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    Size: =12
+              - dRecSpace:
+                  Control: Label
+                  Properties:
+                    Text: =If(ThisItem.Space.Value = "Whole facility", "Whole kitchen", ThisItem.Space.Value)
+                    X: =620
+                    Y: =10
+                    Width: =160
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    Size: =12
+              - dRecChip:
+                  Control: Classic/Button
+                  Properties:
+                    Text: =Switch(ThisItem.Status.Value, "Pending", "Waiting", "Approved", "Approved", "Declined", "Declined", "Cancelled", "Cancelled", ThisItem.Status.Value)
+                    X: =800
+                    Y: =11
+                    Width: =140
+                    Height: =24
+                    DisplayMode: =DisplayMode.Disabled
+                    Fill: =Switch(ThisItem.Status.Value, "Pending", RGBA(244,235,211,1), "Approved", RGBA(220,232,235,1), "Declined", RGBA(243,227,227,1), RGBA(229,231,235,1))
+                    DisabledFill: =Switch(ThisItem.Status.Value, "Pending", RGBA(244,235,211,1), "Approved", RGBA(220,232,235,1), "Declined", RGBA(243,227,227,1), RGBA(229,231,235,1))
+                    DisabledColor: =Switch(ThisItem.Status.Value, "Pending", RGBA(107,79,16,1), "Approved", RGBA(15,76,92,1), "Declined", RGBA(155,44,44,1), RGBA(91,99,112,1))
+                    Color: =Switch(ThisItem.Status.Value, "Pending", RGBA(107,79,16,1), "Approved", RGBA(15,76,92,1), "Declined", RGBA(155,44,44,1), RGBA(91,99,112,1))
+                    BorderThickness: =0
+                    Size: =10
+                    FontWeight: =FontWeight.Bold
+                    RadiusTopLeft: =12
+                    RadiusTopRight: =12
+                    RadiusBottomLeft: =12
+                    RadiusBottomRight: =12
+              - dRecentGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =45
+                    Width: =1262
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)

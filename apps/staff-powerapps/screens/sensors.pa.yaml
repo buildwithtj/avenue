@@ -1,0 +1,1643 @@
+- senBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- senBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- senBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- senDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- senBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- senTitle:
+    Control: Label
+    Properties:
+      Text: ="Sensors"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- senNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- senNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- senNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- senNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- senNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- senNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- senNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 98
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- tm_sensors:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =4
+      Width: =10
+      Height: =10
+- sc_sensors:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =64
+      Width: =App.Width
+      Height: =App.Height - 64
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_sensors.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_sensors:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =704
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - senBack:
+            Control: Classic/Button
+            Properties:
+              Text: ="Back to More"
+              X: =20
+              Y: =0
+              Width: =140
+              Height: =34
+              OnSelect: =Navigate(Screen12)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+        - senTabUnits:
+            Control: Classic/Button
+            Properties:
+              Text: ="Units"
+              X: =180
+              Y: =0
+              Width: =150
+              Height: =34
+              OnSelect: |-
+                =Set(varSenTab, "units"); ClearCollect(colSenA, AddColumns(Filter(AvenueSensors, FacilityId = "flavors-hyattsville", Active = true), ReadAtL, With({sid: SensorId}, LookUp(AvenueSensorLatest, SensorId = sid, ReadAt)), ValF, With({sid: SensorId}, LookUp(AvenueSensorLatest, SensorId = sid, ValueF)))); ClearCollect(colSenB, AddColumns(colSenA, AgeMin, If(IsBlank(ReadAtL), 99999, DateDiff(ReadAtL, Now(), TimeUnit.Minutes)), Idx, Mod(Len(UnitName), 6))); ClearCollect(colSen, AddColumns(colSenB, St, If(IsBlank(ValF) || AgeMin > 120, "Offline", If(AgeMin > 30, "Stale", If(ValF < MinF || ValF > MaxF, "Out of range", "Normal"))), Pos, If(IsBlank(ValF), 0, Max(0, Min(1, (ValF - MinF) / Max(0.1, MaxF - MinF))))))
+              Fill: =If(Coalesce(varSenTab, "units") = "units", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varSenTab, "units") = "units", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varSenTab, "units") = "units", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varSenTab, "units") = "units", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =13
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+        - senTabExc:
+            Control: Classic/Button
+            Properties:
+              Text: ="Excursions"
+              X: =338
+              Y: =0
+              Width: =150
+              Height: =34
+              OnSelect: =Set(varSenTab, "exc")
+              Fill: =If(Coalesce(varSenTab, "units") = "exc", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varSenTab, "units") = "exc", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varSenTab, "units") = "exc", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varSenTab, "units") = "exc", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =13
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+        - senTabLog:
+            Control: Classic/Button
+            Properties:
+              Text: ="Daily log"
+              X: =496
+              Y: =0
+              Width: =150
+              Height: =34
+              OnSelect: =Set(varSenTab, "log")
+              Fill: =If(Coalesce(varSenTab, "units") = "log", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varSenTab, "units") = "log", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varSenTab, "units") = "log", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varSenTab, "units") = "log", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =13
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+        - senTabSet:
+            Control: Classic/Button
+            Properties:
+              Text: ="Settings (owner)"
+              X: =654
+              Y: =0
+              Width: =150
+              Height: =34
+              OnSelect: =Set(varSenTab, "set")
+              Fill: =If(Coalesce(varSenTab, "units") = "set", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varSenTab, "units") = "set", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varSenTab, "units") = "set", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varSenTab, "units") = "set", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =13
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - senInit:
+            Control: Timer
+            Properties:
+              Duration: =600
+              AutoStart: =true
+              Repeat: =false
+              Visible: =false
+              OnTimerEnd: |-
+                =ClearCollect(colSenA, AddColumns(Filter(AvenueSensors, FacilityId = "flavors-hyattsville", Active = true), ReadAtL, With({sid: SensorId}, LookUp(AvenueSensorLatest, SensorId = sid, ReadAt)), ValF, With({sid: SensorId}, LookUp(AvenueSensorLatest, SensorId = sid, ValueF)))); ClearCollect(colSenB, AddColumns(colSenA, AgeMin, If(IsBlank(ReadAtL), 99999, DateDiff(ReadAtL, Now(), TimeUnit.Minutes)), Idx, Mod(Len(UnitName), 6))); ClearCollect(colSen, AddColumns(colSenB, St, If(IsBlank(ValF) || AgeMin > 120, "Offline", If(AgeMin > 30, "Stale", If(ValF < MinF || ValF > MaxF, "Out of range", "Normal"))), Pos, If(IsBlank(ValF), 0, Max(0, Min(1, (ValF - MinF) / Max(0.1, MaxF - MinF))))))
+              X: =0
+              Y: =-60
+              Width: =10
+              Height: =10
+        - senRefresh:
+            Control: Timer
+            Properties:
+              Duration: =60000
+              AutoStart: =true
+              Repeat: =true
+              Visible: =false
+              OnTimerEnd: |-
+                =Refresh(AvenueSensorLatest); ClearCollect(colSenA, AddColumns(Filter(AvenueSensors, FacilityId = "flavors-hyattsville", Active = true), ReadAtL, With({sid: SensorId}, LookUp(AvenueSensorLatest, SensorId = sid, ReadAt)), ValF, With({sid: SensorId}, LookUp(AvenueSensorLatest, SensorId = sid, ValueF)))); ClearCollect(colSenB, AddColumns(colSenA, AgeMin, If(IsBlank(ReadAtL), 99999, DateDiff(ReadAtL, Now(), TimeUnit.Minutes)), Idx, Mod(Len(UnitName), 6))); ClearCollect(colSen, AddColumns(colSenB, St, If(IsBlank(ValF) || AgeMin > 120, "Offline", If(AgeMin > 30, "Stale", If(ValF < MinF || ValF > MaxF, "Out of range", "Normal"))), Pos, If(IsBlank(ValF), 0, Max(0, Min(1, (ValF - MinF) / Max(0.1, MaxF - MinF))))))
+              X: =0
+              Y: =-60
+              Width: =10
+              Height: =10
+        - senNote:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Readings come from Swift Sensors through the Avenue server about every 10 minutes. Swift Sensors stays the alarm system: this screen shows status and keeps the record. Open questions: Q-12 and Q-E1 (two units share one name; confirm the ninth sensor)."
+              X: =20
+              Y: =38
+              Width: =1310
+              Height: =36
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - snT0:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =24
+              Y: =80
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - snTc0:
+            Control: Label
+            Properties:
+              Text: ="Units reporting"
+              X: =44
+              Y: =90
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - snTv0:
+            Control: Label
+            Properties:
+              Text: =Text(CountRows(Filter(colSen, St = "Normal" || St = "Out of range"))) & " of " & Text(CountRows(colSen))
+              X: =44
+              Y: =112
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+        - snTs0:
+            Control: Label
+            Properties:
+              Text: ="fresh reading within 30 minutes"
+              X: =44
+              Y: =152
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - snT1:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =356
+              Y: =80
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - snTc1:
+            Control: Label
+            Properties:
+              Text: ="Out of range now"
+              X: =376
+              Y: =90
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - snTv1:
+            Control: Label
+            Properties:
+              Text: =Text(CountRows(Filter(colSen, St = "Out of range")))
+              X: =376
+              Y: =112
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+        - snTs1:
+            Control: Label
+            Properties:
+              Text: ="outside the safe range of the unit"
+              X: =376
+              Y: =152
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - snT2:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =688
+              Y: =80
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - snTc2:
+            Control: Label
+            Properties:
+              Text: ="Stale or offline"
+              X: =708
+              Y: =90
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - snTv2:
+            Control: Label
+            Properties:
+              Text: =Text(CountRows(Filter(colSen, St = "Stale" || St = "Offline")))
+              X: =708
+              Y: =112
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+        - snTs2:
+            Control: Label
+            Properties:
+              Text: |-
+                ="no fresh reading: 30 minutes or 2 hours"
+              X: =708
+              Y: =152
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - snT3:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =1020
+              Y: =80
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - snTc3:
+            Control: Label
+            Properties:
+              Text: ="Open excursions"
+              X: =1040
+              Y: =90
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - snTv3:
+            Control: Label
+            Properties:
+              Text: =Text(CountRows(Filter(AvenueTempExcursions, State.Value = "Open")))
+              X: =1040
+              Y: =112
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+        - snTs3:
+            Control: Label
+            Properties:
+              Text: ="staff acknowledge them on the Excursions tab"
+              X: =1040
+              Y: =152
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - senRoomA:
+            Control: Label
+            Properties:
+              Text: ="Sink Room"
+              X: =20
+              Y: =188
+              Width: =380
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSenTab, "units") = "units"
+        - senRoomB:
+            Control: Label
+            Properties:
+              Text: ="Storage Room"
+              X: =410
+              Y: =188
+              Width: =380
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSenTab, "units") = "units"
+        - senGalA:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =SortByColumns(Filter(colSen, Trim(Room) = "Sink Room"), "UnitName", SortOrder.Ascending)
+              X: =20
+              Y: =220
+              Width: =380
+              Height: =450
+              TemplateSize: =96
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              OnSelect: =Set(varSenUnit, ThisItem.SensorId)
+              Visible: =Coalesce(varSenTab, "units") = "units"
+            Children:
+              - senTNameA:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.UnitName
+                    X: =8
+                    Y: =6
+                    Width: =240
+                    Height: =26
+                    Color: =RGBA(31,31,31,Min(1, Max(0, (tm_sensors.Value - ThisItem.Idx * 50) / 200)))
+                    FontWeight: =FontWeight.Semibold
+                    Size: =13
+              - senTTempA:
+                  Control: Label
+                  Properties:
+                    Text: =If(IsBlank(ThisItem.ValF), "–", Text(ThisItem.ValF, "0.0") & "°F")
+                    X: =232
+                    Y: =2
+                    Width: =140
+                    Height: =36
+                    Color: =Switch(ThisItem.St, "Normal", RGBA(23,114,58,Min(1, Max(0, (tm_sensors.Value - ThisItem.Idx * 50) / 200))), "Out of range", RGBA(164,38,44,Min(1, Max(0, (tm_sensors.Value - ThisItem.Idx * 50) / 200))), RGBA(91,99,112,Min(1, Max(0, (tm_sensors.Value - ThisItem.Idx * 50) / 200))))
+                    Size: =22
+                    FontWeight: =FontWeight.Bold
+                    Align: =Align.Right
+              - senTTrackA:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =52
+                    Width: =270
+                    Height: =6
+                    Color: =RGBA(31,31,31,1)
+                    Fill: =RGBA(229,231,235,1)
+              - senTMarkA:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8 + Round(ThisItem.Pos * 262, 0)
+                    Y: =46
+                    Width: =8
+                    Height: =18
+                    Color: =RGBA(31,31,31,1)
+                    Fill: =Switch(ThisItem.St, "Normal", RGBA(23,114,58,1), "Out of range", RGBA(164,38,44,1), RGBA(91,99,112,1))
+                    Visible: =!IsBlank(ThisItem.ValF)
+              - senTPillA:
+                  Control: Classic/Button
+                  Properties:
+                    Text: =ThisItem.St
+                    X: =286
+                    Y: =46
+                    Width: =86
+                    Height: =22
+                    DisplayMode: =DisplayMode.Disabled
+                    Fill: =Switch(ThisItem.St, "Normal", RGBA(220,238,226,1), "Out of range", RGBA(243,227,227,1), RGBA(229,231,235,1))
+                    DisabledFill: =Switch(ThisItem.St, "Normal", RGBA(220,238,226,1), "Out of range", RGBA(243,227,227,1), RGBA(229,231,235,1))
+                    DisabledColor: =Switch(ThisItem.St, "Normal", RGBA(23,114,58,1), "Out of range", RGBA(164,38,44,1), RGBA(91,99,112,1))
+                    Color: =Switch(ThisItem.St, "Normal", RGBA(23,114,58,1), "Out of range", RGBA(164,38,44,1), RGBA(91,99,112,1))
+                    BorderThickness: =0
+                    Size: =10
+                    FontWeight: =FontWeight.Bold
+                    RadiusTopLeft: =12
+                    RadiusTopRight: =12
+                    RadiusBottomLeft: =12
+                    RadiusBottomRight: =12
+              - senTMinA:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.MinF) & "°"
+                    X: =8
+                    Y: =64
+                    Width: =80
+                    Height: =14
+                    Color: =RGBA(91,99,112,1)
+                    Size: =10
+              - senTMaxA:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.MaxF) & "°"
+                    X: =198
+                    Y: =64
+                    Width: =80
+                    Height: =14
+                    Color: =RGBA(91,99,112,1)
+                    Size: =10
+                    Align: =Align.Right
+              - senTAgeA:
+                  Control: Label
+                  Properties:
+                    Text: =If(ThisItem.AgeMin >= 99999, "No reading yet", "Updated " & If(ThisItem.AgeMin < 1, "just now", Text(ThisItem.AgeMin) & " min ago"))
+                    X: =8
+                    Y: =78
+                    Width: =364
+                    Height: =14
+                    Color: =RGBA(91,99,112,1)
+                    Size: =10
+              - senGalASep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =95
+                    Width: =348
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - senGalB:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =SortByColumns(Filter(colSen, Trim(Room) = "Storage Room"), "UnitName", SortOrder.Ascending)
+              X: =410
+              Y: =220
+              Width: =380
+              Height: =450
+              TemplateSize: =96
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              OnSelect: =Set(varSenUnit, ThisItem.SensorId)
+              Visible: =Coalesce(varSenTab, "units") = "units"
+            Children:
+              - senTNameB:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.UnitName
+                    X: =8
+                    Y: =6
+                    Width: =240
+                    Height: =26
+                    Color: =RGBA(31,31,31,Min(1, Max(0, (tm_sensors.Value - ThisItem.Idx * 50) / 200)))
+                    FontWeight: =FontWeight.Semibold
+                    Size: =13
+              - senTTempB:
+                  Control: Label
+                  Properties:
+                    Text: =If(IsBlank(ThisItem.ValF), "–", Text(ThisItem.ValF, "0.0") & "°F")
+                    X: =232
+                    Y: =2
+                    Width: =140
+                    Height: =36
+                    Color: =Switch(ThisItem.St, "Normal", RGBA(23,114,58,Min(1, Max(0, (tm_sensors.Value - ThisItem.Idx * 50) / 200))), "Out of range", RGBA(164,38,44,Min(1, Max(0, (tm_sensors.Value - ThisItem.Idx * 50) / 200))), RGBA(91,99,112,Min(1, Max(0, (tm_sensors.Value - ThisItem.Idx * 50) / 200))))
+                    Size: =22
+                    FontWeight: =FontWeight.Bold
+                    Align: =Align.Right
+              - senTTrackB:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =52
+                    Width: =270
+                    Height: =6
+                    Color: =RGBA(31,31,31,1)
+                    Fill: =RGBA(229,231,235,1)
+              - senTMarkB:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8 + Round(ThisItem.Pos * 262, 0)
+                    Y: =46
+                    Width: =8
+                    Height: =18
+                    Color: =RGBA(31,31,31,1)
+                    Fill: =Switch(ThisItem.St, "Normal", RGBA(23,114,58,1), "Out of range", RGBA(164,38,44,1), RGBA(91,99,112,1))
+                    Visible: =!IsBlank(ThisItem.ValF)
+              - senTPillB:
+                  Control: Classic/Button
+                  Properties:
+                    Text: =ThisItem.St
+                    X: =286
+                    Y: =46
+                    Width: =86
+                    Height: =22
+                    DisplayMode: =DisplayMode.Disabled
+                    Fill: =Switch(ThisItem.St, "Normal", RGBA(220,238,226,1), "Out of range", RGBA(243,227,227,1), RGBA(229,231,235,1))
+                    DisabledFill: =Switch(ThisItem.St, "Normal", RGBA(220,238,226,1), "Out of range", RGBA(243,227,227,1), RGBA(229,231,235,1))
+                    DisabledColor: =Switch(ThisItem.St, "Normal", RGBA(23,114,58,1), "Out of range", RGBA(164,38,44,1), RGBA(91,99,112,1))
+                    Color: =Switch(ThisItem.St, "Normal", RGBA(23,114,58,1), "Out of range", RGBA(164,38,44,1), RGBA(91,99,112,1))
+                    BorderThickness: =0
+                    Size: =10
+                    FontWeight: =FontWeight.Bold
+                    RadiusTopLeft: =12
+                    RadiusTopRight: =12
+                    RadiusBottomLeft: =12
+                    RadiusBottomRight: =12
+              - senTMinB:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.MinF) & "°"
+                    X: =8
+                    Y: =64
+                    Width: =80
+                    Height: =14
+                    Color: =RGBA(91,99,112,1)
+                    Size: =10
+              - senTMaxB:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.MaxF) & "°"
+                    X: =198
+                    Y: =64
+                    Width: =80
+                    Height: =14
+                    Color: =RGBA(91,99,112,1)
+                    Size: =10
+                    Align: =Align.Right
+              - senTAgeB:
+                  Control: Label
+                  Properties:
+                    Text: =If(ThisItem.AgeMin >= 99999, "No reading yet", "Updated " & If(ThisItem.AgeMin < 1, "just now", Text(ThisItem.AgeMin) & " min ago"))
+                    X: =8
+                    Y: =78
+                    Width: =364
+                    Height: =14
+                    Color: =RGBA(91,99,112,1)
+                    Size: =10
+              - senGalBSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =95
+                    Width: =348
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - senEmpty:
+            Control: Label
+            Properties:
+              Text: |-
+                ="No sensors loaded yet. They are added from the client sheet by the sensor load script (Q-E1: confirm the two units that share one name)."
+              X: =20
+              Y: =230
+              Width: =770
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              Visible: =(Coalesce(varSenTab, "units") = "units") && CountRows(AvenueSensors) = 0
+        - senSel:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(varSenUnit), "Select a unit", Coalesce(LookUp(AvenueSensors, SensorId = varSenUnit).UnitName, varSenUnit))
+              X: =810
+              Y: =188
+              Width: =520
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSenTab, "units") = "units"
+        - senDetail:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(varSenUnit), "Tap a tile to see the last 24 hours and its open excursions.", With({u: LookUp(AvenueSensors, SensorId = varSenUnit)}, Trim(u.Room) & " · safe " & Text(u.MinF) & "°F to " & Text(u.MaxF) & "°F · Swift id " & u.SensorId))
+              X: =810
+              Y: =218
+              Width: =520
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varSenTab, "units") = "units"
+        - senHrCap0:
+            Control: Label
+            Properties:
+              Text: ="Hour"
+              X: =818
+              Y: =264
+              Width: =70
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+              Visible: =!IsBlank(varSenUnit) && (Coalesce(varSenTab, "units") = "units")
+        - senHrCap1:
+            Control: Label
+            Properties:
+              Text: ="Min"
+              X: =980
+              Y: =264
+              Width: =70
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+              Visible: =!IsBlank(varSenUnit) && (Coalesce(varSenTab, "units") = "units")
+        - senHrCap2:
+            Control: Label
+            Properties:
+              Text: ="Avg"
+              X: =1060
+              Y: =264
+              Width: =70
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+              Visible: =!IsBlank(varSenUnit) && (Coalesce(varSenTab, "units") = "units")
+        - senHrCap3:
+            Control: Label
+            Properties:
+              Text: ="Max"
+              X: =1140
+              Y: =264
+              Width: =70
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+              Visible: =!IsBlank(varSenUnit) && (Coalesce(varSenTab, "units") = "units")
+        - senHrCap4:
+            Control: Label
+            Properties:
+              Text: ="Out of range"
+              X: =1220
+              Y: =264
+              Width: =100
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+              Visible: =!IsBlank(varSenUnit) && (Coalesce(varSenTab, "units") = "units")
+        - senHrGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =SortByColumns(Filter(AvenueSensorHourly, SensorId = varSenUnit, HourUtc >= DateAdd(Now(), -24, TimeUnit.Hours)), "HourUtc", SortOrder.Descending)
+              X: =810
+              Y: =286
+              Width: =520
+              Height: =196
+              TemplateSize: =32
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(varSenTab, "units") = "units"
+            Children:
+              - senHrHour:
+                  Control: Label
+                  Properties:
+                    Text: |-
+                      =With({t: ThisItem.HourUtc}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "ddd h AM/PM")))))
+                    X: =8
+                    Y: =4
+                    Width: =160
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - senHrMin:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.MinF, "0.0")
+                    X: =170
+                    Y: =4
+                    Width: =70
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - senHrAvg:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.AvgF, "0.0")
+                    X: =250
+                    Y: =4
+                    Width: =70
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - senHrMax:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.MaxF, "0.0")
+                    X: =330
+                    Y: =4
+                    Width: =70
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - senHrOor:
+                  Control: Label
+                  Properties:
+                    Text: =Text(Coalesce(ThisItem.OutOfRangeCount, 0))
+                    X: =410
+                    Y: =4
+                    Width: =100
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - senHrGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =31
+                    Width: =488
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - senUxHead:
+            Control: Label
+            Properties:
+              Text: ="Open excursions for this unit"
+              X: =810
+              Y: =492
+              Width: =520
+              Height: =27
+              Color: =RGBA(15,76,92,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Visible: =!IsBlank(varSenUnit) && (Coalesce(varSenTab, "units") = "units")
+        - senUxGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =Filter(AvenueTempExcursions, SensorId = varSenUnit, State.Value = "Open")
+              X: =810
+              Y: =522
+              Width: =520
+              Height: =148
+              TemplateSize: =48
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(varSenTab, "units") = "units"
+            Children:
+              - senUxTitle:
+                  Control: Label
+                  Properties:
+                    Text: |-
+                      ="Started " & With({t: ThisItem.StartedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "ddd h:mm AM/PM"))))) & " · peak " & Text(ThisItem.PeakF, "0.0") & "°F"
+                    X: =8
+                    Y: =4
+                    Width: =500
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - senUxMeta:
+                  Control: Label
+                  Properties:
+                    Text: =If(IsBlank(ThisItem.EndedAt), "still out of range", Text(ThisItem.Minutes) & " min")
+                    X: =8
+                    Y: =26
+                    Width: =500
+                    Height: =18
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - senUxGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =47
+                    Width: =488
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - senExHead:
+            Control: Label
+            Properties:
+              Text: ="Temperature excursions (open first, then newest)"
+              X: =20
+              Y: =188
+              Width: =780
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSenTab, "units") = "exc"
+        - senExGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =SortByColumns(AddColumns(AvenueTempExcursions, Rank, If(State.Value = "Open", 0, 1)), "Rank", SortOrder.Ascending, "StartedAt", SortOrder.Descending)
+              X: =20
+              Y: =220
+              Width: =780
+              Height: =450
+              TemplateSize: =64
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(varSenTab, "units") = "exc"
+            Children:
+              - senExTitle:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(LookUp(AvenueSensors, SensorId = ThisItem.SensorId).UnitName, ThisItem.SensorId) & " · peak " & Text(ThisItem.PeakF, "0.0") & "°F"
+                    X: =8
+                    Y: =4
+                    Width: =560
+                    Height: =28
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - senExMeta:
+                  Control: Label
+                  Properties:
+                    Text: |-
+                      =With({t: ThisItem.StartedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "ddd d mmm, h:mm AM/PM"))))) & " · " & If(IsBlank(ThisItem.EndedAt), "still out of range", Text(ThisItem.Minutes) & " min")
+                    X: =8
+                    Y: =34
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - senExPill:
+                  Control: Classic/Button
+                  Properties:
+                    Text: =ThisItem.State.Value
+                    X: =640
+                    Y: =18
+                    Width: =120
+                    Height: =24
+                    DisplayMode: =DisplayMode.Disabled
+                    Fill: =Switch(ThisItem.State.Value, "Open", RGBA(243,227,227,1), "Acknowledged", RGBA(220,238,226,1), RGBA(229,231,235,1))
+                    DisabledFill: =Switch(ThisItem.State.Value, "Open", RGBA(243,227,227,1), "Acknowledged", RGBA(220,238,226,1), RGBA(229,231,235,1))
+                    DisabledColor: =Switch(ThisItem.State.Value, "Open", RGBA(155,44,44,1), "Acknowledged", RGBA(23,114,58,1), RGBA(91,99,112,1))
+                    Color: =Switch(ThisItem.State.Value, "Open", RGBA(155,44,44,1), "Acknowledged", RGBA(23,114,58,1), RGBA(91,99,112,1))
+                    BorderThickness: =0
+                    Size: =10
+                    FontWeight: =FontWeight.Bold
+                    RadiusTopLeft: =12
+                    RadiusTopRight: =12
+                    RadiusBottomLeft: =12
+                    RadiusBottomRight: =12
+              - senExGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =63
+                    Width: =748
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - senExSel:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(senExGal.Selected), "Select an excursion", Coalesce(LookUp(AvenueSensors, SensorId = senExGal.Selected.SensorId).UnitName, senExGal.Selected.SensorId))
+              X: =830
+              Y: =188
+              Width: =500
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSenTab, "units") = "exc"
+        - senExDetail:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(senExGal.Selected), "Choose one from the list to record what was done.", "Started " & With({t: senExGal.Selected.StartedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "ddd d mmm, h:mm AM/PM"))))) & " · peak " & Text(senExGal.Selected.PeakF, "0.0") & "°F" & Char(10) & If(senExGal.Selected.State.Value = "Acknowledged", "Acknowledged by " & senExGal.Selected.AcknowledgedBy & Char(10) & "Action: " & senExGal.Selected.CorrectiveAction, "Not acknowledged yet"))
+              X: =830
+              Y: =218
+              Width: =500
+              Height: =90
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              Visible: =Coalesce(varSenTab, "units") = "exc"
+        - senAckNote:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Corrective action taken (required), e.g. door left open, product checked at 39 F"
+              Mode: =TextMode.MultiLine
+              X: =830
+              Y: =320
+              Width: =500
+              Height: =90
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =Coalesce(varSenTab, "units") = "exc"
+        - senAck:
+            Control: Classic/Button
+            Properties:
+              Text: ="Acknowledge"
+              X: =830
+              Y: =422
+              Width: =200
+              Height: =36
+              OnSelect: |-
+                =IfError(Patch(AvenueTempExcursions, LookUp(AvenueTempExcursions, ExcursionId = senExGal.Selected.ExcursionId), {State: {Value: "Acknowledged"}, AcknowledgedBy: User().Email, AcknowledgedAt: Now(), CorrectiveAction: Trim(senAckNote.Text)}); Reset(senAckNote); Notify("Acknowledged and recorded.", NotificationType.Success), Notify("Could not save the acknowledgement.", NotificationType.Error))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(!IsBlank(senExGal.Selected) && senExGal.Selected.State.Value <> "Acknowledged" && !IsBlank(Trim(senAckNote.Text)), DisplayMode.Edit, DisplayMode.Disabled)
+              Visible: =Coalesce(varSenTab, "units") = "exc"
+        - senAckHelp:
+            Control: Label
+            Properties:
+              Text: ="The note is kept with the record for the health inspector. It cannot be left empty."
+              X: =830
+              Y: =464
+              Width: =500
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varSenTab, "units") = "exc"
+        - senLogHead:
+            Control: Label
+            Properties:
+              Text: ="Daily log (facility time)"
+              X: =20
+              Y: =188
+              Width: =400
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSenTab, "units") = "log"
+        - senLogDate:
+            Control: Classic/DatePicker
+            Properties:
+              DefaultDate: =Today()
+              X: =20
+              Y: =224
+              Width: =220
+              Height: =34
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =Coalesce(varSenTab, "units") = "log"
+        - senLogHelp:
+            Control: Label
+            Properties:
+              Text: ="Hourly minimum, average and maximum per unit. To give an inspector a file, open the list AvenueSensorHourly in SharePoint, use Export to Excel and filter this date. A one-click export button is not in this app yet."
+              X: =260
+              Y: =222
+              Width: =1070
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varSenTab, "units") = "log"
+        - senLgCap0:
+            Control: Label
+            Properties:
+              Text: ="Unit"
+              X: =28
+              Y: =270
+              Width: =300
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSenTab, "units") = "log"
+        - senLgCap1:
+            Control: Label
+            Properties:
+              Text: ="Hour"
+              X: =340
+              Y: =270
+              Width: =120
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSenTab, "units") = "log"
+        - senLgCap2:
+            Control: Label
+            Properties:
+              Text: ="Min"
+              X: =480
+              Y: =270
+              Width: =80
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSenTab, "units") = "log"
+        - senLgCap3:
+            Control: Label
+            Properties:
+              Text: ="Avg"
+              X: =570
+              Y: =270
+              Width: =80
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSenTab, "units") = "log"
+        - senLgCap4:
+            Control: Label
+            Properties:
+              Text: ="Max"
+              X: =660
+              Y: =270
+              Width: =80
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSenTab, "units") = "log"
+        - senLgCap5:
+            Control: Label
+            Properties:
+              Text: ="Out of range"
+              X: =750
+              Y: =270
+              Width: =120
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSenTab, "units") = "log"
+        - senLogGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({a: With({dd: Coalesce(senLogDate.SelectedDate, Today())}, With({d0: Date(Year(dd), Month(dd), Day(dd))}, With({m3: Date(Year(d0), 3, 1), n11: Date(Year(d0), 11, 1)}, DateAdd(d0, If(d0 > DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days) && d0 <= DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 4, 5) * 60 - TimeZoneOffset(d0), TimeUnit.Minutes)))), b: With({dd: Coalesce(DateAdd(Coalesce(senLogDate.SelectedDate, Today()), 1, TimeUnit.Days), Today())}, With({d0: Date(Year(dd), Month(dd), Day(dd))}, With({m3: Date(Year(d0), 3, 1), n11: Date(Year(d0), 11, 1)}, DateAdd(d0, If(d0 > DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days) && d0 <= DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 4, 5) * 60 - TimeZoneOffset(d0), TimeUnit.Minutes))))}, SortByColumns(Filter(AvenueSensorHourly, HourUtc >= a, HourUtc < b), "SensorId", SortOrder.Ascending, "HourUtc", SortOrder.Ascending))
+              X: =20
+              Y: =294
+              Width: =880
+              Height: =376
+              TemplateSize: =32
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(varSenTab, "units") = "log"
+            Children:
+              - senLgUnit:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(LookUp(AvenueSensors, SensorId = ThisItem.SensorId).UnitName, ThisItem.SensorId)
+                    X: =8
+                    Y: =4
+                    Width: =300
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - senLgHour:
+                  Control: Label
+                  Properties:
+                    Text: |-
+                      =With({t: ThisItem.HourUtc}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "h AM")))))
+                    X: =320
+                    Y: =4
+                    Width: =120
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - senLgMin:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.MinF, "0.0")
+                    X: =460
+                    Y: =4
+                    Width: =80
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - senLgAvg:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.AvgF, "0.0")
+                    X: =550
+                    Y: =4
+                    Width: =80
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - senLgMax:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.MaxF, "0.0")
+                    X: =640
+                    Y: =4
+                    Width: =80
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - senLgOor:
+                  Control: Label
+                  Properties:
+                    Text: =Text(Coalesce(ThisItem.OutOfRangeCount, 0))
+                    X: =730
+                    Y: =4
+                    Width: =120
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - senLogGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =31
+                    Width: =848
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - senSetHead:
+            Control: Label
+            Properties:
+              Text: ="Units (owner)"
+              X: =20
+              Y: =188
+              Width: =500
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+              Visible: =(Coalesce(varSenTab, "units") = "set") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - senSetGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =SortByColumns(Filter(AvenueSensors, FacilityId = "flavors-hyattsville"), "UnitName", SortOrder.Ascending)
+              X: =20
+              Y: =220
+              Width: =520
+              Height: =450
+              TemplateSize: =56
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =(Coalesce(varSenTab, "units") = "set") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+            Children:
+              - senSetRowName:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.UnitName & If(ThisItem.Active, "", " (inactive)")
+                    X: =8
+                    Y: =4
+                    Width: =500
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - senSetRowMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Trim(ThisItem.Room) & " · safe " & Text(ThisItem.MinF) & "°F to " & Text(ThisItem.MaxF) & "°F · " & ThisItem.SensorId
+                    X: =8
+                    Y: =30
+                    Width: =500
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - senSetGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =55
+                    Width: =488
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - senSetSel:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(senSetGal.Selected), "Select a unit to edit", "Edit " & senSetGal.Selected.UnitName)
+              X: =570
+              Y: =188
+              Width: =760
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+              Visible: =(Coalesce(varSenTab, "units") = "set") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - senSetNameCap:
+            Control: Label
+            Properties:
+              Text: ="Unit name"
+              X: =570
+              Y: =224
+              Width: =300
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+              Visible: =(Coalesce(varSenTab, "units") = "set") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - senSetName:
+            Control: Classic/TextInput
+            Properties:
+              Default: =senSetGal.Selected.UnitName
+              X: =570
+              Y: =246
+              Width: =360
+              Height: =34
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =(Coalesce(varSenTab, "units") = "set") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - senSetMinCap:
+            Control: Label
+            Properties:
+              Text: ="Safe minimum (°F)"
+              X: =570
+              Y: =292
+              Width: =170
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+              Visible: =(Coalesce(varSenTab, "units") = "set") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - senSetMaxCap:
+            Control: Label
+            Properties:
+              Text: ="Safe maximum (°F)"
+              X: =750
+              Y: =292
+              Width: =170
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+              Visible: =(Coalesce(varSenTab, "units") = "set") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - senSetMin:
+            Control: Classic/TextInput
+            Properties:
+              Default: =Text(senSetGal.Selected.MinF)
+              X: =570
+              Y: =314
+              Width: =170
+              Height: =34
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =(Coalesce(varSenTab, "units") = "set") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - senSetMax:
+            Control: Classic/TextInput
+            Properties:
+              Default: =Text(senSetGal.Selected.MaxF)
+              X: =750
+              Y: =314
+              Width: =180
+              Height: =34
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =(Coalesce(varSenTab, "units") = "set") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - senSetActive:
+            Control: Classic/Toggle
+            Properties:
+              Default: =senSetGal.Selected.Active
+              TrueText: ="Active"
+              FalseText: ="Inactive"
+              X: =570
+              Y: =364
+              Width: =160
+              Height: =34
+              Visible: =(Coalesce(varSenTab, "units") = "set") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - senSetSave:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save unit"
+              X: =570
+              Y: =414
+              Width: =200
+              Height: =36
+              OnSelect: |-
+                =IfError(Patch(AvenueSensors, LookUp(AvenueSensors, SensorId = senSetGal.Selected.SensorId), {UnitName: Trim(senSetName.Text), MinF: Value(senSetMin.Text), MaxF: Value(senSetMax.Text), Active: senSetActive.Value}); Notify("Saved. The server reads the new range within the hour.", NotificationType.Success), Notify("Could not save the unit.", NotificationType.Error))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(!IsBlank(senSetGal.Selected) && !IsBlank(Trim(senSetName.Text)) && IsNumeric(senSetMin.Text) && IsNumeric(senSetMax.Text) && Value(senSetMin.Text) < Value(senSetMax.Text), DisplayMode.Edit, DisplayMode.Disabled)
+              Visible: =(Coalesce(varSenTab, "units") = "set") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - senSetHelp:
+            Control: Label
+            Properties:
+              Text: =If(!IsBlank(senSetGal.Selected) && !IsBlank(Trim(senSetName.Text)) && IsNumeric(senSetMin.Text) && IsNumeric(senSetMax.Text) && Value(senSetMin.Text) < Value(senSetMax.Text), "", "Enter a name and numbers where the minimum is below the maximum.")
+              X: =570
+              Y: =458
+              Width: =760
+              Height: =22
+              Color: =RGBA(155,44,44,1)
+              Size: =11
+              Visible: =(Coalesce(varSenTab, "units") = "set") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - senSetNote:
+            Control: Label
+            Properties:
+              Text: |-
+                ="The range is the safe range from the client sheet (fridges 36 to 40, freezers minus 8 to 0). Excursion rule: two readings in a row outside it."
+              X: =570
+              Y: =486
+              Width: =760
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =(Coalesce(varSenTab, "units") = "set") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]

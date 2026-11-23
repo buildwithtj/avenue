@@ -1,0 +1,638 @@
+- appBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- appBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- appBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- appDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- appBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- appTitle:
+    Control: Label
+    Properties:
+      Text: ="Applicants"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- appNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- appNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- appNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- appNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- appNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- appNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- appNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 98
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- tm_applicants:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =4
+      Width: =10
+      Height: =10
+- sc_applicants:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =64
+      Width: =App.Width
+      Height: =App.Height - 64
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_applicants.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_applicants:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =704
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - appBack:
+            Control: Classic/Button
+            Properties:
+              Text: ="Back to More"
+              X: =20
+              Y: =0
+              Width: =140
+              Height: =34
+              OnSelect: =Navigate(Screen12)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+        - appHead:
+            Control: Label
+            Properties:
+              Text: ="Membership applications"
+              X: =180
+              Y: =0
+              Width: =400
+              Height: =34
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+        - appChipAll:
+            Control: Classic/Button
+            Properties:
+              Text: ="All"
+              X: =20
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varAppStage, "All")
+              Fill: =If(Coalesce(varAppStage, "All") = "All", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varAppStage, "All") = "All", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varAppStage, "All") = "All", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varAppStage, "All") = "All", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - appChipPaymentPending:
+            Control: Classic/Button
+            Properties:
+              Text: ="Payment pending"
+              X: =156
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varAppStage, "PaymentPending")
+              Fill: =If(Coalesce(varAppStage, "All") = "PaymentPending", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varAppStage, "All") = "PaymentPending", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varAppStage, "All") = "PaymentPending", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varAppStage, "All") = "PaymentPending", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - appChipInviteNeeded:
+            Control: Classic/Button
+            Properties:
+              Text: ="Invite needed"
+              X: =292
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varAppStage, "InviteNeeded")
+              Fill: =If(Coalesce(varAppStage, "All") = "InviteNeeded", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varAppStage, "All") = "InviteNeeded", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varAppStage, "All") = "InviteNeeded", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varAppStage, "All") = "InviteNeeded", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - appChipOnboarding:
+            Control: Classic/Button
+            Properties:
+              Text: ="Onboarding"
+              X: =428
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varAppStage, "Onboarding")
+              Fill: =If(Coalesce(varAppStage, "All") = "Onboarding", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varAppStage, "All") = "Onboarding", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varAppStage, "All") = "Onboarding", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varAppStage, "All") = "Onboarding", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - appChipActive:
+            Control: Classic/Button
+            Properties:
+              Text: ="Active"
+              X: =564
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varAppStage, "Active")
+              Fill: =If(Coalesce(varAppStage, "All") = "Active", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varAppStage, "All") = "Active", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varAppStage, "All") = "Active", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varAppStage, "All") = "Active", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - appChipRejected:
+            Control: Classic/Button
+            Properties:
+              Text: ="Rejected"
+              X: =700
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varAppStage, "Rejected")
+              Fill: =If(Coalesce(varAppStage, "All") = "Rejected", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varAppStage, "All") = "Rejected", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varAppStage, "All") = "Rejected", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varAppStage, "All") = "Rejected", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - appChipExpired:
+            Control: Classic/Button
+            Properties:
+              Text: ="Expired"
+              X: =836
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varAppStage, "Expired")
+              Fill: =If(Coalesce(varAppStage, "All") = "Expired", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varAppStage, "All") = "Expired", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varAppStage, "All") = "Expired", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varAppStage, "All") = "Expired", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
+        - appGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({st: Coalesce(varAppStage, "All")}, SortByColumns(Filter(Filter(AvenueApplicants, FacilityId = "flavors-hyattsville"), st = "All" || (st = "Expired" && (Stage.Value = "Expired" || (Stage.Value = "PaymentPending" && !IsBlank(ExpiresAt) && ExpiresAt < Now()))) || (st <> "Expired" && Stage.Value = st && !(Stage.Value = "Expired" || (Stage.Value = "PaymentPending" && !IsBlank(ExpiresAt) && ExpiresAt < Now())))), "Created", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =580
+              TemplateSize: =66
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - appItemTitle:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.BusinessName, "(no business name)") & " · " & Coalesce(ThisItem.ContactName, ThisItem.Email)
+                    X: =8
+                    Y: =4
+                    Width: =480
+                    Height: =28
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - appItemMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.PlanId, "no plan") & " · day " & Coalesce(Text(ThisItem.CollectionDay), "-") & " · " & Coalesce(ThisItem.PayMethod.Value, "-") & If(IsBlank(ThisItem.PaidAt), " · not paid", " · paid " & Text(ThisItem.PaidAt, "d mmm yyyy"))
+                    X: =8
+                    Y: =34
+                    Width: =480
+                    Height: =24
+                    Color: =RGBA(91,99,112,1)
+                    Size: =12
+              - appItemPill:
+                  Control: Classic/Button
+                  Properties:
+                    Text: =Switch(If(ThisItem.Stage.Value = "PaymentPending" && !IsBlank(ThisItem.ExpiresAt) && ThisItem.ExpiresAt < Now(), "Expired", ThisItem.Stage.Value), "PaymentPending", "Payment pending", "InviteNeeded", "Invite needed", If(ThisItem.Stage.Value = "PaymentPending" && !IsBlank(ThisItem.ExpiresAt) && ThisItem.ExpiresAt < Now(), "Expired", ThisItem.Stage.Value))
+                    X: =496
+                    Y: =20
+                    Width: =128
+                    Height: =24
+                    DisplayMode: =DisplayMode.Disabled
+                    Fill: =Switch(If(ThisItem.Stage.Value = "PaymentPending" && !IsBlank(ThisItem.ExpiresAt) && ThisItem.ExpiresAt < Now(), "Expired", ThisItem.Stage.Value), "Active", RGBA(220,232,235,1), "Onboarding", RGBA(220,232,235,1), "InviteNeeded", RGBA(244,235,211,1), "Paid", RGBA(244,235,211,1), "PaymentPending", RGBA(229,231,235,1), RGBA(243,227,227,1))
+                    DisabledFill: =Switch(If(ThisItem.Stage.Value = "PaymentPending" && !IsBlank(ThisItem.ExpiresAt) && ThisItem.ExpiresAt < Now(), "Expired", ThisItem.Stage.Value), "Active", RGBA(220,232,235,1), "Onboarding", RGBA(220,232,235,1), "InviteNeeded", RGBA(244,235,211,1), "Paid", RGBA(244,235,211,1), "PaymentPending", RGBA(229,231,235,1), RGBA(243,227,227,1))
+                    DisabledColor: =Switch(If(ThisItem.Stage.Value = "PaymentPending" && !IsBlank(ThisItem.ExpiresAt) && ThisItem.ExpiresAt < Now(), "Expired", ThisItem.Stage.Value), "Active", RGBA(15,76,92,1), "Onboarding", RGBA(15,76,92,1), "InviteNeeded", RGBA(107,79,16,1), "Paid", RGBA(107,79,16,1), "PaymentPending", RGBA(91,99,112,1), RGBA(155,44,44,1))
+                    Color: =Switch(If(ThisItem.Stage.Value = "PaymentPending" && !IsBlank(ThisItem.ExpiresAt) && ThisItem.ExpiresAt < Now(), "Expired", ThisItem.Stage.Value), "Active", RGBA(15,76,92,1), "Onboarding", RGBA(15,76,92,1), "InviteNeeded", RGBA(107,79,16,1), "Paid", RGBA(107,79,16,1), "PaymentPending", RGBA(91,99,112,1), RGBA(155,44,44,1))
+                    BorderThickness: =0
+                    Size: =10
+                    FontWeight: =FontWeight.Bold
+                    RadiusTopLeft: =12
+                    RadiusTopRight: =12
+                    RadiusBottomLeft: =12
+                    RadiusBottomRight: =12
+              - appGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =65
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - appSelHead:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(appGal.Selected), "Select an application", appGal.Selected.BusinessName & " · " & Switch(If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value), "PaymentPending", "Payment pending", "InviteNeeded", "Invite needed", If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value)))
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+        - appSelInfo:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(appGal.Selected), "", "Contact: " & Coalesce(appGal.Selected.ContactName, "-") & " · " & appGal.Selected.Email & " · " & Coalesce(appGal.Selected.Phone, "no phone") & Char(10) & "Plan: " & Coalesce(appGal.Selected.PlanId, "-") & " · collection day " & Coalesce(Text(appGal.Selected.CollectionDay), "-") & " · pays by " & Coalesce(appGal.Selected.PayMethod.Value, "-") & " · team of " & Coalesce(Text(appGal.Selected.TeamSize), "-") & Char(10) & "Came from: " & Coalesce(appGal.Selected.Source.Value, "-") & If(IsBlank(appGal.Selected.PaidAt), " · not paid yet", " · paid " & Text(appGal.Selected.PaidAt, "d mmm yyyy h:mm AM/PM")) & If(IsBlank(appGal.Selected.DecidedBy), "", Char(10) & "Decided by " & appGal.Selected.DecidedBy & " on " & Text(appGal.Selected.DecidedAt, "d mmm yyyy")) & If(IsBlank(appGal.Selected.Note), "", Char(10) & "Note: " & appGal.Selected.Note))
+              X: =690
+              Y: =124
+              Width: =640
+              Height: =120
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+        - appNoteIn:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Note (needed to reject; staff only)"
+              Mode: =TextMode.MultiLine
+              X: =690
+              Y: =252
+              Width: =640
+              Height: =60
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - appApprove:
+            Control: Classic/Button
+            Properties:
+              Text: |-
+                ="Approve: make active"
+              X: =690
+              Y: =324
+              Width: =210
+              Height: =40
+              OnSelect: |-
+                =With({mm: LookUp(AvenueMembers, MemberId = Lower(appGal.Selected.Email))}, If(IsBlank(mm), Notify("No member record yet for this e-mail: wait for the payment to be confirmed (or add the member on the Members screen).", NotificationType.Warning), IfError(Patch(AvenueMembers, mm, {Status: {Value: "Active"}}); Patch(AvenueApplicants, appGal.Selected, {Stage: {Value: "Active"}, DecidedBy: User().Email, DecidedAt: Now(), Note: If(IsBlank(Trim(appNoteIn.Text)), appGal.Selected.Note, Trim(appNoteIn.Text))}); Reset(appNoteIn); Notify("Approved. The member can book once their membership card updates (about a minute).", NotificationType.Success), Notify("Could not approve.", NotificationType.Error))))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =!IsBlank(appGal.Selected) && (If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) = "Onboarding" || If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) = "Paid")
+        - appInvited:
+            Control: Classic/Button
+            Properties:
+              Text: |-
+                ="Invite sent: move to onboarding"
+              X: =690
+              Y: =324
+              Width: =280
+              Height: =40
+              OnSelect: |-
+                =IfError(Patch(AvenueApplicants, appGal.Selected, {Stage: {Value: "Onboarding"}, DecidedBy: User().Email, DecidedAt: Now(), Note: If(IsBlank(Trim(appNoteIn.Text)), appGal.Selected.Note, Trim(appNoteIn.Text))}); Reset(appNoteIn); Notify("Moved to onboarding. They upload documents after signing in.", NotificationType.Success), Notify("Could not save.", NotificationType.Error))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) = "InviteNeeded"
+        - appReject:
+            Control: Classic/Button
+            Properties:
+              Text: ="Reject"
+              X: =910
+              Y: =324
+              Width: =140
+              Height: =40
+              OnSelect: |-
+                =If(IsBlank(Trim(appNoteIn.Text)), Notify("Write why in the note first.", NotificationType.Warning), IfError(Patch(AvenueApplicants, appGal.Selected, {Stage: {Value: "Rejected"}, DecidedBy: User().Email, DecidedAt: Now(), Note: If(IsBlank(Trim(appNoteIn.Text)), appGal.Selected.Note, Trim(appNoteIn.Text))}); Reset(appNoteIn); Notify("Rejected. Any refund is done by the owner in Stripe.", NotificationType.Success), Notify("Could not save.", NotificationType.Error)))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(155,44,44,1)
+              HoverFill: =RGBA(243,227,227,1)
+              HoverColor: =RGBA(155,44,44,1)
+              PressedFill: =RGBA(243,227,227,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected"
+              BorderColor: =RGBA(155,44,44,1)
+              HoverBorderColor: =RGBA(155,44,44,1)
+        - appHelp:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Invite needed: the person paid on the public join page; a SharePoint admin must send their guest invitation (automatic invites need tenant consent, Q-M3). Rejecting does not refund: the owner refunds in Stripe. Approval after payment is the default until the client answers Q-05."
+              X: =690
+              Y: =376
+              Width: =640
+              Height: =64
+              Color: =RGBA(91,99,112,1)
+              Size: =11

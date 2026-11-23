@@ -1,0 +1,14 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: for d in billing-core sensors-core domain-core integration-host; do (cd apps/$d && node --test) || exit 1; done
+      - run: node scripts/secret-scan.mjs
+      - run: node schema/check.mjs && node --test schema/invariants.test.mjs schema/seed.data.test.mjs
+      - run: cd apps/staff-powerapps && python3 gen.py && python3 check.py
+      - run: cd apps/member-spfx && npm ci && npm run build

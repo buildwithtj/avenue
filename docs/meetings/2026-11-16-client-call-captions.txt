@@ -1,0 +1,409 @@
+# Raw caption capture, client call 16 Nov 2026 (OCR, noisy)
+
+Source: two Google Meet screen recordings (Avenue X DKD, 7:51 PM and 7:54 PM, 16 Nov 2026), no audio track. The text is the Meet live captions read off the video frames with macOS Vision OCR every 2 seconds, so words are missing or garbled and some lines repeat. Use the cleaned summary in `2026-11-16-client-call.md`; this file is only for checking a quote. Lines after the call ended (13:30 onward, an e-mail inbox) are removed.
+
+## Recording 1 (kitchen tour, 2 min)
+
+[0:00] Chris & Samia
+[0:10] Chris & Samia EE Turn on caption *A Translate speech
+[0:14] Chris & Samia now! Here is the.
+[0:16] Dining room all right now! Here is the actual kitchen.
+[0:18] you have the. Dining room all right now! Here is the actual kitchen. So, in the kitchen,
+[0:20] you have the prep tables, you see, more prep.
+[0:22] you have the prep tables. You see, more prep tables back there.
+[0:24] Dining room all right now! Here is the actual kitchen. So, intthe kitchen, you have the prep tables. You see, more prep tables back there. He makes.
+[0:26] makes. These are the holding.
+[0:28] makes. These are the holding cabinets. Now when?
+[0:30] Dining room all right now! Here is the actual kitchen. So, in the kitchen, makes. These are the holding cabinets. Now when you when we previously had it?
+[0:32] previously had it as cook stations. What we used to do?
+[0:34] previously had it as cook stations. What we used to do is if you could see those numbers on the wall up.
+[0:36] those numbers on the wall up there, turn the light. Yes.
+[0:38] those numbers on the wall up there. That's how we identif.
+[0:40] That's how we identify previously cook station.
+[0:42] That's how we identify previously cook station one and cook station two.
+[0:44] Okay. But the chall. That's how we identify previously Cook Station 1 and cook station two.
+[0:46] But the challenge is, is that when the members?
+[0:48] I nats now we identity previously cook station i ana cook station two. they don't? But the challenge is, is that when the members come in, they don't just
+[0:50] But the challenge is, is that when the members come in, they don't just. They don't always use the stove.
+[0:52] They don't always use the stove and the grill. Sometimes they may.
+[0:54] But the challenge is, is that when the members come in, thy don't just. They don't always use the stove and the grill. Sometimes, they may just use the stove and the.
+[0:56] use the stove and the stove and the oven here.
+[0:58] Are you talking? Your mic is off. Click the mic to turn it on. x at when the members come in, thizy don't just. : stove and the grill. Sometimes, they may just ve and the oven here. So, there's.
+[1:00] UKay. But the challenge is, is that when the members come in, they don't just. x stove and the grill. Sometimes, they may just ve and the oven here. So, there's really no true
+[1:02] Ukay. lake sense?
+[1:04] stove and the grill. Sometimes, they may just lake sense? So the booking?
+[1:06] UKay. They dont always use the stove and the grill. Sometimes, they may just use the stove and the stove and the oven here. So, there's really no true cook station. Does that make sense? So, the booking is always based on.
+[1:08] They don't always use the stove and the grill. Sometimes, they may just use the stove and the stove and the oven here. So, there's Meally no true The booking is actually, really, just.
+[1:10] The booking is actually, really, just based on the equipment that.
+[1:12] The booking is actually, really, just based on the equipment that they're booking. Great!
+[1:14] Not the not there.
+[1:16] Not the not there. Being a cook station, the only reason that?
+[1:18] Dooking. Not the not there. Being a cook station, the only reason that we did it as a cook station previous.
+[1:20] Chris & Samia cook station previously was because of the.
+[1:22] cook station previously was because of the previous system. That we.
+[1:24] cook station previously was because of the previous system. That we were using. Okay.
+[1:26] LUUK dalul prevs vs dtcd dl ttt previvus systemn. mal vve That that was the only way that they.
+[1:28] CUK dll prevs vs dtbust dul te previus syslemn. Hal vve That that was the only way that they could I that we could section.
+[1:30] The system. That that was the only way that they could I that we could section off.
+[1:32] The system so that they could actually.
+[1:34] The system so that they could actually. The.
+[1:36] The system so that they could actually. The kitchen and the equipment.
+[1:38] UKay. The system so that they could actually. The kitchen and thy equipment. Understood.
+[1:40] maluldt vas t ly voy bl bd cul t ult ve culu secuun un. The system so that they could actually. The kitchen and the equipment All right, and what I can do is, um.
+[1:42] The system so that they could actually. The kitchen and the equipment. All right, and what I can do is, um, just while I have you if you like.
+[1:44] I ne system so tat tney coula actually. Ine kitcen and the equipment. All right, and what I can do is, um, just while I have you if you like me to log into the current system.
+[1:46] I ne system so that tney coula actually. Ine kitcen and the equipment. All right, and what I can do is, um, just while I have you if you'd like me to log into the current system we use so I can show you.
+[1:48] log into the current system we use so I can show you. And then that way. This makes sense, is that?
+[1:50] This makes sense. Is that okay?
+[1:52] Yeah, it'll make more sense. Like, if you can?
+[1:54] Chris & samia Yeah, it'll make more sense. Like, if you can share the current system with us?
+[1:56] luy ll me bunen syslel ve dse su tcn dnv yuu. Hnu wen ulal vvay. Chris & Samia Yeah, okay, and l'll see if l.
+[1:58] luy ll me bunen syslel ve dse su tcn druv yuu. Hnu wen ulal vvay. Yeah, it'Il make more sense. Like, if you can share the current system with Yeah, okay, and I'Il see if I can. It's a it's tricky getting
+[2:00] there, but I'll. Yeah, it'll make more sense. Like, if you can share the current system with Yeah, okay, and I'll see if I can. It's a it's tricky getting another user in
+[2:02] there, but l'll see what I can do, um, in.
+
+## Recording 2 (old system walkthrough and master-data sheet, 14 min)
+
+[0:00] Yeah, now I can see. Chris & Samia Okay. So, this is. I'm actually going to log into one of the members accounts. Let me go to one of the older members, cuz they would have everything.
+[0:12] everything. All right. So this is, uh, this is.
+[0:14] everything. All right. So this is, uh, this is. This is a member I'm actually inside.
+[0:16] Yean, now I can see. inside of a member's account, right?
+[0:18] inside of a member's account, right? Um, so?
+[0:20] inside of a member's account, right? Um, so right now when she.
+[0:22] inside of a member's account, right? Um, so right now when she would come in.
+[0:24] come in. She would come in.
+[0:26] come in. She would come in and. She would.
+[0:28] come in. She would come in and. She would do a booking. This would be her trying to do.
+[0:30] her trying to do a booking. Mm-Hmm.
+[0:32] Still meeting rooms.
+[0:34] Still meeting rooms. So everything, of course.
+[0:36] ner trying to ao a booking. room, so. Still meeting rooms. So everything, of course, is listed under as a meeting
+[0:38] room. So, here is cook station.
+[0:40] room. So, here is cook station. Well, it should be once Sensation one.
+[0:42] room. So, here is cook station. Well, it should be once Sensation one cook station. Two, they can do their.
+[0:44] room. So, here is cook station. Well, it should be once Sensation, one cook station two, they can do their inspection, or they can use the.
+[0:46] cook station two, they can do their inspection, or they can use the dining room. So, let me just click in here.
+[0:48] room. So, let me just click in here and click station one. So?
+[0:50] Let's do meeting rooms, so everything, of course, is listed under as a meeting room. So, here is Cook Station. Well, it should be one station, one Cook Station 2, they can do their inspection, or they can use the dining room. So, let me just click in here and click station one. So, what will happen is when?
+[0:52] will happen is when they choose their date and time?
+[0:56] will happen is when they choose their date and time? Then they actually have to come down here.
+[0:58] have to come down here and choose be equipment.
+[1:00] have to come down here and choose be equipment so.
+[1:02] have to come down here and choose the equipment so. The different.
+[1:04] have to come down here and choose the equipment so. The different equipment pieces to the?
+[1:06] equipment pieces to the booking.
+[1:08] equipment pieces to the booking. They would also add, like.
+[1:10] equipment pieces to the booking. They would also add, like prep tables.
+[1:12] Oh, I'm gonna change the time.
+[1:14] Ah, I'm gonna change the time. Uh.
+[1:16] Ah, I'm gonna change the time. Uh, let me just do.
+[1:18] Ah, I'm gonna change the time. Uh, so let me just do.
+[1:22] unris a samla one Cook Station 2, they can do their inspection, or they can use the equipment pieces to the booking. They would also add, like prep tables
+[1:24] enris & samla
+[1:26] unris & samla dinina ream Cn Int ma i'st click in here and click station one. So, what И Are you talking? Your mic is X choose their date and time? Then they actually off. and choose the equipment so. The different Pause this notification ›ooking. They would also add, like prep tables time. Uh, so let me just do.
+[1:30] time. Uh, so let me just do. And so.
+[1:32] enris & samla dining room. So, let me just click in here and click station one. So, what Will hannon in whan thaw choose their date and time? Then they actually X and choose the equipment so. The different rooking. They would also add, like prep tables. time. Uh, so let me just do. And so, then, of 1g.
+[1:34] enris a samla will happen is when they choose their date and time? Then they actually have to come down here and choose the equipment so. The different equipment pieces to the booking. They would also add, like prep tables. Ah, I'm gonna change the time. Uh, so let me just do. And so, then, of course, it. It lists everything here, and of course, it's pulling.
+[1:36] course, it. It lists everything here, and of course, it's pulling from the credits. As you can see?
+[1:42] credits. As you can see? And then they can just.
+[1:44] unris a samla credits. As you can see? And then they can just place the booking, so that's essent.
+[1:46] enris a samla that's essentially how they're able to make their.
+[1:48] that's essentially how they're able to make their bookings. They choose cook station. Mm-Hmm. Mm-Hmm. Right? Okay.
+[1:50] cook station, then they add their equip.
+[1:52] unris & samla cook station, then they add their equipment. Chris & Samia The issue.
+[1:54] enris & samla The issue, of course with this system, is that the?
+[1:56] The issue, of course with this system, is that the equipment does not block any.
+[1:58] block anyone else from.
+[2:00] block anyone else from booking the same equipment.
+[2:02] block anyone else from booking the same equipment. The only thing that locks in.
+[2:04] locks in this system is the fact that they're choosing cook.
+[2:06] lanishka Jain locks in this system is the fact that they're choosing cook station one, so no one could choose.
+[2:08] no one could choose cook station one for this time.
+[2:10] no one could choose cook station one for this time. It'll say this resource is.
+[2:12] locks in this system is the fact that they're choosing Cook Station 1, so no one could choose cook Station 1 for this time. It'll say this resource is unavailable.
+[2:14] Mm-hmm. Ma-amm. Right. Ukay. unavailable. But the, but it doesn't matter.
+[2:16] unavailable. But the, but it doesn't matter. We can have two companies.
+[2:18] unavailable. But the, but it doesn't matter. We can have two companies in here. We can have three companies if.
+[2:20] here. We can have three companies if all three.
+[2:22] unris a samla here. We can have three companies if all three companies have the same pieces of equipment.
+[2:24] pieces of equipment book. That's when we have a problem.
+[2:26] pieces of equipment book. That's when we have a problem. And that's what?
+[2:28] what ad is going.
+[2:30] unris & samla what ad is going to offer us.
+[2:34] enris a samla what ad is going to offer us. Any other questions?
+[2:36] what ad is going to offer us. Any other questions come in the system for you guys?
+[2:38] no one could choose cook Station 1 for this time. Itll say this resource is
+[2:40] enris & samla Just a.
+[2:48] enris a samla here. We can have three companies if all three companies have the sai pieces of equipment book. That's when we have a problem. And that's what ad is going to offer us. Any other questions come in the system f you guys? Just a second.
+[2:54] unris a samla here. We can have three companies if all three companies have the same pieces of equipment book. That's when we have a problem. And that's what ad is going to offer us. Any other questions come in the system for you guys? Just a second.
+[2:56] unris & samla
+[3:00] unris & samla here. We can have three companies if all three companies have the same pieces of equipment book. That's when we have a problem. And that's what ad is going to offer us. Any other questions come in the system for you guys? Just a second.
+[3:14] enris & samla Just a second. So, like, ultimately.
+[3:16] unris & samla you guys Just a second. So, like, ultimately, it's all about booking the equipments as we have.
+[3:18] enris & samla you guys! Just a second. So, like, ultimately, it's all about booking the equipments, as we have two burners at a time. So, if a?
+[3:20] unris & samla you guys? as we have two burners at a time. So, if a person selects two burner, then?
+[3:22] enris & samla as we have two burners at a time. So, if a person selects two burner, then cook station to won't?
+[3:24] cook station to won't be available for another.
+[3:26] vlal duls yuly t ner us A qtss clt t me Systeml Iul cook station to won't be available for another person at the same time, right?
+[3:28] lanishka Jain Just a second. So, like, ultimately, it's all about booking the equipments Cook Station 2 won't be available for another person at the same time, Chris & Samia Correct? So, yeah
+[3:30] Correct? So, yeah, it really wouldn't boil down to a.
+[3:32] lanisnka Jain Cook Station 2 wont be available for another person at the same time, Correct? So, yeah, it really wouldn't boil down to a station that will boil down to the equipment that.
+[3:34] down to the equipment that they're booking.
+[3:36] unris & samla Right? So?
+[3:38] So every company will get access to.
+[3:40] So every company will get access to two tables, so that's so, so?
+[3:42] sallull lal vvill vull So every company will get access to two tables, so that's so, so really, the the item?
+[3:44] slallull lal vvill vull the item that if they make a booking without?
+[3:46] blallull lal vill vull Right? Hmm. the item that if they make a booking without any equipment? They.
+[3:48] the item that if they make a booking without any equipment? They would come in, and they would have access only.
+[3:50] come in, and they would have access only to two prep tables.
+[3:52] Right? Hmm. Okay, there won't be any equip. come in, and they would have access only to two prep tables. So beyond?
+[3:54] lanishka Jain Okay, there wont be any equipment. Correct. There would be no.
+[3:56] Correct. There would be no other equipment, so right now they do.
+[3:58] Okay, here wont be any equipment. Correct. There would be no other equipment, so right now they do a booking at minimum. They're.
+[4:00] Correct. There will be no other equipment, so right now they do a booking. At minimum, they're getting too prep tables.
+[4:02] booking. At minimum, they're getting two prep tables. But of course, clearly we know if they're actually.
+[4:04] unris a samla clearly, we know if they're actually coming into cook. They're now going to need to.
+[4:06] need to add equipment now. There are.
+[4:08] come in, and they would have access only to a prep tables. So beyon need to add equipment. Now, there are times that the chefs do come in and.
+[4:10] enris a samla come in, and they would have access only to two prep tables. So beyond? and they don't need any of the cooking equipment.
+[4:12] unris a samla and they don't need any of the cooking equipment. In that case, we.
+[4:14] and they don't need any of the cooking equipment. In that case, we would we would love to know and we need.
+[4:16] enris a samla we would love to know and we need to know that all of the equipment.
+[4:18] unris & samla we would love to know, and we need to know that all of the equipment is available, because now we can add.
+[4:20] unris a samla available, because now we can add another, maybe one or two companies.
+[4:22] companies there, because maybe they actually.
+[4:24] companies there because maybe they actually need the equipment, but that.
+[4:26] that company that came in they may only need.
+[4:28] that company that came in they may only need prep tables. Does that make sense?
+[4:30] enris & samla but that company that came in they may only need prep tables. Does that Drink? Yes. Chris & Samia Okay.
+[4:34] Sam.
+[4:36] Again, go back to the Excel sheet
+[4:38] Again, go back to the Excel sheet that we shared for the master data.
+[4:40] lanisnka Jaln Assembly. Can you again go back to the Excel sheet that we shared for the master Yes. data?
+[4:52] All right. Can you see my screen?
+[4:54] Another.
+[4:56] Ic0. Another. The dashboard is only there because.
+[4:58] Another. The dashboard is only there because see those. Okay. k Designs
+[5:00] know, the the dashboard is only there because see the sheet.
+[5:08] Yes, now we can. I know, the the dashboard is only there because see the sheet.
+[5:10] Okay. Okay, perfect. Yes, now we can see.
+[5:12] Okay, perfect.
+[5:18] Yes, now we can see. Okay, like?
+[5:20] Yes, now we can see. Okay, like they are different, she.
+[5:22] Yes, now we can see. Okay, like, they are different sheets that do have.
+[5:24] I know, ine ine aasnooara is only there pecause see ine sneet. Yes, now we can see. Okay, like, they are different sheets that do have a relevant columns related.
+[5:26] relevant columns related to the data that we need.
+[5:28] have a relevant columns related to the data that we need. Okay. As you told us.
+[5:30] rES, HUV ve Cl see UR. LINE l, tt dle mreren srttlo ulal uu As you told us that there is only one kitchen so.
+[5:32] As you told us that there is only one kitchen, so can you open?
+[5:34] nave a relevant columns relatea to ine aata inat we neea. one? As you told us that there is only one kitchen, so can you open the spaces
+[5:36] one sheet?
+[5:38] one sheet? Yeah, okay, so in this.
+[5:40] one sheet? Yeah, okay, so in this, you can say you can.
+[5:42] one sheet? Yeah, okay, so in this, you can say you can mention it is, you only have one kitchen.
+[5:44] one sheet? Yeah, okay, so in this, you can say you can mention it is. You only have one kitchen in one kitchen, the number of prep.
+[5:46] Ukay. only have one kitchen in one kitchen, the number of prep tables, the number of dining.
+[5:48] number of dining rooms, dining table chairs.
+[5:50] number of dining rooms, dining table chairs, and cold solar self.
+[5:52] number of dining rooms, dining table chairs, and cold storage shelf, Etc, whatever.
+[5:54] whatever. Is physically.
+[5:56] whatever. Is physically. At the location.
+[5:58] whatever. Is physically. At the location, you can just fill it. Chris & Samia Okay.
+[6:00] whatever. Is physically. At the location, you can just fill it out here, right? And there are.
+[6:02] wHatever to physicany HE calm, you banjust lit out mere, mynu And there are columns related to that. You can. |
+[6:04] related to that. You can. Explicitly fell. What?
+[6:06] whatever to physicany HE call, you banjust ma out mere, mynu: related to that. You can. Explicitly fell. What can we in?
+[6:08] Ana inere are columns for example? related to that. You can. Explicitly fell. What can we in some situations,
+[6:10] for example, booked with plan hours, or can several?
+[6:12] for example, booked with plan hours, or can several members use it as soon as okay?
+[6:14] related to that. You can. Explicitly fell. What can be in some situations, for example, booked with plan hours, or can several members use it as owners? Oh, perfect. Okay, yep.
+[6:16] Oh, perfect. Okay, yep, this makes sense.
+[6:18] example NUR v pal ta cal several meders use las Yeah, so, uh?
+[6:20] earpe NuUR vt pl ts, d dal devel dl mieliuers use ll as Yeah, so, uh, booking about, so moving on to the?
+[6:22] example NUR v pal to cal several tellers use ll as Yeah, so, uh, booking, so moving on to the other part. Let's.
+[6:24] owners! Yeah, so, uh, booking, so moving on to the other part. Let's go to the booking rule sheet.
+[6:26] un, perrect. Ukay, yep, tnis makes sense. Booking rows okay?
+[6:28] Mcl du bl dun, d tuvi dn t tt uut pall. LeIs yu lu uIt booking rule sheet So, yeah.
+[6:30] booking rule sheet. So, yeah, there is some pre-filled data.
+[6:32] So, yeah, there is some pre-filled data that we
+[6:34] So, yeah, there is some pre-filled data that we. A thing should be
+[6:36] booking rule sneet. So, yeah, there is some pre-filled data that we. A thing should be. Uh, that we inferred from our previous?
+[6:38] we inferred from our previous meeting, obviously, but?
+[6:40] we inferred from our previous meeting, obviously. But you take a look at.
+[6:42] we inferred from our previous meeting, obviously. But you take a look at, you should take a look once.
+[6:44] you should take a look once for all the, you know.
+[6:46] Booking rows okay! we inferred from our previous meeting, obviously, but you take a look at. You should take a look once for all the, you know, 16 points that are mentioned here.
+[6:48] we inferred from our previous meeting, obviously. But you take a look at, uh, you should take a look once for all the, you know, 16 points that are Chris & Samia Okay. So, for this one, kitchen open.
+[6:50] Okay, so for this one kitchen open hour. So we are 24 hours, so?
+[6:52] Okay, so for this one kitchen open hour. So we are 24 hours, so our members have 24 hour access so.
+[6:54] members have 24 hour access. So, is that fine for me to put that there?
+[6:56] members have 24-hour access. So, is that fine for me to put that there? Yeah, sure, sure. Okay.
+[6:58] Okay, and l'll take this out. Yeah
+[7:00] Yeah. Okay, and I'll take this out. Yeah, so, uh, members.
+[7:02] kay, drum take to l deal du, al, memers make access. ttan, they have their own.
+[7:04] ukay, anulllake lo dul den, du, un memers rean, tiey Have uien own door codes.
+[7:14] And then we have this booking time.
+[7:16] And then we have this booking time system. Okay, so book.
+[7:18] Okay, so booking M step minutes so? Yeah.
+[7:20] Ana inen we nave inis booking time system. Okay, so booking M step minutes. So, what does that mean booking time step?
+[7:22] Okay, so booking room step minutes. So, what does that mean booking time step? Yeah. Yeah, that means the.
+[7:24] Yeah. Yeah, that means the minimum. That means how for?
+[7:26] Yeah. Yeah, that means the minimum. That means, how, for how much time a user can book for a?
+[7:28] time a user can book for a minimum length or is, shall we?
+[7:30] Ükay, SüNuukny tuvm diep tutes. u, vnat ques tat tean Nuniny time a user can book for a minimum length or is, shall we, in minutes or in hours?
+[7:32] Yeah. Yeah, that means the minimum. That means, how for how much time a user can book for a minimum length or it shall be in minutes or in hours? Chris & Samia Oh so minimum. Okay, let me.
+[7:34] Oh so minimum. Okay, let me just write. Make this as a note.
+[7:36] Oh so minimum. Okay, let me just write. Make make this as a note minimum. Okay.
+[7:38] nours! Oh so minimum. Okay, let me just write. Make make this as a note Oh yeah.
+[7:40] Oh, you should take the maximum wage as well, max.
+[7:42] We should take the maximum value as well. Maximum watch.
+[7:44] We should take the maximum value as well. Maximum watch. Or minimum will be.
+[7:46] minimum will be all right.
+[7:50] minimum will be all right. Maximum.
+[7:54] We should take the maximum value as well. Maximum watch. O minimum will be all right. Maximum. But I believe there is some mist.
+[7:56] minimum will be all right. But I believe there is some mistake in the sheet.
+[7:58] as a lIVIE We should take the maximum value as well. Maximum watch. Or The third point is also.
+[8:00] Üiřs iüümum. ukay, teume juse vone mane mane uo ao a lute The third point is also the same, because that is also minimum.
+[8:02] minimum. Ukay. The third point is also the same, because that is also minimum booking booking length in Arch.
+[8:04] booking length in ours. You can mention both of the.
+[8:06] booking length in ours. You can mention both of the ass like minimum and maximum Ireland.
+[8:08] and maximum Ireland in this particular yes. Chris & Samia Okay.
+[8:10] booking length in ours. Sesame. You can mention both of the arts like minimum and maximum R length in this particular column. Yes. Okay. Okay.
+[8:12] You That there is a maximum.
+[8:14] That there is a maximum length of limit of 10 hours.
+[8:16] mınımum ana maxımum k lengin in inis particular column. res. That there is a maximum length of limit of 10 hours per month in a particular membership.
+[8:18] particular membership. If anyone exits that number of?
+[8:20] particular membership. If anyone exits that number of hours, it will be counted in the coming month.
+[8:22] particular membership. If anyone excites that number of hours, it will be counted in the coming months bill.
+[8:24] Correct. So, so all the members?
+[8:26] Correct. So, so all the members are on different t.
+[8:28] Correct. So, so all the members are on different tiers, so the least.
+[8:30] Correct. So, so all the members are on different tiers, so the least tier. like our older members, that's been. So,
+[8:32] păraculat temuerSmp. n anune excites tral Humuer uI Hours, lt vili Ne Correct. So, so all the members are on different tiers, so the least tier. So, like our older members, that's been here since like 2021, some of them are.
+[8:34] Dăr uculat mememp. de dnune exonto ulal Humtiuer ui Huurs, lt vlli ue are still on the five hours. So, when?
+[8:36] Dăl uculat mememp. de dnune exonto ulal Humtiuer ui Huurs, lt vlli ue are still on the five hours. So when I provide all of the members?
+[8:38] - Correct. So, so all the members are on different tiers, so the least tier. So are still on the five hours. So when I provide all of the members um, under member roster output?
+[8:40] member roster, l'll put in how many hours?
+[8:42] Correct. So, so all the members are on different tiers, so the least tier. So, member roster, I'll put in how many hours? Each member has, but our minimum tier.
+[8:44] minimum tier that we have currently.
+[8:46] member roster, 'll put in how many hours? Each member has, but our minimum tier that we have currently is 10 hours in in terms of.
+[8:48] minimum tier that we have currently is 10 hours in in terms of new members moving forward.
+[8:52] member roster, I'll put in how many hours? Each member has, but our members moving forward. We dont have many on the. You So, I think that was.
+[8:54] members moving forward. We don't have many on the five hours. There's only there's only a couple.
+[8:56] only there's only a couple that are still on the old five hour.
+[8:58] are still on the old five hour tiers, but everyone else is.
+[9:00] still on the old 5-hour tears, but everyone else is minimum 10 hours.
+[9:02] - Okay.
+[9:04] But that doesn't? That's not related to.
+[9:06] Still on ine ola 5-nour tears, put everyone else is minimum lu nours. maximum. But that doesn't? That's not related to the minimum or minimum or
+[9:08] Still on ine ola 5-nour tears, but everyone else is minimum lu nours. maximum booking. That's just relative to.
+[9:10] maximum booking. That's just relative to, um, when they're overage starts, right?
+[9:12] maximum booking. That's just relative to, um, when their overage starts, right?
+[9:14] Okay. Yeah, yeah, when, when the?
+[9:16] Yeah, yeah, when, when the oyerage starts, right? right? Correct? Yep.
+[9:18] But that doesnt. Inats not related to the mınımum or mınımum or Then.
+[9:20] But that doesn't? That's not related to the minimum or minimum or Then, uh, there comes another question like?
+[9:22] Then, uh, there comes another question like cleaning gap between booking minutes.
+[9:24] rignt! Correct! rep. Then there comes another question like cleaning gap between booking minutes. Yeah, so we have a we have.
+[9:26] Yeah, so we have a we have a one hour kind of time.
+[9:28] Yeah, so we have a we have a one hour kind of time frame in between, SO?
+[9:30] Yeah, so we have a we have a one hour kind of time frame in between, so we give, so every member can.
+[9:32] we give, so every member can enter the facility 30 minutes before and.
+[9:34] E dt cune dre ques ke utaly yau veletl NuUKIy we give, so every member can enter the facility 30 minutes before, and I'll put all these notes in they can.
+[9:36] Yeah, so we have a we have q one hour kind ot time trame in between, so put all these notes in. They can enter the facility 30 minutes before. Yeah, yeah.
+[9:38] then they have 30 minutes after.
+[9:40] pul al lese Hules ır bey dal erel ce tacmiy du mrimles Nerure, anu minutes after their booking to do cleaning.
+[9:42] inen tney nave Ju minutes after their booking to do cleaning, because at that point, then you have another.
+[9:44] Are you talking? Your mic is off. Click the mic to turn it on. ig to do cleaning, because at that point, then r that can come in.
+[9:46] then they have 30 r that can come in. Again 30 minutes before.
+[9:48] Chris & Samia minutes after their booking to do cleaning, because at that point, then you have another member that can come in. Again 30 minutes before they're regular time. So, really.
+[9:50] they're regular time. So, really, they have like a 30 minute, you know?
+[9:52] Yeah, yean. minutes after their booking to dolleaning, because at that point, then their regular time. So, really, they have like a 30 minute, you know, um? Kind of.
+[9:54] Yean, yean. Kind of, uh, what's the word I'm looking for, they?
+[9:56] minutes after their booking to do cleaning, because at that point, then Kind of, uh, what's the word I'm looking for? They have a 30-minute grace period.
+[9:58] period after they're booking time, so if they're
+[10:00] period after they're booking time, so if they're going to be in the kitchen, be.
+[10:02] period after they're booking time, so if they're going to be in the kitchen. Beyond that, then they know that they're going to be.
+[10:04] Kind of, uh, what's the word I'm lowking for? They have a 30-minute grace Beyond that, then they know that they're going to be adding additional hours and.
+[10:06] hours. And so right now, and we know the system is not going to be.
+[10:08] Kind of, uh, what's the word I'm looking for? They have a 30-minute grace period after they're booking time,so if they're going to be in the kitchen. hours. And so right now, and we know the system is not going to be perfect, right? But what we typically do?
+[10:10] Kind of, uh, what's the word I'm looking for? They have a 30 minute grace period after their booking time, s& if they're going to be in the kitchen. hours. And so right now, and we know this system is not going to be perfect, right? But what we typically do is? After.
+[10:12] period after their booking time, so if they're going to be in the kitchen. perfect, right? But what we typically do is? After I remember bookings, we checked.
+[10:14] checked the camera. Um, because we have to put the.
+[10:16] checked the camera. Um, because we have to put the alarm on the facility anyway and?
+[10:18] facility anyway, and so we look and see. What's the last?
+[10:20] facility anyway. And so, we look and see. What's the last, what time they left? And so, we see.
+[10:22] left? And so, we see that they left at 2 A.M, then.
+[10:24] left, and so we see that they left at 2 A.M, then we back it to really, we're.
+[10:26] left, and so we see that they left at 2 A.M, then we back it to really we're having their departure at 1 30. So.
+[10:28] having their departure at 1 30. So we know that that is going to be still.
+[10:30] having their departure at 1 30. So we know that that is going to be still a thing that will have to do manually.
+[10:32] thing that will have to do manually as the as the admin, um.
+[10:34] Chris & Samia thing that will have to do manually as the as the admin. Um, so we're not asking for, you know?
+[10:36] asking for, you know, for, for the technology?
+[10:38] having their departure at 1 30. Souwe know that that is going to be still a asking for, you know, for, for the technology to fix that, that would be more that definitely.
+[10:40] Chris & Samia. more. That definitely would be a manual situation if.
+[10:42] Chris & Samia having their departure at 1 30. So we know that that is going to be still a more. That definitely would be a manual situation if the company does not book it themselves.
+[10:44] asking for, you know, for, for the tachnology to fix that, that would be not book it themselves because you know people are in there. They're gonna.
+[10:46] gonna, you know, people are gonna try to get over, right?
+[10:48] asking for, you know, for, for the technology to fix that, that would be more. That definitely would be a Manual situation if the company does gonna, you know, people are gonna try to get over, right? Um, you know, it's part of the.
+[10:50] it's part of the nature of the business, but that's something.
+[10:52] more. That definitely would be a manual situation if the company does it's part of the nature of the business, but that's something that we'll have to control on our.
+[10:54] to control on our end, so we know that technology won't.
+[10:56] gonna, you know, people are gonda try to get over, right? Um, you know, to control on our end, so we know that technology won't fix everything, but we know Avenue.
+[10:58] gonna, you know, people are gonia try to get over, right? Um, you know, to control on our end. So, we know that technology won't fix everything, but we know Avenue is going to take care of 95.
+[11:00] gonna, you know, people are gonna try to get over, right? Um, you know, but we know Avenue is going to take care of 95 of our challenge is right now.
+[11:02] have to control on our end, so we know that technology won't fix everything, but we know Avenue is going to take care of 95 of our challenges right now. Making it?
+[11:04] Making it as a system. We can tri
+[11:06] Making it as a system. We can trigger a notification 20.
+[11:08] Making it as a system. We can trigger a notification 20 minutes or 30 minutes prior to.
+[11:10] minutes prior to the checkout time.
+[11:12] cnallenges rıgnt now. Oh, that's great. Yeah, that would be awesome.
+[11:14] minutes prior to the checkout tim. Oh, that's great. Yeah, that would be awesome because they don't have it. We're gonna have them.
+[11:16] minutes prior to the checkout time. We're gonna have them downloaded on their phones, so they.
+[11:18] We're gonna have them downloaded on their phones, so they can is. That's typically how they make their bookings any.
+[11:20] We're gonna have them downloaded on their phones, so they can is, that's typically how they make their bookings. Anyway, they'll use the the mobile version.
+[11:22] mobile version of next to this currently so.
+[11:24] mobile version of next to this currently. So, yeah, that'll be great to have them get.
+[11:26] them get an alert. Um, to say, like?
+[11:28] them get an alert. Um, to say, like, hey, you're booking is ended and?
+[11:30] Chris & Samia - them get an alert. Um, to say, like, hey, you're booking is ended and having them be able to extend their.
+[11:32] Chris & Samia _ We're going to have them downloaded on their phones so they can. That's typically how they make their bookings. Anyway, they'll use the the mobile version of Nexodus currently. So, yeah, that'll be great to have them get an alert, um, to say, like, hey, your booking is ended and having them be able to extend their booking time. But they do.
+[11:34] Chris & Samia them be able to extend their booking time. But they do know they all are very aware of.
+[11:36] very aware of the 30-minute grace period afterwards.
+[11:38] them get an alert, um, to say, like, they, your booking is ended and having very aware of the 30-minute grace period afterwards, and that covers the cleaning portion.
+[11:40] very aware of the 30-minute race period afterwards, and that covers the cleaning portion. So we dont char. Oh.
+[11:42] cleaning portion. So we don't charge them for their cleaning time.
+[11:44] Oh, okay, okay, understood.
+[11:48] Vely avale lle dulme dade per dr vr us, allu uial cuvers uit Yeah, but no, this is self-expl.
+[11:50] Yeah, but no, this is self-explanatory. I'll get this done for you all today.
+[11:52] cleaning portion. so we aont charge inem tor ineir cleaning time. Um, I'll go ahead and knock this out now for my first.
+[11:54] Um, I'll go ahead and knock this out. Now, for my first hour, and um, get that.
+[11:56] Um, I'll go ahead and knock this out now for my first hour, and um, get that over to you so that you'll have it when you're back.
+[11:58] Yeah, but no, this is self explanatory. I'll get this done for you all today. Um, I'll go ahead and knock this dut. Now, for my first hour and get that over to you so that you'll have it when you're back working. Okay.
+[12:00] UlH yU areau dlu kHUck lS dul tvuvv bul mny vstur anu yel ulal All right. Well, thank you all. Thank you so much
+[12:02] UlH yU areau dlu kHUck lS dul tvuvv bul mny vstur anu yet ulal All right. Well, thank you all. Thank you so much for the the short notice I.
+[12:04] over to you so inat you i nave it wnen you re pack working. All right. Well, thank you all. Thank you so much for the the short notice. I wanted to make sure you all had what you need.
+[12:06] UKay. Thank you so much for, uh, you know?
+[12:08] Thank you so much for, uh, you know, having this meeting?
+[12:10] dIlyl vven balk yu dall Tln yu du tlul tul tlt die sHult houce. I wanted to make sure you all had what you need Yeah, yeah, no problem, all right.
+[12:12] wantea to make sure you all naa wnat you neea. Thank you so much for, uh, you khow, having this meeting? Yeah, yeah, no problem. All right, you all have a great evening, and I'l chat with you on Wednesday.
+[12:16] biedu vedu HU buemIHI rean, yean, du pruuien Aunyu yuu dubave d ytt tverry, dru r cral Sure. All right. Have a good one by
+[12:18] All right. Have a good one. Bye-bye. Yeah, you do have a great day.
+[12:20] Yeah, you do have a great day, bye. Take care. Thank you.
+[12:24] vulc.
+[12:26] Okay.
+[12:36] Chris & Samia Thank you. Okay. You Meth.
+[12:38] Method.
+[12:56] Okay. Ki.
+[12:58] Okay. Ki. Are?
+[13:00] Okay. Ki. Are the ant?
+[13:08] Method. Okay, minimum.
+[13:12] Okay. Ki. Are the ant? I add min. Method. Okay, minimum calcium.
+[13:14] Okay. Ki. Are the ant? I add minimum, I believe.
+[13:18] Okay. Ki. Are the ant? I add minimum, I believe. Equipment.
+[13:20] Method. Okay, minimum calcium. Okay, okay, take.
+[13:22] Method. Okay, okay, take care. optimizing. Okay. Ki. Are the ant? I add minimum, I believe. Equipment. It's all about
+[13:24] Thank you. It's all about optimizing the equipments only.
+[13:28] Hmm

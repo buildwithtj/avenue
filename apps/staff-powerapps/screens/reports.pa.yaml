@@ -1,0 +1,1019 @@
+- rptBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- rptBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- rptBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- rptDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- rptBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- rptTitle:
+    Control: Label
+    Properties:
+      Text: ="Reports"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- rptNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- rptNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- rptNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- rptNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- rptNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- rptNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- rptNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 98
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- tm_reports:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =4
+      Width: =10
+      Height: =10
+- sc_reports:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =64
+      Width: =App.Width
+      Height: =App.Height - 64
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_reports.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_reports:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =942
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - rptBack:
+            Control: Classic/Button
+            Properties:
+              Text: ="Back to More"
+              X: =20
+              Y: =0
+              Width: =140
+              Height: =34
+              OnSelect: =Navigate(Screen12)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+        - rptHead:
+            Control: Label
+            Properties:
+              Text: ="Reports"
+              X: =180
+              Y: =0
+              Width: =300
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =20
+              FontWeight: =FontWeight.Bold
+        - rptRefresh:
+            Control: Classic/Button
+            Properties:
+              Text: ="Refresh"
+              X: =1190
+              Y: =0
+              Width: =140
+              Height: =34
+              OnSelect: =Refresh(AvenueBookings); Refresh(AvenueInvoices); Refresh(AvenueMemberDocuments); ClearCollect(colRepB, AddColumns(Filter(AvenueBookings, FacilityId = "flavors-hyattsville", Status.Value = "Approved", StartUtc >= DateAdd(Now(), -190, TimeUnit.Days)), Mon, Text(StartUtc, "yyyy-mm"), Hrs, DateDiff(StartUtc, EndUtc, TimeUnit.Minutes) / 60)); ClearCollect(colRepM, AddColumns(GroupBy(colRepB, Mon, Rows), N, CountRows(Rows), H, Sum(Rows, Hrs)))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+        - rptInit:
+            Control: Timer
+            Properties:
+              Duration: =600
+              AutoStart: =true
+              Repeat: =false
+              Visible: =false
+              OnTimerEnd: =ClearCollect(colRepB, AddColumns(Filter(AvenueBookings, FacilityId = "flavors-hyattsville", Status.Value = "Approved", StartUtc >= DateAdd(Now(), -190, TimeUnit.Days)), Mon, Text(StartUtc, "yyyy-mm"), Hrs, DateDiff(StartUtc, EndUtc, TimeUnit.Minutes) / 60)); ClearCollect(colRepM, AddColumns(GroupBy(colRepB, Mon, Rows), N, CountRows(Rows), H, Sum(Rows, Hrs)))
+              X: =0
+              Y: =-60
+              Width: =10
+              Height: =10
+        - rptNote:
+            Control: Label
+            Properties:
+              Text: ="Booked hours are the hours on approved bookings, not hours attended. Months follow this device's clock, so a booking near midnight on the 1st can count in the neighbouring month. What each report should measure is not final (Q-16)."
+              X: =20
+              Y: =38
+              Width: =1310
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - rptT0:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =24
+              Y: =80
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - rptTc0:
+            Control: Label
+            Properties:
+              Text: ="Documents current"
+              X: =44
+              Y: =90
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - rptTv0:
+            Control: Label
+            Properties:
+              Text: =Text(CountRows(Filter(AvenueMemberDocuments, DocStatus.Value = "Current", IsBlank(SupersededBy))))
+              X: =44
+              Y: =112
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+        - rptTs0:
+            Control: Label
+            Properties:
+              Text: ="newest upload per type, in date"
+              X: =44
+              Y: =152
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - rptT1:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =356
+              Y: =80
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - rptTc1:
+            Control: Label
+            Properties:
+              Text: ="Documents expiring"
+              X: =376
+              Y: =90
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - rptTv1:
+            Control: Label
+            Properties:
+              Text: =Text(CountRows(Filter(AvenueMemberDocuments, DocStatus.Value = "Expiring", IsBlank(SupersededBy))))
+              X: =376
+              Y: =112
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+        - rptTs1:
+            Control: Label
+            Properties:
+              Text: ="inside the 30-day warning window"
+              X: =376
+              Y: =152
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - rptT2:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =688
+              Y: =80
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - rptTc2:
+            Control: Label
+            Properties:
+              Text: ="Documents expired"
+              X: =708
+              Y: =90
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - rptTv2:
+            Control: Label
+            Properties:
+              Text: =Text(CountRows(Filter(AvenueMemberDocuments, DocStatus.Value = "Expired", IsBlank(SupersededBy))))
+              X: =708
+              Y: =112
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+        - rptTs2:
+            Control: Label
+            Properties:
+              Text: |-
+                ="not renewed: bookings are blocked"
+              X: =708
+              Y: =152
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - rptT3:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =1020
+              Y: =80
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - rptTc3:
+            Control: Label
+            Properties:
+              Text: ="Invoices overdue"
+              X: =1040
+              Y: =90
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - rptTv3:
+            Control: Label
+            Properties:
+              Text: ="$" & Text(Sum(Filter(Filter(AvenueInvoices, FacilityId = "flavors-hyattsville"), Status.Value = "open" && !IsBlank(DueDate) && DueDate < Today()), AmountDueCents) / 100, "#,##0.00")
+              X: =1040
+              Y: =112
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+        - rptTs3:
+            Control: Label
+            Properties:
+              Text: ="open and past the due date (Stripe test mode)"
+              X: =1040
+              Y: =152
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - rptT4:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =1352
+              Y: =188
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - rptTc4:
+            Control: Label
+            Properties:
+              Text: ="Invoices paid this month"
+              X: =1372
+              Y: =198
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - rptTv4:
+            Control: Label
+            Properties:
+              Text: ="$" & Text(Sum(Filter(Filter(AvenueInvoices, FacilityId = "flavors-hyattsville"), Status.Value = "paid", DueDate >= Date(Year(Today()), Month(Today()), 1), DueDate < DateAdd(Date(Year(Today()), Month(Today()), 1), 1, TimeUnit.Months)), AmountPaidCents) / 100, "#,##0.00")
+              X: =1372
+              Y: =220
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+        - rptTs4:
+            Control: Label
+            Properties:
+              Text: ="invoices due this month"
+              X: =1372
+              Y: =260
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - rptT5:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =1684
+              Y: =188
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - rptTc5:
+            Control: Label
+            Properties:
+              Text: ="Invoices open this month"
+              X: =1704
+              Y: =198
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - rptTv5:
+            Control: Label
+            Properties:
+              Text: ="$" & Text(Sum(Filter(Filter(AvenueInvoices, FacilityId = "flavors-hyattsville"), Status.Value = "open", DueDate >= Date(Year(Today()), Month(Today()), 1), DueDate < DateAdd(Date(Year(Today()), Month(Today()), 1), 1, TimeUnit.Months)), AmountDueCents) / 100, "#,##0.00")
+              X: =1704
+              Y: =220
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+        - rptTs5:
+            Control: Label
+            Properties:
+              Text: ="due this month, not paid yet"
+              X: =1704
+              Y: =260
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - rptT6:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =2016
+              Y: =188
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - rptTc6:
+            Control: Label
+            Properties:
+              Text: ="Approved bookings this month"
+              X: =2036
+              Y: =198
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - rptTv6:
+            Control: Label
+            Properties:
+              Text: |-
+                =With({p: Text(Today(), "yyyy-mm")}, Text(Coalesce(LookUp(colRepM, Mon = p).N, 0)))
+              X: =2036
+              Y: =220
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+        - rptTs6:
+            Control: Label
+            Properties:
+              Text: ="from the table below"
+              X: =2036
+              Y: =260
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - rptT7:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =2348
+              Y: =188
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - rptTc7:
+            Control: Label
+            Properties:
+              Text: ="Booked hours this month"
+              X: =2368
+              Y: =198
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - rptTv7:
+            Control: Label
+            Properties:
+              Text: |-
+                =With({p: Text(Today(), "yyyy-mm")}, Text(Round(Coalesce(LookUp(colRepM, Mon = p).H, 0), 1)) & " h")
+              X: =2368
+              Y: =220
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+        - rptTs7:
+            Control: Label
+            Properties:
+              Text: ="approved bookings, not attendance"
+              X: =2368
+              Y: =260
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - rptMonHead:
+            Control: Label
+            Properties:
+              Text: ="Bookings and booked hours per month (last 6 months)"
+              X: =20
+              Y: =306
+              Width: =640
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+        - rptMonCap0:
+            Control: Label
+            Properties:
+              Text: ="Month"
+              X: =28
+              Y: =336
+              Width: =120
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - rptMonCap1:
+            Control: Label
+            Properties:
+              Text: ="Bookings"
+              X: =170
+              Y: =336
+              Width: =110
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - rptMonCap2:
+            Control: Label
+            Properties:
+              Text: ="Booked hours"
+              X: =300
+              Y: =336
+              Width: =130
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - rptMonCap3:
+            Control: Label
+            Properties:
+              Text: ="Hours per booking"
+              X: =450
+              Y: =336
+              Width: =190
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - rptMonGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =SortByColumns(colRepM, "Mon", SortOrder.Descending)
+              X: =20
+              Y: =358
+              Width: =640
+              Height: =200
+              TemplateSize: =32
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - rptMonMon:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Mon
+                    X: =8
+                    Y: =4
+                    Width: =120
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - rptMonN:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.N)
+                    X: =150
+                    Y: =4
+                    Width: =110
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - rptMonH:
+                  Control: Label
+                  Properties:
+                    Text: =Text(Round(ThisItem.H, 1)) & " h"
+                    X: =280
+                    Y: =4
+                    Width: =130
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - rptMonAvg:
+                  Control: Label
+                  Properties:
+                    Text: =If(ThisItem.N = 0, "–", Text(Round(ThisItem.H / Max(1, ThisItem.N), 1)) & " h")
+                    X: =430
+                    Y: =4
+                    Width: =190
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - rptMonGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =31
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - rptH1Head:
+            Control: Label
+            Properties:
+              Text: ="Hours used this month by member (facility month)"
+              X: =690
+              Y: =306
+              Width: =640
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+        - rptH1Gal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({p: With({u: DateAdd(Now(), TimeZoneOffset(Now()), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "yyyy-mm")))}, SortByColumns(AddColumns(GroupBy(Filter(AvenueHoursLedger, Period = p), MemberId, Rows), Total, Sum(Rows, Hours)), "Total", SortOrder.Descending))
+              X: =690
+              Y: =336
+              Width: =640
+              Height: =222
+              TemplateSize: =32
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - rptH1Member:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.MemberId
+                    X: =8
+                    Y: =4
+                    Width: =440
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - rptH1Total:
+                  Control: Label
+                  Properties:
+                    Text: =Text(Round(ThisItem.Total, 1)) & " h"
+                    X: =460
+                    Y: =4
+                    Width: =160
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+                    Align: =Align.Right
+              - rptH1GalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =31
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - rptEqHead:
+            Control: Label
+            Properties:
+              Text: ="Equipment booked hours this month (approved bookings)"
+              X: =20
+              Y: =580
+              Width: =640
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+        - rptEqGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =ForAll(Filter(AvenueEquipment, FacilityId = "flavors-hyattsville", Active = true) As q, {Name: q.Title, Hours: Sum(Filter(Filter(AvenueBookings, Status.Value = "Approved", StartUtc >= DateValue(Text(Today(), "yyyy-mm") & "-01")), q.EquipmentId in EquipmentIds), DateDiff(StartUtc, EndUtc, TimeUnit.Minutes) / 60)})
+              X: =20
+              Y: =610
+              Width: =640
+              Height: =300
+              TemplateSize: =32
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - rptEqName:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Name
+                    X: =8
+                    Y: =4
+                    Width: =440
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - rptEqHours:
+                  Control: Label
+                  Properties:
+                    Text: =Text(Round(ThisItem.Hours, 1)) & " h"
+                    X: =460
+                    Y: =4
+                    Width: =160
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+                    Align: =Align.Right
+              - rptEqGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =31
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - rptH2Head:
+            Control: Label
+            Properties:
+              Text: ="Hours used last month by member (facility month)"
+              X: =690
+              Y: =580
+              Width: =640
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+        - rptH2Gal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({p: With({curP: With({u: DateAdd(Now(), TimeZoneOffset(Now()), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "yyyy-mm")))}, With({y: Value(Left(curP, 4)), m: Value(Right(curP, 2))}, If(m = 1, Text(y - 1) & "-12", Text(y) & "-" & If(m - 1 < 10, "0", "") & Text(m - 1))))}, SortByColumns(AddColumns(GroupBy(Filter(AvenueHoursLedger, Period = p), MemberId, Rows), Total, Sum(Rows, Hours)), "Total", SortOrder.Descending))
+              X: =690
+              Y: =610
+              Width: =640
+              Height: =300
+              TemplateSize: =32
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - rptH2Member:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.MemberId
+                    X: =8
+                    Y: =4
+                    Width: =440
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+              - rptH2Total:
+                  Control: Label
+                  Properties:
+                    Text: =Text(Round(ThisItem.Total, 1)) & " h"
+                    X: =460
+                    Y: =4
+                    Width: =160
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+                    Align: =Align.Right
+              - rptH2GalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =31
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)

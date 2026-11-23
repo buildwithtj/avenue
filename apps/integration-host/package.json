@@ -1,0 +1,1 @@
+{ "name": "avenue-integration-host", "private": true, "type": "module", "scripts": { "test": "node --test" } }

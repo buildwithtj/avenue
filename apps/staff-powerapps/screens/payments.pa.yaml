@@ -1,0 +1,1210 @@
+- payBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- payBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- payBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- payDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- payBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- payTitle:
+    Control: Label
+    Properties:
+      Text: ="Payments"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- payNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- payNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- payNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- payNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- payNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- payNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- payNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 98
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- tm_payments:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =44
+      Width: =10
+      Height: =10
+- sc_payments:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =64
+      Width: =App.Width
+      Height: =App.Height - 64
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_payments.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_payments:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =738
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - payBack:
+            Control: Classic/Button
+            Properties:
+              Text: ="Back to More"
+              X: =20
+              Y: =0
+              Width: =140
+              Height: =34
+              OnSelect: =Navigate(Screen12)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+        - payTabInv:
+            Control: Classic/Button
+            Properties:
+              Text: ="Invoices (Stripe, test mode)"
+              X: =180
+              Y: =0
+              Width: =240
+              Height: =34
+              OnSelect: =Set(varPayTab, "inv")
+              Fill: =If(Coalesce(varPayTab, "inv") = "inv", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varPayTab, "inv") = "inv", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varPayTab, "inv") = "inv", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varPayTab, "inv") = "inv", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =13
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+        - payTabExp:
+            Control: Classic/Button
+            Properties:
+              Text: ="Expected this month"
+              X: =428
+              Y: =0
+              Width: =240
+              Height: =34
+              OnSelect: =Set(varPayTab, "exp")
+              Fill: =If(Coalesce(varPayTab, "inv") = "exp", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varPayTab, "inv") = "exp", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varPayTab, "inv") = "exp", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varPayTab, "inv") = "exp", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =13
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+        - piNote:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Invoices on the Flavors Stripe account, copied here by the Avenue server (Stripe TEST MODE: no real money until the client approves, STR-06). Members pay from their own Billing page."
+              X: =20
+              Y: =38
+              Width: =1310
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piT0:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =24
+              Y: =90
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piTc0:
+            Control: Label
+            Properties:
+              Text: ="Paid this month"
+              X: =44
+              Y: =100
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piTv0:
+            Control: Label
+            Properties:
+              Text: ="$" & Text(Sum(Filter(Filter(AvenueInvoices, FacilityId = "flavors-hyattsville"), Status.Value = "paid", DueDate >= Date(Year(Today()), Month(Today()), 1), DueDate < DateAdd(Date(Year(Today()), Month(Today()), 1), 1, TimeUnit.Months)), AmountPaidCents) / 100, "#,##0.00")
+              X: =44
+              Y: =122
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piTs0:
+            Control: Label
+            Properties:
+              Text: ="invoices due this month, paid"
+              X: =44
+              Y: =162
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piT1:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =356
+              Y: =90
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piTc1:
+            Control: Label
+            Properties:
+              Text: ="Open this month"
+              X: =376
+              Y: =100
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piTv1:
+            Control: Label
+            Properties:
+              Text: ="$" & Text(Sum(Filter(Filter(AvenueInvoices, FacilityId = "flavors-hyattsville"), Status.Value = "open", DueDate >= Date(Year(Today()), Month(Today()), 1), DueDate < DateAdd(Date(Year(Today()), Month(Today()), 1), 1, TimeUnit.Months)), AmountDueCents) / 100, "#,##0.00")
+              X: =376
+              Y: =122
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piTs1:
+            Control: Label
+            Properties:
+              Text: ="due this month, not paid yet"
+              X: =376
+              Y: =162
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piT2:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =688
+              Y: =90
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piTc2:
+            Control: Label
+            Properties:
+              Text: ="Overdue"
+              X: =708
+              Y: =100
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piTv2:
+            Control: Label
+            Properties:
+              Text: ="$" & Text(Sum(Filter(Filter(AvenueInvoices, FacilityId = "flavors-hyattsville"), Status.Value = "open" && !IsBlank(DueDate) && DueDate < Today()), AmountDueCents) / 100, "#,##0.00")
+              X: =708
+              Y: =122
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piTs2:
+            Control: Label
+            Properties:
+              Text: ="open and past the due date (any month)"
+              X: =708
+              Y: =162
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piT3:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =1020
+              Y: =90
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piTc3:
+            Control: Label
+            Properties:
+              Text: ="Overdue invoices"
+              X: =1040
+              Y: =100
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piTv3:
+            Control: Label
+            Properties:
+              Text: =Text(CountRows(Filter(Filter(AvenueInvoices, FacilityId = "flavors-hyattsville"), Status.Value = "open" && !IsBlank(DueDate) && DueDate < Today())))
+              X: =1040
+              Y: =122
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piTs3:
+            Control: Label
+            Properties:
+              Text: ="members are refused new bookings"
+              X: =1040
+              Y: =162
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piListHead:
+            Control: Label
+            Properties:
+              Text: ="Invoices (newest first)"
+              X: =20
+              Y: =202
+              Width: =300
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piFilter:
+            Control: Classic/DropDown
+            Properties:
+              Items: =["All", "Overdue", "Open", "Paid"]
+              Default: ="All"
+              X: =600
+              Y: =198
+              Width: =200
+              Height: =34
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =SortByColumns(Filter(Filter(AvenueInvoices, FacilityId = "flavors-hyattsville"), piFilter.Selected.Value = "All" || (piFilter.Selected.Value = "Overdue" && Status.Value = "open" && !IsBlank(DueDate) && DueDate < Today()) || (piFilter.Selected.Value = "Open" && Status.Value = "open") || (piFilter.Selected.Value = "Paid" && Status.Value = "paid")), "StripeCreated", SortOrder.Descending)
+              X: =20
+              Y: =236
+              Width: =780
+              Height: =430
+              TemplateSize: =64
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+            Children:
+              - piRowTitle:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(LookUp(AvenueMembers, MemberId = ThisItem.MemberId).BusinessName, ThisItem.MemberId) & " · " & Coalesce(ThisItem.Number, "draft")
+                    X: =8
+                    Y: =4
+                    Width: =560
+                    Height: =28
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - piRowMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Kind.Value & " · due " & If(IsBlank(ThisItem.DueDate), "not set", Text(ThisItem.DueDate, "d mmm yyyy")) & " · " & "$" & Text(If(ThisItem.Status.Value = "paid", ThisItem.AmountPaidCents, ThisItem.AmountDueCents) / 100, "#,##0.00")
+                    X: =8
+                    Y: =34
+                    Width: =560
+                    Height: =24
+                    Color: =RGBA(91,99,112,1)
+                    Size: =12
+              - piRowPill:
+                  Control: Classic/Button
+                  Properties:
+                    Text: =If(ThisItem.Status.Value = "open" && !IsBlank(ThisItem.DueDate) && ThisItem.DueDate < Today(), "Overdue", Switch(ThisItem.Status.Value, "paid", "Paid", "open", "Open", "void", "Void", "uncollectible", "Uncollectible", "Draft"))
+                    X: =640
+                    Y: =18
+                    Width: =120
+                    Height: =24
+                    DisplayMode: =DisplayMode.Disabled
+                    Fill: =Switch(If(ThisItem.Status.Value = "open" && !IsBlank(ThisItem.DueDate) && ThisItem.DueDate < Today(), "Overdue", Switch(ThisItem.Status.Value, "paid", "Paid", "open", "Open", "void", "Void", "uncollectible", "Uncollectible", "Draft")), "Paid", RGBA(220,232,235,1), "Overdue", RGBA(243,227,227,1), "Open", RGBA(244,235,211,1), RGBA(229,231,235,1))
+                    DisabledFill: =Switch(If(ThisItem.Status.Value = "open" && !IsBlank(ThisItem.DueDate) && ThisItem.DueDate < Today(), "Overdue", Switch(ThisItem.Status.Value, "paid", "Paid", "open", "Open", "void", "Void", "uncollectible", "Uncollectible", "Draft")), "Paid", RGBA(220,232,235,1), "Overdue", RGBA(243,227,227,1), "Open", RGBA(244,235,211,1), RGBA(229,231,235,1))
+                    DisabledColor: =Switch(If(ThisItem.Status.Value = "open" && !IsBlank(ThisItem.DueDate) && ThisItem.DueDate < Today(), "Overdue", Switch(ThisItem.Status.Value, "paid", "Paid", "open", "Open", "void", "Void", "uncollectible", "Uncollectible", "Draft")), "Paid", RGBA(15,76,92,1), "Overdue", RGBA(155,44,44,1), "Open", RGBA(107,79,16,1), RGBA(91,99,112,1))
+                    Color: =Switch(If(ThisItem.Status.Value = "open" && !IsBlank(ThisItem.DueDate) && ThisItem.DueDate < Today(), "Overdue", Switch(ThisItem.Status.Value, "paid", "Paid", "open", "Open", "void", "Void", "uncollectible", "Uncollectible", "Draft")), "Paid", RGBA(15,76,92,1), "Overdue", RGBA(155,44,44,1), "Open", RGBA(107,79,16,1), RGBA(91,99,112,1))
+                    BorderThickness: =0
+                    Size: =10
+                    FontWeight: =FontWeight.Bold
+                    RadiusTopLeft: =12
+                    RadiusTopRight: =12
+                    RadiusBottomLeft: =12
+                    RadiusBottomRight: =12
+              - piGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =63
+                    Width: =748
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - piSel:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(piGal.Selected), "Select an invoice", "Invoice " & Coalesce(piGal.Selected.Number, "draft"))
+              X: =830
+              Y: =202
+              Width: =500
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piDetail:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(piGal.Selected), "", "Member: " & piGal.Selected.MemberId & Char(10) & "Amount due: " & "$" & Text(piGal.Selected.AmountDueCents / 100, "#,##0.00") & " · paid: " & "$" & Text(Coalesce(piGal.Selected.AmountPaidCents, 0) / 100, "#,##0.00") & Char(10) & "Lines: " & Coalesce(piGal.Selected.Lines, "-"))
+              X: =830
+              Y: =236
+              Width: =500
+              Height: =110
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piOpen:
+            Control: Classic/Button
+            Properties:
+              Text: ="Open in Stripe page"
+              X: =830
+              Y: =350
+              Width: =200
+              Height: =36
+              OnSelect: =Launch(piGal.Selected.HostedUrl)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =(Coalesce(varPayTab, "inv") = "inv") && !IsBlank(piGal.Selected) && !IsBlank(piGal.Selected.HostedUrl)
+        - piAcctHead:
+            Control: Label
+            Properties:
+              Text: ="Flavors Stripe account"
+              X: =830
+              Y: =402
+              Width: =500
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piAcct:
+            Control: Classic/Button
+            Properties:
+              Text: ="Connect / update Stripe account"
+              X: =830
+              Y: =430
+              Width: =260
+              Height: =36
+              OnSelect: |-
+                =Set(varAcctReq, "acct-" & Text(GUID())); IfError(Patch(AvenueHostRequests, Defaults(AvenueHostRequests), {Title: "AccountLink", FacilityId: "flavors-hyattsville", RequestId: varAcctReq, Kind: {Value: "AccountLink"}, Payload: "{}"}); Notify("Asked the server for a Stripe link. Press Check again in a few seconds.", NotificationType.Information), Notify("Could not send the request.", NotificationType.Error))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piAcctRefresh:
+            Control: Classic/Button
+            Properties:
+              Text: ="Check again"
+              X: =1100
+              Y: =430
+              Width: =120
+              Height: =36
+              OnSelect: =Refresh(AvenueHostRequests)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =(Coalesce(varPayTab, "inv") = "inv") && !IsBlank(varAcctReq)
+        - piAcctGo:
+            Control: Classic/Button
+            Properties:
+              Text: ="Open Stripe"
+              X: =1230
+              Y: =430
+              Width: =100
+              Height: =36
+              OnSelect: =Launch(LookUp(AvenueHostRequests, RequestId = varAcctReq).Link)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =(Coalesce(varPayTab, "inv") = "inv") && !IsBlank(varAcctReq) && !IsBlank(LookUp(AvenueHostRequests, RequestId = varAcctReq).Link)
+        - piAcctOut:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(varAcctReq), "Opens Stripe's own onboarding page; Avenue never sees bank details. The link works once and expires within minutes.", Coalesce(LookUp(AvenueHostRequests, RequestId = varAcctReq).Outcome, "Waiting for the server..."))
+              X: =830
+              Y: =470
+              Width: =500
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piEvtHead:
+            Control: Label
+            Properties:
+              Text: ="Private event invoice"
+              X: =830
+              Y: =520
+              Width: =500
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piEvtWho:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Member e-mail"
+              X: =830
+              Y: =548
+              Width: =250
+              Height: =34
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piEvtPkg:
+            Control: Classic/DropDown
+            Properties:
+              Items: =["Simplicity", "Opulence", "Elevation", "Platinum"]
+              Default: ="Simplicity"
+              X: =1090
+              Y: =548
+              Width: =140
+              Height: =34
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piEvtMem:
+            Control: Classic/Toggle
+            Properties:
+              Default: =true
+              TrueText: ="Member"
+              FalseText: ="Non-member"
+              X: =1240
+              Y: =548
+              Width: =90
+              Height: =34
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piEvtDate:
+            Control: Classic/DatePicker
+            Properties:
+              DefaultDate: =DateAdd(Today(), 45, TimeUnit.Days)
+              X: =830
+              Y: =590
+              Width: =250
+              Height: =34
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piEvtGo:
+            Control: Classic/Button
+            Properties:
+              Text: ="Create event invoice"
+              X: =1090
+              Y: =590
+              Width: =240
+              Height: =34
+              OnSelect: |-
+                =If(!IsMatch(Trim(piEvtWho.Text), Match.Email) || IsBlank(piEvtDate.SelectedDate) || piEvtDate.SelectedDate <= Today(), Notify("Enter the member e-mail and a future event date.", NotificationType.Warning), Set(varEvtReq, "event-" & Text(GUID())); IfError(Patch(AvenueHostRequests, Defaults(AvenueHostRequests), {Title: "EventInvoice", FacilityId: "flavors-hyattsville", RequestId: varEvtReq, Kind: {Value: "EventInvoice"}, Payload: "{""memberEmail"":""" & Lower(Trim(piEvtWho.Text)) & """,""packageName"":""" & piEvtPkg.Selected.Value & """,""eventDate"":""" & Text(piEvtDate.SelectedDate, "yyyy-mm-dd") & """,""member"":" & If(piEvtMem.Value, "true", "false") & "}"}); Notify("Sent to the server. The invoices appear in the list once Stripe confirms.", NotificationType.Information), Notify("Could not send the request.", NotificationType.Error)))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - piEvtOut:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(varEvtReq), "$500 refundable deposit due now; the package balance is due 30 days before the event (now if sooner). Refunds are done by the owner in Stripe.", Coalesce(LookUp(AvenueHostRequests, RequestId = varEvtReq).Outcome, "Waiting for the server... (press Check again)"))
+              X: =830
+              Y: =630
+              Width: =500
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varPayTab, "inv") = "inv"
+        - payNote:
+            Control: Label
+            Properties:
+              Text: |-
+                ="From active members, plan prices and hours this month (facility time). Bank (ACH) pays the list price; card adds 3% (Q-M1 default); legacy plans already include the fee. Late fee $99 after the due date (Q-13: grace to the 5th is open)."
+              X: =20
+              Y: =78
+              Width: =1310
+              Height: =44
+              Color: =RGBA(96,94,92,1)
+              Size: =11
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payT0:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =24
+              Y: =130
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payTc0:
+            Control: Label
+            Properties:
+              Text: ="Expected monthly membership"
+              X: =44
+              Y: =140
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payTv0:
+            Control: Label
+            Properties:
+              Text: ="$" & Text(Round(Sum(payGal.AllItems, Monthly), 2), "#,##0.00")
+              X: =44
+              Y: =162
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payTs0:
+            Control: Label
+            Properties:
+              Text: ="plan price, plus 3% for card payers"
+              X: =44
+              Y: =202
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payT1:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =356
+              Y: =130
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payTc1:
+            Control: Label
+            Properties:
+              Text: ="Extra hours so far (estimate)"
+              X: =376
+              Y: =140
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payTv1:
+            Control: Label
+            Properties:
+              Text: ="$" & Text(Round(Sum(payGal.AllItems, Extra), 2), "#,##0.00")
+              X: =376
+              Y: =162
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payTs1:
+            Control: Label
+            Properties:
+              Text: ="billed with the next payment; none at booking"
+              X: =376
+              Y: =202
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payT2:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =688
+              Y: =130
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payTc2:
+            Control: Label
+            Properties:
+              Text: ="Members without a known price"
+              X: =708
+              Y: =140
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payTv2:
+            Control: Label
+            Properties:
+              Text: =Text(CountRows(Filter(payGal.AllItems, !Priced)))
+              X: =708
+              Y: =162
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payTs2:
+            Control: Label
+            Properties:
+              Text: |-
+                ="plan not in the price table: confirm with Flavors"
+              X: =708
+              Y: =202
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payT3:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =1020
+              Y: =130
+              Width: =316
+              Height: =96
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payTc3:
+            Control: Label
+            Properties:
+              Text: ="Active members"
+              X: =1040
+              Y: =140
+              Width: =276
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payTv3:
+            Control: Label
+            Properties:
+              Text: =Text(CountRows(payGal.AllItems))
+              X: =1040
+              Y: =162
+              Width: =276
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =28
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payTs3:
+            Control: Label
+            Properties:
+              Text: ="with a collection day 1-15"
+              X: =1040
+              Y: =202
+              Width: =276
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payListHead:
+            Control: Label
+            Properties:
+              Text: ="By member (this month)"
+              X: =20
+              Y: =242
+              Width: =640
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({p: With({u: DateAdd(Now(), TimeZoneOffset(Now()), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "yyyy-mm")))}, ForAll(Filter(AvenueMembers, FacilityId = "flavors-hyattsville", Status.Value = "Active") As m, With({pl: LookUp(AvenuePlans, PlanId = m.PlanId), used: Coalesce(Sum(Filter(AvenueHoursLedger, MemberId = m.MemberId, Period = p), Hours), 0)}, With({pr: LookUp(Table({K: "emerging-10", P: 800, F: false}, {K: "emerging-20", P: 1400, F: false}, {K: "emerging-40", P: 2400, F: false}, {K: "emerging-80", P: 4000, F: false}, {K: "mobile kitchen-10", P: 600, F: false}, {K: "mobile kitchen-20", P: 1100, F: false}, {K: "mobile kitchen-40", P: 1600, F: false}, {K: "mobile kitchen-80", P: 2400, F: false}, {K: "legacy-launch", P: 424, F: true}, {K: "legacy: emerging-10a", P: 742, F: true}, {K: "legacy: emerging-10b", P: 515, F: true}, {K: "legacy: emerging-10c", P: 530, F: true}, {K: "legacy: emerging-10d", P: 721, F: true}, {K: "legacy: emerging-10e", P: 550, F: true}, {K: "legacy-mobile kitchen -10a", P: 550, F: true}, {K: "legacy-mobile kitchen -10b", P: 636, F: true}, {K: "legacy-mobile kitchen -10c", P: 530, F: true}, {K: "legacy-mobile kitchen -10d", P: 515, F: true}), K = Lower(Trim(Coalesce(pl.Title, ""))))}, {Biz: Coalesce(m.BusinessName, m.MemberId), Plan: Coalesce(pl.Title, "no plan"), Day: m.CollectionDay, Priced: !IsBlank(pr), Monthly: If(IsBlank(pr), 0, pr.P * If(pr.F || m.PayMethod.Value = "Bank", 1, 1.03)), FeeIn: !IsBlank(pr) && pr.F, Used: used, Allow: Coalesce(pl.MonthlyHours, 0), Over: Max(0, used - Coalesce(pl.MonthlyHours, 0)), Rate: Coalesce(pl.ExtraHourRate, 0), Extra: Max(0, used - Coalesce(pl.MonthlyHours, 0)) * Coalesce(pl.ExtraHourRate, 0) * If(m.PayMethod.Value = "Bank", 1, 1.03)})))) 
+              X: =20
+              Y: =276
+              Width: =780
+              Height: =430
+              TemplateSize: =64
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+            Children:
+              - payRowTitle:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Biz & " · " & ThisItem.Plan
+                    X: =8
+                    Y: =4
+                    Width: =520
+                    Height: =28
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - payRowMeta:
+                  Control: Label
+                  Properties:
+                    Text: =If(ThisItem.Priced, "$" & Text(Round(ThisItem.Monthly, 2), "#,##0.00") & If(ThisItem.FeeIn, " (fee included)", ""), "price unknown") & " · due day " & Coalesce(Text(ThisItem.Day), "not set") & " · " & Text(Round(ThisItem.Used, 1)) & " of " & Text(ThisItem.Allow) & " h used"
+                    X: =8
+                    Y: =34
+                    Width: =640
+                    Height: =24
+                    Color: =If(ThisItem.Priced, RGBA(96,94,92,1), RGBA(164,38,44,1))
+                    Size: =12
+              - payRowExtra:
+                  Control: Label
+                  Properties:
+                    Text: =If(ThisItem.Over > 0, "+$" & Text(Round(ThisItem.Extra, 2), "#,##0.00") & " extra (" & Text(Round(ThisItem.Over, 1)) & " h)", "")
+                    X: =560
+                    Y: =4
+                    Width: =200
+                    Height: =28
+                    Color: =RGBA(164,38,44,1)
+                    Size: =12
+                    Align: =Align.Right
+              - payGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =63
+                    Width: =748
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - paySel:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(payGal.Selected), "Select a member", payGal.Selected.Biz)
+              X: =830
+              Y: =242
+              Width: =500
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+              Visible: =Coalesce(varPayTab, "inv") = "exp"
+        - payDetail:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(payGal.Selected), "", "Plan " & payGal.Selected.Plan & Char(10) & "Monthly: " & If(payGal.Selected.Priced, "$" & Text(Round(payGal.Selected.Monthly, 2), "#,##0.00"), "price unknown") & Char(10) & "Extra hours: " & Text(Round(payGal.Selected.Over, 1)) & " h at $" & Text(payGal.Selected.Rate) & "/h = $" & Text(Round(payGal.Selected.Extra, 2), "#,##0.00") & Char(10) & "Collected on day " & Coalesce(Text(payGal.Selected.Day), "not set") & ". A $99 late fee applies after the due date.")
+              X: =830
+              Y: =276
+              Width: =500
+              Height: =160
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              Visible: =Coalesce(varPayTab, "inv") = "exp"

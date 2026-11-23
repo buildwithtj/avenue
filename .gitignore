@@ -1,0 +1,18 @@
+node_modules/
+lib/
+lib-commonjs/
+lib-amd/
+dist/
+temp/
+sharepoint/solution/debug/
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+
+# Private keys and certificates never go in the repo
+*.pem
+*.key
+*.pfx
+*.p12

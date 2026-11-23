@@ -1,0 +1,650 @@
+- perBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- perBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- perBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- perDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- perBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- perTitle:
+    Control: Label
+    Properties:
+      Text: ="Permissions"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- perNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- perNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- perNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- perNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- perNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- perNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- perNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 98
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- tm_permissions:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =4
+      Width: =10
+      Height: =10
+- sc_permissions:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =64
+      Width: =App.Width
+      Height: =App.Height - 64
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_permissions.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_permissions:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =704
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - perBack:
+            Control: Classic/Button
+            Properties:
+              Text: ="Back to More"
+              X: =20
+              Y: =0
+              Width: =140
+              Height: =34
+              OnSelect: =Navigate(Screen12)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+        - perHead:
+            Control: Label
+            Properties:
+              Text: ="Staff permissions"
+              X: =180
+              Y: =0
+              Width: =400
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =20
+              FontWeight: =FontWeight.Bold
+        - perNote:
+            Control: Label
+            Properties:
+              Text: ="These switches hide buttons for each staff member; they do not stop a staff account from changing data directly in SharePoint. Real enforcement is a flow and list-permission task, and the list of capabilities is not decided (Q-15)."
+              X: =20
+              Y: =40
+              Width: =1310
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - perDenied:
+            Control: Label
+            Properties:
+              Text: ="Only the Flavors owner can change permissions."
+              X: =20
+              Y: =90
+              Width: =700
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              FontWeight: =FontWeight.Semibold
+              Visible: =!(Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"])
+        - perGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =SortByColumns(Filter(AvenueStaffCapabilities, FacilityId = "flavors-hyattsville"), "StaffEmail", SortOrder.Ascending)
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =420
+              TemplateSize: =56
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+            Children:
+              - perRowEmail:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.StaffEmail
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - perRowMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Text(If(ThisItem.ApproveBookings, 1, 0) + If(ThisItem.ManageDocuments, 1, 0) + If(ThisItem.ViewPayments, 1, 0) + If(ThisItem.ManageMembers, 1, 0) + If(ThisItem.PostNotices, 1, 0) + If(ThisItem.ManageEquipment, 1, 0) + If(ThisItem.ViewEnvironment, 1, 0)) & " of 7 allowed" & If(IsBlank(ThisItem.Note), "", " · " & ThisItem.Note)
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - perGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =55
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - perEmpty:
+            Control: Label
+            Properties:
+              Text: ="No staff rows yet. Add a staff e-mail below to start."
+              X: =28
+              Y: =110
+              Width: =620
+              Height: =30
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+              Visible: =CountRows(AvenueStaffCapabilities) = 0 && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perNew:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Staff e-mail to add"
+              X: =20
+              Y: =526
+              Width: =380
+              Height: =34
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perAdd:
+            Control: Classic/Button
+            Properties:
+              Text: ="Add staff member"
+              X: =410
+              Y: =526
+              Width: =200
+              Height: =34
+              OnSelect: |-
+                =IfError(Patch(AvenueStaffCapabilities, Defaults(AvenueStaffCapabilities), {Title: Lower(Trim(perNew.Text)), FacilityId: "flavors-hyattsville", StaffEmail: Lower(Trim(perNew.Text)), ApproveBookings: false, ManageDocuments: false, ViewPayments: false, ManageMembers: false, PostNotices: false, ManageEquipment: false, ViewEnvironment: false}); Reset(perNew); Notify("Added with every capability off. Switch on what they may do and Save.", NotificationType.Success), Notify("Could not add the row.", NotificationType.Error))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(IsMatch(Trim(perNew.Text), Match.Email) && IsBlank(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(Trim(perNew.Text)))), DisplayMode.Edit, DisplayMode.Disabled)
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perAddHelp:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(Trim(perNew.Text)), "", If(!IsMatch(Trim(perNew.Text), Match.Email), "Enter a valid e-mail.", If(IsBlank(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(Trim(perNew.Text)))), "", "This person is already in the list.")))
+              X: =20
+              Y: =564
+              Width: =590
+              Height: =22
+              Color: =RGBA(155,44,44,1)
+              Size: =11
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perSelHead:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(perGal.Selected), "Select a staff member", perGal.Selected.StaffEmail)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =44
+              Color: =RGBA(15,76,92,1)
+              Size: =30
+              FontWeight: =FontWeight.Bold
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perCap0:
+            Control: Label
+            Properties:
+              Text: ="Approve bookings"
+              X: =690
+              Y: =136
+              Width: =300
+              Height: =34
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              VerticalAlign: =VerticalAlign.Middle
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perTg0:
+            Control: Classic/Toggle
+            Properties:
+              Default: =If(IsBlank(perGal.Selected), false, perGal.Selected.ApproveBookings)
+              TrueText: ="Allowed"
+              FalseText: ="Blocked"
+              X: =1000
+              Y: =136
+              Width: =160
+              Height: =34
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perCap1:
+            Control: Label
+            Properties:
+              Text: ="Review documents"
+              X: =690
+              Y: =176
+              Width: =300
+              Height: =34
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              VerticalAlign: =VerticalAlign.Middle
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perTg1:
+            Control: Classic/Toggle
+            Properties:
+              Default: =If(IsBlank(perGal.Selected), false, perGal.Selected.ManageDocuments)
+              TrueText: ="Allowed"
+              FalseText: ="Blocked"
+              X: =1000
+              Y: =176
+              Width: =160
+              Height: =34
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perCap2:
+            Control: Label
+            Properties:
+              Text: ="See payments"
+              X: =690
+              Y: =216
+              Width: =300
+              Height: =34
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              VerticalAlign: =VerticalAlign.Middle
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perTg2:
+            Control: Classic/Toggle
+            Properties:
+              Default: =If(IsBlank(perGal.Selected), false, perGal.Selected.ViewPayments)
+              TrueText: ="Allowed"
+              FalseText: ="Blocked"
+              X: =1000
+              Y: =216
+              Width: =160
+              Height: =34
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perCap3:
+            Control: Label
+            Properties:
+              Text: ="Manage members"
+              X: =690
+              Y: =256
+              Width: =300
+              Height: =34
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              VerticalAlign: =VerticalAlign.Middle
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perTg3:
+            Control: Classic/Toggle
+            Properties:
+              Default: =If(IsBlank(perGal.Selected), false, perGal.Selected.ManageMembers)
+              TrueText: ="Allowed"
+              FalseText: ="Blocked"
+              X: =1000
+              Y: =256
+              Width: =160
+              Height: =34
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perCap4:
+            Control: Label
+            Properties:
+              Text: ="Post notices"
+              X: =690
+              Y: =296
+              Width: =300
+              Height: =34
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              VerticalAlign: =VerticalAlign.Middle
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perTg4:
+            Control: Classic/Toggle
+            Properties:
+              Default: =If(IsBlank(perGal.Selected), false, perGal.Selected.PostNotices)
+              TrueText: ="Allowed"
+              FalseText: ="Blocked"
+              X: =1000
+              Y: =296
+              Width: =160
+              Height: =34
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perCap5:
+            Control: Label
+            Properties:
+              Text: ="Edit equipment"
+              X: =690
+              Y: =336
+              Width: =300
+              Height: =34
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              VerticalAlign: =VerticalAlign.Middle
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perTg5:
+            Control: Classic/Toggle
+            Properties:
+              Default: =If(IsBlank(perGal.Selected), false, perGal.Selected.ManageEquipment)
+              TrueText: ="Allowed"
+              FalseText: ="Blocked"
+              X: =1000
+              Y: =336
+              Width: =160
+              Height: =34
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perCap6:
+            Control: Label
+            Properties:
+              Text: ="See sensors"
+              X: =690
+              Y: =376
+              Width: =300
+              Height: =34
+              Color: =RGBA(31,31,31,1)
+              Size: =13
+              VerticalAlign: =VerticalAlign.Middle
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perTg6:
+            Control: Classic/Toggle
+            Properties:
+              Default: =If(IsBlank(perGal.Selected), false, perGal.Selected.ViewEnvironment)
+              TrueText: ="Allowed"
+              FalseText: ="Blocked"
+              X: =1000
+              Y: =376
+              Width: =160
+              Height: =34
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perSave:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save"
+              X: =690
+              Y: =428
+              Width: =200
+              Height: =38
+              OnSelect: |-
+                =IfError(Patch(AvenueStaffCapabilities, LookUp(AvenueStaffCapabilities, StaffEmail = perGal.Selected.StaffEmail), {ApproveBookings: perTg0.Value, ManageDocuments: perTg1.Value, ViewPayments: perTg2.Value, ManageMembers: perTg3.Value, PostNotices: perTg4.Value, ManageEquipment: perTg5.Value, ViewEnvironment: perTg6.Value}); Notify("Saved.", NotificationType.Success), Notify("Could not save.", NotificationType.Error))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(!IsBlank(perGal.Selected), DisplayMode.Edit, DisplayMode.Disabled)
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perOff:
+            Control: Classic/Button
+            Properties:
+              Text: ="Deactivate (all off)"
+              X: =900
+              Y: =428
+              Width: =220
+              Height: =38
+              OnSelect: |-
+                =IfError(Patch(AvenueStaffCapabilities, LookUp(AvenueStaffCapabilities, StaffEmail = perGal.Selected.StaffEmail), {ApproveBookings: false, ManageDocuments: false, ViewPayments: false, ManageMembers: false, PostNotices: false, ManageEquipment: false, ViewEnvironment: false, Note: "Deactivated by " & User().Email & " on " & Text(Today(), "d mmm yyyy")}); Notify("Deactivated: every capability is off. The row is kept.", NotificationType.Success), Notify("Could not save.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              DisplayMode: =If(!IsBlank(perGal.Selected), DisplayMode.Edit, DisplayMode.Disabled)
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - perHelp:
+            Control: Label
+            Properties:
+              Text: ="Rows are never deleted. Deactivate turns every capability off and keeps the history."
+              X: =690
+              Y: =474
+              Width: =640
+              Height: =24
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]

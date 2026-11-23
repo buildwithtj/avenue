@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "Avenue member portal",
+    "id": "6a7c7ab4-da56-4cca-b6eb-8f52994dbe6f",
+    "version": "2.16.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.24.1"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "Avenue member portal (Phase 1 pilot)"
+      },
+      "longDescription": {
+        "default": "Avenue member portal (Phase 1 pilot)"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "member-spfx Feature",
+        "description": "The feature that activates elements of the member-spfx solution.",
+        "id": "29c9efca-8597-4632-8cce-7f7cb0b362b5",
+        "version": "2.16.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/member-spfx.sppkg"
+  }
+}

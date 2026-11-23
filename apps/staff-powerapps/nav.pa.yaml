@@ -1,0 +1,9 @@
+- btnGoApproved:
+    Control: Button
+    Properties:
+      Text: ="Approved bookings →"
+      X: =920
+      Y: =12
+      Width: =200
+      Height: =40
+      OnSelect: =Navigate(Screen2)

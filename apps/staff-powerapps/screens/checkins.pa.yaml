@@ -1,0 +1,694 @@
+- kBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- kBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- kBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- kDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- kBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- kTitle:
+    Control: Label
+    Properties:
+      Text: ="Check-ins"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- kNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- kNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- kNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- kNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 422
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- kNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- kNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- kNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- kTabBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =48
+      Width: =App.Width
+      Height: =32
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.58)
+- kTabEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =80
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(15,76,92,0.10)
+- kTabMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =24
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(91,99,112,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- kTabCompliance:
+    Control: Classic/Button
+    Properties:
+      Text: ="Compliance"
+      X: =132
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen4)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(91,99,112,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- kTabCheckins:
+    Control: Classic/Button
+    Properties:
+      Text: ="Check-ins"
+      X: =240
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen5)
+      Fill: =RGBA(15,76,92,0.10)
+      Color: =RGBA(15,76,92,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- kTabChecklist:
+    Control: Classic/Button
+    Properties:
+      Text: ="Checklist"
+      X: =348
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen7)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(91,99,112,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- tm_checkins:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =28
+      Width: =10
+      Height: =10
+- sc_checkins:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =88
+      Width: =App.Width
+      Height: =App.Height - 88
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_checkins.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_checkins:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =713
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - kRecentHead:
+            Control: Label
+            Properties:
+              Text: ="Recent checklists (failed in red)"
+              X: =20
+              Y: =0
+              Width: =640
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+        - kRecent:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =SortByColumns(Filter(AvenueCheckIns, FacilityId = "flavors-hyattsville"), "SubmittedAt", SortOrder.Descending)
+              X: =20
+              Y: =35
+              Width: =640
+              Height: =330
+              TemplateSize: =64
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - kRecTitle:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Kind.Value & " · " & ThisItem.MemberId
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =28
+                    Color: =If(ThisItem.AllPassed, RGBA(36,36,36,1), RGBA(164,38,44,1))
+                    FontWeight: =FontWeight.Semibold
+              - kRecMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.SubmittedAt, "ddd d mmm, h:mm AM/PM") & " · booking " & ThisItem.BookingId & If(ThisItem.AllPassed, "", If(IsBlank(ThisItem.ResolvedAt), " · FAILED", " · failed, resolved"))
+                    X: =8
+                    Y: =32
+                    Width: =600
+                    Height: =24
+                    Color: =RGBA(96,94,92,1)
+                    Size: =12
+              - kRecentSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =63
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - kAnsHead:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(kRecent.Selected), "Select a checklist to see the answers", "Answers")
+              X: =690
+              Y: =0
+              Width: =640
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+        - kAnswers:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(kRecent.Selected), "", IfError(Concat(Table(ParseJSON(kRecent.Selected.Answers)), Text(ThisRecord.Value.q) & "  →  " & Text(ThisRecord.Value.a), Char(10)), kRecent.Selected.Answers))
+              X: =690
+              Y: =35
+              Width: =640
+              Height: =150
+              Color: =RGBA(31,31,31,1)
+              VerticalAlign: =VerticalAlign.Top
+        - kFailNote:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Follow-up on this failed checklist (what was done)"
+              X: =690
+              Y: =190
+              Width: =640
+              Height: =46
+              Mode: =TextMode.MultiLine
+              Visible: =!IsBlank(kRecent.Selected) && !kRecent.Selected.AllPassed && IsBlank(kRecent.Selected.ResolvedAt)
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - kFailResolve:
+            Control: Classic/Button
+            Properties:
+              Text: ="Log follow-up and resolve"
+              X: =690
+              Y: =242
+              Width: =260
+              Height: =34
+              OnSelect: |-
+                =Patch(AvenueCheckIns, kRecent.Selected, {ResolvedAt: Now(), ResolvedBy: User().Email, ResolutionNote: kFailNote.Text}); Reset(kFailNote); Refresh(AvenueCheckIns)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(IsBlank(Trim(kFailNote.Text)), DisplayMode.Disabled, DisplayMode.Edit)
+              Visible: =!IsBlank(kRecent.Selected) && !kRecent.Selected.AllPassed && IsBlank(kRecent.Selected.ResolvedAt)
+        - kFailDone:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(!IsBlank(kRecent.Selected) && !kRecent.Selected.AllPassed && !IsBlank(kRecent.Selected.ResolvedAt), "Resolved by " & kRecent.Selected.ResolvedBy & " on " & Text(kRecent.Selected.ResolvedAt, "d mmm, h:mm AM/PM") & ": " & kRecent.Selected.ResolutionNote, "")
+              X: =690
+              Y: =190
+              Width: =640
+              Height: =80
+              Color: =RGBA(96,94,92,1)
+              Size: =12
+        - kMissHead:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Missed entry checklist: member reminded, staff to follow up"
+              X: =690
+              Y: =300
+              Width: =640
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+        - kMissed:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =Filter(Filter(AvenueBookings, Status.Value = "Approved", StartUtc <= Now(), EndUtc >= DateAdd(Now(), -12, TimeUnit.Hours)) As b, !IsBlank(b.MissedCheckInAt) && IsBlank(b.OutreachAt) && IsBlank(LookUp(AvenueCheckIns, BookingId = b.BookingId && Kind.Value = "Entry")))
+              X: =690
+              Y: =335
+              Width: =640
+              Height: =230
+              TemplateSize: =56
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - kMissTitle:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(LookUp(AvenueMembers, MemberId = ThisItem.MemberId).BusinessName, "Member") & " · " & ThisItem.MemberId
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - kMissMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Space.Value & " · " & Text(ThisItem.StartUtc, "h:mm AM/PM") & "–" & Text(ThisItem.EndUtc, "h:mm AM/PM") & " · reminded " & Text(ThisItem.MissedCheckInAt, "h:mm AM/PM")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(96,94,92,1)
+                    Size: =12
+              - kMissedSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =55
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - kOutreachNote:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="What was done (call, message, resolved on site)"
+              X: =690
+              Y: =575
+              Width: =640
+              Height: =60
+              Mode: =TextMode.MultiLine
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - kRefresh:
+            Control: Classic/Button
+            Properties:
+              Text: ="Refresh"
+              X: =690
+              Y: =645
+              Width: =160
+              Height: =36
+              OnSelect: =Refresh(AvenueCheckIns); Refresh(AvenueBookings); Refresh(AvenueMembers)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+        - kExitHead:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Exit checklist overdue: member reminded, staff to follow up"
+              X: =20
+              Y: =380
+              Width: =640
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+        - kExits:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =Filter(Filter(AvenueBookings, Status.Value = "Approved", EndUtc <= Now(), EndUtc >= DateAdd(Now(), -24, TimeUnit.Hours)) As b, !IsBlank(b.ExitFlaggedAt) && IsBlank(b.ExitOutreachAt) && IsBlank(LookUp(AvenueCheckIns, BookingId = b.BookingId && Kind.Value = "Exit")))
+              X: =20
+              Y: =415
+              Width: =640
+              Height: =160
+              TemplateSize: =56
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - kExitTitle:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(LookUp(AvenueMembers, MemberId = ThisItem.MemberId).BusinessName, "Member") & " · " & ThisItem.MemberId
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - kExitMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Space.Value & " · ended " & Text(ThisItem.EndUtc, "h:mm AM/PM") & " · reminded " & Text(ThisItem.ExitFlaggedAt, "h:mm AM/PM")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(96,94,92,1)
+                    Size: =12
+              - kExitsSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =55
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - kExitNote:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="What was done (call, extension agreed, resolved on site)"
+              X: =20
+              Y: =585
+              Width: =640
+              Height: =50
+              Mode: =TextMode.MultiLine
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - kExitResolve:
+            Control: Classic/Button
+            Properties:
+              Text: ="Log outreach and resolve"
+              X: =20
+              Y: =645
+              Width: =260
+              Height: =36
+              OnSelect: |-
+                =Patch(AvenueBookings, kExits.Selected, {ExitOutreachAt: Now(), ExitOutreachBy: User().Email, ExitOutreachNote: kExitNote.Text}); Reset(kExitNote); Refresh(AvenueBookings)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(IsBlank(kExits.Selected) || IsBlank(Trim(kExitNote.Text)), DisplayMode.Disabled, DisplayMode.Edit)
+        - kResolve:
+            Control: Classic/Button
+            Properties:
+              Text: ="Log outreach and resolve"
+              X: =860
+              Y: =645
+              Width: =260
+              Height: =36
+              OnSelect: |-
+                =Patch(AvenueBookings, kMissed.Selected, {OutreachAt: Now(), OutreachBy: User().Email, OutreachNote: kOutreachNote.Text}); Reset(kOutreachNote); Refresh(AvenueBookings)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(IsBlank(kMissed.Selected) || IsBlank(Trim(kOutreachNote.Text)), DisplayMode.Disabled, DisplayMode.Edit)

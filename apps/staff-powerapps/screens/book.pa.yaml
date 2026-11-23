@@ -1,0 +1,692 @@
+- bBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- bBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- bBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- bDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- bBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- bTitle:
+    Control: Label
+    Properties:
+      Text: ="Book on behalf of a member"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- bNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- bNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- bNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 530
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- bNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- bNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- bNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- bNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- bTabBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =48
+      Width: =App.Width
+      Height: =32
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.58)
+- bTabEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =80
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(15,76,92,0.10)
+- bTabRequests:
+    Control: Classic/Button
+    Properties:
+      Text: ="Requests"
+      X: =24
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(91,99,112,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- bTabApproved:
+    Control: Classic/Button
+    Properties:
+      Text: ="Approved"
+      X: =132
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen2)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(91,99,112,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- bTabSchedule:
+    Control: Classic/Button
+    Properties:
+      Text: ="Schedule"
+      X: =240
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen19)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(91,99,112,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- bTabBook:
+    Control: Classic/Button
+    Properties:
+      Text: ="Book"
+      X: =348
+      Y: =52
+      Width: =104
+      Height: =24
+      OnSelect: =Navigate(Screen9)
+      Fill: =RGBA(15,76,92,0.10)
+      Color: =RGBA(15,76,92,1)
+      HoverFill: =RGBA(15,76,92,0.07)
+      HoverColor: =RGBA(15,76,92,1)
+      PressedFill: =RGBA(15,76,92,0.14)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- tm_book:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =0
+      Width: =10
+      Height: =10
+- sc_book:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =88
+      Width: =App.Width
+      Height: =App.Height - 88
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_book.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_book:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =696
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - bPanelForm:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =24
+              Y: =0
+              Width: =640
+              Height: =664
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - bFormHead:
+            Control: Label
+            Properties:
+              Text: ="Booking details"
+              X: =44
+              Y: =12
+              Width: =560
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =20
+              FontWeight: =FontWeight.Bold
+        - bMemberLbl:
+            Control: Label
+            Properties:
+              Text: ="Member"
+              X: =44
+              Y: =52
+              Width: =300
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - bMember:
+            Control: Classic/DropDown
+            Properties:
+              Items: |-
+                =ForAll(SortByColumns(Filter(AvenueMembers, FacilityId = "flavors-hyattsville", Status.Value = "Active"), "BusinessName", SortOrder.Ascending), {Value: BusinessName & " · " & MemberId, Id: MemberId})
+              X: =44
+              Y: =74
+              Width: =600
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - bSpaceLbl:
+            Control: Label
+            Properties:
+              Text: ="What"
+              X: =44
+              Y: =120
+              Width: =200
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - bSpace:
+            Control: Classic/DropDown
+            Properties:
+              Items: =["Kitchen", "Dining", "Whole facility"]
+              Default: ="Kitchen"
+              X: =44
+              Y: =142
+              Width: =280
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - bDateLbl:
+            Control: Label
+            Properties:
+              Text: ="Date, from, to (HH:MM, Eastern device)"
+              X: =44
+              Y: =188
+              Width: =440
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - bDate:
+            Control: Classic/DatePicker
+            Properties:
+              DefaultDate: =Today()
+              X: =44
+              Y: =210
+              Width: =280
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - bStart:
+            Control: Classic/TextInput
+            Properties:
+              Default: ="09:00"
+              X: =336
+              Y: =210
+              Width: =140
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - bEnd:
+            Control: Classic/TextInput
+            Properties:
+              Default: ="13:00"
+              X: =488
+              Y: =210
+              Width: =156
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - bEquipLbl:
+            Control: Label
+            Properties:
+              Text: ="Equipment (kitchen; Ctrl/Cmd-click to pick several)"
+              X: =44
+              Y: =256
+              Width: =600
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =bSpace.Selected.Value = "Kitchen"
+        - bEquip:
+            Control: ListBox
+            Properties:
+              Items: =Filter(AvenueEquipment, FacilityId = "flavors-hyattsville")
+              SelectMultiple: =true
+              X: =44
+              Y: =278
+              Width: =600
+              Height: =204
+              Visible: =bSpace.Selected.Value = "Kitchen"
+        - bPeople:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Number of people"
+              Format: =TextFormat.Number
+              X: =44
+              Y: =278
+              Width: =280
+              Height: =36
+              Visible: =bSpace.Selected.Value = "Dining"
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - bNoteLbl:
+            Control: Label
+            Properties:
+              Text: ="Note to the member (optional)"
+              X: =44
+              Y: =498
+              Width: =440
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - bNote:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Shown to the member with the outcome"
+              Mode: =TextMode.MultiLine
+              X: =44
+              Y: =520
+              Width: =600
+              Height: =88
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - bPanelCheck:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =680
+              Y: =0
+              Width: =662
+              Height: =664
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - bCheckHead:
+            Control: Label
+            Properties:
+              Text: ="Availability and checks"
+              X: =700
+              Y: =12
+              Width: =620
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =20
+              FontWeight: =FontWeight.Bold
+        - bHelp:
+            Control: Label
+            Properties:
+              Text: ="Sent to the same checks as a member request (active member, documents, equipment, private events). Approved straight away if they pass. Times are in this device's time zone; use a device set to Eastern."
+              X: =700
+              Y: =50
+              Width: =622
+              Height: =52
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - bAvail:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(bCheck.Text), If(bSpace.Selected.Value = "Kitchen" && CountRows(bEquip.SelectedItems) > 0 && IsMatch(bStart.Text, "([01][0-9]|2[0-3]):[0-5][0-9]") && IsMatch(bEnd.Text, "([01][0-9]|2[0-3]):[0-5][0-9]"), "Free: all " & CountRows(bEquip.SelectedItems) & " selected unit(s) are free at this time.", "Ready to book."), "")
+              X: =700
+              Y: =112
+              Width: =622
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+        - bCheck:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(bMember.Selected), "Choose a member.", !(IsMatch(bStart.Text, "([01][0-9]|2[0-3]):[0-5][0-9]") && IsMatch(bEnd.Text, "([01][0-9]|2[0-3]):[0-5][0-9]")), "Enter times as HH:MM.", DateAdd(bDate.SelectedDate, Value(Left(bEnd.Text, 2)) * 60 + Value(Right(bEnd.Text, 2)), TimeUnit.Minutes) <= DateAdd(bDate.SelectedDate, Value(Left(bStart.Text, 2)) * 60 + Value(Right(bStart.Text, 2)), TimeUnit.Minutes), "The end must be after the start.", DateAdd(bDate.SelectedDate, Value(Left(bStart.Text, 2)) * 60 + Value(Right(bStart.Text, 2)), TimeUnit.Minutes) < Now(), "The start is in the past.", bSpace.Selected.Value = "Kitchen" && CountRows(bEquip.SelectedItems) = 0, "Choose the equipment.", bSpace.Selected.Value = "Dining" && !(Value(bPeople.Text) > 0), "Enter the number of people.", With({n: If(IsMatch(bStart.Text, "([01][0-9]|2[0-3]):[0-5][0-9]") && IsMatch(bEnd.Text, "([01][0-9]|2[0-3]):[0-5][0-9]") && bSpace.Selected.Value = "Kitchen" && CountRows(bEquip.SelectedItems) > 0, CountRows(With({s: DateAdd(bDate.SelectedDate, Value(Left(bStart.Text, 2)) * 60 + Value(Right(bStart.Text, 2)), TimeUnit.Minutes), e: DateAdd(bDate.SelectedDate, Value(Left(bEnd.Text, 2)) * 60 + Value(Right(bEnd.Text, 2)), TimeUnit.Minutes)}, Filter(Filter(AvenueBookings, FacilityId = "flavors-hyattsville", Status.Value = "Approved", StartUtc < e, EndUtc > s) As b, CountRows(Filter(Split(b.EquipmentIds, ";"), Trim(Value) in Split(Concat(bEquip.SelectedItems, EquipmentId, ";"), ";"))) > 0))), 0)}, If(n > 0, "Not available: " & With({c: First(With({s: DateAdd(bDate.SelectedDate, Value(Left(bStart.Text, 2)) * 60 + Value(Right(bStart.Text, 2)), TimeUnit.Minutes), e: DateAdd(bDate.SelectedDate, Value(Left(bEnd.Text, 2)) * 60 + Value(Right(bEnd.Text, 2)), TimeUnit.Minutes)}, Filter(Filter(AvenueBookings, FacilityId = "flavors-hyattsville", Status.Value = "Approved", StartUtc < e, EndUtc > s) As b, CountRows(Filter(Split(b.EquipmentIds, ";"), Trim(Value) in Split(Concat(bEquip.SelectedItems, EquipmentId, ";"), ";"))) > 0)))}, Concat(Filter(Split(c.EquipmentIds, ";"), Trim(Value) in Split(Concat(bEquip.SelectedItems, EquipmentId, ";"), ";")), Coalesce(LookUp(AvenueEquipment, EquipmentId = Trim(Value)).Title, Trim(Value)), ", ") & " is booked by " & Coalesce(LookUp(AvenueCalendar, BookingId = c.BookingId).MemberDisplayName, c.MemberId) & " until " & With({t: c.EndUtc}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "h:mm AM/PM")))))) & If(n > 1, " (and " & (n - 1) & " more)", "") & ". Choose another time or unit.", If(CountRows(Filter(AvenueMemberDocuments, MemberId = bMember.Selected.Id, DocStatus.Value = "Expired", IsBlank(SupersededBy))) > 0 && IsBlank(LookUp(AvenueComplianceOverrides, MemberId = bMember.Selected.Id && Active = true)), "This member has an expired document that has not been renewed. Only the Flavors owner can override (the flow checks this too).", ""))))
+              X: =700
+              Y: =112
+              Width: =622
+              Height: =84
+              Color: =RGBA(155,44,44,1)
+              Size: =13
+              FontWeight: =FontWeight.Bold
+              Visible: =!IsBlank(Self.Text)
+        - bOverlap:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsMatch(bStart.Text, "([01][0-9]|2[0-3]):[0-5][0-9]") && IsMatch(bEnd.Text, "([01][0-9]|2[0-3]):[0-5][0-9]"), With({s: DateAdd(bDate.SelectedDate, Value(Left(bStart.Text, 2)) * 60 + Value(Right(bStart.Text, 2)), TimeUnit.Minutes), e: DateAdd(bDate.SelectedDate, Value(Left(bEnd.Text, 2)) * 60 + Value(Right(bEnd.Text, 2)), TimeUnit.Minutes)}, With({n: CountRows(Filter(AvenueBookings, Status.Value = "Approved", StartUtc < e, EndUtc > s))}, If(n = 0, "No approved bookings at this time.", n & " approved booking(s) overlap this time (any equipment). Check Approved or Schedule before booking."))), "")
+              X: =700
+              Y: =204
+              Width: =622
+              Height: =44
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+        - bCreate:
+            Control: Classic/Button
+            Properties:
+              Text: ="Book"
+              X: =700
+              Y: =268
+              Width: =220
+              Height: =48
+              OnSelect: |-
+                =With({s: DateAdd(bDate.SelectedDate, Value(Left(bStart.Text, 2)) * 60 + Value(Right(bStart.Text, 2)), TimeUnit.Minutes), e: DateAdd(bDate.SelectedDate, Value(Left(bEnd.Text, 2)) * 60 + Value(Right(bEnd.Text, 2)), TimeUnit.Minutes), rid: "staff-" & Text(GUID())}, IfError(Patch(AvenueBookingRequests, Defaults(AvenueBookingRequests), {Title: "Staff booking", FacilityId: "flavors-hyattsville", RequestId: rid, Space: {Value: bSpace.Selected.Value}, EquipmentIds: If(bSpace.Selected.Value = "Kitchen", Concat(bEquip.SelectedItems, EquipmentId, ";"), ""), PeopleCount: If(bSpace.Selected.Value = "Dining", Value(bPeople.Text), Blank()), StartUtc: s, EndUtc: e, OnBehalfOf: bMember.Selected.Id, StaffNote: Trim(bNote.Text)}); Set(varLastReq, rid); Reset(bNote); Reset(bEquip); Reset(bPeople); Notify("Sent. Avenue checks it and books it within a minute; the result shows below.", NotificationType.Success), Notify("Could not send the booking request.", NotificationType.Error)))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =14
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(IsBlank(bCheck.Text), DisplayMode.Edit, DisplayMode.Disabled)
+        - bResHead:
+            Control: Label
+            Properties:
+              Text: ="Result"
+              X: =700
+              Y: =340
+              Width: =400
+              Height: =30
+              Color: =RGBA(15,76,92,1)
+              Size: =16
+              FontWeight: =FontWeight.Bold
+        - bResult:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(varLastReq), "Nothing sent yet.", "Last request: " & Coalesce(LookUp(AvenueBookingRequests, RequestId = varLastReq).Outcome, "being checked (press Refresh in a minute)"))
+              X: =700
+              Y: =376
+              Width: =622
+              Height: =72
+              Color: =RGBA(91,99,112,1)
+              Size: =12
+        - bRefresh:
+            Control: Classic/Button
+            Properties:
+              Text: ="Refresh result"
+              X: =700
+              Y: =456
+              Width: =200
+              Height: =40
+              OnSelect: =Refresh(AvenueBookingRequests); Refresh(AvenueBookings)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
