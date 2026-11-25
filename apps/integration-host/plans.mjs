@@ -15,11 +15,46 @@ export const PLANS = [
   ...CURRENT.map(([name, group, price, hours, rate]) => ({ planId: name.toLowerCase(), name, group, priceCents: price * 100, cardPriceCents: Math.round(price * 100 * (1 + CARD_FEE)), hours, extraRate: rate, openToNew: true })),
   ...LEGACY.map(([name, price, hours]) => ({ planId: name.toLowerCase(), name, group: 'Legacy', priceCents: price * 100, cardPriceCents: price * 100, hours, extraRate: 35, openToNew: false }))
 ];
-export const planById = (id) => PLANS.find(p => p.planId === String(id || '').trim().toLowerCase());
+export const planById = (id, plans = PLANS) => plans.find(p => p.planId === String(id || '').trim().toLowerCase());
+
+/** [PROPOSED] Plans from SharePoint AvenuePlans (staff edit them in Setup > Plans) in the same shape as PLANS. Rows without a plan id, a price
+ *  or hours are skipped. Legacy plans have one price and are never open to new members. Card price defaults to bank + CARD_FEE. */
+export function plansFromRows(rows = []) {
+  const out = [];
+  for (const r of rows) {
+    const id = String(r?.PlanId ?? '').trim(), price = Number(r?.PriceCents), hours = Number(r?.MonthlyHours);
+    if (!id || r?.Active === false || !(price > 0) || !(hours > 0)) continue;
+    const group = typeof r.PlanGroup === 'object' ? r.PlanGroup?.Value : r.PlanGroup;
+    const legacy = group === 'Legacy', card = Number(r.CardPriceCents);
+    out.push({ planId: id.toLowerCase(), name: id, group: group || 'Emerging', priceCents: Math.round(price), cardPriceCents: legacy ? Math.round(price) : (card > 0 ? Math.round(card) : Math.round(price * (1 + CARD_FEE))),
+      hours, extraRate: r.ExtraHourRate == null || r.ExtraHourRate === '' ? null : Number(r.ExtraHourRate), openToNew: !legacy && r.OpenToNew !== false });
+  }
+  return out;
+}
+
+/** [PROPOSED] Cached plan source for /join and the Join request: reads AvenuePlans through the read-only 'plans' bridge flow (SP_BRIDGE_PLANS)
+ *  at most once per `ttlSec`. Falls back to the last good list, else to the hard-coded PLANS, when the read fails or has no plan open to new members. */
+export function createPlanSource({ bridge, nowSec, ttlSec = 600, log = () => {} }) {
+  let cache;
+  return async function plans() {
+    if (cache && nowSec() - cache.at < ttlSec) return cache.plans;
+    try {
+      const rows = await bridge.query('AvenuePlans', "FacilityId eq 'flavors-hyattsville' and Active eq 1",
+        ['PlanId', 'PlanGroup', 'PriceCents', 'CardPriceCents', 'MonthlyHours', 'ExtraHourRate', 'OpenToNew', 'Active'], 500);
+      const list = plansFromRows(rows);
+      if (!list.some(p => p.openToNew)) throw new Error('plans: no plan open to new members');
+      cache = { at: nowSec(), plans: list };
+    } catch (e) {
+      log(`plans: using ${cache ? 'the last good list' : 'the built-in list'} (${String(e?.message || e).slice(0, 80)})`);
+      cache = { at: nowSec(), plans: cache?.plans || PLANS };   // retry after ttlSec, not on every request
+    }
+    return cache.plans;
+  };
+}
 
 export const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 /** Stripe price lookup key. Legacy plans have only the bank price, used for every method. */
-export const lookupKey = (planId, method) => `avenue-${slug(planId)}-${planById(planId)?.group === 'Legacy' || method !== 'Card' ? 'bank' : 'card'}`;
+export const lookupKey = (planId, method, plans = PLANS) => `avenue-${slug(planId)}-${planById(planId, plans)?.group === 'Legacy' || method !== 'Card' ? 'bank' : 'card'}`;
 
 // Private events, dining room (sheet "Dining & Event Pricing"). $500 refundable deposit; balance due 30 days before (Q8/Q9 open).
 export const DEPOSIT_CENTS = 50000;

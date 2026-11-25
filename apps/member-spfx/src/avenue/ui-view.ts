@@ -170,13 +170,51 @@ export function agendaGroups(requests: IMyRequest[], tz: string, nowMs: number, 
   return out;
 }
 
-export interface IMonthDay { ymd: string; booked: boolean; today: boolean }
+export type StripStatus = 'Approved' | 'Pending' | 'Mixed';
 
-/** `count` days from today with the days that hold a live booking marked. */
-export function monthStrip(requests: IMyRequest[], todayYmd: string, tz: string, count: number = 31): IMonthDay[] {
-  const booked: Set<string> = new Set(requests.filter(r => r.status !== 'Cancelled' && r.status !== 'Declined').map(r => localDay(r.startUtc, tz)));
+export interface IMonthDay {
+  ymd: string;
+  /** A live booking starts on or runs through this day. */
+  booked: boolean;
+  today: boolean;
+  /** Live bookings touching this day (an overnight booking counts on each day it spans). */
+  count: number;
+  /** Earliest start of a booking that starts this day; undefined when the day is only crossed by an overnight one. */
+  firstStartUtc?: string;
+  /** Approved, Pending (incl. not yet processed) or Mixed; undefined when nothing is booked. */
+  status?: StripStatus;
+  /** Only an overnight booking that started earlier runs through this day. */
+  carryOver: boolean;
+}
+
+/**
+ * `count` days with each day's live bookings (cancelled and declined left out). Upcoming: today and the days after;
+ * past: the `count` days ending today. An overnight booking marks every facility-local day it touches.
+ */
+export function monthStrip(requests: IMyRequest[], todayYmd: string, tz: string, count: number = 31, view: 'upcoming' | 'past' = 'upcoming'): IMonthDay[] {
+  const startYmd: string = view === 'past' ? addDays(todayYmd, 1 - count) : todayYmd;
   const out: IMonthDay[] = [];
-  for (let i: number = 0; i < count; i++) { const ymd: string = addDays(todayYmd, i); out.push({ ymd, booked: booked.has(ymd), today: i === 0 }); }
+  for (let i: number = 0; i < count; i++) {
+    const ymd: string = addDays(startYmd, i);
+    out.push({ ymd, booked: false, today: ymd === todayYmd, count: 0, carryOver: false });
+  }
+  const byDay: Map<string, IMonthDay> = new Map(out.map(d => [d.ymd, d] as [string, IMonthDay]));
+  for (const r of requests) {
+    if (r.status === 'Cancelled' || r.status === 'Declined') { continue; }
+    const st: StripStatus = r.status === 'Approved' || r.status === 'No-show credited' ? 'Approved' : 'Pending';
+    const first: string = localDay(r.startUtc, tz);
+    const last: string = localDay(new Date(Math.max(Date.parse(r.startUtc), Date.parse(r.endUtc) - 1)), tz);
+    // ponytail: capped at 7 days per booking; bookings are hours long, the cap only guards bad data.
+    for (let ymd: string = first, n: number = 0; ymd <= last && n < 7; ymd = addDays(ymd, 1), n++) {
+      const d: IMonthDay | undefined = byDay.get(ymd);
+      if (!d) { continue; }
+      d.booked = true;
+      d.count++;
+      d.status = !d.status || d.status === st ? st : 'Mixed';
+      if (ymd === first && (!d.firstStartUtc || r.startUtc < d.firstStartUtc)) { d.firstStartUtc = r.startUtc; }
+    }
+  }
+  out.forEach(d => { d.carryOver = d.booked && !d.firstStartUtc; });
   return out;
 }
 

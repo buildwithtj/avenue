@@ -239,7 +239,7 @@
         Control: GroupContainer@1.3.0
         Variant: ManualLayout
         Properties:
-          Height: =704
+          Height: =826
           Width: =1366
           AlignInContainer: =AlignInContainer.Center
           FillPortions: =0
@@ -280,6 +280,32 @@
               Color: =RGBA(15,76,92,1)
               Size: =20
               FontWeight: =FontWeight.Bold
+        - supCatFilter:
+            Control: Classic/DropDown
+            Properties:
+              Items: |-
+                =ForAll(SortByColumns(Filter(AvenueSupportCategories, FacilityId = "flavors-hyattsville"), "SortOrder", SortOrder.Ascending), {Value: Title})
+              Default: =""
+              AllowEmptySelection: =true
+              X: =880
+              Y: =0
+              Width: =290
+              Height: =34
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - supCatHint:
+            Control: Label
+            Properties:
+              Text: ="Topic filter (empty = all topics)"
+              X: =660
+              Y: =4
+              Width: =214
+              Height: =28
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =IsBlank(supCatFilter.Selected.Value)
         - supRefresh:
             Control: Classic/Button
             Properties:
@@ -288,7 +314,7 @@
               Y: =0
               Width: =140
               Height: =34
-              OnSelect: =Refresh(AvenueSupportCases)
+              OnSelect: =Refresh(AvenueSupportCases); Refresh(AvenueSupportMessages); Refresh(AvenueSupportFiles)
               Fill: =RGBA(255,255,255,1)
               Color: =RGBA(15,76,92,1)
               HoverFill: =RGBA(244,245,247,1)
@@ -310,7 +336,7 @@
         - supChipAll:
             Control: Classic/Button
             Properties:
-              Text: ="All (" & Text(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville"))) & ")"
+              Text: ="All (" & Text(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value <> "Archived"))) & ")"
               X: =20
               Y: =44
               Width: =128
@@ -403,12 +429,36 @@
               RadiusBottomLeft: =15
               RadiusBottomRight: =15
               BorderColor: =RGBA(15,76,92,1)
+        - supChipArchived:
+            Control: Classic/Button
+            Properties:
+              Text: ="Archived (" & Text(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value = "Archived"))) & ")"
+              X: =564
+              Y: =44
+              Width: =128
+              Height: =30
+              OnSelect: =Set(varSupStage, "Archived")
+              Fill: =If(Coalesce(varSupStage, "All") = "Archived", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varSupStage, "All") = "Archived", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varSupStage, "All") = "Archived", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varSupStage, "All") = "Archived", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =15
+              RadiusTopRight: =15
+              RadiusBottomLeft: =15
+              RadiusBottomRight: =15
+              BorderColor: =RGBA(15,76,92,1)
         - supGal:
             Control: Gallery@2.15.0
             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
             Properties:
               Items: |-
-                =With({st: Coalesce(varSupStage, "All")}, SortByColumns(AddColumns(If(st = "All", Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville"), Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value = st)), Rank, Switch(Status.Value, "Open", 0, "Answered", 1, 2)), "Rank", SortOrder.Ascending, "CreatedAt", SortOrder.Descending))
+                =With({st: Coalesce(varSupStage, "All"), ct: Coalesce(supCatFilter.Selected.Value, "")}, SortByColumns(AddColumns(If(st = "All", If(ct = "", Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value <> "Archived"), Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value <> "Archived", Category.Value = ct)), If(ct = "", Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value = st), Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value = st, Category.Value = ct))), Rank, Switch(Status.Value, "Open", 0, "Answered", 1, "Closed", 2, 3)), "Rank", SortOrder.Ascending, "CreatedAt", SortOrder.Descending))
               X: =20
               Y: =90
               Width: =640
@@ -477,7 +527,7 @@
               Height: =40
               Color: =RGBA(91,99,112,1)
               Size: =12
-              Visible: =CountRows(AvenueSupportCases) = 0
+              Visible: =CountRows(supGal.AllItems) = 0
         - supSelHead:
             Control: Label
             Properties:
@@ -492,24 +542,68 @@
             Control: Label
             Properties:
               Text: |-
-                =If(IsBlank(supGal.Selected), "", "From " & supGal.Selected.MemberId & " · " & Coalesce(supGal.Selected.Category.Value, "-") & " · " & supGal.Selected.Status.Value & Char(10) & "Opened " & With({t: supGal.Selected.CreatedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "ddd d mmm, h:mm AM/PM"))))) & If(IsBlank(supGal.Selected.RepliedAt), "", Char(10) & "Last reply by " & supGal.Selected.RepliedBy & " · " & With({t: supGal.Selected.RepliedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "ddd d mmm, h:mm AM/PM")))))))
+                =If(IsBlank(supGal.Selected), "", "From " & supGal.Selected.MemberId & " · " & Coalesce(supGal.Selected.Category.Value, "-") & " · " & supGal.Selected.Status.Value & Char(10) & "Opened " & With({t: supGal.Selected.CreatedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "ddd d mmm, h:mm AM/PM"))))) & If(IsBlank(supGal.Selected.RepliedAt), "", " · last reply by " & supGal.Selected.RepliedBy & " " & With({t: supGal.Selected.RepliedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "d mmm, h:mm AM/PM")))))) & If(IsBlank(supGal.Selected.ArchivedAt), "", Char(10) & "Archived by " & supGal.Selected.ArchivedBy & " " & With({t: supGal.Selected.ArchivedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "d mmm yyyy")))))))
               X: =690
               Y: =124
               Width: =640
-              Height: =56
+              Height: =58
               Color: =RGBA(31,31,31,1)
               Size: =12
         - supMsgCap:
             Control: Label
             Properties:
-              Text: ="Member's last message"
+              Text: =If(CountRows(supThread.AllItems) > 0, "Conversation (" & CountRows(supThread.AllItems) & " messages from the member)", "Member's last message (thread not readable here)")
               X: =690
               Y: =186
-              Width: =300
+              Width: =640
               Height: =20
               Color: =RGBA(91,99,112,1)
               Size: =11
               FontWeight: =FontWeight.Bold
+        - supThread:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =If(IsBlank(supGal.Selected), Blank(), SortByColumns(Filter(AvenueSupportMessages, ThreadId = supGal.Selected.ThreadId), "Created", SortOrder.Ascending))
+              X: =690
+              Y: =208
+              Width: =640
+              Height: =190
+              TemplateSize: =70
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =CountRows(supThread.AllItems) > 0
+            Children:
+              - supThWho:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Author.DisplayName, "Member") & " · " & Text(ThisItem.Created, "ddd d mmm, h:mm AM/PM")
+                    X: =8
+                    Y: =2
+                    Width: =600
+                    Height: =20
+                    Color: =RGBA(91,99,112,1)
+                    Size: =10
+              - supThBody:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Body
+                    X: =8
+                    Y: =22
+                    Width: =600
+                    Height: =44
+                    Color: =RGBA(31,31,31,1)
+                    Size: =11
+              - supThreadSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =69
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
         - supMsg:
             Control: Label
             Properties:
@@ -520,12 +614,69 @@
               Height: =110
               Color: =RGBA(31,31,31,1)
               Size: =12
+              Visible: =CountRows(supThread.AllItems) = 0
+        - supFilesCap:
+            Control: Label
+            Properties:
+              Text: ="Attachments (private copies; click to open)"
+              X: =690
+              Y: =404
+              Width: =640
+              Height: =20
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              FontWeight: =FontWeight.Bold
+        - supFiles:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =If(IsBlank(supGal.Selected), Blank(), Filter(AvenueSupportFiles, CaseId = supGal.Selected.CaseId))
+              X: =690
+              Y: =426
+              Width: =640
+              Height: =64
+              TemplateSize: =30
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - supFileName:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.'File name with extension'
+                    X: =8
+                    Y: =2
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(15,76,92,1)
+                    Size: =11
+                    OnSelect: =Launch(ThisItem.'Link to item')
+              - supFilesSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =29
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - supFilesNone:
+            Control: Label
+            Properties:
+              Text: ="No attachments."
+              X: =698
+              Y: =430
+              Width: =600
+              Height: =24
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =CountRows(supFiles.AllItems) = 0
         - supPrevCap:
             Control: Label
             Properties:
               Text: ="Your last reply"
               X: =690
-              Y: =324
+              Y: =496
               Width: =300
               Height: =20
               Color: =RGBA(91,99,112,1)
@@ -537,11 +688,11 @@
             Properties:
               Text: =If(IsBlank(supGal.Selected), "", Coalesce(supGal.Selected.StaffReply, ""))
               X: =690
-              Y: =346
+              Y: =516
               Width: =640
-              Height: =60
+              Height: =40
               Color: =RGBA(91,99,112,1)
-              Size: =12
+              Size: =11
               Visible: =!IsBlank(supGal.Selected) && !IsBlank(supGal.Selected.StaffReply)
         - supReplyIn:
             Control: Classic/TextInput
@@ -550,9 +701,9 @@
               HintText: ="Reply to the member (required)"
               Mode: =TextMode.MultiLine
               X: =690
-              Y: =414
+              Y: =562
               Width: =640
-              Height: =90
+              Height: =80
               BorderColor: =RGBA(225,228,233,1)
               BorderThickness: =1
               Color: =RGBA(31,31,31,1)
@@ -562,8 +713,8 @@
             Properties:
               Text: ="Send reply"
               X: =690
-              Y: =516
-              Width: =200
+              Y: =652
+              Width: =180
               Height: =38
               OnSelect: |-
                 =IfError(Patch(AvenueSupportCases, LookUp(AvenueSupportCases, CaseId = supGal.Selected.CaseId), {StaffReply: Trim(supReplyIn.Text), RepliedBy: User().Email, RepliedAt: Now(), Status: {Value: "Answered"}}); Reset(supReplyIn); Notify("Reply saved. The member sees it in the portal.", NotificationType.Success), Notify("Could not save the reply.", NotificationType.Error))
@@ -581,14 +732,14 @@
               RadiusTopRight: =8
               RadiusBottomLeft: =8
               RadiusBottomRight: =8
-              DisplayMode: =If(!IsBlank(supGal.Selected) && supGal.Selected.Status.Value <> "Closed" && !IsBlank(Trim(supReplyIn.Text)), DisplayMode.Edit, DisplayMode.Disabled)
+              DisplayMode: =If(!IsBlank(supGal.Selected) && supGal.Selected.Status.Value <> "Closed" && supGal.Selected.Status.Value <> "Archived" && !IsBlank(Trim(supReplyIn.Text)), DisplayMode.Edit, DisplayMode.Disabled)
         - supClose:
             Control: Classic/Button
             Properties:
-              Text: ="Close conversation"
-              X: =900
-              Y: =516
-              Width: =200
+              Text: ="Close"
+              X: =880
+              Y: =652
+              Width: =120
               Height: =38
               OnSelect: |-
                 =IfError(Patch(AvenueSupportCases, LookUp(AvenueSupportCases, CaseId = supGal.Selected.CaseId), {Status: {Value: "Closed"}}); Notify("Closed.", NotificationType.Success), Notify("Could not close it.", NotificationType.Error))
@@ -610,13 +761,128 @@
               HoverBorderColor: =RGBA(15,76,92,1)
               PressedBorderColor: =RGBA(15,76,92,1)
               DisabledBorderColor: =RGBA(225,228,233,1)
-              DisplayMode: =If(!IsBlank(supGal.Selected) && supGal.Selected.Status.Value <> "Closed", DisplayMode.Edit, DisplayMode.Disabled)
+              DisplayMode: =If(!IsBlank(supGal.Selected) && supGal.Selected.Status.Value <> "Closed" && supGal.Selected.Status.Value <> "Archived", DisplayMode.Edit, DisplayMode.Disabled)
+        - supReopen:
+            Control: Classic/Button
+            Properties:
+              Text: ="Reopen"
+              X: =1010
+              Y: =652
+              Width: =120
+              Height: =38
+              OnSelect: |-
+                =IfError(Patch(AvenueSupportCases, LookUp(AvenueSupportCases, CaseId = supGal.Selected.CaseId), {Status: {Value: "Open"}, ArchivedBy: "", ArchivedAt: Blank()}); Notify("Reopened.", NotificationType.Success), Notify("Could not reopen it.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              DisplayMode: =If(!IsBlank(supGal.Selected) && (supGal.Selected.Status.Value = "Closed" || supGal.Selected.Status.Value = "Archived"), DisplayMode.Edit, DisplayMode.Disabled)
+        - supArchive:
+            Control: Classic/Button
+            Properties:
+              Text: ="Archive"
+              X: =1140
+              Y: =652
+              Width: =190
+              Height: =38
+              OnSelect: |-
+                =IfError(Patch(AvenueSupportCases, LookUp(AvenueSupportCases, CaseId = supGal.Selected.CaseId), {Status: {Value: "Archived"}, ArchivedBy: User().Email, ArchivedAt: Now()}); Notify("Archived: hidden from All, kept for the record. The member's own messages are not changed.", NotificationType.Success), Notify("Could not archive it.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              DisplayMode: =If(!IsBlank(supGal.Selected) && supGal.Selected.Status.Value <> "Archived", DisplayMode.Edit, DisplayMode.Disabled)
+        - supCatEdit:
+            Control: Classic/DropDown
+            Properties:
+              Items: |-
+                =ForAll(SortByColumns(Filter(AvenueSupportCategories, FacilityId = "flavors-hyattsville", Active = true), "SortOrder", SortOrder.Ascending), {Value: Title})
+              Default: =Coalesce(supGal.Selected.Category.Value, "")
+              AllowEmptySelection: =true
+              X: =690
+              Y: =706
+              Width: =240
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - supStEdit:
+            Control: Classic/DropDown
+            Properties:
+              Items: =["Open", "Answered", "Closed", "Archived"]
+              Default: =Coalesce(supGal.Selected.Status.Value, "Open")
+              X: =940
+              Y: =706
+              Width: =170
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - supSaveMeta:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save topic and status"
+              X: =1120
+              Y: =706
+              Width: =210
+              Height: =36
+              OnSelect: |-
+                =IfError(Patch(AvenueSupportCases, LookUp(AvenueSupportCases, CaseId = supGal.Selected.CaseId), {Category: {Value: Coalesce(supCatEdit.Selected.Value, supGal.Selected.Category.Value)}, Status: {Value: supStEdit.Selected.Value}, ArchivedBy: If(supStEdit.Selected.Value = "Archived", User().Email, ""), ArchivedAt: If(supStEdit.Selected.Value = "Archived", Now(), Blank())}); Notify("Saved (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ").", NotificationType.Success), Notify("Could not save.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              DisplayMode: =If(IsBlank(supGal.Selected), DisplayMode.Disabled, DisplayMode.Edit)
         - supHelp:
             Control: Label
             Properties:
-              Text: ="Replies are shown to the member in the portal. Nobody is promised a reply time and no contact details are published (Q-13 and Q-P1 are open). The reply text must not be empty."
+              Text: ="Replies are shown to the member in the portal. Nobody is promised a reply time and no contact details are published (Q-13 and Q-P1 are open). Archive hides a case from All; nothing is deleted from this screen (Q-R5)."
               X: =690
-              Y: =564
+              Y: =750
               Width: =640
               Height: =44
               Color: =RGBA(91,99,112,1)

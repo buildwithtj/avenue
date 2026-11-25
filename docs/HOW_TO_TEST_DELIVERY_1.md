@@ -1,5 +1,7 @@
 # How to test delivery 1: Kitchen Bookings + Communication
 
+> **Superseded 23 Nov 2026 by [END_TO_END_TEST_GUIDE.md](END_TO_END_TEST_GUIDE.md)** (member portal 2.17.0.0, staff app, flows, host, sensors, responsive). Kept for history.
+
 Written 18 Nov 2026. Test data only (ids start with `gaptest-`, remove them by id afterwards). The site is the real Avenue site, so keep tests small.
 
 ## What is live

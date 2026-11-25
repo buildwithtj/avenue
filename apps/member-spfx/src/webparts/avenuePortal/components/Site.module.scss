@@ -1,6 +1,6 @@
 // Avenue member console: website layout. Tokens come from .avenuePortal (AvenuePortal.module.scss).
 // Palette use: deep ink bands, cream canvas, citrus ONLY for the main action, lime = free, brick = taken. Text pairs checked >= 4.5:1:
-// cream #F4F5F7 on ink #0F4C5C 15:1; muted #B4BDD0 on ink 8:1; ink on citrus #C9A24D 5.2:1; ink on lime-tint, brick #6B7280 on #E8EAED 6:1.
+// cream #F4F5F7 on ink #0F4C5C 15:1; muted #B4BDD0 on ink 8:1; ink on citrus #C9A24D 5.2:1; ink on lime-tint, brick #5B6370 on #E8EAED 6:1.
 // Motion: transform and opacity only, 180-450 ms, var(--av-ease); every animation is dropped under [data-motion="reduce"].
 
 $ink: var(--av-ink);
@@ -174,7 +174,7 @@ $serif: var(--av-heading-font);
 .statusPill { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; white-space: nowrap; i { width: 9px; height: 9px; border-radius: 50%; background: currentColor; } }
    
 .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; }
-.dotFree { background: $free; } .dotTaken { background: #6B7280; }
+.dotFree { background: $free; } .dotTaken { background: #5B6370; }
 .tick { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 
 // ---- Home ----
@@ -256,14 +256,14 @@ $serif: var(--av-heading-font);
 .stepper { display: flex; align-items: center; gap: 10px; b { min-width: 24px; text-align: center; font-size: 20px; } }
 .diningStrip { display: flex; gap: 16px; align-items: center; margin-bottom: 14px; img { width: 140px; height: 74px; object-fit: cover; border-radius: 12px; } p { margin: 0; color: $mutedOnInk; } }
 .messages { min-height: 0; }
-.suggest { background: #3A1F28; border-left: 4px solid #6B7280; color: #F8DDE2; margin: 0 0 8px; padding: 10px 14px; border-radius: 0 10px 10px 0; font-weight: 600; }
+.suggest { background: #3A1F28; border-left: 4px solid #5B6370; color: #F8DDE2; margin: 0 0 8px; padding: 10px 14px; border-radius: 0 10px 10px 0; font-weight: 600; }
 .hintOnDark { color: $mutedOnInk; }
 
 .busyGrow { animation: grow .45s var(--av-ease) backwards; }
 .block { position: absolute; top: 5px; bottom: 5px; border-radius: 10px; background: $citrus; color: var(--av-on-accent); display: flex; align-items: center; padding: 0 8px; overflow: hidden; box-shadow: 0 4px 14px rgba(201, 162, 75, .45); pointer-events: none; z-index: 2; transform-origin: left center; b { font-size: 12px; white-space: nowrap; } }
 .blockFlag { background: #E6C77A; box-shadow: 0 0 0 2px #E6C77A; }
 .blockGhost { background: rgba(201, 162, 75, .5); box-shadow: none; }
-.blockRejected { background: rgba(217, 132, 111, .65); box-shadow: 0 0 0 2px #6B7280; }
+.blockRejected { background: rgba(217, 132, 111, .65); box-shadow: 0 0 0 2px #5B6370; }
 .blockSettle { animation: settle .45s var(--av-spring) backwards; }
 .blockShake { animation: shake .4s var(--av-ease); }
 .pendingMark { position: absolute; top: 4px; bottom: 4px; width: 4px; border-radius: 2px; background: $citrus; z-index: 2; pointer-events: none; }
@@ -1289,7 +1289,7 @@ $ink2d: #0B3A47;
 .scName { display: grid; min-width: 0; strong { font-size: 16px; font-weight: 700; } em { font-style: normal; font-size: 12px; color: $subtle; } }
 .scState { display: grid; min-width: 0; b { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 700; i { width: 8px; height: 8px; border-radius: 50%; } } em { font-style: normal; font-size: 12px; color: $subtle; } }
 .scFree .scState b { color: $ink; i { background: $citrus; } }
-.scBusy .scState b { color: #6B7280; i { background: #9AA5B1; } }
+.scBusy .scState b { color: #5B6370; i { background: #9AA5B1; } }
 .scBar { position: relative; height: 10px; background: #E3ECEE; border-radius: 2px; overflow: hidden;
   i { position: absolute; top: 0; bottom: 0; background: repeating-linear-gradient(135deg, $ink 0 3px, #3F7482 3px 6px); } b { position: absolute; top: -2px; bottom: -2px; width: 2px; background: $citrus; } }
 [data-size='phone'] { .scScale { display: none; } .scUnit { grid-template-columns: 48px minmax(0, 1fr) auto; row-gap: 6px; .artTile { width: 48px; height: 38px; } } .scState { grid-column: 2; grid-row: 2; } .scBar { grid-column: 1 / -1; } .scUnit .btn { grid-column: 3; grid-row: 1 / span 2; } }
@@ -1678,3 +1678,1266 @@ $ink2d: #0B3A47;
 .bkGroup h3 { color: #3D4F59; margin-bottom: 8px; }
 .bkUnitOff .bkUnitBtn { opacity: .7; }
 .bkUnits li.bkUnitOn { background: #FBF6EA; border-color: $citrus; box-shadow: inset 3px 0 0 $citrus; }
+
+// =====================================================================================================================
+// v6 · Redesign phase 1 (REDESIGN_AND_ADMIN_CRUD_PLAN §3–4): grid-aligned hero, compact bar, page headers everywhere,
+// phone bar with a raised Book button, Home bento, four-column footer, Policies and help page.
+// =====================================================================================================================
+
+// Hero on the page grid: text starts on the same line as every container below it (was pinned right of a wide column).
+.site[data-size='wide'] .hx {
+  grid-template-columns: minmax(32px, 1fr) minmax(0, 620px) minmax(0, 556px) minmax(32px, 1fr);
+  min-height: 420px;
+  .hxText { grid-column: 2; justify-content: flex-start; padding: 48px 48px 48px 0; }
+  .hxInner { width: 100%; }
+  .hxMedia { grid-column: 3 / 5; }
+}
+.site[data-size='wide'][data-screen='xxl'] .hx { grid-template-columns: minmax(32px, 1fr) minmax(0, 700px) minmax(0, 676px) minmax(32px, 1fr); }
+
+// Bar slims after a short scroll and stays visible (visible navigation beats hidden menus).
+.bar { transition: height .2s var(--av-ease, ease); }
+.site[data-compact='on'] { --bar-h: 54px; }
+.site[data-size='phone'][data-compact='on'] { --bar-h: 48px; }
+.site[data-compact='on'] .topbar { box-shadow: 0 6px 18px rgba(7, 44, 54, .22); }
+.site[data-compact='on'] .brandLogo { height: 24px; }
+.userChipOn { background: rgba(255, 255, 255, .16) !important; border-color: $citrus !important; }
+
+// Phone bar: five slots, Book raised in the middle.
+.tabBook { position: relative; .navIcon { width: 26px; height: 26px; padding: 9px; box-sizing: content-box; border-radius: 50%; background: $citrus; color: #14262E !important; margin-top: -22px; box-shadow: 0 6px 16px rgba(0, 0, 0, .28); transform: none !important; } }
+.tabBook.tabOn::after { display: none !important; }
+.tabBook span { margin-top: 2px; }
+
+// One page header on every screen (same band and type as Book, Schedule, My bookings, Notices).
+.pgHead { padding: 28px 0 24px; }
+[data-size='phone'] .pgHead { padding: 16px 0 16px; }
+.pgBack { background: none; border: 0; padding: 4px 0; margin: 0 0 8px; font: inherit; font-size: 14px; font-weight: 600; color: $ink; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; min-height: 32px; }
+.pgEyebrow { margin: 0; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: $subtle; }
+.pgHead .pageTitle { margin: 6px 0 8px; }
+.pgLede { margin: 0; font-size: 17px; color: $subtle; max-width: 64ch; }
+[data-size='phone'] .pgLede { font-size: 15px; }
+.pgActions { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+.pgBody { margin: 0; padding-top: 24px; max-width: 1040px; }
+[data-size='phone'] .pgBody { padding-top: 12px; }
+// The page header already names the screen: hide the repeated title inside the newer pages.
+.pgBody .nmHead > div:first-child { display: none; }
+
+// Home bento.
+.bento { padding: 40px 0 72px; }
+[data-size='phone'] .bento { padding: 20px 0 40px; }
+.bentoGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; grid-auto-flow: row dense; }
+[data-size='mid'] .bentoGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+[data-size='phone'] .bentoGrid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.bCard { background: #fff; border: 1px solid $line; border-radius: 16px; padding: 20px; display: grid; gap: 10px; align-content: start; min-width: 0; box-shadow: 0 1px 2px rgba(16, 42, 52, .04);
+  .wkHead { margin: 0; } .meter { border: 0; padding: 0; margin: 0; background: none; box-shadow: none; } }
+.bWeek { grid-column: span 2; }
+[data-size='phone'] .bWeek { grid-column: auto; }
+.bCard h2, .bCard .wkHead h2, .bCard .miniHead { font-size: 18px !important; font-weight: 700; letter-spacing: 0; line-height: 1.3; margin: 0; color: $text; text-transform: none; }
+.bCard .linkBtn { justify-self: start; text-align: left; }
+.bCard .meterTop { align-items: baseline; }
+.bBig { font-size: 44px; line-height: 1; font-weight: 800; letter-spacing: -.03em; color: $ink; font-variant-numeric: tabular-nums; small { font-size: 16px; font-weight: 600; color: $subtle; letter-spacing: 0; } }
+.bNote { margin: 0; font-size: 14px; color: $subtle; }
+.bNotices ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.bNotices li button { width: 100%; display: flex; gap: 10px; align-items: center; text-align: left; background: none; border: 0; padding: 8px 6px; border-radius: 10px; font: inherit; color: inherit; cursor: pointer; min-height: 44px;
+  span { display: grid; min-width: 0; } strong { font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } em { font-style: normal; font-size: 13px; color: $subtle; } }
+.bNotices li.bUnread strong { font-weight: 800; }
+@media (hover: hover) { .bNotices li button:hover { background: #F1F5F7; } }
+.bQuick { grid-column: 1 / -1; }
+.bQuick .wkModes { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); button { border: 1px solid $line; border-radius: 12px; padding: 10px 12px; } }
+
+// Footer: four columns, policies one tap away.
+.siteFooter .footGrid { grid-template-columns: 1.4fr 1fr 1fr 1fr; }
+[data-size='mid'] .siteFooter .footGrid { grid-template-columns: 1fr 1fr; }
+[data-size='phone'] .siteFooter .footGrid { grid-template-columns: 1fr 1fr; .footBrand { grid-column: 1 / -1; } }
+.siteFooter nav { align-content: start; }
+.siteFooter nav button { min-height: 32px; text-align: left; }
+.footCta { margin-top: 8px; background: $citrus; color: #14262E; border: 0; border-radius: 999px; padding: 10px 18px; font: inherit; font-weight: 700; cursor: pointer; min-height: 44px; }
+.footLink { background: none; border: 0; padding: 0; font: inherit; color: #D5E3E7; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; min-height: 32px; }
+@media (hover: hover) { .footLink:hover { color: #fff; } }
+
+// Drawer: Policies and help row.
+.pdPolicies { width: 100%; display: grid; gap: 2px; text-align: left; background: none; border: 0; border-top: 1px solid $line; padding: 14px 0; font: inherit; color: inherit; cursor: pointer; min-height: 44px;
+  strong { font-size: 16px; } span { font-size: 13px; color: $subtle; } }
+
+// Policies and help page.
+.pgBody > .pol { background: none !important; box-shadow: none !important; border: 0 !important; padding: 0 !important; }
+.pol { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 32px; align-items: start; }
+[data-size='phone'] .pol, [data-size='mid'] .pol { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.polToc { position: sticky; top: calc(var(--bar-h) + 16px); display: grid; gap: 4px;
+  button { text-align: left; background: none; border: 0; border-left: 3px solid $line; padding: 8px 12px; font: inherit; font-weight: 600; color: $ink; cursor: pointer; min-height: 40px; } }
+[data-size='phone'] .polToc, [data-size='mid'] .polToc { position: static; display: flex; overflow-x: auto; gap: 8px; button { border: 1px solid $line; border-radius: 999px; white-space: nowrap; } }
+@media (hover: hover) { .polToc button:hover { border-left-color: $citrus; } }
+.polBody { display: grid; gap: 16px; min-width: 0;
+  section { background: #fff; border: 1px solid $line; border-radius: 16px; padding: 24px; scroll-margin-top: calc(var(--bar-h) + 16px); }
+  h2 { margin: 0 0 12px; font-size: 24px; }
+  ul { margin: 0 0 16px; padding-left: 20px; display: grid; gap: 8px; }
+  p { margin: 0 0 12px; max-width: 70ch; } }
+[data-size='phone'] .polBody section { padding: 16px; }
+.polTable { overflow-x: auto; margin: 0 0 16px;
+  table { border-collapse: collapse; width: 100%; min-width: 420px; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid $line; font-size: 15px; }
+  thead th { font-size: 13px; color: $subtle; font-weight: 700; } }
+// Touch screens: the new text links are full 44 px targets too.
+@media (pointer: coarse) { .pgBack, .footLink, .siteFooter nav button, .polToc button { min-height: 44px; } }
+
+// v7 · P3 bookings + notices
+// My bookings strip: booked days filled by status (Approved teal, Waiting amber, both = teal with an amber bar), start time
+// under the date, today outlined, the first upcoming booked day tagged "Next". Text pairs: white on ink 9:1, #5A3F0A on #F6E7BF 8:1.
+.monthStrip li > button.monthFill { min-width: 44px; min-height: 52px; padding-top: 14px; overflow: visible; }
+.monthStrip .monthOk { background: $ink; border-color: $ink; color: #fff; span { color: #D7E6EA !important; } }
+.monthStrip .monthWait { background: #F6E7BF; border-color: #D9B865; color: #5A3F0A; span { color: #5A3F0A !important; } }
+.monthStrip .monthMixed { background: $ink; border-color: $ink; color: #fff; box-shadow: inset 0 -4px 0 #D9B865; span { color: #D7E6EA !important; } }
+.monthStrip .monthToday.monthFill { outline: 2px solid $citrus; outline-offset: 2px; }
+.monthStrip .monthFocus.monthFill { outline: 3px solid $citrus; outline-offset: 2px; }
+.monthTime { display: block; font-size: 12px; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.monthNext { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); padding: 1px 6px; border-radius: 999px; background: $citrus; color: $ink; font-size: 12px; font-style: normal; font-weight: 800; line-height: 1.3; white-space: nowrap; }
+.monthStrip { padding-top: 12px; }
+// Notices: read rows stay listed, quieter (no opacity, so text keeps its contrast); expiry tag; tabs beside the title.
+.ntRead .ntText strong { font-weight: 500; color: $subtle; }
+.ntRead .ntIcon { filter: saturate(.4); }
+.ntExpires { border-color: #D9B865; background: #F6E7BF; color: #5A3F0A; }
+// Bell: "Earlier" section of read notices.
+.bellMenu li.bellSection { padding: 10px 16px 4px; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: $subtle; border-top: 1px solid $line; animation: none; }
+.bellRead strong { font-weight: 500; color: $subtle; }
+@media (pointer: coarse) { .monthStrip li > button.monthFill { min-height: 52px; min-width: 44px; } .nt .segmented button { min-height: 44px; } }
+
+// v7 · P4 membership + billing
+.mbPlan { background: #fff; border: 1px solid $line; border-radius: 16px; padding: 24px; display: grid; gap: 12px; }
+.mbKicker { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: $subtle; }
+.mbPlanName { margin: 2px 0 0; font-size: 24px; }
+.mbPrice, .mbCardPrice { display: flex; align-items: baseline; gap: 4px; font-variant-numeric: tabular-nums;
+  strong { font-size: clamp(32px, 5vw, 44px); line-height: 1; color: $ink; } span { color: $subtle; } }
+.mbCardPrice strong { font-size: 28px; }
+.mbNote { color: $subtle; margin: 0; font-size: 14px; max-width: 62ch; }
+.mbFacts { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px;
+  div { border-top: 1px solid $line; padding-top: 10px; } dt { font-size: 13px; color: $subtle; } dd { margin: 2px 0 0; font-weight: 700; font-variant-numeric: tabular-nums; } }
+.mbUsage { display: grid; gap: 8px; background: #fff; border: 1px solid $line; border-radius: 16px; padding: 18px 20px; --mb-fill: var(--av-ink); }
+.mbUsed { font-size: 18px; font-variant-numeric: tabular-nums; }
+.mbMeter { display: block; height: 10px; border-radius: 999px; background: $line; overflow: hidden;
+  span { display: block; height: 100%; border-radius: 999px; background: var(--mb-fill); transition: width .4s var(--av-ease); } }
+.mbHigh { --mb-fill: #B7791F; border-color: #E6C77A; }
+.mbOver { --mb-fill: #A4262C; border-color: #A4262C; }
+.mbOverText { color: #7A1D22; font-weight: 600; font-variant-numeric: tabular-nums; }
+.mbCompare { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.mbCard { position: relative; display: grid; gap: 8px; align-content: start; background: #fff; border: 1px solid $line; border-radius: 16px; padding: 18px;
+  h3 { margin: 0; font-size: 18px; } ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14px; color: $subtle; } .btn { justify-self: start; } }
+.mbCardOn { border: 2px solid $ink; }
+.mbBadges { display: flex; gap: 6px; min-height: 22px; }
+.mbBadge { font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px; background: var(--av-ok-tint); color: $ink; }
+.mbBadgeRec { background: var(--av-accent-tint); color: #6B4F10; }
+.mbSent { display: grid; gap: 6px; justify-items: start; padding: 14px 16px; border-radius: 12px; background: #F1F8F3; border: 1px solid #1F6B3A; color: #14462A; }
+.mbTable { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; margin-bottom: 12px;
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid $line; font-size: 15px; } thead th { font-size: 13px; color: $subtle; } }
+.mbField { display: grid; gap: 4px; margin-top: 12px; font-size: 14px; color: $subtle;
+  textarea { font: inherit; padding: 10px 12px; border: 1px solid $line; border-radius: 10px; color: $text; background: #fff; resize: vertical; } }
+.mbErr { color: #A4262C; font-weight: 600; margin: 8px 0 0; }
+.biNext { display: grid; gap: 12px; }
+.biTotal { display: grid; gap: 2px; strong { font-size: clamp(32px, 5vw, 44px); line-height: 1.1; color: $ink; font-variant-numeric: tabular-nums; } span { font-size: 14px; color: $subtle; } }
+.biBreak { margin: 0; display: grid; gap: 0;
+  div { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid $line; }
+  dt { color: $subtle; } dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; } }
+.biLines { list-style: none; margin: 0; padding: 0;
+  li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid $line; font-variant-numeric: tabular-nums; } }
+.biQuiet { color: $subtle; }
+.biList { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px;
+  li { display: flex; gap: 8px; align-items: center; } }
+.biRow { flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; text-align: left; font: inherit; color: inherit;
+  background: #fff; border: 1px solid $line; border-radius: 12px; padding: 12px 14px; cursor: pointer; min-height: 44px; }
+@media (hover: hover) { .biRow:hover { border-color: $ink; } }
+.biRowMain { display: grid; min-width: 0; strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } span { font-size: 13px; color: $subtle; } }
+.biAmt { font-weight: 700; font-variant-numeric: tabular-nums; }
+.biChip { font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+.biPaid { color: #1F6B3A; background: #F1F8F3; }
+.biOpen { color: $ink; background: var(--av-ok-tint); }
+.biLate { color: #A4262C; background: #FDF3F4; }
+.biVoid { color: $subtle; background: #F1F2F4; }
+.biDetailHead { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; strong { font-size: 32px; font-variant-numeric: tabular-nums; } }
+[data-size='phone'] .biRow { grid-template-columns: minmax(0, 1fr) auto; .biAmt { grid-row: 2; } }
+@media (pointer: coarse) { .mbCard .btn, .biRow, .biList .btn, .mbSent .btn { min-height: 44px; } }
+
+// v7 · P2 Book
+// Intro strip, desktop cart column, phone/mid bottom bar, Review & send sheet (GSAP animates the sheet; gsapMotion.ts).
+.bk7Intro { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 0 0 12px; padding: 12px 16px; background: #fff; border: 1px solid $line; border-radius: 16px; font-size: 16px; line-height: 1.5; }
+[data-size='wide'] .bk.bk7Wide { grid-template-columns: 320px minmax(0, 1fr) 300px; }
+.bk7Cart { position: sticky; top: calc(var(--bar-h) + 12px); margin: 20px 0 0 24px; padding: 20px; background: #fff; border: 1px solid $line; border-radius: 16px; box-shadow: 0 6px 24px rgba(31, 31, 31, .08); display: grid; gap: 12px;
+  h2 { margin: 0; font-size: 22px; }
+  .bfFine { margin: 0; } }
+.bk7When { margin: 0; display: grid; gap: 2px; strong { font-size: 16px; } span { font-size: 14px; color: $subtle; } }
+.bk7Items { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px;
+  li { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 36px; padding: 4px 0; border-bottom: 1px solid $line; font-size: 15px; }
+  li span { min-width: 0; overflow-wrap: anywhere; } }
+.bk7Remove { flex: none; width: 32px; height: 32px; border: 1px solid $line; border-radius: 999px; background: #fff; color: $ink; font: inherit; font-size: 18px; line-height: 1; cursor: pointer; }
+@media (hover: hover) { .bk7Remove:hover { border-color: $ink; } }
+.bk7Usage { display: grid; gap: 4px; p { margin: 0; display: grid; gap: 2px; font-size: 15px; } span { font-size: 14px; color: $subtle; } }
+.bk7Extra { font-size: 14px; color: #8A5A00; }
+.bk7Missing { margin: 0; font-size: 14px; font-weight: 600; color: $subtle; }
+.bk7Go { width: 100%; min-height: 48px; }
+// Phone and mid: the bar is always in view, above the tab bar (whose height already includes the safe area).
+.bfBar.bk7Bar .bfBarText { display: block; }
+[data-size='mid'] .bfBar.bk7Bar { bottom: env(safe-area-inset-bottom, 0px); }
+[data-size='phone'] .bk7Bar .btn { min-width: 112px; }
+// Review & send: a real bottom sheet on phone (the default bottom variant fills the screen).
+.sheetBottom:has(.bk7Review) { top: auto; max-height: 92vh; border-radius: 16px 16px 0 0; }
+.bk7Review { display: grid; gap: 14px; }
+.bk7Group { display: grid; gap: 6px; }
+.bk7GroupHead { display: flex; align-items: center; justify-content: space-between; gap: 8px; h3 { margin: 0; font-size: 16px; } }
+.bk7Sent { display: grid; justify-items: center; gap: 8px; text-align: center; padding: 8px 0; h3 { margin: 0; font-size: 22px; } p { margin: 0; } }
+@media (pointer: coarse) { .bk7Remove { width: 44px; height: 44px; } .bk7Items li { min-height: 44px; } }
+
+// v7 · P5/P6 documents + support
+// Documents: summary row, required list with one upload button per type.
+.dcReq { display: grid; gap: 12px; }
+.dcSummary { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px;
+  li { display: grid; gap: 2px; padding: 12px 14px; border: 1px solid $line; border-radius: 12px; background: #fff; border-top-width: 4px; }
+  strong { font-size: 28px; line-height: 1.1; color: $ink; font-variant-numeric: tabular-nums; } span { font-size: 13px; color: $subtle; } }
+[data-size='phone'] .dcSummary { grid-template-columns: 1fr 1fr; }
+.dcList { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.dcRow { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid $line; border-radius: 12px; background: #fff; }
+[data-size='phone'] .dcRow { grid-template-columns: minmax(0, 1fr) auto; .dcUpload { grid-column: 1 / -1; } }
+.dcMain { display: grid; gap: 2px; min-width: 0; strong { color: $text; } span { font-size: 14px; color: $subtle; } }
+.dcChip { padding: 4px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; border: 1px solid transparent; }
+.dcOk { border-color: #2E7D4F; } .dcChip.dcOk { background: #E6F4EA; color: #1E5E3A; }
+.dcWait { border-color: #5B6B8C; } .dcChip.dcWait { background: #EEF0F5; color: #3C4A66; }
+.dcSoon { border-color: $citrus; } .dcChip.dcSoon { background: #FFF4D6; color: #6A4E00; }
+.dcBad { border-color: #A23B2A; } .dcChip.dcBad { background: #FBE9E6; color: #8A2E20; }
+.dcSummary li.dcOk, .dcSummary li.dcWait, .dcSummary li.dcSoon, .dcSummary li.dcBad { border-left-color: $line; border-right-color: $line; border-bottom-color: $line; }
+.dcUpload { min-height: 40px; padding: 8px 16px; border: 1px solid $ink; border-radius: 999px; background: #fff; color: $ink; font: inherit; font-weight: 600; cursor: pointer; }
+@media (hover: hover) { .dcUpload:hover { background: $ink; color: #fff; } }
+.dcGuide { border: 1px solid $line; border-radius: 12px; background: #fff; padding: 4px 14px;
+  summary { cursor: pointer; font-weight: 600; padding: 10px 0; min-height: 24px; } }
+
+// Messages as tickets: status chip, bubbles, attachment chips.
+.tkHead { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; h3 { margin: 0; } }
+.tkMeta { color: $subtle; margin-top: -10px; }
+.tkChip { padding: 4px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.tkOpen { background: #EEF0F5; color: #3C4A66; }
+.tkAnswered { background: $citrus; color: $ink; }
+.tkClosed { background: #E8EAED; color: #4A5260; }
+.tkBad { background: #FBE9E6; color: #8A2E20; }
+.tkPair { display: grid; gap: 8px; }
+.tkBubble { max-width: 80%; padding: 10px 12px; border-radius: 14px; display: grid; gap: 4px; small { color: $subtle; } p { margin: 0; white-space: pre-wrap; } span { white-space: pre-wrap; } }
+[data-size='phone'] .tkBubble { max-width: 92%; }
+.tkMine { justify-self: end; background: #EEF0F3; border-bottom-right-radius: 4px; }
+.tkTheirs { justify-self: start; margin: 0; background: #FFF9E8; border-left: 4px solid $citrus; border-bottom-left-radius: 4px; }
+.tkWarn { color: #8A2E20 !important; }
+.tkAttach { display: grid; gap: 6px; small { color: $subtle; } }
+.tkAdd { position: relative; justify-self: start; display: inline-flex !important; align-items: center; min-height: 44px; padding: 0 16px; border: 1px dashed $ink; border-radius: 999px; color: $ink !important; font-weight: 600; cursor: pointer;
+  input { position: absolute; inset: 0; opacity: 0; width: 100%; min-height: 0 !important; padding: 0 !important; cursor: pointer; } }
+.tkAdd:focus-within { outline: 2px solid $ink; outline-offset: 2px; }
+.tkFiles { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.tkFile { display: inline-flex; align-items: center; gap: 8px; max-width: 260px; padding: 4px 6px 4px 4px; border: 1px solid $line; border-radius: 10px; background: #fff; color: $text; text-decoration: none; min-height: 44px; box-sizing: border-box;
+  img { width: 36px; height: 36px; object-fit: cover; border-radius: 6px; } > span { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 6px; background: #EEF0F3; font-size: 12px; font-weight: 700; }
+  em { font-style: normal; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; } }
+.tkRemove { flex: none; width: 32px; height: 32px; border: 0; border-radius: 999px; background: none; color: $subtle; font: inherit; font-size: 18px; cursor: pointer; }
+@media (hover: hover) { .tkRemove:hover { background: #EEF0F3; color: $text; } }
+@media (pointer: coarse) { .tkRemove, .dcUpload { min-width: 44px; min-height: 44px; } .dcGuide summary { min-height: 44px; } }
+[data-motion='reduce'] .dcUpload, [data-motion='reduce'] .tkFile { transition: none; animation: none; }
+
+
+// ======== v8 (2.20): the reference console look ========
+// Tokens from the reference: teal #0F4C5C, gold #C9A24D, charcoal #1F1F1F, slate #5B6370, page #F4F5F7, cards white with a 1px #E8EAEC line,
+// radius 9px (cards) / 7px (buttons, nav items) / 20px (chips). Wide layout (>= 1100 px) = 246 px sidebar + content; narrower keeps the top bar
+// (and the phone tab bar). The reference's calendar component is deliberately NOT used.
+$rLine: #E8EAEC;
+$rSlate: #5B6370;
+.side { display: none; }
+.sideLogo { font-weight: 700; font-size: 22px; letter-spacing: -.5px; color: $ink; line-height: 1; i { font-style: normal; color: $citrus; } }
+.sideSub { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: $rSlate; }
+.topbar { background: $cream; color: $text; box-shadow: none; border-bottom: 1px solid $rLine; &::after { display: none; } }
+.site[data-compact='on'] .topbar { box-shadow: 0 4px 14px rgba(31, 31, 31, .06); }
+.brand { flex-direction: column; align-items: flex-start; gap: 3px; color: $ink; }
+.brandSub { display: none; }
+.link { color: $rSlate; font-weight: 600; &.linkOn { color: $ink; } }
+.userChip { background: #fff; border-color: $rLine; color: $text; }
+.avatar { background: $ink; color: #fff; }
+.topbar .bell { color: $text; background: #fff; border: 1px solid $rLine; border-radius: 50%; }
+.crumb { display: none; margin: 0; font-size: 13px; color: $rSlate; align-items: center; gap: 8px; strong { color: $text; font-weight: 600; } i { font-style: normal; } }
+.announce { background: $ink; }
+
+// Page header (reference pattern): gold-dash eyebrow, 27px / 650 title, grey lede, primary action on the right.
+.rHead { padding: 28px 0 8px; }
+.rHeadRow { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+.rEyebrow, .pgEyebrow { margin: 0; display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: $rSlate; i { width: 14px; height: 2px; background: $citrus; display: inline-block; } }
+.pgEyebrow::before { content: ''; width: 14px; height: 2px; background: $citrus; display: inline-block; }
+.rTitle, .pageTitle { margin: 8px 0 6px; font-size: 27px; font-weight: 650; letter-spacing: -1px; line-height: 1.15; color: $text; }
+[data-size='phone'] .rTitle, [data-size='phone'] .pageTitle { font-size: 24px; }
+.rDot { color: $citrus; }
+.rLede, .pgLede { margin: 0; font-size: 14px; color: $rSlate; max-width: 62ch; }
+.rBtn { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 13px; border-radius: 7px; border: 1px solid $ink; background: $ink; color: #fff; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 4px rgba(15, 76, 92, .11); }
+@media (hover: hover) { .rBtn:hover { background: $ink2; } }
+.pageHead, .pgHead { background: none !important; border: 0 !important; }
+
+// Primary buttons are teal everywhere (gold stays an accent).
+.btnCitrus { background: $ink !important; color: #fff !important; border: 1px solid $ink !important; border-radius: 7px; box-shadow: 0 2px 4px rgba(15, 76, 92, .11); }
+.btn { border-radius: 7px; }
+
+// KPI row
+.kpis { list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.site[data-size='mid'] .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.site[data-size='phone'] .kpis { grid-template-columns: 1fr 1fr; gap: 10px; }
+.kpi { background: #fff; border: 1px solid $rLine; border-radius: 9px; box-shadow: 0 1px 2px rgba(31, 31, 31, .03); padding: 15px 16px 12px; display: grid; gap: 6px; align-content: start; }
+.kpiLabel { font-size: 13px; color: $text; font-weight: 500; }
+.kpiNum { font-size: 27px; font-weight: 650; letter-spacing: -1px; line-height: 1.1; small { font-size: 16px; font-weight: 500; color: $rSlate; letter-spacing: 0; } }
+.kpiCap { font-size: 12px; color: $rSlate; }
+.kpiBar { height: 6px; background: #E8ECEE; border-radius: 6px; overflow: hidden; span { display: block; height: 100%; background: $ink; border-radius: 6px; } .kpiOver { background: #8E3445; } }
+.kpiChip { justify-self: start; font-size: 12px; font-weight: 600; color: #96752F; background: #F5F0E5; border-radius: 20px; padding: 3px 8px; }
+.kpiLink { justify-self: start; background: none; border: 0; padding: 0; font: inherit; font-size: 12px; font-weight: 600; color: $ink; cursor: pointer; }
+
+// Cards everywhere take the reference surface.
+.bCard, .lp, .kb .kbList > li, .panel { background: #fff; border: 1px solid $rLine; border-radius: 9px; box-shadow: 0 1px 2px rgba(31, 31, 31, .03); }
+.h4 > section[aria-label='Next booking detail'], .h4 > section[aria-label='At a glance'] { margin-top: 0; }
+
+// ======== v9 (2.21): the reference console, complete ========
+// Shell: the sidebar, top bar and page header come from Ref.module.scss (lifted from the reference); this file only keeps the host fixes.
+.col { min-width: 0; display: block; }
+.actions { display: contents; }
+.bar[data-wide='1'] { display: contents; }
+// Light footer inside the content column (no dark band): policies stay one tap away.
+.siteFooter { background: #fff !important; color: #1F1F1F !important; border-top: 1px solid #E9EBED; margin-top: 12px; padding: 28px 0 8px;
+  h3 { color: #5B6370 !important; font-size: 12px !important; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; }
+  p { color: #5B6370 !important; font-size: 13px; }
+  nav button, .footLink { color: #1F1F1F !important; font-size: 13px; }
+}
+.footBase { border-top: 1px solid #E9EBED !important; color: #5B6370 !important; font-size: 12px; }
+.footCta { background: #0F4C5C !important; color: #fff !important; border-radius: 7px !important; font-size: 13px; font-weight: 600; }
+
+// ---- Page canvas: grey page, white cards (reference). Gutters live on <main>; sections become cards. ----
+.site .siteFooter .container { padding: 0 35px; max-width: none; }
+.site[data-size='phone'] .siteFooter .container { padding: 0 16px; }
+.h4, .page, .legacy { background: transparent; }
+.heroBand, .attn4 { background: transparent !important; border: 0 !important; padding: 0; color: $text; }
+
+// ---- Home bento: wide card left, plan + notices right, "Kitchen right now" and quick actions below ----
+.bento { padding: 16px 0 0; background: transparent; }
+.bentoGrid { grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; grid-auto-flow: row; }
+.site[data-size='mid'] .bentoGrid, .site[data-size='phone'] .bentoGrid { grid-template-columns: minmax(0, 1fr); }
+.bWeek { grid-column: 1; grid-row: 1 / span 2; }
+.bCard:nth-of-type(2) { grid-column: 2; grid-row: 1; }
+.bNotices { grid-column: 2; grid-row: 2; }
+.site[data-size='mid'] .bWeek, .site[data-size='mid'] .bCard, .site[data-size='mid'] .bNotices, .site[data-size='phone'] .bWeek, .site[data-size='phone'] .bCard, .site[data-size='phone'] .bNotices { grid-column: 1; grid-row: auto; }
+.bQuick { grid-column: 1 / -1 !important; grid-row: auto !important; }
+.bCard, .kb > .container, .lp { background: #fff; border: 1px solid #E5E7EB; border-radius: 12px; box-shadow: 0 2px 8px rgba(31, 31, 31, .03); padding: 22px; }
+.bCard h2, .bCard .wkHead h2, .bCard .miniHead, .kbHead h2 { font-size: 20px !important; font-weight: 400 !important; letter-spacing: -.5px !important; color: #1F1F1F; margin: 0 !important; }
+.bBig { font-size: 27px; font-weight: 650; letter-spacing: -1px; color: #1F1F1F; }
+.bNote { font-size: 13px; color: #5B6370; }
+.kb { background: transparent !important; border: 0 !important; padding: 16px 0 0 !important; }
+.kb > .container { margin: 0; }
+.kbList { margin: 12px 0 0 !important; border: 0 !important; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important; }
+.kbList > li { border: 1px solid #E9EBED !important; border-radius: 10px !important; box-shadow: none; background: #fff; }
+.kbHead { padding-bottom: 14px; border-bottom: 1px solid #E9EBED; margin-bottom: 0 !important; }
+.kbLive { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #5B6370; }
+.wkHead { padding-bottom: 14px; border-bottom: 1px solid #E9EBED; margin-bottom: 4px !important; align-items: center; }
+.linkBtn { color: #0F4C5C; font-weight: 650; font-size: 13px; text-decoration: none; background: none; border: 0; cursor: pointer; padding: 0; }
+@media (hover: hover) { .linkBtn:hover { text-decoration: underline; } }
+.h4 > section[aria-label='Next booking detail'] { margin-top: 16px; }
+.h4 > section[aria-label='Next booking detail'] > * { border-radius: 12px; border: 1px solid #E5E7EB; box-shadow: 0 2px 8px rgba(31, 31, 31, .03); }
+.kb > .container { padding: 22px !important; }
+.site .topbar .bell { width: 36px; height: 36px; border: 1px solid #E5E7EB; border-radius: 50%; background: #fff; display: grid; place-items: center; position: relative; color: #1F1F1F;
+  svg { width: 18px; height: 18px; fill: none; stroke: #1F1F1F; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; } }
+
+.main { background: transparent; }
+.main .container { padding: 0 !important; max-width: none !important; }
+
+// ---- v9c: legacy page chrome takes the reference blocks (page header = .greeting-row, buttons, cards, chips, inputs) ----
+.pageHead, .pgHead { padding: 0 !important; margin: 0 0 24px; background: none !important; border: 0 !important; }
+.headRow { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+.pageTitle { font-size: 27px; font-weight: 650; letter-spacing: -1.1px; line-height: 1.2; margin: 10px 0 6px; color: #1F1F1F; }
+[data-size='phone'] .pageTitle { font-size: 24px; }
+.pgEyebrow { margin: 0; display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; letter-spacing: 1px; color: #5B6370; text-transform: uppercase;
+  &::before { content: ''; width: 16px; height: 1px; background: #C9A24D; display: inline-block; } }
+.pgLede, .scSub { margin: 0; font-size: 13px; color: #5B6370; max-width: 62ch; }
+.pgBack { background: none; border: 0; padding: 0 0 8px; font: inherit; font-size: 13px; font-weight: 650; color: #0F4C5C; cursor: pointer; }
+.btn { min-height: 36px; border-radius: 7px; border: 1px solid #DDE1E3; background: #fff; color: #1F1F1F; font-size: 13px; font-weight: 600; padding: 0 13px; display: inline-flex; align-items: center; gap: 7px; cursor: pointer; }
+@media (hover: hover) { .btn:hover { background: #EAF0F1; } }
+.btnCitrus { background: #0F4C5C !important; color: #fff !important; border: 1px solid #0F4C5C !important; box-shadow: 0 2px 4px rgba(15, 76, 92, .11); }
+@media (hover: hover) { .btnCitrus:hover { background: #0B3A47 !important; border-color: #0B3A47 !important; } }
+.segmented { display: inline-flex; border: 1px solid #DDE1E3; border-radius: 7px; background: #fff; padding: 2px; gap: 2px;
+  button { border: 0; background: none; border-radius: 5px; height: 30px; padding: 0 12px; font: inherit; font-size: 13px; font-weight: 600; color: #5B6370; cursor: pointer; }
+  button[aria-pressed='true'] { background: #EAF0F1; color: #0F4C5C; } }
+.card, .panel, .errorPanel, .okBar, .cartCard { border-radius: 12px; }
+.card, .panel { background: #fff; border: 1px solid #E5E7EB; box-shadow: 0 2px 8px rgba(31, 31, 31, .03); }
+.legacy .card, .pgBody .card, .pgBody .panel { padding: 22px; }
+.pillOk, .pillWait, .statusPill { border-radius: 999px; padding: 5px 8px; font-size: 12px; font-weight: 650; }
+.pillOk { background: #EAF0F1; color: #0F4C5C; }
+.pillWait { background: #F5F0E5; color: #80601E; }
+.factRow { display: flex; gap: 28px; margin: 14px 0 0; flex-wrap: wrap; dt { font-size: 12px; color: #5B6370; } dd { margin: 2px 0 0; font-size: 15px; font-weight: 650; color: #1F1F1F; } }
+
+.announce { background: #F5F0E5 !important; color: #1F1F1F !important; border-bottom: 1px solid #E9DFC7; font-size: 13px; }
+.announce strong { color: #1F1F1F; }
+.linkBtnOnDark, .dismissOnDark { color: #0F4C5C !important; font-weight: 650; }
+.announceUrgent { background: #F8E7E9 !important; border-bottom-color: #EBC9CE; }
+
+// ---- My bookings in the reference's list style (module-view card, module-row rows, status chips) ----
+.mbList { background: #fff; border: 1px solid #E5E7EB; border-radius: 12px; padding: 22px; box-shadow: 0 2px 8px rgba(31, 31, 31, .03); margin-top: 16px; }
+.mbDay + .mbDay { margin-top: 22px; }
+.mbDayHead { margin: 0 0 14px !important; padding: 0 0 14px !important; border-bottom: 1px solid #E9EBED !important; font-size: 20px; font-weight: 400; letter-spacing: -.5px; color: #1F1F1F;
+  b { font-weight: 400; } span { font-size: 13px; color: #5B6370; font-weight: 400; } em { margin-left: auto; font-style: normal; font-size: 12px; font-weight: 650; color: #0F4C5C; background: #EAF0F1; border-radius: 999px; padding: 5px 8px; } }
+.mbTickets { gap: 10px; }
+.mbTicket { --stub: 0px; grid-template-columns: 96px minmax(0, 1fr) auto !important; gap: 13px !important; padding: 12px !important; border: 1px solid #E9EBED !important; border-radius: 9px !important; background: #fff !important; box-shadow: none !important; clip-path: none !important; mask: none !important; }
+.mbTicket::before, .mbTicket::after { display: none !important; }
+.mbTime { border-right: 0 !important; padding-right: 0 !important; b { font-size: 13px; font-weight: 650; color: #1F1F1F; } em { font-size: 12px; color: #5B6370; font-style: normal; } }
+.mbBody strong { font-size: 13px; font-weight: 650; }
+.mbStamp { border: 0 !important; background: #EAF0F1 !important; color: #0F4C5C !important; font-size: 12px !important; font-weight: 650 !important; }
+.mbPast .mbTicket { opacity: 1; }
+.monthStrip { background: #fff; border: 1px solid #E5E7EB; border-radius: 12px; padding: 12px; box-shadow: 0 2px 8px rgba(31, 31, 31, .03); }
+.legacy, .pgBody { border-top: 0 !important; padding-top: 0 !important; background: transparent !important; }
+.legacy::before, .pgBody::before { display: none !important; }
+
+// ---- v10: official logo, one clean mobile top bar, Home alignment, no clipping behind the tab bar ----
+.brandLogo { height: 28px; width: auto; display: block; }
+.footLogo { height: 30px; width: auto; display: block; margin-bottom: 12px; }
+[data-size='phone'] .bar, [data-size='mid'] .bar { height: var(--bar-h); padding: 0 16px; gap: 8px; align-items: center; justify-content: flex-start; }
+[data-size='phone'] .brand { flex-direction: row; align-items: center; min-height: 40px; margin-right: auto; }
+[data-size='phone'] .actions, [data-size='mid'] .actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+[data-size='phone'] .bellWrap { display: flex; align-items: center; }
+[data-size='phone'] .bell, [data-size='phone'] .userChip { width: 40px; height: 40px; min-width: 40px; min-height: 40px; padding: 0; border-radius: 50%; display: grid; place-items: center; box-sizing: border-box; }
+[data-size='phone'] .bell { border: 1px solid #E5E7EB; background: #fff; color: #1F1F1F; position: relative; }
+[data-size='phone'] .bell svg { width: 20px; height: 20px; }
+[data-size='phone'] .bell b { position: absolute; top: -3px; right: -3px; min-width: 18px; height: 18px; border-radius: 9px; background: #0F4C5C; color: #fff; font-size: 12px; display: grid; place-items: center; padding: 0 4px; }
+[data-size='phone'] .userChip { border: 0; background: none; box-shadow: none; }
+[data-size='phone'] .avatar { width: 40px; height: 40px; font-size: 13px; box-shadow: none; background: #0F4C5C; color: #fff; }
+[data-size='phone'] .userName { display: none; }
+// nothing hides behind the bottom tab bar
+[data-size='phone'] .main { padding-bottom: calc(var(--tab-h) + 24px + env(safe-area-inset-bottom, 0px)); }
+[data-size='phone'] .siteFooter { padding-bottom: calc(var(--tab-h) + 16px + env(safe-area-inset-bottom, 0px)); }
+// "Needs your attention" as the reference's alert card: wraps, action is a button, full width on phones
+.attn4 { display: grid; gap: 10px; margin: 0 0 16px; }
+.attn4 > div { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: #F5F0E5; border: 1px solid #E9DFC7; border-radius: 9px; padding: 12px 16px; box-sizing: border-box;
+  i { flex: none; width: 28px; height: 28px; border-radius: 50%; background: #80601E; color: #fff; display: grid; place-items: center; font-style: normal; font-weight: 700; font-size: 13px; }
+  strong { flex: 1 1 220px; min-width: 0; font-size: 13px; font-weight: 650; color: #1F1F1F; line-height: 1.4; overflow-wrap: anywhere; }
+  .linkBtn { flex: none; min-height: 36px; padding: 0 13px; border: 1px solid #DDE1E3; border-radius: 7px; background: #fff; color: #0F4C5C; font-weight: 650; text-decoration: none; } }
+.attn4 > div.attnUrgent { background: #F8E7E9; border-color: #EBC9CE; i { background: #8A2C2C; } }
+[data-size='phone'] .attn4 > div .linkBtn { width: 100%; min-height: 44px; }
+
+// ---- v10b: legacy blocks in the reference's look (cards 9px/1px #E9EBED, teal primary, tinted chips, 13px text) ----
+.legacy, .pgBody { font-size: 13px !important; line-height: 1.5; }
+.pgBody, .legacy { max-width: none !important; }
+.sheet { border-radius: 12px !important; box-shadow: rgba(31, 31, 31, .19) 0 18px 60px !important; }
+.sheetRight { border-radius: 12px 0 0 12px !important; }
+.sheetBottom { border-radius: 12px 12px 0 0 !important; }
+.scrim { background: rgba(31, 31, 31, .4) !important; }
+.sheetHead { padding: 20px 22px 8px !important; border-bottom: 0; }
+.sheetTitle { font-size: 21px !important; letter-spacing: -.6px !important; font-weight: 650 !important; color: #1F1F1F; }
+.sheetBody { padding: 8px 22px 22px !important; font-size: 13px !important; line-height: 1.5 !important; }
+.sheetFoot { background: #fff !important; border-top: 1px solid #ECEEF0 !important; padding: 12px 22px !important; }
+.iconBtn { width: 36px; height: 36px; border-radius: 7px; }
+// notices
+.ntRows { background: none !important; border: 0 !important; border-radius: 0 !important; overflow: visible !important; padding: 0 !important; display: grid !important; gap: 10px; }
+.ntRows > li { border: 0 !important; background: none !important; box-shadow: none !important; padding: 0 !important; }
+.ntRows .ntDot { display: inline-block; vertical-align: middle; margin-right: 8px; width: 8px; height: 8px; }
+.ntRead { opacity: .78; }
+.ntFilters { margin: 4px 0 12px; gap: 8px; button { border: 1px solid #DDE1E3; background: #fff; color: #1F1F1F; border-radius: 999px; font-size: 12px; font-weight: 600; padding: 0 12px; min-height: 32px; b { margin-left: 6px; color: #0F4C5C; font-weight: 650; } } }
+.ntFilterOn { background: #0F4C5C !important; border-color: #0F4C5C !important; color: #fff !important; b { color: #fff !important; } }
+.ntGroup { margin-top: 6px; }
+// forms (Messages, Events, Storage, Team) take the reference's field + card styling
+.nmForm { gap: 14px; label { font-size: 12px; font-weight: 600; color: #1F1F1F; }
+  input, select, textarea { min-height: 37px; border: 1px solid #DDE1E3; border-radius: 6px; padding: 0 10px; font: inherit; font-size: 13px; background: #fff; color: #1F1F1F; }
+  textarea { padding: 9px 10px; } }
+.nmQuote { background: #F4F5F7 !important; border: 1px solid #E9EBED; border-radius: 9px !important; padding: 14px 16px !important; font-size: 13px; }
+.nmPkgs { gap: 10px; }
+.nmPkg { border: 1px solid #E9EBED !important; border-radius: 9px !important; padding: 14px !important; background: #fff; transition: border-color .2s, box-shadow .2s;
+  &[data-on='true'] { border-color: #0F4C5C !important; background: #EAF0F1; box-shadow: 0 0 0 1px #0F4C5C; } }
+@media (hover: hover) { .nmPkg:hover { border-color: #C9A24D !important; } }
+.nmItem { border: 1px solid #E9EBED !important; border-radius: 9px !important; padding: 12px 14px !important; }
+.nmCard { border: 1px solid #E9EBED !important; border-radius: 9px !important; }
+.cwYes { background: #0F4C5C !important; color: #fff !important; border: 1px solid #0F4C5C !important; border-radius: 7px !important; min-height: 36px; padding: 0 16px !important; font-size: 13px !important; font-weight: 600; box-shadow: 0 2px 4px rgba(15, 76, 92, .11); }
+@media (hover: hover) { .cwYes:hover { background: #0B3F4D !important; } }
+.cwSkip { border: 1px solid #DDE1E3 !important; border-radius: 7px !important; min-height: 36px; padding: 0 14px !important; font-size: 13px !important; font-weight: 600; color: #1F1F1F; }
+.wlAdd { input, select { min-height: 37px; border: 1px solid #DDE1E3; border-radius: 6px; font-size: 13px; } }
+.tkChip { background: #EAF0F1; color: #0F4C5C; font-size: 12px; }
+.tkBubble { border-radius: 9px !important; font-size: 13px; }
+// billing + membership inner blocks
+.biNext { background: #F4F5F7; border: 1px solid #E9EBED; border-radius: 9px; padding: 16px 18px; }
+.biTotal strong { font-size: 27px !important; letter-spacing: -1px; font-weight: 650; color: #1F1F1F; }
+.biBreak, .biLines { font-size: 13px; }
+.mbUsage { border-radius: 9px !important; border: 1px solid #E9EBED !important; font-size: 13px; }
+.mbMeter { height: 7px !important; background: #ECEEF0 !important; span { background: #0F4C5C !important; } }
+.mbCompare { gap: 10px; }
+.mbCard { border: 1px solid #E9EBED !important; border-radius: 10px !important; padding: 16px !important; box-shadow: none !important; transition: transform .2s, border-color .2s, box-shadow .2s; display: grid; align-items: start; }
+.mbCardOn { border-color: #0F4C5C !important; background: #EAF0F1 !important; }
+@media (hover: hover) { .mbCard:hover { border-color: #C9A24D !important; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(31, 31, 31, .05) !important; } }
+.mbSent, .blOverdue { border-radius: 9px !important; font-size: 13px; }
+.mbNote { font-size: 12px; color: #5B6370; }
+// Book: the reference's toolbar / chips / card look
+.bf { font-size: 13px; }
+.bk7Intro { background: #fff; border: 1px solid #E9EBED; border-radius: 9px; padding: 12px 16px; font-size: 13px; }
+.steps { border: 0 !important; gap: 8px; li { border-radius: 999px; font-size: 12px; } }
+.bkSide, .bk7Wide > :first-child { background: #fff; border: 1px solid #E9EBED !important; border-radius: 12px; padding: 20px !important; box-shadow: 0 2px 8px rgba(31, 31, 31, .03); }
+.bkModes { border: 1px solid #DDE1E3 !important; border-radius: 7px !important; padding: 2px; background: #fff;
+  button { border-radius: 5px !important; font-size: 12px !important; font-weight: 600; }
+  button[aria-pressed='true'] { background: #EAF0F1 !important; color: #0F4C5C !important; box-shadow: none !important; } }
+.bkDays button { border: 1px solid #E9EBED !important; border-radius: 9px !important; }
+.winList button, .winList li { border-radius: 9px !important; }
+.winList button { border: 1px solid #E9EBED; background: #fff; transition: border-color .2s, transform .2s; }
+@media (hover: hover) { .winList button:hover { border-color: #C9A24D; transform: translateY(-1px); } }
+.winOn { border-color: #0F4C5C !important; background: #EAF0F1 !important; }
+.bk7Group { background: #fff; border: 1px solid #E9EBED; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(31, 31, 31, .03); }
+.bk7Group h3, .bk7GroupHead h3 { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #5B6370; }
+.bfSummary, .cartCard { border-radius: 12px !important; border: 1px solid #E9EBED !important; box-shadow: 0 2px 8px rgba(31, 31, 31, .03) !important; }
+.bfBar { border-top: 1px solid #E9EBED; }
+// Schedule: the timeline inside a reference card
+.mc, .mcSide, .ruler { font-size: 13px; }
+.mcSide { border-top: 0 !important; background: #fff; border: 1px solid #E9EBED !important; border-radius: 12px; padding: 16px !important; box-shadow: 0 2px 8px rgba(31, 31, 31, .03); }
+// join + welcome + inactive gate screens
+.cwCard h3 { font-family: inherit !important; font-size: 21px !important; letter-spacing: -.6px; font-weight: 650; }
+.cwStage { border-radius: 12px; }
+.cwBanner, .cwCase { border-radius: 9px !important; font-size: 13px; }
+
+// the old page-wide white card around legacy pages is gone: every block is its own reference card now
+.legacy > :not(.legacyHead), [data-size='phone'] .legacy > :not(.legacyHead) { background: none !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; border-radius: 0 !important; }
+.cwCases { display: grid; gap: 10px; margin: 0 0 16px; }
+.cwCase { background: #fff; border: 1px solid #E9EBED !important; border-left: 3px solid #0F4C5C !important; border-radius: 9px !important; padding: 12px 16px !important; display: grid; gap: 2px; strong { font-size: 13px; } span { font-size: 12px; color: #5B6370; } }
+.cwCaseInfo { border-left-color: #C9A24D !important; background: #FBF8F1; }
+.cwCaseHold { border-left-color: #8A2C2C !important; background: #FBF1F2; }
+.legacy, .pgBody, .nm { grid-template-columns: minmax(0, 1fr); min-width: 0; }
+.wlAdd { flex-wrap: wrap; input { min-width: 0; } }
+.nmForm { > * { min-width: 0; } }
+[data-size='phone'] .nmPkgs { grid-template-columns: 1fr 1fr; }
+.bkDays button span { font-size: 12px !important; letter-spacing: 0 !important; }
+.cwCard, .cwStage, .cwCases { min-width: 0; max-width: 100%; box-sizing: border-box; }
+.nmForm select, .nmForm input, .nmForm textarea { width: 100%; max-width: 100%; box-sizing: border-box; }
+
+// ---- v11: phone app feel: floating rounded tab bar with a sliding pill, translucent top bar, snappy cart bar ----
+.site[data-size='phone'] { --tab-h: 84px; }
+[data-size='phone'] .tabbar { left: 12px; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); height: 64px; padding-bottom: 0; border-radius: 24px; background: rgba(13, 42, 51, .93); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, .12); box-shadow: 0 12px 32px rgba(7, 32, 40, .38); }
+[data-size='phone'] .tabInk::before { display: none; }
+[data-size='phone'] .tabInk::after { top: 14px; width: 54px; height: 36px; margin-left: -27px; border-radius: 18px; background: rgba(255, 255, 255, .16); }
+[data-size='phone'] .tab { min-height: 64px !important; }
+[data-size='phone'] .tab:active .navIcon { transform: scale(.88); }
+[data-size='phone'] .topbar { background: rgba(250, 250, 247, .84); -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px); }
+.bfBarText { display: inline-block; animation: bfBump .32s cubic-bezier(.34, 1.56, .64, 1); }
+@keyframes bfBump { 0% { transform: scale(.9); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
+.bkUnitBtn:active { transform: scale(.98); }
+@media (prefers-reduced-motion: reduce) { .bfBarText { animation: none; } }
+[data-motion='reduce'] .bfBarText { animation: none; }
+[data-size='phone'] .attn4 > div { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 4px 10px; padding: 10px 12px; border-radius: 16px; }
+[data-size='phone'] .attn4 > div strong { font-size: 13px; line-height: 1.3; }
+[data-size='phone'] .attn4 > div .linkBtn { width: auto; min-height: 44px; padding: 0 10px; white-space: nowrap; }
+// Phone Home: the top bar floats clear over the full-screen photo (logo on a white pill), then becomes the normal bar once the page scrolls.
+.site[data-size='phone'][data-hero='top'] .topbar { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom-color: transparent; box-shadow: none; }
+.site[data-size='phone'][data-hero='top'] .topbar .brand { background: rgba(255, 255, 255, .92); border-radius: 14px; padding: 0 12px; }
+.topbar { transition: background .25s ease, box-shadow .25s ease; }
+
+// ---- v13: modern floating tab bar (light frosted surface, one icon set, sliding teal pill, raised gold Book) ----
+.site[data-size='phone'] { --tab-h: 96px; }
+[data-size='phone'] .tabbar {
+  left: 12px; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); height: 68px; padding: 0; border-radius: 28px;
+  background: rgba(255, 255, 255, .9); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(15, 76, 92, .12); box-shadow: 0 10px 30px rgba(15, 76, 92, .16), 0 1px 2px rgba(15, 76, 92, .08);
+  grid-auto-flow: unset; grid-template-columns: repeat(5, minmax(0, 1fr)); touch-action: manipulation;
+}
+[data-size='phone'] .tabbar .tabInk { top: 0; left: 0; width: 20%; height: 100%; transform: translateX(calc(var(--ti, 0) * 100%)); transition: transform .3s cubic-bezier(.34, 1.3, .64, 1); }
+[data-size='phone'] .tabbar .tabInk::before { display: none; }
+[data-size='phone'] .tabbar .tabInk::after { content: ''; position: absolute; top: 8px; left: 50%; width: 60px; height: 52px; margin-left: -30px; border-radius: 20px; background: rgba(15, 76, 92, .1); }
+[data-size='phone'] .tabbar[data-book='1'] .tabInk::after { opacity: 0; }
+[data-size='phone'] .tabbar .tab {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 3px; padding: 0 0 9px; min-height: 68px !important; height: 68px;
+  color: #5b6370; font-size: 12px; font-weight: 600; line-height: 1.1; background: none; border: 0; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: color .2s;
+}
+[data-size='phone'] .tabbar .tab::before, [data-size='phone'] .tabbar .tab::after { display: none !important; }
+[data-size='phone'] .tabbar .tab .navIcon { width: 24px; height: 24px; flex: none; stroke-width: 1.75; transform: none; color: inherit; transition: transform .2s cubic-bezier(.34, 1.4, .64, 1); }
+[data-size='phone'] .tabbar .tab span { font-size: 12px; font-weight: 600; letter-spacing: 0; white-space: nowrap; margin: 0; }
+[data-size='phone'] .tabbar .tab.tabOn { color: #0f4c5c; }
+[data-size='phone'] .tabbar .tab.tabOn .navIcon { stroke-width: 2.1; transform: translateY(-1px) scale(1.06); color: #0f4c5c; }
+[data-size='phone'] .tabbar .tab:active .navIcon { transform: scale(.86); }
+[data-size='phone'] .tabbar .tab:active { transition-duration: .06s; }
+[data-size='phone'] .tabbar .tab.tabBook { color: #5b6370; }
+[data-size='phone'] .tabbar .tab.tabBook .navIcon { width: 26px; height: 26px; padding: 11px; box-sizing: content-box; margin: 0; border-radius: 50%; background: #c9a24d; color: #14262e !important; stroke-width: 2.2; box-shadow: 0 8px 18px rgba(201, 162, 77, .45); transform: translateY(-22px); position: absolute; top: 8px; left: 50%; margin-left: -24px; }
+[data-size='phone'] .tabbar .tab.tabBook.tabOn { color: #0f4c5c; }
+[data-size='phone'] .tabbar .tab.tabBook:active .navIcon { transform: translateY(-22px) scale(.9); }
+[data-size='phone'] .tabbar .tab .navDot { position: absolute; top: 14px; left: calc(50% + 6px); width: 9px; height: 9px; margin: 0; border: 2px solid #fff; background: #c9a24d; box-sizing: content-box; }
+[data-size='phone'] .tabbar .tab:focus-visible { outline: 2px solid #0f4c5c; outline-offset: -4px; border-radius: 22px; box-shadow: none; }
+@media (prefers-reduced-motion: reduce) { [data-size='phone'] .tabbar .tabInk, [data-size='phone'] .tabbar .tab, [data-size='phone'] .tabbar .tab .navIcon { transition: none !important; } }
+[data-motion='reduce'] .tabbar .tabInk, [data-motion='reduce'] .tabbar .tab, [data-motion='reduce'] .tabbar .tab .navIcon { transition: none !important; }
+
+// ---- v13: no card or ring may exceed the phone width ----
+[data-size='phone'] .lp, [data-size='phone'] .lp * { box-sizing: border-box; min-width: 0; }
+[data-size='phone'] .lp { max-width: 100%; overflow: hidden; grid-template-columns: minmax(0, 1fr) 92px; gap: 12px; padding: 16px; }
+[data-size='phone'] .lp .lpRing { width: 92px; height: 92px; order: 2; justify-self: end; }
+[data-size='phone'] .lp .lpRing span { display: grid; gap: 1px; place-items: center; text-align: center; }
+[data-size='phone'] .lp .lpRing span b { font-size: 16px; line-height: 1; letter-spacing: -.02em; white-space: nowrap; }
+[data-size='phone'] .lp .lpRing span small { font-size: 12px; line-height: 1; }
+[data-size='phone'] .lp .lpText { order: 1; }
+[data-size='phone'] .lp .lpHead { font-size: 20px !important; line-height: 1.15; overflow-wrap: anywhere; }
+[data-size='phone'] .lp .lpAct { grid-column: 1 / -1; order: 3; display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 10px; }
+[data-size='phone'] .lp .lpAct .btn { width: 100%; justify-content: center; flex: none; }
+[data-size='phone'] .dashboard-grid { grid-template-columns: minmax(0, 1fr); }
+[data-size='phone'] .schedule-card, [data-size='phone'] .right-column { min-width: 0; max-width: 100%; }
+button, a, [role='button'], input, select, textarea, summary { touch-action: manipulation; }
+.sheetBody { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+.module-view { content-visibility: auto; contain-intrinsic-size: auto 360px; }
+
+// ---- v14: modern buttons and a pill segmented control with a sliding thumb (central primitives: every page picks them up) ----
+.site .btn { min-height: 46px; padding: 0 20px; border: 0; border-radius: 16px; background: #e4eef0; color: #0f4c5c; font-weight: 650; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: none; position: relative; overflow: hidden; transition: transform .12s cubic-bezier(.34, 1.4, .64, 1), background .2s, box-shadow .2s, opacity .12s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.site .btn svg { width: 18px; height: 18px; flex: none; }
+.site .btn:active:not(:disabled) { transform: scale(.97); opacity: .92; transition-duration: .05s; }
+.site .btn:disabled, .site .btn[aria-disabled='true'] { background: #eceef0; color: #5b6370; box-shadow: none; opacity: 1; cursor: not-allowed; }
+.site .btnCitrus { background: linear-gradient(180deg, #17697e 0%, #0f4c5c 100%); color: #fff; box-shadow: 0 8px 18px rgba(15, 76, 92, .28), inset 0 1px 0 rgba(255, 255, 255, .18); }
+.site .btnCitrus:active:not(:disabled) { box-shadow: 0 3px 8px rgba(15, 76, 92, .28), inset 0 1px 0 rgba(255, 255, 255, .12); }
+.site .btnCitrus:disabled { background: #cfd8dc; color: #4a5560; box-shadow: none; }
+.site .dock .btnCitrus, .site .bfBar .btnCitrus { box-shadow: 0 8px 18px rgba(15, 76, 92, .28), inset 0 1px 0 rgba(255, 255, 255, .18); }
+.site .dock .btn:not(.btnCitrus) { background: rgba(255, 255, 255, .14); color: #fff; }
+.site .dock .btnCitrus { background: #c9a24d; color: #14262e; box-shadow: none; }
+.site .iconBtn { border: 0; background: #e4eef0; color: #0f4c5c; }
+@media (hover: hover) { .site .btn:hover:not(:disabled) { background: #d8e8ec; transform: translateY(-1px); } .site .btnCitrus:hover:not(:disabled) { background: linear-gradient(180deg, #1b7389 0%, #115568 100%); } }
+
+.site .segmented { position: relative; display: flex; isolation: isolate; background: #e4eef0; border: 0; border-radius: 999px; padding: 4px; gap: 0; min-height: 48px; box-shadow: none; overflow: visible; --n: 2; --i: 0; }
+.site .segmented::before { content: ''; position: absolute; z-index: -1; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px) / var(--n)); border-radius: 999px; background: #0f4c5c; box-shadow: 0 6px 14px rgba(15, 76, 92, .28); transform: translateX(calc(var(--i) * 100%)); opacity: 0; transition: transform .24s cubic-bezier(.34, 1.3, .64, 1), opacity .15s; will-change: transform; }
+.site .segmented:has([aria-pressed='true'])::before { opacity: 1; }
+.site .segmented:has(> :nth-child(3)) { --n: 3; }
+.site .segmented:has(> :nth-child(4)) { --n: 4; }
+.site .segmented:has(> :nth-child(5)) { --n: 5; }
+.site .segmented:has(> :nth-child(2)[aria-pressed='true']) { --i: 1; }
+.site .segmented:has(> :nth-child(3)[aria-pressed='true']) { --i: 2; }
+.site .segmented:has(> :nth-child(4)[aria-pressed='true']) { --i: 3; }
+.site .segmented:has(> :nth-child(5)[aria-pressed='true']) { --i: 4; }
+.site .segmented button { flex: 1 1 0; min-width: 0; min-height: 40px; padding: 0 12px; border: 0; border-radius: 999px; background: transparent; color: #3f4a56; font-weight: 650; box-shadow: none; transition: color .2s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.site .segmented button[aria-pressed='true'] { background: transparent; color: #fff; box-shadow: none; }
+.site .segmented button:active { transform: scale(.97); }
+[data-size='phone'] .headRow .row { flex-wrap: wrap; gap: 10px; width: 100%; }
+[data-size='phone'] .headRow .row .segmented { flex: 1 1 100%; }
+[data-size='phone'] .headRow .row > .btn { flex: 1 1 0; padding: 0 12px; }
+@media (prefers-reduced-motion: reduce) { .site .segmented::before, .site .btn, .site .segmented button { transition: none !important; } }
+[data-motion='reduce'] .segmented::before, [data-motion='reduce'] .btn { transition: none !important; }
+
+// ---- v14 (staging 1.3.1): phone overflow root-cause fixes, booking card restructure, Book label, one attention banner ----
+// 1) Nothing inside a page may be wider than the page: every grid/flex child may shrink, text wraps, media is capped.
+[data-size='phone'] .main, [data-size='phone'] .page { max-width: 100%; overflow-x: clip; }
+[data-size='phone'] .page :where(div, section, article, span, ul, ol, li, p, h1, h2, h3, h4, strong, em, a, button, label, form, fieldset, details, summary, blockquote) { min-width: 0; box-sizing: border-box; }
+[data-size='phone'] .page :where(h1, h2, h3, h4, p, strong, em, span, li, a, summary, blockquote) { overflow-wrap: anywhere; }
+[data-size='phone'] .page :where(img, svg, video, canvas, table) { max-width: 100%; }
+[data-size='phone'] .page :where(table) { display: block; overflow-x: auto; }
+[data-size='phone'] .page :where(input, select, textarea) { max-width: 100%; min-width: 0; }
+
+// 2) My bookings card on phones: time on top, equipment icons (wrap), names (2 lines), status chip below. One column, never wider than the card.
+[data-size='phone'] .mbTicket { grid-template-columns: minmax(0, 1fr) !important; gap: 10px !important; align-items: start; overflow: hidden; }
+[data-size='phone'] .mbTime { display: flex !important; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; align-self: auto; }
+[data-size='phone'] .mbTime b + b::before { content: '– '; font-weight: 650; }
+[data-size='phone'] .mbTime em { margin-left: auto; }
+[data-size='phone'] .mbBody { gap: 8px; }
+[data-size='phone'] .mbKit { flex-wrap: wrap; row-gap: 6px; max-width: 100%; }
+[data-size='phone'] .mbKit .artTile { flex: none; }
+[data-size='phone'] .mbBody strong { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: anywhere; line-height: 1.3; }
+[data-size='phone'] .mbStamp { grid-column: 1 !important; justify-self: start !important; }
+[data-size='phone'] .mbTicket > * { max-width: 100%; }
+
+// 3) Floating tab bar: the raised Book circle sits in the flow above its label, so "Book" is always visible and on the same baseline as the other labels.
+[data-size='phone'] .tabbar .tab.tabBook { justify-content: flex-end; }
+[data-size='phone'] .tabbar .tab.tabBook .navIcon { position: static !important; top: auto !important; left: auto !important; margin: 0 !important; transform: translateY(-15px); }
+[data-size='phone'] .tabbar .tab.tabBook:active .navIcon { transform: translateY(-15px) scale(.9); }
+[data-size='phone'] .tabbar .tab.tabBook span { margin-top: 0; }
+
+// 4) One compact attention banner (count, worst severity, expandable list).
+.attn4.attnOne > div:first-child { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; row-gap: 8px; }
+.attnActs { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
+.attnActs .linkBtn { flex: 1 1 140px; justify-content: center; }
+.attnList { display: grid; gap: 8px; }
+.attnList > div { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 14px; border-radius: 9px; background: rgba(255, 255, 255, .6); border: 1px solid #E9DFC7; }
+[data-size='wide'] .attn4.attnOne > div:first-child, [data-size='mid'] .attn4.attnOne > div:first-child { grid-template-columns: auto minmax(0, 1fr) auto; }
+[data-size='wide'] .attnActs, [data-size='mid'] .attnActs { grid-column: auto; flex-wrap: nowrap; }
+[data-size='wide'] .attnActs .linkBtn, [data-size='mid'] .attnActs .linkBtn { flex: none; }
+[data-size='phone'] .attn4.attnOne > div:first-child strong { grid-column: 2; }
+
+// =====================================================================================================================
+// Mobile v2 (staging 1.4.0.0, docs/MOBILE_UI_V2_PLAN.md). Phone only unless stated. Transform/opacity animation; reduced motion at the end.
+// =====================================================================================================================
+.site[data-size='phone'] { --gut: 12px; --tab-h: 100px; --spring: cubic-bezier(.22, 1.1, .36, 1); --ease-out: cubic-bezier(.23, 1, .32, 1); --ease-drawer: cubic-bezier(.32, .72, 0, 1); overflow-x: clip; }
+
+// 1) Header: transparent over the hero, official logo (white over the photo, teal once solid, crossfade), no plate behind it.
+.logoStack { position: relative; display: block; width: 122px; height: 26px; }
+.logoStack .brandLogo { position: absolute; left: 0; top: 0; height: 26px !important; width: auto; max-width: none; transition: opacity .3s ease; }
+.logoStack .logoOnDark { opacity: 0; }
+.site[data-size='phone'][data-hero='top'] .logoStack .logoOnLight, .site[data-size='mid'][data-hero='top'] .logoStack .logoOnLight { opacity: 0; }
+.site[data-size='phone'][data-hero='top'] .logoStack .logoOnDark, .site[data-size='mid'][data-hero='top'] .logoStack .logoOnDark { opacity: 1; }
+.site[data-size='phone'][data-hero='top'] .topbar .brand { background: none; border-radius: 0; padding: 0; }
+.site[data-size='phone'] .topbar .brand { padding: 0; }
+.site[data-size='phone'][data-hero='top'] .topbar .bell { background: rgba(255, 255, 255, .16); border-color: rgba(255, 255, 255, .38); color: #fff; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.site[data-size='phone'][data-hero='top'] .topbar .userChip .avatar { box-shadow: 0 0 0 2px rgba(255, 255, 255, .5); }
+[data-size='phone'] .topbar .bar { padding: 0 12px 0 16px; }
+[data-size='phone'] .topbar { transition: background .3s ease, box-shadow .3s ease, backdrop-filter .3s ease; }
+
+// 2) Bottom navigation: no container. Five standalone round buttons float over the page (a soft fade keeps them legible), the active one is
+//    filled teal with a labelled pill, Book is a larger raised gold circle. Press = spring scale.
+[data-size='phone'] .tabbar { left: 0; right: 0; bottom: 0; height: auto; padding: 0 8px calc(8px + env(safe-area-inset-bottom, 0px)); border: 0; border-radius: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: end; pointer-events: none; z-index: 40; }
+[data-size='phone'] .tabbar::before { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: calc(100% + 22px); z-index: -1; pointer-events: none; background: linear-gradient(180deg, rgba(244, 245, 247, 0), rgba(244, 245, 247, .92) 58%, #f4f5f7 100%); }
+[data-size='phone'] .tabbar .tabInk { display: none; }
+[data-size='phone'] .tabbar .tab { pointer-events: auto; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 5px; height: auto; min-height: 78px !important; padding: 0; background: none; border: 0; color: #3f4a56; font-size: 12px; font-weight: 650; -webkit-tap-highlight-color: transparent; }
+[data-size='phone'] .tabbar .tab .navIcon { box-sizing: content-box; width: 22px; height: 22px; padding: 13px; border-radius: 50%; background: rgba(255, 255, 255, .94); color: #0f4c5c; stroke-width: 1.8; box-shadow: inset 0 1px 0 #fff, 0 8px 20px rgba(15, 76, 92, .2), 0 1px 3px rgba(15, 76, 92, .14); transform: none; transition: transform .3s var(--ease-out), background .2s ease, color .2s ease, box-shadow .25s ease; }
+[data-size='phone'] .tabbar .tab span { padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 650; line-height: 16px; color: #3f4a56; background: transparent; text-shadow: 0 0 6px #f4f5f7, 0 0 8px #f4f5f7; transition: background .2s ease, color .2s ease, transform .3s var(--ease-out); }
+[data-size='phone'] .tabbar .tab.tabOn .navIcon { background: linear-gradient(145deg, #0f4c5c, #1a7083); color: #fff; stroke-width: 2.1; transform: translate3d(0, -5px, 0) scale(1.07); box-shadow: 0 14px 26px rgba(15, 76, 92, .42), inset 0 1px 0 rgba(255, 255, 255, .25); }
+[data-size='phone'] .tabbar .tab.tabOn span { background: #0f4c5c; color: #fff; text-shadow: none; transform: translate3d(0, -2px, 0); }
+[data-size='phone'] .tabbar .tab:active .navIcon { transform: scale(.94); transition-duration: .1s; }
+[data-size='phone'] .tabbar .tab.tabOn:active .navIcon { transform: translate3d(0, -5px, 0) scale(.94); }
+[data-size='phone'] .tabbar .tab.tabBook .navIcon { width: 26px; height: 26px; padding: 18px; background: linear-gradient(180deg, #edcb78, #c9a24d); color: #14262e !important; stroke-width: 2.3; transform: translate3d(0, -14px, 0); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), 0 16px 32px rgba(201, 162, 77, .5), 0 2px 6px rgba(120, 88, 20, .25); position: static; margin: 0; top: auto; left: auto; }
+[data-size='phone'] .tabbar .tab.tabBook { min-height: 86px !important; }
+[data-size='phone'] .tabbar .tab.tabBook span { margin-top: -10px; }
+[data-size='phone'] .tabbar .tab.tabBook:active .navIcon { transform: translate3d(0, -14px, 0) scale(.9); }
+[data-size='phone'] .tabbar .tab.tabBook.tabOn .navIcon { transform: translate3d(0, -17px, 0) scale(1.05); }
+[data-size='phone'] .tabbar .tab .navDot { position: absolute; top: 6px; left: calc(50% + 12px); width: 10px; height: 10px; border: 2px solid #fff; border-radius: 50%; background: #c9a24d; box-sizing: content-box; margin: 0; }
+[data-size='phone'] .tabbar .tab:focus-visible .navIcon { outline: 3px solid #c9a24d; outline-offset: 2px; }
+[data-size='phone'] .tabbar[data-book='1'] .tab.tabBook.tabOn .navIcon { background: linear-gradient(180deg, #edcb78, #c9a24d); }
+
+// 3) Bottom sheets: More (destinations) and Profile (the person). Both slide up with a grab handle; a down-drag closes More.
+.moreRoot { position: fixed; inset: 0; z-index: 1000; }
+.moreScrim { position: absolute; inset: 0; background: rgba(8, 24, 30, .5); opacity: 0; transition: opacity .25s ease; }
+.moreRoot[data-open='true'] .moreScrim { opacity: 1; }
+.moreSheet { position: absolute; left: 0; right: 0; bottom: 0; max-height: 86dvh; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding: 0 14px calc(18px + env(safe-area-inset-bottom, 0px)); border-radius: 32px 32px 0 0; background: linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(244, 247, 248, .98)); -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4); box-shadow: 0 -20px 50px rgba(8, 24, 30, .35); transform: translate3d(0, 102%, 0); transition: transform .4s var(--ease-drawer, cubic-bezier(.32, .72, 0, 1)); outline: none; }
+.moreRoot[data-open='true'] .moreSheet { transform: translate3d(0, 0, 0); }
+.moreGrab { display: grid; place-items: center; height: 26px; touch-action: none; cursor: grab; }
+.moreGrab i { width: 42px; height: 5px; border-radius: 3px; background: #c4ccd0; }
+.moreHead { display: flex; align-items: center; justify-content: space-between; padding: 0 4px 10px; h2 { margin: 0; font-size: 22px; font-weight: 750; letter-spacing: -.5px; color: #14262e; } }
+.moreClose { width: 40px; height: 40px; border-radius: 50%; border: 0; background: #e4eef0; color: #0f4c5c; display: grid; place-items: center; }
+.moreGrid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+
+.moreTile { width: 100%; min-height: 108px; display: grid; justify-items: start; align-content: start; gap: 3px; padding: 14px; border: 1px solid #fff; border-radius: 26px 10px 26px 10px; text-align: left; font: inherit; color: #1f1f1f; background: linear-gradient(155deg, #fff, #f1f6f7); box-shadow: inset 0 1px 0 #fff, 0 10px 22px rgba(15, 76, 92, .1); transition: transform .16s var(--ease-out, ease-out); }
+.moreTile:active { transform: scale(.97); }
+.moreTile strong { margin-top: 8px; font-size: 15px; font-weight: 700; }
+.moreTile small { font-size: 12px; color: #5b6370; line-height: 1.3; }
+.moreIcon { position: relative; width: 44px; height: 44px; border-radius: 16px 6px 16px 6px; display: grid; place-items: center; color: #fff; background: linear-gradient(145deg, #0f4c5c, #1a7083); box-shadow: 0 8px 16px rgba(15, 76, 92, .28); b { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #c9a24d; color: #14262e; font-size: 12px; line-height: 20px; text-align: center; border: 2px solid #fff; box-sizing: border-box; } }
+.moreTile[data-tone='gold'] .moreIcon { background: linear-gradient(145deg, #80601e, #b8923b); box-shadow: 0 8px 16px rgba(128, 96, 30, .28); }
+.moreTile[data-tone='sky'] .moreIcon { background: linear-gradient(145deg, #2d5d8a, #4a82b3); box-shadow: 0 8px 16px rgba(45, 93, 138, .28); }
+.moreTile[data-tone='rose'] .moreIcon { background: linear-gradient(145deg, #8a2c2c, #b04646); box-shadow: 0 8px 16px rgba(138, 44, 44, .28); }
+.moreTile[data-tone='slate'] .moreIcon { background: linear-gradient(145deg, #3f4a56, #5b6674); box-shadow: 0 8px 16px rgba(63, 74, 86, .28); }
+// Profile as a bottom sheet on phones
+[data-size='phone'] .pdSheet { top: auto; left: 0; right: 0; bottom: 0; width: auto; max-height: 90dvh; border-radius: 32px 32px 0 0; overflow: hidden; box-shadow: 0 -20px 50px rgba(8, 24, 30, .35); transform: translate3d(0, 102%, 0); transition: transform .3s cubic-bezier(.4, 0, 1, 1); }
+[data-size='phone'] .pdRoot[data-open='true'] .pdSheet { transform: translate3d(0, 0, 0); transition: transform .4s var(--ease-drawer, cubic-bezier(.32, .72, 0, 1)); }
+[data-size='phone'] .pdHead { border-radius: 32px 32px 0 0; padding-top: 24px; }
+.pdDetails { margin: 0; padding: 0 20px; display: grid; gap: 0; div { display: flex; justify-content: space-between; gap: 14px; padding: 12px 0; border-bottom: 1px solid #e5e9eb; } dt { font-size: 13px; color: #5b6370; } dd { margin: 0; font-size: 14px; font-weight: 650; color: #1f1f1f; text-align: right; overflow-wrap: anywhere; } }
+
+// 4) Toggles: pill track, glassy thumb that springs between options; the pane below slides in from the side you moved towards.
+.site .segmented { background: linear-gradient(180deg, #dfeaed, #e8f0f2); box-shadow: inset 0 1px 3px rgba(15, 76, 92, .12); }
+.site .segmented::before { background: linear-gradient(160deg, #1a7083, #0f4c5c); box-shadow: 0 8px 18px rgba(15, 76, 92, .34), inset 0 1px 0 rgba(255, 255, 255, .28); transition: transform .34s var(--ease-out, cubic-bezier(.23, 1, .32, 1)), opacity .15s; }
+.site .segmented button { transition: color .2s ease, transform .16s var(--ease-out, ease-out); }
+[data-size='phone'] .pane { animation: paneFwd .26s var(--ease-out, cubic-bezier(.23, 1, .32, 1)) backwards; }
+[data-size='phone'] .pane[data-dir='back'] { animation-name: paneBack; }
+@keyframes paneFwd { from { opacity: 0; transform: translate3d(36px, 0, 0); } }
+@keyframes paneBack { from { opacity: 0; transform: translate3d(-36px, 0, 0); } }
+// Schedule: four views fit their labels (icon over a short label, equal columns)
+.segIcons { --n: 4; }
+.segIcons button { display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 56px !important; padding: 6px 2px !important; font-size: 12px !important; line-height: 1.1; white-space: nowrap; }
+.segIcons button svg { width: 20px; height: 20px; flex: none; }
+.segIcons button span { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+[data-size='phone'] .headRow .row .segIcons { flex: 1 1 100%; }
+
+// 5) Date strips: big touch cells (56 x 76), snap to centre, edge fade, month label and a Today button.
+.stripHead { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 14px 2px 2px; b { font-size: 15px; font-weight: 700; color: #14262e; } button { min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: #e4eef0; color: #0f4c5c; font: inherit; font-size: 13px; font-weight: 650; } }
+[data-size='phone'] .monthStrip { margin: 6px -12px 8px; padding: 10px 12px 12px; border-radius: 0; border-left: 0; border-right: 0; gap: 8px; scroll-snap-type: x mandatory; scroll-padding-inline: 12px; background: linear-gradient(180deg, #fff, #f6f9fa); -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 28px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 28px), transparent 100%); }
+[data-size='phone'] .monthStrip li { scroll-snap-align: center; }
+[data-size='phone'] .monthStrip li > button { width: 56px; min-width: 56px; min-height: 76px; padding: 8px 0 8px; border-radius: 20px 8px 20px 8px; display: grid; align-content: center; justify-items: center; gap: 2px; transition: transform .22s var(--ease-out, ease-out), background .2s, color .2s, box-shadow .2s; }
+[data-size='phone'] .monthStrip li > button span { font-size: 12px; font-weight: 650; }
+[data-size='phone'] .monthStrip li > button b { font-size: 22px; letter-spacing: -.5px; line-height: 1; }
+[data-size='phone'] .monthStrip .monthFocus { transform: scale(1.08); }
+[data-size='phone'] .srArrow { display: none; }
+[data-size='phone'] .bkDays { display: flex; grid-template-columns: none; overflow-x: auto; gap: 8px; margin: 0 -12px; padding: 6px 12px 12px; scroll-snap-type: x mandatory; scroll-padding-inline: 12px; scrollbar-width: none; -webkit-overflow-scrolling: touch; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 28px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 28px), transparent 100%); }
+[data-size='phone'] .bkDays::-webkit-scrollbar { display: none; }
+[data-size='phone'] .bkDays button { flex: 0 0 56px; min-width: 56px; min-height: 76px; padding: 8px 0 !important; border-radius: 20px 8px 20px 8px !important; display: grid; align-content: center; justify-items: center; gap: 2px; scroll-snap-align: center; transition: transform .22s var(--ease-out, ease-out), background .2s, color .2s; }
+[data-size='phone'] .bkDays button b { font-size: 22px; line-height: 1; }
+[data-size='phone'] .bkDays .bkDayOn { transform: scale(1.08); }
+
+// 6) Equipment lists/carousels: arrows stay inside, hidden where swiping is natural; cards snap; Book is a compact pill; state labels centred.
+.srArrow { width: 38px; height: 38px; }
+.srLeft { left: 4px; } .srRight { right: 4px; }
+@media (hover: none) { .srArrow { display: none; } }
+[data-size='phone'] .srRow { scroll-snap-type: x proximity; scroll-padding-inline: 12px; }
+[data-size='phone'] .catTabs > * { scroll-snap-align: start; }
+[data-size='phone'] .scUnit { padding: 14px 12px; border: 1px solid #fff; border-radius: 26px 10px 26px 10px; margin: 0 0 10px; background: linear-gradient(155deg, #fff, #f1f6f7); box-shadow: inset 0 1px 0 #fff, 0 10px 22px rgba(15, 76, 92, .1); grid-template-columns: 48px minmax(0, 1fr) auto; align-items: center; }
+[data-size='phone'] .scUnits { border-top: 0; }
+[data-size='phone'] .scUnit .btn, [data-size='phone'] .bkMove { min-height: 38px; height: 38px; padding: 0 20px; border-radius: 999px; width: auto; justify-self: end; font-size: 14px; }
+[data-size='phone'] .scState { grid-column: 1 / -1; grid-row: auto; justify-items: center; text-align: center; padding-top: 2px; }
+[data-size='phone'] .scState b { justify-content: center; }
+[data-size='phone'] .scState em { text-align: center; }
+[data-size='phone'] .scName { text-align: left; }
+[data-size='phone'] .scUnit .btn { grid-column: 3; grid-row: 1; }
+[data-size='phone'] .bkUnits li { border-radius: 26px 10px 26px 10px !important; border-color: #fff !important; background: linear-gradient(155deg, #fff, #f1f6f7) !important; box-shadow: inset 0 1px 0 #fff, 0 10px 22px rgba(15, 76, 92, .1) !important; }
+[data-size='phone'] .bkUnitText em { text-align: center; }
+
+// 7) Booking tickets (My bookings): ticket-stub notches on the sides, soft gradient, no plain rectangle.
+[data-size='phone'] .mbTicket { position: relative; border: 0 !important; border-radius: 20px !important; padding: 16px 20px !important; background: linear-gradient(135deg, #fff 0%, #eff6f7 100%) !important; box-shadow: 0 8px 20px rgba(15, 76, 92, .1) !important; -webkit-mask: radial-gradient(circle 10px at 0 50%, transparent 97%, #000) left / 51% 100% no-repeat, radial-gradient(circle 10px at 100% 50%, transparent 97%, #000) right / 51% 100% no-repeat; mask: radial-gradient(circle 10px at 0 50%, transparent 97%, #000) left / 51% 100% no-repeat, radial-gradient(circle 10px at 100% 50%, transparent 97%, #000) right / 51% 100% no-repeat; }
+[data-size='phone'] .mbTickets > li { padding: 0; margin: 0 0 14px; }
+[data-size='phone'] .mbTickets > li:active .mbTicket { transform: scale(.985); }
+[data-size='phone'] .mbStamp { border-radius: 999px; }
+
+// 8) Edge to edge on phones: pages use the full width; only components carry padding. One gutter variable drives the page padding AND the negative margins of full-bleed blocks.
+.site[data-size='phone'] .main { padding-left: var(--gut) !important; padding-right: var(--gut) !important; }
+[data-size='phone'] .main, [data-size='phone'] .col { width: 100%; max-width: none; }
+[data-size='phone'] .container { padding-left: 12px; padding-right: 12px; }
+[data-size='phone'] .btn, [data-size='phone'] .btnCitrus { border-radius: 999px; }
+[data-size='phone'] .btn:not(.btnCitrus) { background: #e4eef0; }
+
+// Reduced motion: no springs, no slides, no staged entrances.
+@media (prefers-reduced-motion: reduce) {
+  [data-size='phone'] .pane, .moreGrid li, .moreSheet, .moreScrim, [data-size='phone'] .tabbar .tab .navIcon, [data-size='phone'] .tabbar .tab span, .site .segmented::before, [data-size='phone'] .pdSheet { animation: none !important; transition: none !important; }
+  .moreGrid li { opacity: 1; transform: none; }
+}
+[data-motion='reduce'] .pane, [data-motion='reduce'] .moreGrid li, [data-motion='reduce'] .moreSheet, [data-motion='reduce'] .moreScrim, [data-motion='reduce'] .tabbar .tab .navIcon, [data-motion='reduce'] .tabbar .tab span, [data-motion='reduce'] .pdSheet { animation: none !important; transition: none !important; }
+[data-motion='reduce'] .moreGrid li { opacity: 1; transform: none; }
+[data-size='phone'] .pdDetails div { flex-direction: column; align-items: flex-start; gap: 2px; }
+[data-size='phone'] .pdDetails dd { text-align: left; }
+// Header action buttons are compact pills pushed to the right, never a full-width bar.
+[data-size='phone'] .headRow .row > .btn { flex: 0 0 auto; min-height: 42px; padding: 0 22px; }
+[data-size='phone'] .headRow .row > .btnCitrus { margin-left: auto; }
+
+// =====================================================================================================================
+// v3 (staging 1.5.0.0): circular 3D icon primitive, Book button, header inset, circular date bubbles, Messages console.
+// Motion rules applied (docs/MOBILE_UI_V2_PLAN.md addendum): ease-out only, UI under 300 ms (sheets up to 400), press = scale .97, transform/opacity only.
+// =====================================================================================================================
+$ico-sh: 0 10px 20px rgba(8, 24, 30, .28), 0 2px 4px rgba(8, 24, 30, .2), inset 0 1.5px 0 rgba(255, 255, 255, .55), inset 0 -3px 5px rgba(0, 0, 0, .2);
+.ico3d { position: relative; display: grid; place-items: center; flex: none; border-radius: 50%; color: #fff; background: linear-gradient(145deg, #2a8196, #0f4c5c); box-shadow: $ico-sh; }
+.ico3d::before { content: ''; position: absolute; inset: 0; border-radius: 50%; pointer-events: none; background: linear-gradient(160deg, rgba(255, 255, 255, .38), rgba(255, 255, 255, 0) 52%, rgba(0, 0, 0, .12)); }
+.ico3d > svg { position: relative; }
+.ico3d[data-tone='gold'] { background: linear-gradient(145deg, #b8923b, #80601e); }
+.ico3d[data-tone='sky'] { background: linear-gradient(145deg, #4a82b3, #2d5d8a); }
+.ico3d[data-tone='rose'] { background: linear-gradient(145deg, #b04646, #8a2c2c); }
+.ico3d[data-tone='slate'] { background: linear-gradient(145deg, #5b6674, #3f4a56); }
+.ico44 { width: 44px; height: 44px; } .ico40 { width: 40px; height: 40px; } .ico32 { width: 32px; height: 32px; } .ico24 { width: 24px; height: 24px; }
+.moreIcon, .ntIcon { border-radius: 50% !important; box-shadow: $ico-sh !important; width: 44px !important; height: 44px !important; position: relative; }
+.ntIcon { width: 40px !important; height: 40px !important; }
+.moreIcon::before, .ntIcon::before { content: ''; position: absolute; inset: 0; border-radius: 50%; pointer-events: none; background: linear-gradient(160deg, rgba(255, 255, 255, .38), rgba(255, 255, 255, 0) 52%, rgba(0, 0, 0, .12)); }
+.moreIcon > svg { position: relative; }
+.avatar { box-shadow: $ico-sh; }
+// SVG icons never clip their strokes
+svg { overflow: visible; }
+
+// C) Book: a 52 px raised circle with a 24 px plus
+[data-size='phone'] .tabbar .tab.tabBook .navIcon { width: 24px; height: 24px; padding: 14px; transform: translate3d(0, -12px, 0); }
+[data-size='phone'] .tabbar .tab.tabBook:active .navIcon { transform: translate3d(0, -12px, 0) scale(.94); }
+[data-size='phone'] .tabbar .tab.tabBook.tabOn .navIcon { transform: translate3d(0, -14px, 0) scale(1.04); }
+[data-size='phone'] .tabbar .tab.tabBook { min-height: 82px !important; }
+[data-size='phone'] .tabbar .tab.tabBook span { margin-top: -8px; }
+
+// F) Header: a proper inset on both sides (>= 16 px plus the safe area), avatar and bell never touch the edge
+[data-size='phone'] .topbar .bar, .site[data-size='phone'] .topbar .bar { padding-left: max(16px, calc(env(safe-area-inset-left, 0px) + 16px)); padding-right: max(16px, calc(env(safe-area-inset-right, 0px) + 16px)); gap: 10px; }
+[data-size='phone'] .topbar .actions { gap: 10px; flex: none; }
+[data-size='phone'] .topbar .brand { min-width: 0; }
+
+// H) Date strips: circular date bubbles. Weekday above, the day number in a circle, today = ring, selected = gradient circle with lift, a dot for bookings.
+//    No mask on the left edge (the first bubble starts at the page gutter and is fully visible); only the right edge fades.
+[data-size='phone'] .monthStrip, [data-size='phone'] .bkDays { -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 28px), transparent 100%); mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 28px), transparent 100%); padding-left: 16px; padding-right: 16px; scroll-padding-inline: 16px; }
+[data-size='phone'] .monthStrip { margin: 6px -12px 8px; background: none; border: 0; box-shadow: none; }
+[data-size='phone'] .bkDays { margin: 0 -12px; }
+[data-size='phone'] .monthStrip li > button, [data-size='phone'] .bkDays button { position: relative; flex: 0 0 52px; width: 52px; min-width: 52px; min-height: 76px; padding: 4px 0 !important; border: 0 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; display: grid; grid-template-rows: auto 44px auto; justify-items: center; align-content: start; gap: 4px; color: #3f4a56; transform: none !important; }
+[data-size='phone'] .monthStrip li > button span, [data-size='phone'] .bkDays button span { font-size: 12px; font-weight: 650; color: #5b6370 !important; letter-spacing: 0 !important; }
+[data-size='phone'] .monthStrip li > button b, [data-size='phone'] .bkDays button b { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 18px; font-weight: 750; line-height: 1; background: #fff; color: #1f1f1f; box-shadow: inset 0 0 0 1.5px #dde3e6; transition: transform .22s var(--ease-out), background .2s ease, color .2s ease, box-shadow .2s ease; }
+[data-size='phone'] .monthStrip li > button:disabled b { background: transparent; box-shadow: none; color: #7d8a95; }
+[data-size='phone'] .monthStrip li > button:active b, [data-size='phone'] .bkDays button:active b { transform: scale(.97); }
+// today = ring
+[data-size='phone'] .monthStrip .monthToday b, [data-size='phone'] .bkDays .bkDayToday b { box-shadow: inset 0 0 0 2.5px #c9a24d; }
+// booked day = tinted circle by status
+[data-size='phone'] .monthStrip .monthOk b, [data-size='phone'] .monthStrip .monthMixed b { background: linear-gradient(145deg, #2a8196, #0f4c5c); color: #fff; box-shadow: $ico-sh; }
+[data-size='phone'] .monthStrip .monthWait b { background: linear-gradient(145deg, #f2dc9b, #d9b865); color: #5a3f0a; box-shadow: $ico-sh; }
+[data-size='phone'] .monthStrip .monthFill span, [data-size='phone'] .monthStrip .monthFill small { color: #5b6370 !important; }
+[data-size='phone'] .monthStrip li > button small { display: none; }
+[data-size='phone'] .monthStrip .monthBooked::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #c9a24d; align-self: start; }
+// selected = filled gradient circle, lifted
+[data-size='phone'] .monthStrip .monthFocus b, [data-size='phone'] .bkDays .bkDayOn b { background: linear-gradient(145deg, #2a8196, #0f4c5c) !important; color: #fff !important; box-shadow: $ico-sh !important; transform: translate3d(0, -3px, 0) scale(1.06); }
+[data-size='phone'] .monthStrip .monthFocus, [data-size='phone'] .bkDays .bkDayOn { outline: 0 !important; background: none !important; }
+[data-size='phone'] .monthStrip .monthNext { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); font-size: 12px; padding: 1px 7px; border-radius: 999px; background: #c9a24d; color: #14262e; font-style: normal; font-weight: 700; z-index: 2; }
+
+// G) Messages console
+.msg { position: relative; }
+.msgShell { display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: 16px; align-items: stretch; min-height: min(70vh, 720px); }
+.msgRight { min-width: 0; display: grid; }
+.msgList { position: relative; display: flex; flex-direction: column; gap: 10px; min-width: 0; padding-bottom: 84px; }
+.msgListHead { display: flex; align-items: center; gap: 12px; padding: 2px 2px 4px; h2 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -.5px; color: #14262e; } p { margin: 2px 0 0; font-size: 13px; color: #5b6370; } }
+.msgRows { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.msgRow { width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid rgba(255, 255, 255, .9); border-radius: 22px; background: linear-gradient(155deg, #fff, #f1f6f7); box-shadow: inset 0 1px 0 #fff, 0 8px 18px rgba(15, 76, 92, .09); text-align: left; font: inherit; color: #1f1f1f; transition: transform .16s var(--ease-out, ease-out), box-shadow .2s ease; }
+.msgRow:active { transform: scale(.98); }
+.msgRowOn { box-shadow: inset 0 0 0 2px #0f4c5c, 0 8px 18px rgba(15, 76, 92, .12); }
+.msgRowText { display: grid; gap: 2px; min-width: 0; strong { font-size: 15px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } small { font-size: 13px; color: #5b6370; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } }
+.msgRowMeta { display: grid; justify-items: end; gap: 6px; }
+.msgChip { display: inline-block; font-style: normal; font-size: 12px; font-weight: 700; line-height: 1; padding: 4px 9px; border-radius: 999px; background: #e4eef0; color: #0f4c5c; }
+.msgChipOk { background: #dcefe9; color: #0e5a45; }
+.msgChipWait { background: #f5f0e5; color: #80601e; }
+.msgDot { width: 10px; height: 10px; border-radius: 50%; background: #c9a24d; box-shadow: 0 0 0 3px rgba(201, 162, 77, .25); }
+.msgFab { position: fixed; right: 16px; bottom: calc(var(--tab-h, 100px) + 6px); z-index: 38; display: inline-flex; align-items: center; gap: 8px; height: 52px; padding: 0 20px 0 16px; border: 0; border-radius: 999px; background: linear-gradient(180deg, #edcb78, #c9a24d); color: #14262e; font: inherit; font-size: 14px; font-weight: 700; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), 0 14px 28px rgba(201, 162, 77, .45), 0 2px 6px rgba(8, 24, 30, .25); transition: transform .16s var(--ease-out, ease-out); }
+.msgFab:active { transform: scale(.97); }
+[data-size='phone'] .msgFab { width: 56px; height: 56px; padding: 0; justify-content: center; }
+[data-size='phone'] .msgFab span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+[data-size='mid'] .msgFab, [data-size='wide'] .msgFab { position: sticky; align-self: flex-start; bottom: 16px; right: auto; margin-top: auto; }
+.msgEmpty, .msgHint { display: grid; justify-items: center; gap: 6px; padding: 36px 16px; text-align: center; b { font-size: 16px; color: #14262e; } p { margin: 0; font-size: 14px; color: #5b6370; max-width: 30ch; } }
+.msgHint { align-content: center; border-radius: 26px; background: linear-gradient(160deg, #fff, #f4f8f9); }
+.msgSkel { display: grid; gap: 8px; i { display: block; height: 64px; border-radius: 22px; background: linear-gradient(90deg, #eef2f3, #f8fafa, #eef2f3); background-size: 200% 100%; animation: msgShimmer 1.4s linear infinite; } }
+@keyframes msgShimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+// steps
+.msgStep { display: grid; align-content: start; gap: 14px; min-width: 0; }
+.msgStepHead { display: flex; align-items: center; gap: 12px; h2 { margin: 2px 0 0; font-size: 22px; font-weight: 800; letter-spacing: -.5px; } small { font-size: 12px; font-weight: 650; color: #5b6370; } }
+.msgBack { width: 44px; height: 44px; flex: none; border: 0; border-radius: 50%; display: grid; place-items: center; background: #e4eef0; color: #0f4c5c; transition: transform .16s var(--ease-out, ease-out); }
+.msgBack:active { transform: scale(.97); }
+.msgTopics { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.msgTopic { width: 100%; min-height: 128px; display: grid; justify-items: center; align-content: center; gap: 8px; padding: 14px 10px; border: 1px solid #fff; border-radius: 26px; background: linear-gradient(155deg, #fff, #f1f6f7); box-shadow: inset 0 1px 0 #fff, 0 10px 22px rgba(15, 76, 92, .1); font: inherit; color: #1f1f1f; text-align: center; transition: transform .16s var(--ease-out, ease-out); strong { font-size: 15px; font-weight: 700; } small { font-size: 12px; color: #5b6370; } }
+.msgTopic:active { transform: scale(.97); }
+.msgChips { display: flex; flex-wrap: wrap; gap: 8px; button { min-height: 44px; padding: 0 16px; border: 1.5px solid #dde3e6; border-radius: 999px; background: #fff; color: #1f1f1f; font: inherit; font-size: 14px; font-weight: 600; transition: transform .16s var(--ease-out, ease-out), background .2s ease, color .2s ease, border-color .2s ease; } button:active { transform: scale(.97); } }
+.msgChips .msgChipOn { background: #0f4c5c; border-color: #0f4c5c; color: #fff; }
+.msgSubject { display: grid; gap: 6px; span { font-size: 13px; font-weight: 650; color: #3f4a56; } input { height: 48px; padding: 0 16px; border: 1.5px solid #dde3e6; border-radius: 999px; font: inherit; font-size: 16px; background: #fff; } input:focus-visible { outline: 3px solid rgba(15, 76, 92, .3); border-color: #0f4c5c; } }
+.msgGo { justify-self: start; }
+// chat
+.msgChat { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: #eef3f4; border-radius: 26px; overflow: hidden; }
+.msgChatFull { position: fixed; inset: 0; z-index: 60; border-radius: 0; height: 100dvh; background: radial-gradient(120% 50% at 0% 0%, rgba(201, 162, 77, .14), transparent 55%), #eef3f4; }
+.msgChatHead { display: flex; align-items: center; gap: 10px; padding: 10px 14px 10px 10px; background: rgba(255, 255, 255, .92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 1px 0 #dde3e6; flex: none; }
+.msgChatTitle { min-width: 0; display: grid; gap: 4px; h2 { margin: 0; font-size: 16px; font-weight: 750; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } span { display: flex; gap: 6px; flex-wrap: wrap; } }
+.msgLog { flex: 1; min-height: 0; list-style: none; margin: 0; padding: 14px 14px 8px; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; gap: 8px; }
+.msgInfo { align-self: center; display: flex; gap: 8px; align-items: flex-start; max-width: 92%; padding: 10px 14px; border-radius: 18px; background: #fff7e0; color: #5a3f0a; font-size: 13px; line-height: 1.4; box-shadow: 0 2px 6px rgba(8, 24, 30, .08); }
+.msgDay { align-self: center; margin: 6px 0; span { display: inline-block; padding: 4px 12px; border-radius: 999px; background: rgba(15, 76, 92, .1); color: #3f4a56; font-size: 12px; font-weight: 650; } }
+.msgBubble { position: relative; max-width: 82%; padding: 9px 12px 7px; font-size: 15px; line-height: 1.4; overflow-wrap: anywhere; animation: msgIn .22s var(--ease-out, ease-out) backwards; animation-delay: calc(var(--i, 0) * 30ms); p { margin: 0; white-space: pre-wrap; } strong { display: block; font-size: 12px; margin-bottom: 2px; color: #0f4c5c; } small { display: block; margin-top: 4px; font-size: 12px; opacity: .85; } }
+.msgMine { align-self: flex-end; border-radius: 20px 20px 6px 20px; background: linear-gradient(160deg, #1a7083, #0f4c5c); color: #fff; box-shadow: 0 4px 10px rgba(15, 76, 92, .25); }
+.msgTheirs { align-self: flex-start; border-radius: 20px 20px 20px 6px; background: #fff; color: #1f1f1f; box-shadow: 0 2px 8px rgba(8, 24, 30, .1); }
+.msgSending { opacity: .85; }
+.msgFoot { display: flex; justify-content: flex-end; align-items: center; gap: 4px; margin-top: 2px; font-size: 12px; opacity: .85; time { font-size: 12px; } }
+.msgTicks { display: inline-flex; color: rgba(255, 255, 255, .85); }
+.msgTicks[data-state='answered'] { color: #9be0c8; }
+.msgTicks[data-state='failed'] { color: #ffd2d2; }
+.msgOutcome { font-size: 12px; }
+@keyframes msgIn { from { opacity: 0; transform: translate3d(0, 10px, 0) scale(.96); } to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); } }
+.msgFiles { margin: 0 14px; flex: none; }
+.msgErr { margin: 0 14px 6px; flex: none; }
+.msgComposer { flex: none; display: flex; align-items: flex-end; gap: 8px; padding: 8px 12px calc(10px + env(safe-area-inset-bottom, 0px)); background: rgba(255, 255, 255, .94); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 -1px 0 #dde3e6; }
+.msgAttach { position: relative; flex: none; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: #e4eef0; color: #0f4c5c; transition: transform .16s var(--ease-out, ease-out); input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; } }
+.msgAttach:active { transform: scale(.97); }
+.msgField { flex: 1; min-width: 0; display: block; textarea { display: block; width: 100%; box-sizing: border-box; min-height: 44px; max-height: 120px; padding: 11px 16px; border: 1.5px solid #dde3e6; border-radius: 22px; resize: none; font: inherit; font-size: 16px; line-height: 1.3; background: #fff; } textarea:focus-visible { outline: 3px solid rgba(15, 76, 92, .3); border-color: #0f4c5c; } }
+.msgSend { flex: none; width: 44px; height: 44px; border: 0; border-radius: 50%; display: grid; place-items: center; color: #fff; background: linear-gradient(145deg, #2a8196, #0f4c5c); box-shadow: $ico-sh; transition: transform .16s var(--ease-out, ease-out), opacity .2s ease; }
+.msgSend:active:not(:disabled) { transform: scale(.97); }
+.msgSend:disabled { opacity: .5; }
+@media (prefers-reduced-motion: reduce) { .msgBubble, .msgSkel i { animation: none !important; } .msgFab, .msgRow, .msgTopic, .msgBack, .msgSend, .msgAttach, .msgChips button { transition: none !important; } }
+[data-motion='reduce'] .msgBubble, [data-motion='reduce'] .msgSkel i { animation: none !important; }
+[data-motion='reduce'] .msgFab, [data-motion='reduce'] .msgRow, [data-motion='reduce'] .msgTopic, [data-motion='reduce'] .msgBack, [data-motion='reduce'] .msgSend, [data-motion='reduce'] .msgAttach { transition: none !important; }
+// 44 px hit areas for small visual targets
+.notice-head button { position: relative; }
+// Root cause of the "margin around the hero" (seen in the 1.3 to 1.4 reviews): v14 clipped each .page to its own box (overflow-x: clip), which cut the
+// full-bleed hero (negative margins) back to the gutter. The clip stays on .main, whose box is the full width.
+[data-size='phone'] .page { overflow-x: visible; }
+[data-size='phone'] .main { overflow-x: clip; }
+.msgCount { margin: 0 2px; font-size: 13px; font-weight: 650; color: #5b6370; }
+[data-size='phone'] .bkDays button::before, [data-size='phone'] .bkDays button::after { display: none !important; }
+[data-size='phone'] .bkDays button, [data-size='phone'] .bkDays button:focus, [data-size='phone'] .bkDays button:active, [data-size='phone'] .bkDays button[aria-pressed='true'] { background: none !important; background-image: none !important; border-color: transparent !important; outline: 0; }
+
+// =====================================================================================================================
+// v4 (staging 1.6.0.0): glass cart capsule, mode cards, Book in pictures, glass date panels, celebrations, equipment lift.
+// Budget: transform/opacity, one idle loop on screen (paused off screen via data-playing), ease-out, UI <= 300 ms, sheets/capsule <= 400 ms.
+// =====================================================================================================================
+// 1) Cart = floating glass capsule above the floating nav
+[data-size='phone'] .bfBar.bk7Bar, [data-size='mid'] .bfBar.bk7Bar { position: fixed; top: auto; left: max(12px, calc(env(safe-area-inset-left, 0px) + 12px)); right: max(12px, calc(env(safe-area-inset-right, 0px) + 12px)); bottom: calc(var(--tab-h, 100px) + 4px); z-index: 39; padding: 8px 8px 8px 8px; border: 1px solid rgba(255, 255, 255, .75); border-top: 1px solid rgba(255, 255, 255, .75); border-radius: 999px; background: rgba(255, 255, 255, .72); -webkit-backdrop-filter: blur(18px) saturate(1.5); backdrop-filter: blur(18px) saturate(1.5); box-shadow: 0 14px 34px rgba(8, 24, 30, .22), 0 2px 6px rgba(8, 24, 30, .12), inset 0 1px 0 #fff; transform: translate3d(0, 0, 0); opacity: 1; transition: transform .4s cubic-bezier(.32, 1.15, .5, 1), opacity .2s ease-out; }
+[data-size='mid'] .bfBar.bk7Bar { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+[data-size='phone'] .bfBar.bk7Bar[data-empty='1'], [data-size='mid'] .bfBar.bk7Bar[data-empty='1'] { transform: translate3d(0, calc(100% + 120px), 0); opacity: 0; pointer-events: none; transition: transform .25s cubic-bezier(.23, 1, .32, 1), opacity .15s ease-out; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { [data-size='phone'] .bfBar.bk7Bar { background: #fff; } }
+.bfBar.bk7Bar .container { display: flex; align-items: center; gap: 10px; padding: 0 !important; max-width: none; margin: 0; }
+.capIco { position: relative; flex: none; }
+.capBadge { position: absolute; top: -4px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; box-sizing: border-box; border-radius: 10px; border: 2px solid #fff; background: #c9a24d; color: #14262e; font-size: 12px; line-height: 16px; text-align: center; font-weight: 800; animation: capPop .3s cubic-bezier(.32, 1.4, .5, 1); }
+@keyframes capPop { from { transform: scale(.7); } to { transform: scale(1); } }
+.capText { flex: 1; min-width: 0; display: grid; gap: 1px; }
+.bfBar.bk7Bar .bfBarText { display: block; font-size: 15px; font-weight: 750; color: #14262e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.capWhen { font-size: 12px; color: #4b5563; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bfBar.bk7Bar .capGo { flex: none; min-width: 0 !important; height: 44px; min-height: 44px; padding: 0 14px 0 18px; border-radius: 999px; gap: 4px; }
+// Same capsule for the board dock (Book board on phones)
+[data-size='phone'] .dock { position: fixed; left: 12px; right: 12px; bottom: calc(var(--tab-h, 100px) + 4px); height: auto; min-height: 60px; padding: 8px 12px; border: 1px solid rgba(255, 255, 255, .75); border-radius: 999px; background: rgba(13, 42, 51, .9); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: 0 14px 34px rgba(8, 24, 30, .3); z-index: 39; }
+// Page bottom space: capsule + nav never hide content
+.site[data-size='phone']:has([data-section='book']:not([hidden])) .main { padding-bottom: calc(var(--tab-h, 100px) + 96px) !important; }
+
+// 2) Mode picker: a snap row of mode cards
+.modeRow { display: flex !important; grid-template-columns: none !important; gap: 10px !important; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; margin: 0 -12px 6px !important; padding: 6px 16px 14px !important; border: 0 !important; background: none !important; box-shadow: none !important; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.modeRow::-webkit-scrollbar { display: none; }
+.modeCard { position: relative; flex: 0 0 118px; min-height: 108px; scroll-snap-align: start; display: grid !important; justify-items: center; align-content: center; gap: 8px; padding: 12px 8px !important; border: 1px solid rgba(255, 255, 255, .9) !important; border-radius: 24px !important; background: linear-gradient(155deg, #fff, #eef4f5) !important; color: #1f1f1f !important; box-shadow: inset 0 1px 0 #fff, 0 8px 18px rgba(15, 76, 92, .1) !important; transition: transform .2s cubic-bezier(.23, 1, .32, 1), box-shadow .2s ease-out; }
+.modeCard:active { transform: scale(.97); }
+.modeLabel { font-size: 13px; font-weight: 700; text-align: center; line-height: 1.2; }
+.modeCheck { position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: #0f4c5c; color: #fff; opacity: 0; transform: scale(.8); transition: opacity .2s ease-out, transform .2s cubic-bezier(.23, 1, .32, 1); }
+.modeCard.bkModeOn { transform: translate3d(0, -3px, 0); box-shadow: inset 0 0 0 2px #0f4c5c, 0 14px 26px rgba(15, 76, 92, .22) !important; background: linear-gradient(155deg, #fff, #e4f0f2) !important; }
+.modeCard.bkModeOn .modeCheck { opacity: 1; transform: scale(1); }
+
+// 4b) Book in four pictures (icons pop once in a short stagger, connectors draw once)
+.flowSteps { position: relative; margin: 6px 0 16px; display: grid; gap: 10px; }
+.flowSteps ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.flowSteps li { position: relative; display: grid; justify-items: center; gap: 6px; text-align: center; }
+.flowSteps li small { font-size: 12px; font-weight: 650; color: #3f4a56; line-height: 1.2; }
+.flowSteps li .ico3d { animation: flowPop .3s cubic-bezier(.23, 1, .32, 1) backwards; animation-delay: calc(var(--i, 0) * 60ms); }
+.flowSteps li + li::before { content: ''; position: absolute; top: 20px; right: calc(50% + 24px); width: calc(100% - 48px); height: 2px; border-radius: 2px; background: linear-gradient(90deg, #c9d8dc, #0f4c5c); transform-origin: left center; animation: flowLine .3s cubic-bezier(.23, 1, .32, 1) backwards; animation-delay: calc(var(--i, 0) * 60ms + 60ms); }
+@keyframes flowPop { from { opacity: 0; transform: scale(.92); } }
+@keyframes flowLine { from { transform: scaleX(0); } }
+.flowNote { margin: 0; display: inline-flex; align-items: center; gap: 6px; justify-self: center; padding: 4px 12px; border-radius: 999px; background: #e4eef0; color: #0f4c5c; font-size: 12px; font-weight: 700; }
+.flowHow { justify-self: center; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border: 0; border-radius: 999px; background: none; color: #0f4c5c; font: inherit; font-size: 13px; font-weight: 700; }
+.flowHow:active { transform: scale(.97); }
+
+// 4a) Glass date panel over a drifting mesh (the page's one idle loop, paused off screen); date bubbles are glass spheres
+.datePanel { position: relative; isolation: isolate; overflow: hidden; border-radius: 28px; margin: 4px 0 12px; padding: 6px 0; border: 1px solid rgba(255, 255, 255, .85); background: rgba(255, 255, 255, .55); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); box-shadow: inset 0 1px 0 #fff, 0 12px 28px rgba(15, 76, 92, .12); }
+.datePanel::before { content: ''; position: absolute; inset: -30%; z-index: -1; background: radial-gradient(30% 40% at 25% 35%, rgba(42, 129, 150, .28), transparent 70%), radial-gradient(28% 38% at 75% 60%, rgba(201, 162, 77, .3), transparent 70%), linear-gradient(135deg, #f4f8f9, #eef3f4); animation: meshDrift 14s ease-in-out infinite alternate; animation-play-state: paused; }
+.datePanel[data-playing='1']::before { animation-play-state: running; }
+@keyframes meshDrift { from { transform: translate3d(-4%, -3%, 0) rotate(0deg); } to { transform: translate3d(4%, 3%, 0) rotate(8deg); } }
+[data-size='phone'] .datePanel .bkDays, [data-size='phone'] .datePanel .monthStrip { margin: 0 !important; background: none !important; -webkit-mask-image: none; mask-image: none; }
+[data-size='phone'] .datePanel .monthStrip li > button b, [data-size='phone'] .datePanel .bkDays button b { background: radial-gradient(circle at 32% 28%, #ffffff 0%, rgba(255, 255, 255, .9) 28%, rgba(222, 234, 237, .85) 100%); box-shadow: inset 0 -3px 6px rgba(15, 76, 92, .12), inset 0 2px 2px rgba(255, 255, 255, .9), 0 6px 12px rgba(15, 76, 92, .14); }
+[data-size='phone'] .datePanel .monthStrip .monthFocus b, [data-size='phone'] .datePanel .bkDays .bkDayOn b, [data-size='phone'] .datePanel .monthStrip .monthOk b, [data-size='phone'] .datePanel .monthStrip .monthMixed b { background: radial-gradient(circle at 32% 26%, rgba(255, 255, 255, .55) 0%, rgba(255, 255, 255, 0) 30%), linear-gradient(145deg, #2a8196, #0f4c5c) !important; color: #fff !important; }
+[data-size='phone'] .datePanel .monthStrip .monthToday b, [data-size='phone'] .datePanel .bkDays .bkDayToday b { box-shadow: inset 0 0 0 2.5px #c9a24d, 0 6px 12px rgba(15, 76, 92, .14); }
+
+// 4c) Equipment tiles: chosen tile lifts (one-off), tilts under the finger
+[data-size='phone'] .bkUnits li { transform: perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .25s cubic-bezier(.23, 1, .32, 1), box-shadow .25s ease-out; }
+[data-size='phone'] .bkUnits li.bkUnitOn { box-shadow: inset 0 0 0 2px #0f4c5c, 0 16px 30px rgba(15, 76, 92, .2) !important; }
+[data-size='phone'] .bkUnits li.bkUnitOn .artTile { transform: translate3d(0, -4px, 0); filter: drop-shadow(0 8px 6px rgba(8, 24, 30, .25)); animation: unitLift .32s cubic-bezier(.32, 1.3, .5, 1); }
+@keyframes unitLift { from { transform: translate3d(0, 0, 0); } }
+
+// 4f) Celebration: a check that morphs in and 10 dots bursting outward, once
+.cele { position: fixed; left: 50%; top: 42%; z-index: 1200; width: 0; height: 0; pointer-events: none; }
+.celeRing { position: absolute; left: -36px; top: -36px; width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(145deg, #2a8196, #0f4c5c); box-shadow: 0 18px 36px rgba(8, 24, 30, .35), inset 0 2px 0 rgba(255, 255, 255, .4); animation: celeRing .7s cubic-bezier(.23, 1, .32, 1) both; }
+.celeRing svg { width: 44px; height: 44px; fill: none; stroke: #fff; stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
+.celeRing path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: celeTick .32s cubic-bezier(.23, 1, .32, 1) .12s forwards; }
+.cele i { position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 50%; background: #c9a24d; opacity: 0; animation: celeDot .7s cubic-bezier(.23, 1, .32, 1) .08s both; }
+.cele i:nth-child(odd) { background: #2a8196; width: 8px; height: 8px; }
+@keyframes celeRing { 0% { opacity: 0; transform: scale(.9); } 18% { opacity: 1; transform: scale(1); } 78% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(.96); } }
+@keyframes celeTick { to { stroke-dashoffset: 0; } }
+@keyframes celeDot { 0% { opacity: 0; transform: rotate(var(--a)) translate3d(0, 0, 0) scale(.6); } 25% { opacity: 1; } 100% { opacity: 0; transform: rotate(var(--a)) translate3d(var(--d), 0, 0) scale(1); } }
+
+@media (prefers-reduced-motion: reduce) { .datePanel::before, .flowSteps li .ico3d, .flowSteps li + li::before, .capBadge, [data-size='phone'] .bkUnits li.bkUnitOn .artTile { animation: none !important; } [data-size='phone'] .bfBar.bk7Bar, .modeCard, .modeCheck, [data-size='phone'] .bkUnits li { transition: none !important; } }
+[data-motion='reduce'] .datePanel::before, [data-motion='reduce'] .flowSteps li .ico3d, [data-motion='reduce'] .flowSteps li + li::before, [data-motion='reduce'] .capBadge { animation: none !important; }
+[data-motion='reduce'] .bfBar.bk7Bar, [data-motion='reduce'] .modeCard, [data-motion='reduce'] .modeCheck { transition: none !important; }
+
+// ---- v4b (1.6.0.0): range slider, physical buttons, type scale, distinct mode buttons, compact footer, section rhythm ----
+// Spacing tokens (phone): 4 / 8 / 12 / 16 / 24 / 32
+.site[data-size='phone'] { --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; }
+
+// 9) Time range slider: 44 px circular 3D thumbs, filled track, hour ticks, a time bubble while dragging; 1:1 tracking, snapping value
+.rs { display: grid; gap: 10px; padding: 4px 6px 0; }
+.rsSum { margin: 0; display: flex; align-items: baseline; justify-content: space-between; gap: 10px; b { font-size: 22px; font-weight: 800; letter-spacing: -.5px; color: #14262e; } span { font-size: 15px; font-weight: 800; color: #0f4c5c; padding: 4px 12px; border-radius: 999px; background: #e4eef0; } }
+.rsTrack { position: relative; height: 52px; touch-action: none; cursor: pointer; margin: 6px 22px 0; }
+.rsRail { position: absolute; left: 0; right: 0; top: 22px; height: 8px; border-radius: 8px; background: #e1e8ea; box-shadow: inset 0 1px 2px rgba(8, 24, 30, .15); }
+.rsFill { position: absolute; left: 0; width: 100%; top: 22px; height: 8px; border-radius: 8px; background: linear-gradient(90deg, #2a8196, #0f4c5c); transform-origin: left center; transform: translateX(var(--a, 0%)) scaleX(var(--w, 0)); }
+.rsTrack:not([data-dragging='1']) .rsFill { transition: transform .22s cubic-bezier(.23, 1, .32, 1); }
+.rsTick { position: absolute; top: 34px; width: 2px; height: 7px; margin-left: -1px; border-radius: 1px; background: #b8c6cb; }
+.rsHandle { position: absolute; left: 0; top: 0; width: 100%; height: 0; pointer-events: none; transform: translateX(var(--p, 0%)); }
+.rsTrack:not([data-dragging='1']) .rsHandle, .rsHandle:not([data-drag='1']) { transition: transform .22s cubic-bezier(.23, 1, .32, 1); }
+.rsHandle[data-drag='1'] { transition: none; }
+.rsThumb { position: absolute; left: -22px; top: 4px; width: 44px; height: 44px; border-radius: 50%; pointer-events: auto; touch-action: none; cursor: grab; display: grid; place-items: center; background: radial-gradient(circle at 35% 28%, #fff, #e9f0f2 60%, #d3e0e4); box-shadow: 0 10px 20px rgba(8, 24, 30, .28), 0 2px 4px rgba(8, 24, 30, .2), inset 0 1.5px 0 #fff, inset 0 -3px 5px rgba(0, 0, 0, .12); transition: transform .16s cubic-bezier(.23, 1, .32, 1); }
+.rsThumb i { width: 12px; height: 12px; border-radius: 50%; background: linear-gradient(145deg, #2a8196, #0f4c5c); box-shadow: 0 0 0 3px rgba(15, 76, 92, .15); }
+.rsHandle[data-drag='1'] .rsThumb { transform: scale(1.08); cursor: grabbing; }
+.rsThumb:focus-visible { outline: 3px solid #c9a24d; outline-offset: 2px; }
+.rsBubble { position: absolute; left: 0; bottom: 6px; transform: translate(-50%, 0); white-space: nowrap; padding: 6px 10px; border-radius: 12px; background: #14262e; color: #fff; font-size: 14px; font-weight: 750; box-shadow: 0 8px 18px rgba(8, 24, 30, .3); animation: rsBubble .16s cubic-bezier(.23, 1, .32, 1); }
+@keyframes rsBubble { from { opacity: 0; transform: translate(-50%, 4px) scale(.95); } }
+.rsLabels { position: relative; height: 18px; margin: 0 22px; span { position: absolute; transform: translateX(-50%); font-size: 12px; font-weight: 650; color: #4b5563; white-space: nowrap; } }
+// Busy blocks on the day overview are hatched
+.dayTrack .dtBusy { background: repeating-linear-gradient(135deg, #c9d3d6 0 4px, #e9eef0 4px 8px) !important; }
+
+// 13) Physical buttons: raised primary, press = 1-2 px down + scale .97, the shadow layer shrinks (opacity/transform on a pseudo), release springs a touch past rest
+.site .btn, .site .btnCitrus, .msgSend, .capGo, .flowHow, .modeCard, .moreTile, .msgTopic { -webkit-tap-highlight-color: transparent; }
+.site .btn { position: relative; isolation: isolate; overflow: visible; transform: translate3d(0, 0, 0); transition: transform .34s cubic-bezier(.34, 1.56, .64, 1), opacity .2s; }
+.site .btn::after { content: ''; position: absolute; left: 10%; right: 10%; bottom: -5px; height: 70%; border-radius: inherit; background: rgba(8, 24, 30, .32); filter: blur(7px); z-index: -1; opacity: .5; transform: translate3d(0, 2px, 0); transition: opacity .2s ease-out, transform .2s ease-out; pointer-events: none; }
+.site .btn::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: linear-gradient(180deg, rgba(255, 255, 255, .35), rgba(255, 255, 255, 0) 45%); opacity: 1; transition: opacity .15s ease-out; }
+.site .btnCitrus { background: linear-gradient(180deg, #1c7488 0%, #0f4c5c 100%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), inset 0 -3px 0 rgba(0, 0, 0, .22); }
+.site .btn:active:not(:disabled) { transform: translate3d(0, 2px, 0) scale(.97); transition: transform .08s cubic-bezier(.23, 1, .32, 1); }
+.site .btn:active:not(:disabled)::after { opacity: .18; transform: translate3d(0, -1px, 0) scale(.9); }
+.site .btn:active:not(:disabled)::before { opacity: .4; }
+.ripple { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; pointer-events: none; z-index: 0; }
+.ripple i { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, .35); transform: scale(0.1); opacity: .6; animation: ripple .45s cubic-bezier(.23, 1, .32, 1) forwards; }
+@keyframes ripple { to { transform: scale(1); opacity: 0; } }
+.site .btn:not(.btnCitrus) .ripple i { background: rgba(15, 76, 92, .16); }
+.site button { position: relative; }
+
+// 7) Type scale (phone): body 15 px, secondary 13-14 px, 12 px only for timestamps; key facts heavy and coloured
+.site[data-size='phone'] { font-size: 15px; }
+[data-size='phone'] .kpi-foot, [data-size='phone'] .capWhen, [data-size='phone'] .msgRowText small, [data-size='phone'] .module-row-copy span, [data-size='phone'] .lpMeta, [data-size='phone'] .scState em, [data-size='phone'] .mbTime em { font-size: 14px !important; color: #3f4a56 !important; }
+[data-size='phone'] .kpi-top > span:first-child { font-size: 14px !important; font-weight: 700; color: #14262e; }
+[data-size='phone'] .mbTime b, [data-size='phone'] .module-row-copy b, [data-size='phone'] .scName strong, [data-size='phone'] .bkUnitText strong { font-size: 16px; font-weight: 750; color: #14262e; }
+[data-size='phone'] .bkUnitText em { font-size: 13px; font-weight: 800; font-style: normal; padding: 3px 10px; border-radius: 999px; }
+[data-size='phone'] .bkUnitText em.bkFree { background: #dcefe9; color: #0e5a45; }
+[data-size='phone'] .bkUnitText em.bkTaken { background: #f8e7e9; color: #8a2c2c; }
+[data-size='phone'] .scState b { font-size: 15px; }
+[data-size='phone'] .pgLede, [data-size='phone'] .scSub { font-size: 15px; color: #3f4a56; }
+[data-size='phone'] .factRow dd { font-size: 17px; font-weight: 800; color: #14262e; }
+[data-size='phone'] .factRow dt { font-size: 13px; font-weight: 650; }
+
+// 8) Booking modes: four separate, elevated buttons in a 2 x 2 grid; selected = filled teal + check + lift
+.modeRow { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; overflow: visible; margin: 0 0 8px !important; padding: 4px 0 8px !important; scroll-snap-type: none; }
+.modeCard { flex: none; min-height: 96px; grid-auto-flow: row; }
+.modeCard + .modeCard { border-left: 1px solid rgba(255, 255, 255, .9) !important; }
+.modeCard.bkModeOn { background: linear-gradient(160deg, #1c7488, #0f4c5c) !important; color: #fff !important; box-shadow: 0 14px 26px rgba(15, 76, 92, .32), inset 0 1px 0 rgba(255, 255, 255, .3) !important; }
+.modeCard.bkModeOn .modeLabel { color: #fff; }
+.modeCard.bkModeOn .ico3d { background: #fff; color: #0f4c5c; }
+.modeCard.bkModeOn .modeCheck { background: #c9a24d; color: #14262e; }
+
+// 11) Compact footer (tablet/desktop): one row + a "More links" disclosure + copyright line; hidden on phones (the More sheet covers it)
+.footCompact { padding: 16px 0 !important; }
+.footRow { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.footRow .footLogo { height: 24px; width: auto; }
+.footLine { font-size: 14px; color: #4b5563; flex: 1; min-width: 200px; }
+.footMore { position: relative; }
+.footMore summary { list-style: none; cursor: pointer; min-height: 40px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 999px; background: #e4eef0; color: #0f4c5c; font-weight: 700; font-size: 14px; }
+.footMore summary::-webkit-details-marker { display: none; }
+.footMore nav { position: absolute; right: 0; bottom: calc(100% + 8px); z-index: 50; display: grid; min-width: 220px; padding: 8px; border-radius: 18px; background: #fff; box-shadow: 0 18px 40px rgba(8, 24, 30, .2); button { text-align: left; min-height: 40px; padding: 0 12px; border: 0; border-radius: 10px; background: none; font: inherit; font-size: 14px; color: #1f1f1f; } }
+.footCompact .footBase { margin-top: 10px !important; padding-top: 10px !important; font-size: 13px; }
+
+// 14) Section rhythm: 32 px between sections, 12 px inside; each family its own surface
+[data-size='phone'] .home-sheet > * + * { margin-top: var(--s6) !important; }
+[data-size='phone'] .attn4 { margin: var(--s5) 0 !important; }
+[data-size='phone'] .page > section > * + .module-view, [data-size='phone'] .pgBody > * + * { margin-top: var(--s5); }
+[data-size='phone'] .module-view { margin-bottom: var(--s5); }
+[data-size='phone'] .main { padding-bottom: calc(var(--tab-h, 100px) + var(--s6)) !important; }
+
+@media (prefers-reduced-motion: reduce) { .site .btn, .site .btn::after, .site .btn::before, .rsFill, .rsHandle, .rsThumb, .rsBubble, .ripple i { transition: none !important; animation: none !important; } }
+[data-motion='reduce'] .site .btn, [data-motion='reduce'] .rsHandle, [data-motion='reduce'] .rsFill, [data-motion='reduce'] .rsBubble { transition: none !important; animation: none !important; }
+
+// 15) Schedule: compact date header; grouped day view (stat, category groups with circular icons, unit rows with status pills and a day bar); chips for lists
+.dateHead { display: flex; align-items: center; gap: 8px; margin: 4px 0 14px; flex-wrap: wrap; }
+.dateTitle { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -.5px; color: #14262e; min-width: 0; }
+.dateTools { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; }
+.roundBtn { position: relative; width: 44px; height: 44px; flex: none; border: 0; border-radius: 50%; display: grid; place-items: center; color: #0f4c5c; background: radial-gradient(circle at 35% 28%, #fff, #e9f0f2 60%, #d6e3e7); box-shadow: 0 8px 16px rgba(8, 24, 30, .2), 0 2px 4px rgba(8, 24, 30, .14), inset 0 1.5px 0 #fff; cursor: pointer; transition: transform .16s cubic-bezier(.23, 1, .32, 1); }
+.roundBtn:active { transform: translate3d(0, 1px, 0) scale(.95); }
+.roundBtn input[type='date'] { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+.todayPill { min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: #e4eef0; color: #0f4c5c; font: inherit; font-size: 14px; font-weight: 750; }
+.dayStat { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; padding: 14px 16px; border-radius: 22px; background: linear-gradient(155deg, #effaf6, #e2f3ec); box-shadow: inset 0 1px 0 #fff; i { width: 12px; height: 12px; border-radius: 50%; background: #1f9d6b; box-shadow: 0 0 0 4px rgba(31, 157, 107, .2); } b { font-size: 24px; font-weight: 800; color: #0e5a45; letter-spacing: -.5px; } span { font-size: 15px; font-weight: 650; color: #23463b; } }
+.grp { margin: 0 0 10px; border-radius: 22px; background: linear-gradient(155deg, #fff, #f2f7f8); box-shadow: inset 0 1px 0 #fff, 0 8px 18px rgba(15, 76, 92, .08); }
+.grp > summary { list-style: none; display: flex; align-items: center; gap: 12px; padding: 12px 14px; min-height: 44px; cursor: pointer; b { flex: 1; font-size: 16px; font-weight: 750; color: #14262e; } }
+.grp > summary::-webkit-details-marker { display: none; }
+.grpRows { list-style: none; margin: 0; padding: 0 10px 10px; display: grid; gap: 6px; }
+.grpRow { width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: auto auto; column-gap: 10px; row-gap: 6px; align-items: center; padding: 10px 12px; border: 0; border-radius: 16px; background: #fff; text-align: left; font: inherit; color: #1f1f1f; box-shadow: 0 1px 0 rgba(15, 76, 92, .06); }
+.grpRow .artTile { grid-row: 1 / span 2; }
+.grpName { font-size: 15px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.grpBar { grid-column: 2 / span 2; position: relative; height: 6px; border-radius: 6px; background: #dcefe9; overflow: hidden; i { position: absolute; top: 0; bottom: 0; background: #c46a6a; border-radius: 6px; } }
+.pillOk, .pillBad, .pillWait { font-style: normal; font-size: 13px; font-weight: 800; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.pillOk { background: #dcefe9; color: #0e5a45; }
+.pillBad { background: #f8e7e9; color: #8a2c2c; }
+.pillWait { background: #f5f0e5; color: #80601e; }
+.kitChips { display: flex !important; flex-wrap: wrap; gap: 6px; -webkit-line-clamp: unset !important; i { font-style: normal; font-size: 13px; font-weight: 650; padding: 3px 9px; border-radius: 999px; background: #eef4f5; color: #24414a; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } }
+[data-size='phone'] .dayNav { display: none; }
+.site .modeRow .modeCard[aria-pressed='true'], .site .modeRow .modeCard.bkModeOn { background: linear-gradient(160deg, #1c7488, #0f4c5c) !important; color: #fff !important; border-color: transparent !important; }
+.site .modeRow .modeCard[aria-pressed='true'] .modeLabel { color: #fff !important; }
+.site .modeRow .modeCard[aria-pressed='true'] .ico3d { background: #fff; color: #0f4c5c; }
+
+// 16) Type system (phone first; fluid with clamp). Three text tones: primary #1b1f24, secondary #3f4a56, tertiary #5b6370 (AA on white and on #f4f5f7).
+.site { --t1: #1b1f24; --t2: #3f4a56; --t3: #5b6370; color: var(--t1); font-family: var(--av-font); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+.site :where(h1, h2, h3, h4) { font-family: var(--av-heading-font); text-wrap: balance; color: var(--t1); }
+.site :where(p, li, blockquote) { text-wrap: pretty; }
+.site :where(p) { max-width: 60ch; }
+[data-size='phone'] :where(h1) { font-size: clamp(26px, 7vw, 30px); line-height: 1.15; font-weight: 750; letter-spacing: -.02em; }
+[data-size='phone'] :where(h2) { font-size: clamp(19px, 5.2vw, 21px); line-height: 1.2; font-weight: 700; letter-spacing: -.015em; }
+[data-size='phone'] :where(h3) { font-size: 17px; line-height: 1.3; font-weight: 650; letter-spacing: -.01em; }
+[data-size='phone'] :where(p, li, dd, td, label, input, textarea, select) { font-size: 15px; line-height: 1.5; }
+// Display numbers: tabular, tight, unit smaller and lighter
+.site :where(time, .kpi-value, .rsSum, .dateTitle, .lpRing, .mbTime, .monthDay, .bkDays, .factRow dd, .capText, .msgFoot, .dayStat) { font-variant-numeric: tabular-nums; }
+[data-size='phone'] .dayStat b, [data-size='phone'] .rsSum b, [data-size='phone'] .dateTitle { letter-spacing: -.02em; }
+// Eyebrows: fewer caps, slight positive tracking, secondary tone
+[data-size='phone'] .pgEyebrow { text-transform: none; letter-spacing: .01em; font-size: 13px; font-weight: 650; color: var(--t2); }
+[data-size='phone'] .muted, [data-size='phone'] small { color: var(--t3); }
+
+/* 1.6 item 15: Schedule Book action is a small pill, not a full button. */
+.site .btn.bookPill { min-height: 36px !important; padding: 0 14px 0 10px !important; gap: 4px; font-size: 14px !important; border-radius: 999px !important; }
+/* Closed <details> does not hide an absolutely positioned child in current Chrome; hide it explicitly. */
+.footMore:not([open]) nav { display: none; }
+
+/* ===== 2.18 client UI feedback ===== */
+$fb-ink: #0f4c5c; $fb-gold: #c9a24d; $fb-edge: #c9d4d9;
+
+/* Facility name in page heads: display type, larger, no "Workspace" */
+.site .pgEyebrow { font-family: 'Trebuchet MS', 'Avenir Next', 'Segoe UI', sans-serif; font-style: normal; font-size: 24px; font-weight: 800; letter-spacing: .01em; text-transform: none; color: #8a5a12; }
+.site .pgEyebrow::before { display: none; }
+[data-size='phone'] .site .pgEyebrow { font-size: 22px; font-weight: 800; letter-spacing: .01em; color: #8a5a12; }
+.site .pageTitle { font-size: clamp(30px, 6vw, 44px); }
+
+/* Schedule: the title is the heading */
+.scSub { font-size: 15px; }
+
+/* Kitchen right now: swipeable slider */
+.kbSlider { display: flex !important; overflow-x: auto; gap: 12px; margin: 12px 0 0 !important; padding: 4px 2px 12px; scroll-snap-type: x mandatory; scroll-behavior: smooth; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+  > li { flex: 0 0 min(44%, 190px); scroll-snap-align: start; }
+}
+@media (min-width: 900px) { .kbSlider > li { flex-basis: 190px; } }
+
+/* Booking: date strip */
+.bkDateHead { display: flex; align-items: center; gap: 12px; margin: 4px 0 8px; .bkLabel { margin: 0; } strong { margin-left: auto; font-size: 15px; font-weight: 800; color: $fb-ink; } }
+.bkCalBtn { position: relative; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px; border: 1.5px solid $fb-ink; border-radius: 0; background: #fff; color: $fb-ink; font-weight: 700; font-size: 14px; cursor: pointer;
+  input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+}
+.bkDateCard { border: 1.5px solid $fb-edge; border-radius: 0 !important; background: #fff; box-shadow: none !important; padding: 8px 0; margin: 0 0 14px; overflow: hidden; }
+.bkDateCard .bkDays { display: flex !important; overflow-x: auto; gap: 6px; margin: 0 !important; padding: 18px 8px 6px; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: thin; -webkit-mask-image: none !important; mask-image: none !important; }
+.bkDateCard .bkDays button, [data-size='phone'] .bkDateCard .bkDays button { position: relative; flex: 0 0 58px; width: 58px; min-width: 58px; min-height: 78px; padding: 8px 0 !important; display: grid !important; grid-template-rows: auto auto !important; align-content: center; justify-items: center; gap: 4px; border: 1.5px solid $fb-edge !important; border-radius: 0 !important; background: #fff !important; box-shadow: none !important; color: #1f2a30; scroll-snap-align: center; transform: none !important; }
+.bkDateCard .bkDays button span { font-size: 12px; font-weight: 700; color: #4b5964 !important; }
+.bkDateCard .bkDays button b, [data-size='phone'] .bkDateCard .bkDays button b { width: auto !important; height: auto !important; display: block; border-radius: 0 !important; background: none !important; box-shadow: none !important; transform: none !important; font-size: 22px; line-height: 1; color: inherit !important; }
+.bkDateCard .bkDays button.bkDayToday { border-color: $fb-gold !important; }
+.bkDateCard .bkDays button.bkDayOn, [data-size='phone'] .bkDateCard .bkDays button.bkDayOn { background: $fb-ink !important; border-color: $fb-ink !important; color: #fff; }
+.bkDateCard .bkDays button.bkDayOn span, .bkDateCard .bkDays button.bkDayOn b { color: #fff !important; }
+.bkMon { position: absolute; top: -17px; left: 0; font-style: normal; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: $fb-ink; white-space: nowrap; }
+
+/* Booking: time picker stands out until a time is chosen */
+.bkHours { padding: 14px; margin: 6px 0 14px; border: 1.5px solid $fb-edge; background: #fff; .bkLabel { margin-top: 0; } }
+.bkHours[data-pending='1'] { border-color: $fb-gold; background: #fffaf0; box-shadow: 0 0 0 3px rgba(201, 162, 77, .22); animation: bkNudge 2s ease-in-out 2; }
+.bkHint { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-size: 14px; font-weight: 650; color: #6b5313; }
+@keyframes bkNudge { 50% { box-shadow: 0 0 0 7px rgba(201, 162, 77, .12); } }
+@media (prefers-reduced-motion: reduce) { .bkHours[data-pending='1'] { animation: none; } }
+
+/* Booking: equipment headings and one card per group */
+.bkHead h2 { font-size: 30px; color: $fb-ink; }
+.bkGroup { margin-top: 20px; padding: 14px; border: 1.5px solid $fb-edge; border-radius: 12px; background: #fff; box-shadow: 0 4px 14px rgba(15, 76, 92, .09);
+  h3 { display: inline-block; margin: -26px 0 12px; padding: 5px 12px; border-radius: 6px; background: $fb-ink; color: #fff; font-size: 13px; letter-spacing: .1em; }
+}
+[data-size='phone'] .bkGroup { margin-top: 26px; }
+[data-size='phone'] .bkGroup h3 { color: #fff; }
+.bkGroup .bkUnits li { box-shadow: none; background: #f6f9fa; }
+
+/* Recent bookings sit at the top, compact */
+.bfRecent { margin: 0 0 18px; padding: 0 0 12px; border-top: 0; border-bottom: 1px solid $line; }
+
+/* Bottom tab bar: no big circle behind the active tab */
+[data-size='phone'] .tabbar .tab .navIcon { padding: 4px; width: 24px; height: 24px; background: none; box-shadow: none; border-radius: 0; color: #5b6370; transition: transform .2s var(--ease-out), color .15s; }
+[data-size='phone'] .tabbar .tab.tabOn .navIcon { background: none; box-shadow: none; color: $fb-ink; transform: translate3d(0, -2px, 0) scale(1.12); }
+[data-size='phone'] .tabbar .tab.tabOn span { background: none; color: $fb-ink; font-weight: 800; transform: none; }
+[data-size='phone'] .tabbar .tab.tabOn:active .navIcon, [data-size='phone'] .tabbar .tab:active .navIcon { transform: scale(.88); }
+[data-size='phone'] .tabbar .tab { min-height: 58px !important; }
+[data-size='phone'] .tabbar::before { height: 100%; background: #fff; border-top: 1px solid $fb-edge; }
+[data-size='phone'] .tabbar .tab .navDot { top: 8px; }
+
+/* My bookings: Check in and Book sit side by side, not on the walls */
+[data-size='phone'] .headRow .row > .btn { flex: 1 1 0; margin: 0; }
+[data-size='phone'] .headRow .row > .btnCitrus { margin-left: 0; background: $fb-gold; border-color: $fb-gold; color: #14262e; }
+.headRow .row > .btn:not(.btnCitrus) { background: #fff; border: 1.5px solid $fb-ink; color: $fb-ink; }
+
+/* My bookings: each booking and its progress bar in one bordered card */
+.mbTickets > li { padding: 0 !important; margin: 0 0 14px; border: 1.5px solid $fb-edge; border-radius: 12px; background: #fff; box-shadow: 0 4px 14px rgba(15, 76, 92, .1); overflow: hidden; }
+.mbTickets > li .mbTicket, [data-size='phone'] .mbTickets > li .mbTicket { border: 0 !important; border-radius: 0 !important; background: #fff !important; box-shadow: none !important; -webkit-mask: none !important; mask: none !important; }
+.mbTickets > li > ol { margin: 0; padding: 10px 14px 14px; border-top: 1px dashed $fb-edge; background: #f6f9fa; }
+.mbTickets > li.mbLive { border-color: $fb-gold; }
+.bkDateHead .bkLabel { flex: none; white-space: nowrap; &::after, &::before { display: none !important; } }
+.bkDateHead strong { white-space: nowrap; }
+.bkCalBtn { flex: none; white-space: nowrap; }
+[data-size='phone'] .bkCalBtn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+[data-size='phone'] .bkCalBtn { width: 44px; justify-content: center; padding: 0; }
+.site .headRow .row > .btn.btnCitrus { background: $fb-gold !important; background-image: none !important; border: 1.5px solid $fb-gold !important; color: #14262e !important; box-shadow: none !important; }
+.site .headRow .row > .btn:not(.btnCitrus) { background: #fff !important; background-image: none !important; box-shadow: none !important; }
+
+/* ===== 2.18c ===== */
+/* Day pop-up on the schedule: bottom sheet, 60% of the screen */
+[data-size='phone'] .sheetBottom.sheetPeek { top: auto !important; height: auto; max-height: 60vh; border-radius: 16px 16px 0 0 !important; }
+[data-size='phone'] .sheetPeek .sheetHead { padding: 14px 20px 4px; }
+[data-size='phone'] .sheetPeek .sheetTitle { font-size: 22px; }
+[data-size='phone'] .sheetPeek .sheetBody { padding: 8px 20px 20px; font-size: 16px; }
+
+/* Footer shows on phones too; clear of the tab bar */
+[data-size='phone'] .siteFooter { display: block; margin-top: 24px; padding-bottom: calc(24px + var(--tab-h, 84px) + env(safe-area-inset-bottom, 0px)); }
+
+/* Calendar cards run edge to edge on phones (Book date card, My bookings strip) */
+[data-size='phone'] .bkDateCard { margin-left: -12px; margin-right: -12px; border-left: 0; border-right: 0; }
+[data-size='phone'] .datePanel { margin-left: -12px; margin-right: -12px; border-radius: 0 !important; border-left: 0; border-right: 0; background: #fff !important; box-shadow: none !important; -webkit-backdrop-filter: none; backdrop-filter: none; }
+[data-size='phone'] .datePanel::before { display: none; }
+/* My bookings strip: flat square cells; the whole cell (day name and number) is filled, "Next" is a tab above it */
+[data-size='phone'] .datePanel .monthStrip { padding: 18px 10px 8px; gap: 6px; }
+[data-size='phone'] .datePanel .monthStrip li > button { flex: 0 0 58px; width: 58px; min-width: 58px; min-height: 78px; padding: 8px 0 !important; border: 1.5px solid $fb-edge !important; border-radius: 0 !important; background: #fff !important; grid-template-rows: auto auto auto !important; gap: 3px; }
+[data-size='phone'] .datePanel .monthStrip li > button b, [data-size='phone'] .datePanel .monthStrip .monthFocus b, [data-size='phone'] .datePanel .monthStrip .monthOk b, [data-size='phone'] .datePanel .monthStrip .monthMixed b, [data-size='phone'] .datePanel .monthStrip .monthToday b { width: auto !important; height: auto !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; transform: none !important; font-size: 22px; color: inherit !important; }
+[data-size='phone'] .datePanel .monthStrip .monthToday { border-color: $fb-gold !important; }
+[data-size='phone'] .datePanel .monthStrip .monthFocus, [data-size='phone'] .datePanel .monthStrip .monthOk, [data-size='phone'] .datePanel .monthStrip .monthMixed { background: $fb-ink !important; border-color: $fb-ink !important; color: #fff !important; transform: none !important; }
+[data-size='phone'] .datePanel .monthStrip .monthWait { background: #F6E7BF !important; border-color: #D9B865 !important; color: #5A3F0A !important; }
+[data-size='phone'] .datePanel .monthStrip .monthFocus span, [data-size='phone'] .datePanel .monthStrip .monthOk span, [data-size='phone'] .datePanel .monthStrip .monthMixed span, [data-size='phone'] .datePanel .monthStrip .monthFocus small, [data-size='phone'] .datePanel .monthStrip .monthOk small { color: #fff !important; }
+[data-size='phone'] .datePanel .monthStrip .monthNext { top: -16px; left: 0; transform: none; padding: 2px 8px; border-radius: 0; background: $fb-gold; color: #14262e; font-size: 12px; font-weight: 800; }
+
+/* Kitchen right now: equipment icons 1.25x, nothing else changes */
+.kbSlider .artTile { transform: scale(1.25); transform-origin: center; margin-block: 6px; }
+@media (hover: hover) { .kbSlider li button:hover .artTile { transform: scale(1.25) translateY(-3px) rotate(-2deg); } }
+
+/* Notifications sheet scrolls when the list is longer than the screen */
+.bellMenu { max-height: calc(100vh - var(--bar-h, 64px) - var(--tab-h, 84px) - 24px); overflow-y: auto !important; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+[data-size='phone'] .bellMenu { max-height: calc(100dvh - var(--bar-h, 64px) - var(--tab-h, 84px) - 28px); }
+
+/* Plan cards stand out from the page: tinted fill, firm border, shadow, solid action button */
+.mbCard { background: #f3f8fa !important; border: 1.5px solid #b9c8ce !important; border-radius: 12px !important; box-shadow: 0 4px 14px rgba(15, 76, 92, .14) !important; }
+.mbCard.mbCardOn { border-color: $fb-ink !important; background: #e8f2f5 !important; }
+.mbCard .btn { background: $fb-ink !important; background-image: none !important; color: #fff !important; border: 0 !important; box-shadow: none !important; }
+
+/* Kitchen right now: centred cover-flow. Cards snap to the centre; the centre card is full size, neighbours shrink (--k from useCenterScale). */
+.kbSlider { scroll-snap-type: x mandatory; padding-left: calc(50% - 95px) !important; padding-right: calc(50% - 95px) !important; scroll-padding-inline: 0; }
+.kbSlider > li { flex: 0 0 190px !important; scroll-snap-align: center !important; animation: none !important; transform: scale(calc(.86 + var(--k, 1) * .14)); opacity: calc(.6 + var(--k, 1) * .4); transform-origin: center; transition: none; will-change: transform; }
+.kbSlider > li:first-child { margin-left: 0; }
+@media (prefers-reduced-motion: reduce) { .kbSlider > li { transform: none; opacity: 1; transition: none; } }
+/* The scroll-linked reveal (sdIn) owns `transform` on .kbList li; switch it off in the slider so the centre scale shows. */
+.site:not([data-motion='reduce']) .kbList.kbSlider > li, .site .kbList.kbSlider > li { animation-name: none !important; animation-timeline: auto !important; }
+.kbSlider { position: relative; }

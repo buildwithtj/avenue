@@ -384,6 +384,54 @@
               RadiusBottomLeft: =8
               RadiusBottomRight: =8
               BorderColor: =RGBA(15,76,92,1)
+        - uTabTables:
+            Control: Classic/Button
+            Properties:
+              Text: ="Dining tables"
+              X: =616
+              Y: =0
+              Width: =168
+              Height: =40
+              OnSelect: =Set(varSetupTab, "tables")
+              Fill: =If(Coalesce(varSetupTab, "equip") = "tables", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varSetupTab, "equip") = "tables", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varSetupTab, "equip") = "tables", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varSetupTab, "equip") = "tables", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =13
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+        - uTabTopics:
+            Control: Classic/Button
+            Properties:
+              Text: ="Support topics"
+              X: =792
+              Y: =0
+              Width: =168
+              Height: =40
+              OnSelect: =Set(varSetupTab, "topics")
+              Fill: =If(Coalesce(varSetupTab, "equip") = "topics", RGBA(15,76,92,1), RGBA(255,255,255,1))
+              Color: =If(Coalesce(varSetupTab, "equip") = "topics", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              HoverFill: =If(Coalesce(varSetupTab, "equip") = "topics", RGBA(15,76,92,1), RGBA(244,245,247,1))
+              HoverColor: =If(Coalesce(varSetupTab, "equip") = "topics", RGBA(244,245,247,1), RGBA(15,76,92,1))
+              PressedFill: =RGBA(11,58,71,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =13
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
         - uEqPanelList:
             Control: Classic/Button
             Properties:
@@ -534,7 +582,7 @@
         - uEqNewCat:
             Control: Classic/DropDown
             Properties:
-              Items: =["Stove", "Grill", "Oven", "Warmer", "Pizza oven", "Mixer", "Prep table", "Other"]
+              Items: =["Stove", "Grill", "Oven", "Warmer", "Pizza oven", "Fridge", "Mixer", "Prep table", "Other"]
               Default: ="Stove"
               X: =272
               Y: =584
@@ -569,7 +617,7 @@
               RadiusTopRight: =8
               RadiusBottomLeft: =8
               RadiusBottomRight: =8
-              Visible: =Coalesce(varSetupTab, "equip") = "equip"
+              Visible: =(Coalesce(varSetupTab, "equip") = "equip") && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageEquipment, true))
         - uEqHelp:
             Control: Label
             Properties:
@@ -655,7 +703,7 @@
         - uEqCat:
             Control: Classic/DropDown
             Properties:
-              Items: =["Stove", "Grill", "Oven", "Warmer", "Pizza oven", "Mixer", "Prep table", "Other"]
+              Items: =["Stove", "Grill", "Oven", "Warmer", "Pizza oven", "Fridge", "Mixer", "Prep table", "Other"]
               Default: =uEqGal.Selected.Category.Value
               X: =692
               Y: =156
@@ -816,7 +864,7 @@
               RadiusBottomLeft: =8
               RadiusBottomRight: =8
               DisplayMode: =If(IsBlank(uEqGal.Selected) || IsBlank(Trim(uEqTitle.Text)) || IsBlank(uEqCat.Selected) || (!IsBlank(Trim(uEqSort.Text)) && !IsNumeric(uEqSort.Text)), DisplayMode.Disabled, DisplayMode.Edit)
-              Visible: =Coalesce(varSetupTab, "equip") = "equip"
+              Visible: =(Coalesce(varSetupTab, "equip") = "equip") && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageEquipment, true))
         - uEqSaveHelp:
             Control: Label
             Properties:
@@ -1338,7 +1386,7 @@
               X: =16
               Y: =56
               Width: =656
-              Height: =300
+              Height: =440
               DisplayMode: =DisplayMode.Disabled
               Fill: =RGBA(255,255,255,0.64)
               DisabledFill: =RGBA(255,255,255,0.64)
@@ -1374,7 +1422,7 @@
         - uPlanHead:
             Control: Label
             Properties:
-              Text: ="Plans"
+              Text: ="Plans (select one to load it; inactive plans are greyed)"
               X: =20
               Y: =60
               Width: =640
@@ -1386,11 +1434,11 @@
             Control: Gallery@2.15.0
             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
             Properties:
-              Items: =SortByColumns(Filter(AvenuePlans, FacilityId = "flavors-hyattsville", Active = true), "PlanId", SortOrder.Ascending)
+              Items: =SortByColumns(Filter(AvenuePlans, FacilityId = "flavors-hyattsville"), "Active", SortOrder.Descending, "PlanId", SortOrder.Ascending)
               X: =20
               Y: =95
               Width: =640
-              Height: =150
+              Height: =190
               TemplateSize: =40
               Fill: =RGBA(0,0,0,0)
               BorderThickness: =0
@@ -1400,22 +1448,24 @@
               - uPlanItem:
                   Control: Label
                   Properties:
-                    Text: =ThisItem.PlanId & " · " & ThisItem.MonthlyHours & " h/month · " & If(IsBlank(ThisItem.ExtraHourRate), "extra-hour rate not set", "$" & ThisItem.ExtraHourRate & "/h")
+                    Text: =If(ThisItem.Active, "", "INACTIVE · ") & ThisItem.PlanId & " · " & ThisItem.MonthlyHours & " h · " & If(IsBlank(ThisItem.PriceCents), "price not set", "$" & Text(ThisItem.PriceCents / 100, "#,##0") & " bank / $" & Text(Coalesce(ThisItem.CardPriceCents, 0) / 100, "#,##0") & " card") & " · " & Coalesce(ThisItem.PlanGroup.Value, "-") & If(ThisItem.OpenToNew = false, " · closed to new", "")
                     X: =8
                     Y: =6
                     Width: =480
                     Height: =28
-                    Color: =RGBA(31,31,31,1)
+                    Color: =If(ThisItem.Active, RGBA(31,31,31,1), RGBA(91,99,112,1))
+                    Size: =11
               - uPlanRemove:
                   Control: Classic/Button
                   Properties:
-                    Text: ="Remove"
+                    Text: =If(ThisItem.Active, "Remove", "Reactivate")
                     X: =500
                     Y: =3
                     Width: =120
                     Height: =34
+                    Visible: =(Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
                     OnSelect: |-
-                      =Patch(AvenuePlans, ThisItem, {Active: false}); Notify("Plan removed.", NotificationType.Information)
+                      =IfError(Patch(AvenuePlans, LookUp(AvenuePlans, PlanId = ThisItem.PlanId), {Active: !ThisItem.Active}); Notify(If(ThisItem.Active, "Plan removed: hidden from new members, existing members keep it.", "Plan reactivated."), NotificationType.Information), Notify("Could not save the plan.", NotificationType.Error))
               - uPlanGalSep:
                   Control: Label
                   Properties:
@@ -1428,10 +1478,10 @@
         - uPlanId:
             Control: Classic/TextInput
             Properties:
-              Default: =""
+              Default: =Coalesce(uPlanGal.Selected.PlanId, "")
               HintText: ="Plan id"
               X: =20
-              Y: =255
+              Y: =295
               Width: =150
               Height: =36
               BorderColor: =RGBA(225,228,233,1)
@@ -1442,11 +1492,11 @@
         - uPlanHours:
             Control: Classic/TextInput
             Properties:
-              Default: =""
+              Default: =If(IsBlank(uPlanGal.Selected), "", Text(uPlanGal.Selected.MonthlyHours))
               HintText: ="Hours / month"
               Format: =TextFormat.Number
               X: =180
-              Y: =255
+              Y: =295
               Width: =120
               Height: =36
               BorderColor: =RGBA(225,228,233,1)
@@ -1457,11 +1507,11 @@
         - uPlanRate:
             Control: Classic/TextInput
             Properties:
-              Default: =""
+              Default: =If(IsBlank(uPlanGal.Selected.ExtraHourRate), "", Text(uPlanGal.Selected.ExtraHourRate))
               HintText: ="$ per extra hour"
               Format: =TextFormat.Number
               X: =310
-              Y: =255
+              Y: =295
               Width: =130
               Height: =36
               BorderColor: =RGBA(225,228,233,1)
@@ -1469,16 +1519,79 @@
               Color: =RGBA(31,31,31,1)
               Fill: =RGBA(255,255,255,1)
               Visible: =Coalesce(varSetupTab, "equip") = "plans"
+        - uPlanGroup:
+            Control: Classic/DropDown
+            Properties:
+              Items: =["Emerging", "Mobile Kitchen", "Legacy"]
+              Default: =Coalesce(uPlanGal.Selected.PlanGroup.Value, "Emerging")
+              X: =450
+              Y: =295
+              Width: =210
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =Coalesce(varSetupTab, "equip") = "plans"
+        - uPlanPrice:
+            Control: Classic/TextInput
+            Properties:
+              Default: =If(IsBlank(uPlanGal.Selected.PriceCents), "", Text(uPlanGal.Selected.PriceCents / 100, "0.00"))
+              HintText: ="$ a month (bank)"
+              X: =20
+              Y: =341
+              Width: =150
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =Coalesce(varSetupTab, "equip") = "plans"
+        - uPlanCard:
+            Control: Classic/TextInput
+            Properties:
+              Default: =If(IsBlank(uPlanGal.Selected.CardPriceCents), "", Text(uPlanGal.Selected.CardPriceCents / 100, "0.00"))
+              HintText: ="$ a month (card)"
+              X: =180
+              Y: =341
+              Width: =150
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =Coalesce(varSetupTab, "equip") = "plans"
+        - uPlanOpenLbl:
+            Control: Label
+            Properties:
+              Text: ="Open to new members"
+              X: =340
+              Y: =341
+              Width: =160
+              Height: =36
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              VerticalAlign: =VerticalAlign.Middle
+              Visible: =Coalesce(varSetupTab, "equip") = "plans"
+        - uPlanOpen:
+            Control: Classic/Toggle
+            Properties:
+              Default: =Coalesce(uPlanGal.Selected.OpenToNew, true)
+              X: =500
+              Y: =344
+              Width: =90
+              Height: =30
+              Visible: =Coalesce(varSetupTab, "equip") = "plans"
         - uPlanSave:
             Control: Classic/Button
             Properties:
               Text: ="Save plan"
-              X: =450
-              Y: =255
-              Width: =120
+              X: =20
+              Y: =387
+              Width: =160
               Height: =36
               OnSelect: |-
-                =If(IsBlank(Trim(uPlanId.Text)) || !IsNumeric(uPlanHours.Text), Notify("Enter a plan id and its hours per month.", NotificationType.Warning), IfError(Patch(AvenuePlans, Coalesce(LookUp(AvenuePlans, PlanId = Trim(uPlanId.Text)), Defaults(AvenuePlans)), {Title: Trim(uPlanId.Text), FacilityId: "flavors-hyattsville", PlanId: Trim(uPlanId.Text), MonthlyHours: Value(uPlanHours.Text), ExtraHourRate: If(IsBlank(uPlanRate.Text), Blank(), Value(uPlanRate.Text)), Active: true}); Reset(uPlanId); Reset(uPlanHours); Reset(uPlanRate); Notify("Plan saved.", NotificationType.Success), Notify("Could not save the plan.", NotificationType.Error)))
+                =If(IsBlank(Trim(uPlanId.Text)) || !IsNumeric(uPlanHours.Text), Notify("Enter a plan id and its hours per month.", NotificationType.Warning), !((IsBlank(Trim(uPlanPrice.Text)) || (IsNumeric(uPlanPrice.Text) && Value(uPlanPrice.Text) >= 0)) && (IsBlank(Trim(uPlanCard.Text)) || (IsNumeric(uPlanCard.Text) && Value(uPlanCard.Text) >= 0)) && (IsBlank(Trim(uPlanRate.Text)) || (IsNumeric(uPlanRate.Text) && Value(uPlanRate.Text) >= 0))), Notify("Prices and the rate must be empty or a number from 0 up.", NotificationType.Warning), IfError(Patch(AvenuePlans, Coalesce(LookUp(AvenuePlans, PlanId = Trim(uPlanId.Text)), Defaults(AvenuePlans)), {Title: Trim(uPlanId.Text), FacilityId: "flavors-hyattsville", PlanId: Trim(uPlanId.Text), MonthlyHours: Value(uPlanHours.Text), ExtraHourRate: If(IsBlank(uPlanRate.Text), Blank(), Value(uPlanRate.Text)), PriceCents: If(IsBlank(Trim(uPlanPrice.Text)), Blank(), Round(Value(uPlanPrice.Text) * 100, 0)), CardPriceCents: If(IsBlank(Trim(uPlanCard.Text)), Blank(), Round(Value(uPlanCard.Text) * 100, 0)), PlanGroup: {Value: uPlanGroup.Selected.Value}, OpenToNew: uPlanOpen.Value, Active: true}); Notify("Plan saved. An existing id is updated.", NotificationType.Success), Notify("Could not save the plan.", NotificationType.Error)))
               Fill: =RGBA(201,162,77,1)
               Color: =RGBA(31,31,31,1)
               HoverFill: =RGBA(179,141,60,1)
@@ -1493,17 +1606,17 @@
               RadiusTopRight: =8
               RadiusBottomLeft: =8
               RadiusBottomRight: =8
-              Visible: =Coalesce(varSetupTab, "equip") = "plans"
+              Visible: =(Coalesce(varSetupTab, "equip") = "plans") && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
         - uPlanHelp:
             Control: Label
             Properties:
-              Text: ="Plan names, hours and rates come from the client (Q-04, Q-25). Leave empty until supplied. An existing id is updated."
-              X: =20
-              Y: =296
-              Width: =640
-              Height: =36
-              Color: =RGBA(96,94,92,1)
-              Size: =11
+              Text: ="Prices come from the client sheet (card = bank + 3 %, Q-M1). Changing a price here does not change Stripe prices or existing subscriptions (STR-06, Q-R2). Type a new id to add a plan."
+              X: =190
+              Y: =383
+              Width: =470
+              Height: =50
+              Color: =RGBA(91,99,112,1)
+              Size: =10
               Visible: =Coalesce(varSetupTab, "equip") = "plans"
         - uReqHead:
             Control: Label
@@ -1573,7 +1686,7 @@
         - uReqType:
             Control: Classic/DropDown
             Properties:
-              Items: =["Permit", "Licence", "Insurance", "Certification"]
+              Items: =["Permit", "Licence", "Insurance", "Certification", "County food permit", "MD good standing", "Liability insurance", "Workers comp or waiver", "Food safety manager", "Food manager card", "Food handler card"]
               X: =690
               Y: =236
               Width: =220
@@ -1754,3 +1867,429 @@
               Color: =RGBA(96,94,92,1)
               Size: =11
               Visible: =Coalesce(varSetupTab, "equip") = "plans"
+        - uTbPanelList:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =24
+              Y: =56
+              Width: =520
+              Height: =608
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              Visible: =Coalesce(varSetupTab, "equip") = "tables"
+        - uTbHead:
+            Control: Label
+            Properties:
+              Text: ="Dining tables"
+              X: =44
+              Y: =68
+              Width: =440
+              Height: =30
+              Color: =RGBA(15,76,92,1)
+              Size: =16
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSetupTab, "equip") = "tables"
+        - uTbGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =SortByColumns(Filter(AvenueDiningTables, FacilityId = "flavors-hyattsville"), "TableId", SortOrder.Ascending)
+              X: =32
+              Y: =104
+              Width: =504
+              Height: =544
+              TemplateSize: =48
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(varSetupTab, "equip") = "tables"
+            Children:
+              - uTbItem:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.TableId & " · " & Coalesce(Text(ThisItem.Seats), "?") & " seats" & If(ThisItem.Active, "", " · INACTIVE")
+                    X: =8
+                    Y: =8
+                    Width: =460
+                    Height: =30
+                    Color: =If(ThisItem.Active, RGBA(31,31,31,1), RGBA(91,99,112,1))
+              - uTbGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =47
+                    Width: =472
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - uTbPanelEdit:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =560
+              Y: =56
+              Width: =782
+              Height: =300
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              Visible: =Coalesce(varSetupTab, "equip") = "tables"
+        - uTbEditHead:
+            Control: Label
+            Properties:
+              Text: ="Add or edit a table (select one on the left to load it)"
+              X: =580
+              Y: =68
+              Width: =740
+              Height: =30
+              Color: =RGBA(15,76,92,1)
+              Size: =16
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSetupTab, "equip") = "tables"
+        - uTbId:
+            Control: Classic/TextInput
+            Properties:
+              Default: =Coalesce(uTbGal.Selected.TableId, "")
+              HintText: ="Table id, e.g. table-1"
+              X: =580
+              Y: =112
+              Width: =260
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =Coalesce(varSetupTab, "equip") = "tables"
+        - uTbSeats:
+            Control: Classic/TextInput
+            Properties:
+              Default: =If(IsBlank(uTbGal.Selected), "", Text(uTbGal.Selected.Seats))
+              HintText: ="Seats"
+              Format: =TextFormat.Number
+              X: =850
+              Y: =112
+              Width: =120
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =Coalesce(varSetupTab, "equip") = "tables"
+        - uTbActLbl:
+            Control: Label
+            Properties:
+              Text: ="Active"
+              X: =990
+              Y: =112
+              Width: =60
+              Height: =36
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              VerticalAlign: =VerticalAlign.Middle
+              Visible: =Coalesce(varSetupTab, "equip") = "tables"
+        - uTbActive:
+            Control: Classic/Toggle
+            Properties:
+              Default: =Coalesce(uTbGal.Selected.Active, true)
+              X: =1050
+              Y: =115
+              Width: =90
+              Height: =30
+              Visible: =Coalesce(varSetupTab, "equip") = "tables"
+        - uTbSave:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save table"
+              X: =580
+              Y: =164
+              Width: =180
+              Height: =40
+              OnSelect: |-
+                =If(IsBlank(Trim(uTbId.Text)) || !IsNumeric(uTbSeats.Text) || Value(uTbSeats.Text) < 1, Notify("Enter a table id and a seat count from 1.", NotificationType.Warning), IfError(Patch(AvenueDiningTables, Coalesce(LookUp(AvenueDiningTables, TableId = Lower(Trim(uTbId.Text))), Defaults(AvenueDiningTables)), {Title: Lower(Trim(uTbId.Text)), FacilityId: "flavors-hyattsville", TableId: Lower(Trim(uTbId.Text)), Seats: Value(uTbSeats.Text), Active: uTbActive.Value}); Notify("Table saved. An existing id is updated.", NotificationType.Success), Notify("Could not save the table.", NotificationType.Error)))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =(Coalesce(varSetupTab, "equip") = "tables") && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageEquipment, true))
+        - uTbHelp:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Seat counts come from the client (Q-22: about 50 seats with the current set-up). To retire a table untick Active and Save; it is kept."
+              X: =580
+              Y: =216
+              Width: =740
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varSetupTab, "equip") = "tables"
+        - uTpPanelList:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =24
+              Y: =56
+              Width: =520
+              Height: =608
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              Visible: =Coalesce(varSetupTab, "equip") = "topics"
+        - uTpHead:
+            Control: Label
+            Properties:
+              Text: ="Support topics members can choose"
+              X: =44
+              Y: =68
+              Width: =440
+              Height: =30
+              Color: =RGBA(15,76,92,1)
+              Size: =16
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSetupTab, "equip") = "topics"
+        - uTpGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =SortByColumns(Filter(AvenueSupportCategories, FacilityId = "flavors-hyattsville"), "SortOrder", SortOrder.Ascending)
+              X: =32
+              Y: =104
+              Width: =504
+              Height: =544
+              TemplateSize: =48
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(varSetupTab, "equip") = "topics"
+            Children:
+              - uTpItem:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.SortOrder) & ". " & ThisItem.Title & If(ThisItem.Active, "", " · hidden")
+                    X: =8
+                    Y: =8
+                    Width: =460
+                    Height: =30
+                    Color: =If(ThisItem.Active, RGBA(31,31,31,1), RGBA(91,99,112,1))
+              - uTpGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =47
+                    Width: =472
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - uTpPanelEdit:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =560
+              Y: =56
+              Width: =782
+              Height: =340
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+              Visible: =Coalesce(varSetupTab, "equip") = "topics"
+        - uTpEditHead:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(uTpGal.Selected), "Add a topic", "Edit: " & uTpGal.Selected.Title)
+              X: =580
+              Y: =68
+              Width: =740
+              Height: =30
+              Color: =RGBA(15,76,92,1)
+              Size: =16
+              FontWeight: =FontWeight.Bold
+              Visible: =Coalesce(varSetupTab, "equip") = "topics"
+        - uTpTitle:
+            Control: Classic/TextInput
+            Properties:
+              Default: =Coalesce(uTpGal.Selected.Title, "")
+              HintText: ="Topic, e.g. Billing"
+              X: =580
+              Y: =112
+              Width: =300
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =Coalesce(varSetupTab, "equip") = "topics"
+        - uTpOrder:
+            Control: Classic/TextInput
+            Properties:
+              Default: =If(IsBlank(uTpGal.Selected), "", Text(uTpGal.Selected.SortOrder))
+              HintText: ="Order"
+              Format: =TextFormat.Number
+              X: =890
+              Y: =112
+              Width: =100
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =Coalesce(varSetupTab, "equip") = "topics"
+        - uTpActLbl:
+            Control: Label
+            Properties:
+              Text: ="Shown to members"
+              X: =1000
+              Y: =112
+              Width: =140
+              Height: =36
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              VerticalAlign: =VerticalAlign.Middle
+              Visible: =Coalesce(varSetupTab, "equip") = "topics"
+        - uTpActive:
+            Control: Classic/Toggle
+            Properties:
+              Default: =Coalesce(uTpGal.Selected.Active, true)
+              X: =1140
+              Y: =115
+              Width: =90
+              Height: =30
+              Visible: =Coalesce(varSetupTab, "equip") = "topics"
+        - uTpSave:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save changes"
+              X: =580
+              Y: =164
+              Width: =170
+              Height: =40
+              OnSelect: |-
+                =If(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Category.Value = uTpGal.Selected.Title)) > 0 && Trim(uTpTitle.Text) <> uTpGal.Selected.Title, Notify("Cases use this topic, so it cannot be renamed. Hide it and add a new topic instead.", NotificationType.Warning), IfError(Patch(AvenueSupportCategories, LookUp(AvenueSupportCategories, ID = uTpGal.Selected.ID), {Title: Left(Trim(uTpTitle.Text), 255), SortOrder: Value(uTpOrder.Text), Active: uTpActive.Value}); Notify("Topic saved.", NotificationType.Success), Notify("Could not save the topic.", NotificationType.Error)))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(!IsBlank(uTpGal.Selected) && !IsBlank(Trim(uTpTitle.Text)) && IsNumeric(uTpOrder.Text), DisplayMode.Edit, DisplayMode.Disabled)
+              Visible: =Coalesce(varSetupTab, "equip") = "topics"
+        - uTpAdd:
+            Control: Classic/Button
+            Properties:
+              Text: ="Add as new topic"
+              X: =760
+              Y: =164
+              Width: =190
+              Height: =40
+              OnSelect: |-
+                =If(!IsBlank(LookUp(AvenueSupportCategories, FacilityId = "flavors-hyattsville" && Title = Trim(uTpTitle.Text))), Notify("That topic already exists.", NotificationType.Warning), IfError(Patch(AvenueSupportCategories, Defaults(AvenueSupportCategories), {Title: Left(Trim(uTpTitle.Text), 255), FacilityId: "flavors-hyattsville", SortOrder: Value(uTpOrder.Text), Active: uTpActive.Value}); Notify("Topic added.", NotificationType.Success), Notify("Could not add the topic.", NotificationType.Error)))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              DisplayMode: =If(!IsBlank(Trim(uTpTitle.Text)) && IsNumeric(uTpOrder.Text), DisplayMode.Edit, DisplayMode.Disabled)
+              Visible: =Coalesce(varSetupTab, "equip") = "topics"
+        - uTpDelete:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete (owner, unused only)"
+              X: =960
+              Y: =164
+              Width: =260
+              Height: =40
+              OnSelect: |-
+                =If(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Category.Value = uTpGal.Selected.Title)) > 0, Notify("Cases use this topic: untick Shown to members instead.", NotificationType.Warning), IfError(Remove(AvenueSupportCategories, LookUp(AvenueSupportCategories, ID = uTpGal.Selected.ID)); Notify("Topic deleted.", NotificationType.Information), Notify("Could not delete the topic.", NotificationType.Error)))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(155,44,44,1)
+              HoverFill: =RGBA(243,227,227,1)
+              HoverColor: =RGBA(155,44,44,1)
+              PressedFill: =RGBA(243,227,227,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(!IsBlank(uTpGal.Selected) && CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Category.Value = uTpGal.Selected.Title)) = 0, DisplayMode.Edit, DisplayMode.Disabled)
+              Visible: =(Coalesce(varSetupTab, "equip") = "topics") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+              BorderColor: =RGBA(155,44,44,1)
+        - uTpHelp:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(uTpGal.Selected), "", Text(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Category.Value = uTpGal.Selected.Title))) & " support cases use this topic. ") & "A topic in use cannot be renamed or deleted (cases keep the text they were sent with); hide it instead. The support flow accepts only topics shown to members."
+              X: =580
+              Y: =216
+              Width: =740
+              Height: =56
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(varSetupTab, "equip") = "topics"

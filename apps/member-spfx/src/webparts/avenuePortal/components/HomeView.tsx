@@ -13,11 +13,14 @@ import { tabOn } from '../../../avenue/release';
 import { categoryGroups, phaseView } from '../../../avenue/ui-view';
 import { buildBusyMap, dayTimeline } from '../../../avenue/availability';
 import { unitStatus } from './UnitCards';
-import { heroImage } from '../assets';
 import type { IPortalData, TabKey } from './AvenuePortal';
 import { EquipmentArt } from './EquipmentArt';
 import { ordinal, useLoad, useReadIds } from './ui';
-import { useCountUp, useReducedMotion } from './motion';
+import r from './Ref.module.scss';
+import { HomeHero, QuickShortcuts, RefIcon } from './RefUi';
+import { tiltProps, useSheetCover } from './mobileFx';
+import { useCenterScale } from './smoothScrollX';
+import { useSize } from './motion';
 
 export interface IHomeViewProps {
   source: AvenueReadSource;
@@ -102,31 +105,113 @@ function Live(props: { next?: INextBooking; data: IPortalData; now: number; onNa
   );
 }
 
-function Meter(props: { hours: ReturnType<typeof hoursSummary>; collectionDay?: number; onClick: () => void }): React.ReactElement {
-  const { hours } = props;
-  const reduced: boolean = useReducedMotion();
-  const known: boolean = hours.allowance !== undefined;
-  const shown: number = useCountUp(!known ? hours.used : hours.over > 0 ? hours.over : (hours.left || 0), reduced);
+const NOTICE_ICON: Record<string, string> = { Urgent: 'triangle-alert', Maintenance: 'wrench', Schedule: 'calendar-days', General: 'megaphone' };
+const NOTICE_LABEL: Record<string, string> = { Urgent: 'Urgent', Maintenance: 'Maintenance', Schedule: 'Schedule change', General: 'Announcement' };
+/** "5 min ago", "3 h ago", "Yesterday", "Nov 22". */
+function ago(iso: string, nowMs: number, tz: string): string {
+  const t: number = Date.parse(iso); if (!isFinite(t)) { return ''; }
+  const m: number = Math.max(0, Math.round((nowMs - t) / 60000));
+  if (m < 2) { return 'Just now'; } if (m < 60) { return `${m} min ago`; } if (m < 1440) { return `${Math.round(m / 60)} h ago`; } if (m < 2880) { return 'Yesterday'; }
+  return new Intl.DateTimeFormat('en-US', { timeZone: tz, month: 'short', day: 'numeric' }).format(new Date(t));
+}
+
+/** Notices on Home: a titled block (icon, "Notices", unread count, See all) over snap-scrolling glass cards. Each card says what it is:
+ *  a category icon tile, a labelled pill (Urgent / Maintenance / Schedule change / Announcement), the title, how long ago, a chevron.
+ *  A single notice becomes one slim row. Total height about 120 px. */
+function NoticeRail(props: { notices: INotice[]; readIds: number[]; tz: string; onOpen: (n: INotice) => void; onAll: () => void }): React.ReactElement {
+  const { notices, readIds, onOpen } = props;
+  const rail = React.useRef<HTMLElement>(null);
+  const [at, setAt] = React.useState<number>(0);
+  const raf = React.useRef<number>(0);
+  const nowMs: number = Date.now();
+  const unread: number = notices.filter(n => readIds.indexOf(n.id) < 0).length;
+  const onScroll = (): void => {
+    if (raf.current) { return; }
+    raf.current = window.requestAnimationFrame(() => {
+      raf.current = 0;
+      const el: HTMLElement | null = rail.current; const first: HTMLElement | null = el ? (el.firstElementChild as HTMLElement | null) : null;
+      if (el && first) { setAt(Math.max(0, Math.min(notices.length - 1, Math.round(el.scrollLeft / (first.offsetWidth + 10))))); }
+    });
+  };
+  React.useEffect(() => () => { if (raf.current) { window.cancelAnimationFrame(raf.current); } }, []);
   return (
-    <section aria-label="Your hours this month" data-testid="hours-block" className={s.meter}>
-      <div className={s.meterTop}><h2 className={s.miniHead}>Hours this month</h2><b>{shown} h <span>{!known ? 'booked' : hours.over > 0 ? 'over plan' : 'left'}</span></b></div>
-      <div className={s.meterBar} role="img" aria-label={known ? `${hours.used} of ${hours.allowance} hours used` : 'Plan hours not set up yet'}>
-        <span className={hours.over > 0 ? s.meterOver : ''} style={{ transform: `scaleX(${known ? hours.fraction : 0})` }} />
+    <div className={r['notice-wrap']} data-reveal>
+      <header className={r['notice-head']}>
+        <span className={r['nh-icon']} aria-hidden="true"><RefIcon name="megaphone" size={14} /></span>
+        <h2>Notices</h2>
+        {unread > 0 && <b className={r['nh-count']}>{unread} new</b>}
+        {notices.length > 1 && <div className={r['notice-dots']} aria-hidden="true">{notices.map((n, i) => <i key={n.id} data-on={i === at ? '1' : '0'} />)}</div>}
+        <button type="button" onClick={props.onAll}>See all <RefIcon name="chevron-right" size={14} /></button>
+      </header>
+      <section ref={rail} className={r['notice-rail']} data-count={notices.length} aria-label="Notices from Flavors" onScroll={onScroll}>
+        {notices.map(n => (
+          <button key={n.id} type="button" className={`${r['notice-slide']} ${n.category === 'Urgent' ? r['is-urgent'] : ''}`} data-cat={n.category} onClick={() => onOpen(n)}>
+            <span className={r['ns-tile']} aria-hidden="true"><RefIcon name={NOTICE_ICON[n.category] || 'info'} size={18} />{readIds.indexOf(n.id) < 0 && <i />}</span>
+            <span className={r['ns-text']}>
+              <span className={r['ns-meta']}><em className={r['ns-pill']}>{NOTICE_LABEL[n.category] || n.category}</em><small>{ago(n.publishedUtc, nowMs, props.tz)}{readIds.indexOf(n.id) < 0 ? ' · New' : ''}</small></span>
+              <b>{n.title}</b>
+            </span>
+            <RefIcon name="chevron-right" size={16} />
+          </button>
+        ))}
+      </section>
+    </div>
+  );
+}
+
+/** One compact banner for everything that needs the member's attention: count, worst severity, one action, expandable list. */
+function AttnBanner(props: { items: { key: string; kind: string; title: string; consequence: string; howTo: string; target: TabKey }[]; onNavigate: (t: TabKey) => void }): React.ReactElement {
+  const { items, onNavigate } = props;
+  const [open, setOpen] = React.useState<boolean>(false);
+  const urgent: boolean = items.some(i => i.kind === 'document-expired');
+  const docs: boolean = items.some(i => i.target === 'documents');
+  const row = (i: { key: string; kind: string; title: string; consequence: string; howTo: string; target: TabKey }): React.ReactElement => (
+    <div key={i.key} className={i.kind === 'document-expired' ? s.attnUrgent : ''} title={`${i.consequence} ${i.howTo}`}>
+      <i aria-hidden="true">!</i><strong>{i.title}</strong>
+      <button type="button" className={s.linkBtn} onClick={() => onNavigate(i.target)}>{i.target === 'documents' ? 'Upload renewal' : 'View'}</button>
+    </div>
+  );
+  if (items.length === 1) { return <section aria-label="Needs your attention" className={s.attn4}>{row(items[0])}</section>; }
+  return (
+    <section aria-label="Needs your attention" className={`${s.attn4} ${s.attnOne}`}>
+      <div className={urgent ? s.attnUrgent : ''}>
+        <i aria-hidden="true">!</i>
+        <strong>{docs && items.every(i => i.target === 'documents') ? `${items.length} documents need attention` : `${items.length} things need your attention`}{urgent ? ' · one has expired' : ''}</strong>
+        <span className={s.attnActs}>
+          <button type="button" className={s.linkBtn} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? 'Hide' : 'Show all'}</button>
+          <button type="button" className={s.linkBtn} onClick={() => onNavigate(docs ? 'documents' : items[0].target)}>{docs ? 'Review documents' : 'View'}</button>
+        </span>
       </div>
-      <button type="button" className={s.linkBtn} onClick={props.onClick}>
-        {known ? (hours.over > 0 ? `${hours.used} h used of ${hours.allowance} h · ${hours.over} h over plan` : `${hours.used} of ${hours.allowance} h used`) : 'Your plan hours appear once Flavors sets up plans.'}{props.collectionDay !== undefined ? ` · collected on the ${ordinal(props.collectionDay)}` : ''}
-      </button>
+      {open && <div className={s.attnList}>{items.map(row)}</div>}
     </section>
   );
 }
 
+type KpiTone = 'ok' | 'warn' | 'bad' | 'info';
+/** One "Your month" card. Every card has the same five parts, so the grid reads as one set: heading and icon, the number,
+ *  a status pill (green ok / amber soon / red act now / grey no data), one line of detail, and a pill button. */
+function Kpi(props: { label: string; icon: string; value: string; pill: { text: string; tone: KpiTone }; detail: string; action?: { text: string; go: () => void }; testId?: string }): React.ReactElement {
+  return (
+    <article className={r['kpi-card']} data-testid={props.testId} data-reveal {...tiltProps()}>
+      <div className={r['kpi-top']}><span>{props.label}</span><span className={r['kpi-icon']}><RefIcon name={props.icon} size={16} /></span></div>
+      <div className={r['kpi-value']}>{props.value}</div>
+      <span className={r['kpi-pill']} data-tone={props.pill.tone}>{props.pill.text}</span>
+      <div className={r['kpi-foot']}>{props.detail}</div>
+      {props.action && <button type="button" className={r['review-link']} onClick={props.action.go}>{props.action.text} <RefIcon name="arrow-up-right" size={13} /></button>}
+    </article>
+  );
+}
 
 export default function HomeView(props: IHomeViewProps): React.ReactElement {
   const { source, data, userEmail, isDemo, onNavigate } = props;
+  const homeRef = React.useRef<HTMLDivElement>(null);
+  const markRef = React.useRef<HTMLSpanElement>(null);
+  const kbRef = React.useRef<HTMLUListElement>(null);
+  const phoneSize: boolean = useSize() === 'phone';
   const tz: string = data.facility.timeZone;
   const now: number = useNow(30000);
   const open = (id: string, action?: 'extend'): void => { if (props.onOpenBooking) { props.onOpenBooking(id, action); } else { onNavigate('bookings'); } };
-  const [readIds, markRead] = useReadIds();
+  const [readIds, markRead] = useReadIds(source);
   const home = useLoad<IHomeData>(async () => {
     const todayYmd: string = localDay(new Date(), tz);
     const [requests, notices, documents, flags, required, membership, invoices, today] = await Promise.all([
@@ -138,8 +223,11 @@ export default function HomeView(props: IHomeViewProps): React.ReactElement {
         : Promise.resolve<ICalendarEntry[]>([])
     ]);
     return { requests, notices, documents, flags, required, membership, invoices, today };
-  }, [source, userEmail, isDemo, props.notices]);
+    // Notices are read from props below, not a dependency: the shell's 60 s notice poll must not refetch the whole overview (A4).
+  }, [source, userEmail, isDemo]);
 
+  useSheetCover(homeRef, markRef, phoneSize, !!home.data);
+  useCenterScale(kbRef, !!home.data);
   if (home.error) {
     return <div className={s.container}><div className={s.errorPanel} role="alert"><strong>We could not load your overview.</strong><span>{home.error}</span><button type="button" className={s.btn} onClick={home.reload}>Try again</button></div></div>;
   }
@@ -155,157 +243,174 @@ export default function HomeView(props: IHomeViewProps): React.ReactElement {
   const next: INextBooking | undefined = pickNextBooking(d.requests, now);
   const hours = hoursSummary(hoursThisMonth(d.requests, tz, new Date(now)), d.membership?.monthlyHours);
   const owed: string = d.invoices === 'not-connected' ? 'Not available' : formatCents(balanceDueCents(d.invoices));
-  const notice: INotice | undefined = d.notices.filter(n => readIds.indexOf(n.id) < 0)[0];
+  const recent: INotice[] = (props.notices || d.notices).slice(0, 3);
+  const docsOnFile: number = newestPerType(d.documents).size;
+  const docIssues: number = items.filter(i => i.target === 'documents').length;
   const weekEnd: number = now + 7 * 86400000;
   const agenda: IMyRequest[] = d.requests.filter(r => r.status !== 'Cancelled' && r.status !== 'Declined' && Date.parse(r.endUtc) > now && Date.parse(r.startUtc) < weekEnd);
   const homeTl = dayTimeline(data.resources, buildBusyMap(d.today), todayYmd, tz);
   const first: string = (props.userName || '').split(' ')[0];
 
-  const fac = data.facility;
-  const early: number = fac.earlyEntryMinutes === undefined ? 30 : fac.earlyEntryMinutes;
   const goBook = (m?: 'equipment' | 'whole-kitchen' | 'dining' | 'private-event'): void => { if (props.onBook) { props.onBook(m); } else { onNavigate('book'); } };
-  const clean: number = fac.cleanupMinutes === undefined ? 30 : fac.cleanupMinutes;
-  const alertMin: number = fac.checkoutAlertMinutes === undefined ? 30 : fac.checkoutAlertMinutes;
-  const prepMin: number = fac.minPrepTables === undefined ? 2 : fac.minPrepTables;
-  const EX_MIN: number = 240;
-  const exTotal: number = early + EX_MIN + clean;
-  const hm = (m: number): string => { const tot: number = m + 510; const h: number = Math.floor(tot / 60); const mm: number = tot % 60; return `${h > 12 ? h - 12 : h}:${mm < 10 ? '0' : ''}${mm} ${h >= 12 ? 'PM' : 'AM'}`; };
   const groupsFree = categoryGroups(data.resources, true).map(g => ({ g, free: g.units.filter(u => unitStatus((homeTl.rows.filter(r => r.unitId === u.resourceId)[0] || { segments: [] }).segments, homeTl, tz, now).free).length }));
 
   const hr: number = Number(new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', hour12: false }).format(new Date(now))) % 24;
   const greet: string = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
   const isFree = (unitId: string): boolean => unitStatus((homeTl.rows.filter(r => r.unitId === unitId)[0] || { segments: [] }).segments, homeTl, tz, now).free;
 
+  const nextTxt: string = next ? (now < Date.parse(next.request.startUtc) ? mins(Date.parse(next.request.startUtc) - now) : mins(Math.max(0, Date.parse(next.request.endUtc) - now))) : 'None';
+  const dateLine: string = new Intl.DateTimeFormat('en-US', { timeZone: tz, weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(now)).toUpperCase();
+
+  const shortcutItems = [
+        ...(tabOn('book') ? [{ key: 'book', label: 'Book', icon: 'cooking-pot', onClick: () => goBook() }] : []),
+        ...(tabOn('bookings') ? [{ key: 'bookings', label: 'My bookings', icon: 'calendar-days', onClick: () => onNavigate('bookings') }] : []),
+        ...(tabOn('checkin') ? [{ key: 'checkin', label: 'Check in', icon: 'clipboard-check', onClick: () => onNavigate('checkin') }] : []),
+        ...(tabOn('documents') ? [{ key: 'documents', label: 'Documents', icon: 'file-text', onClick: () => onNavigate('documents'), badge: docIssues }] : [])
+      ];
   return (
-    <div className={s.h4}>
-      <section className={s.hx} aria-label="Welcome">
-        <div className={s.hxText}>
-          <div className={s.hxInner}>
-            <p className={s.hxKicker}>{greet}{first ? `, ${first}` : ''}.</p>
-            <h1 className={s.hxTitle}>Your kitchen, booked by the piece.</h1>
-            <p className={s.hxLede}>Pick the equipment and the hours. Flavors confirms, and it is yours. Open around the clock.</p>
-            {tabOn('book') && !next && blocked && (
-              <div className={s.blockedNote}><p>You need a current document on file before you can book.</p>{tabOn('documents') && <button type="button" className={s.btn} onClick={() => onNavigate('documents')}>Renew your {blockingDoc || 'document'}</button>}</div>
-            )}
-            {tabOn('bookings') && <Live next={next} data={data} now={now} onNavigate={onNavigate} onOpen={open} />}
-          </div>
+    <div className={s.h4} ref={homeRef} data-cover="0">
+      <HomeHero
+        facility={data.facility.title}
+        eyebrow={dateLine}
+        title={`${greet}${first ? `, ${first}` : ''}`}
+        lede="Open 24 hours · Flavors confirms every booking."
+        pill={next ? `${now < Date.parse(next.request.startUtc) ? 'Next booking in' : 'In the kitchen,'} ${nextTxt}${now < Date.parse(next.request.startUtc) ? '' : ' left'}` : 'Open 24 hours'}
+        onBook={tabOn('book') ? () => goBook() : undefined}
+      >
+        <QuickShortcuts onHero items={shortcutItems} />
+      </HomeHero>
+      <QuickShortcuts items={shortcutItems} />
+      <div className={r['home-sheet']} data-idle>
+      <span ref={markRef} className={r['sheet-mark']} aria-hidden="true" />
+      {tabOn('notices') && recent.length > 0 && (
+        <NoticeRail notices={recent} readIds={readIds} tz={tz} onAll={() => onNavigate('notices')} onOpen={n => { markRead([n.id]); onNavigate('notices'); }} />
+      )}
+      {tabOn('book') && !next && blocked && (
+        <div className={s.blockedNote}><p>You need a current document on file before you can book.</p>{tabOn('documents') && <button type="button" className={s.btn} onClick={() => onNavigate('documents')}>Renew your {blockingDoc || 'document'}</button>}</div>
+      )}
+
+      <section aria-label="At a glance" className={r['home-sec']}>
+        <header className={r['sec-head']}><span className={r['sec-ico']} aria-hidden="true"><RefIcon name="activity" size={16} /></span><h2>Your month</h2></header>
+        <div className={r['kpi-grid']}>
+          {tabOn('bookings') && (() => {
+            const st: number = next ? Date.parse(next.request.startUtc) : 0;
+            const inside: boolean = !!next && now >= st;
+            return (
+              <Kpi label="Next booking" icon="calendar-days" value={next ? nextTxt : 'None'}
+                pill={!next ? { text: 'Nothing booked', tone: 'info' } : inside ? { text: 'In the kitchen', tone: 'ok' } : next.request.status === 'Approved' ? { text: 'Approved', tone: 'ok' } : { text: 'Waiting for Flavors', tone: 'warn' }}
+                detail={next ? `${inside ? 'Left · ends' : 'To start ·'} ${inside ? localTime(next.request.endUtc, tz) : `${facilityDayLabel(localDay(next.request.startUtc, tz), todayYmd)}, ${localTime(next.request.startUtc, tz)}`}` : 'Pick a day and your hours'}
+                action={next ? { text: 'View booking', go: () => open(next.request.requestId) } : tabOn('book') ? { text: 'Book now', go: () => goBook() } : undefined} />
+            );
+          })()}
+          {d.membership && (
+            <Kpi testId="hours-block" label="Plan hours" icon="clock-3" value={`${hours.used} h`}
+              pill={hours.allowance === undefined ? { text: 'Plan not set up', tone: 'info' } : hours.over > 0 ? { text: `${hours.over} h over`, tone: 'bad' } : (hours.left || 0) <= hours.allowance * 0.2 ? { text: `${hours.left || 0} h left`, tone: 'warn' } : { text: 'On track', tone: 'ok' }}
+              detail={hours.allowance === undefined ? 'Flavors sets up your plan' : hours.over > 0 ? `Used ${hours.used} of ${hours.allowance} h this month` : `${hours.used} of ${hours.allowance} h used · ${hours.left || 0} h left`}
+              action={tabOn('membership') ? { text: 'View plan', go: () => onNavigate('membership') } : undefined} />
+          )}
+          {tabOn('documents') && (
+            <Kpi label="Documents" icon="file-text" value={`${docsOnFile} on file`}
+              pill={docIssues > 0 ? { text: 'Needs attention', tone: 'bad' } : docsOnFile === 0 ? { text: 'None sent yet', tone: 'warn' } : { text: 'All current', tone: 'ok' }}
+              detail={docIssues > 0 ? `${docIssues} to review` : docsOnFile === 0 ? 'Send your permits and insurance' : 'Nothing to review'}
+              action={{ text: docIssues > 0 ? 'Review docs' : 'View docs', go: () => onNavigate('documents') }} />
+          )}
+          {tabOn('billing') && (() => {
+            const due: number = d.invoices === 'not-connected' ? 0 : balanceDueCents(d.invoices);
+            return (
+              <Kpi label="Balance due" icon="credit-card" value={d.invoices === 'not-connected' ? '—' : owed}
+                pill={d.invoices === 'not-connected' ? { text: 'Not available', tone: 'info' } : due > 0 ? { text: 'Payment due', tone: 'warn' } : { text: 'Paid up', tone: 'ok' }}
+                detail={isDemo && d.invoices !== 'not-connected' ? 'Demo figures' : d.membership && d.membership.collectionDay !== undefined ? `Collected on the ${ordinal(d.membership.collectionDay)}` : 'From your invoices'}
+                action={{ text: 'View billing', go: () => onNavigate('billing') }} />
+            );
+          })()}
         </div>
-        <div className={s.hxMedia} aria-hidden="true"><div className={s.hxPhoto} style={{ backgroundImage: `url(${heroImage})` }} /></div>
       </section>
-
-      {tabOn('calendar') && (
-        <section className={s.kb} aria-label="Kitchen right now">
-          <div className={s.container}>
-            <div className={s.kbHead}>
-              <div><span className={s.kbLive}><i aria-hidden="true" />Live</span><h2>Kitchen right now</h2></div>
-              <button type="button" className={s.linkBtn} onClick={() => onNavigate('calendar')}>Open schedule</button>
-            </div>
-            <ul className={s.kbList}>
-              {groupsFree.map(({ g, free }) => (
-                <li key={g.category} className={free > 0 ? s.kbFree : s.kbBusy}>
-                  <button type="button" onClick={() => goBook('equipment')} aria-label={`${g.title}: ${free} of ${g.units.length} free now. Book`}>
-                    <EquipmentArt hint={g.category} size="md" />
-                    <strong>{g.title}</strong>
-                    <b className={s.kbCount}>{free}<small>/{g.units.length} free</small></b>
-                    <span className={s.kbBars} aria-hidden="true">{g.units.map(u => <i key={u.resourceId} className={isFree(u.resourceId) ? s.kbOn : ''} />)}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      )}
-
-      {notice && tabOn('notices') && (
-        <section className={`${s.ribbon} ${notice.category === 'Urgent' ? s.ribbonUrgent : ''}`} aria-label={notice.pinned ? 'Pinned notice' : 'Latest notice'}>
-          <div className={s.container}>
-            <span className={s.ribbonTag}>{notice.pinned ? 'Pinned notice' : 'Latest notice'} · {notice.category}</span>
-            <strong>{notice.title}</strong>
-            <button type="button" className={s.linkBtn} onClick={() => { markRead([notice.id]); onNavigate('notices'); }}>Read</button>
-            <button type="button" className={s.dismissX} aria-label="Dismiss this notice" onClick={() => markRead([notice.id])}>✕</button>
-          </div>
-        </section>
-      )}
 
       {items.filter(i => tabOn(i.target)).length > 0 && (
-        <section aria-label="Needs your attention" className={s.attn4}>
-          <div className={s.container}>
-            {items.filter(i => tabOn(i.target)).map(i => (
-              <div key={i.key} className={i.kind === 'document-expired' ? s.attnUrgent : ''} title={`${i.consequence} ${i.howTo}`}>
-                <i aria-hidden="true">!</i><strong>{i.title}</strong>
-                <button type="button" className={s.linkBtn} onClick={() => onNavigate(i.target)}>{i.target === 'documents' ? 'Upload renewal' : 'View'}</button>
-              </div>
-            ))}
-          </div>
-        </section>
+        <AttnBanner items={items.filter(i => tabOn(i.target))} onNavigate={onNavigate} />
       )}
 
-      {tabOn('bookings') && (
-        <section aria-label="Your week" className={s.wk}>
-          <div className={`${s.container} ${s.wkGrid}`}>
-            <div>
-              <div className={s.wkHead}><h2>Coming up</h2><button type="button" className={s.linkBtn} onClick={() => onNavigate('bookings')}>All bookings</button></div>
+      <div className={r['dashboard-grid']}>
+        <div className={r['right-column']} style={{ minWidth: 0 }}>
+          {tabOn('bookings') && <section className={r['schedule-card']} aria-label="Next booking detail" data-reveal><Live next={next} data={data} now={now} onNavigate={onNavigate} onOpen={open} /></section>}
+          {tabOn('bookings') && (
+            <section className={r['schedule-card']} aria-label="Coming up" data-reveal>
+              <div className={r['section-header']}><div><h2>Coming up</h2><p>Your bookings in the next 7 days</p></div><button type="button" className={r['text-button']} onClick={() => onNavigate('bookings')}>All bookings</button></div>
               {agenda.length === 0 ? (
-                <div className={s.wkEmpty}><EquipmentArt hint="Stove" size="md" /><div><strong>Nothing booked in the next 7 days</strong><p>Choose a day and your hours to reserve equipment.</p></div>{tabOn('book') && <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={() => goBook()}>Book now</button>}</div>
+                <div className={s.wkEmpty}><EquipmentArt hint="Stove" size="md" /><div><strong>Nothing booked in the next 7 days</strong><p>Choose a day and your hours to reserve equipment.</p></div>{tabOn('book') && <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={() => goBook()}>Book</button>}</div>
               ) : (
-                <ol className={s.wkRail}>
-                  {agenda.slice(0, 4).map(r => (
-                    <li key={r.requestId}>
-                      <button type="button" onClick={() => open(r.requestId)}>
-                        <time><b>{facilityDayLabel(localDay(r.startUtc, tz), todayYmd)}</b><span>{localTime(r.startUtc, tz)}</span></time>
-                        <span className={s.wkBody}><strong>{localTime(r.startUtc, tz)} – {localTime(r.endUtc, tz)}</strong><em>{((ch: string[]) => `${ch.slice(0, 3).join(', ')}${ch.length > 3 ? ` +${ch.length - 3}` : ''}`)(equipmentChips(r.space, r.equipmentIds, data.resources))}</em></span>
-                        <i className={r.status === 'Approved' ? s.pillOk : s.pillWait}>{r.status === 'Approved' ? 'Approved' : 'Waiting'}</i>
-                      </button>
-                    </li>
+                <div className={r['module-booking-list']} style={{ padding: '0 18px 18px' }}>
+                  {agenda.slice(0, 4).map(rq => (
+                    <article key={rq.requestId} className={r['module-row']} data-reveal>
+                      <span className={`${r['tenant-avatar']} ${r.teal}`}>{localDay(rq.startUtc, tz).slice(8)}</span>
+                      <div className={r['module-row-copy']}><b>{localTime(rq.startUtc, tz)} – {localTime(rq.endUtc, tz)}</b><span className={s.kitChips}>{((ch: string[]) => ch.slice(0, 2).map(c => <i key={c}>{c}</i>).concat(ch.length > 2 ? [<i key="more">+{ch.length - 2}</i>] : []))(equipmentChips(rq.space, rq.equipmentIds || [], data.resources))}</span></div>
+                      <span className={r['module-row-time']}>{facilityDayLabel(localDay(rq.startUtc, tz), todayYmd)}</span>
+                      <span className={`${r['module-status']} ${rq.status === 'Approved' ? '' : r['is-pending']}`}>{rq.status === 'Approved' ? 'Approved' : 'Waiting'}</span>
+                      <button type="button" className={r['module-action']} onClick={() => open(rq.requestId)}>Details</button>
+                    </article>
                   ))}
-                </ol>
-              )}
-            </div>
-            <aside className={s.wkSide}>
-              {d.membership && <Meter hours={hours} collectionDay={tabOn('billing') ? d.membership.collectionDay : undefined} onClick={() => onNavigate('bookings')} />}
-              {tabOn('billing') && <div><div className={s.eyebrow}>Billing</div><button type="button" className={s.linkBtn} onClick={() => onNavigate('billing')}>{isDemo && d.invoices !== 'not-connected' ? 'You owe (demo figures)' : 'You owe'}: {owed}</button></div>}
-              {tabOn('book') && (
-                <div className={s.wkModes}>
-                  <span className={s.eyebrow}>Book something bigger</span>
-                  <button type="button" onClick={() => goBook('whole-kitchen')}><EquipmentArt hint="Oven" size="xs" />Whole kitchen<em>›</em></button>
-                  <button type="button" onClick={() => goBook('dining')}><EquipmentArt hint="dining" size="xs" />Dining room<em>›</em></button>
                 </div>
               )}
-            </aside>
+            </section>
+          )}
+        </div>
+        <aside className={r['right-column']}>
+          {d.membership && tabOn('membership') && (
+            <section className={r['occupancy-card']} aria-label="My plan" data-reveal>
+              <div className={`${r['section-header']} ${r.compact}`}><div><h2>My plan</h2><p>{d.membership.monthlyHours !== undefined ? `${d.membership.monthlyHours} hours a month` : 'Hours not set up yet'}</p></div><button type="button" className={r['text-button']} onClick={() => onNavigate('membership')}>Manage</button></div>
+              <div className={r['occupancy-summary']} style={{ padding: '0 18px 18px' }}><b>{d.membership.planName || 'Plan not set'}</b><span>{d.membership.extraHourRate !== undefined ? `Extra hours $${d.membership.extraHourRate} each` : 'Extra-hour rate not set'}</span></div>
+            </section>
+          )}
+          {tabOn('notices') && (
+            <section className={r['tenants-card']} aria-label="Latest notices" data-reveal>
+              <div className={`${r['section-header']} ${r.compact}`}><div><h2>Notices</h2><p>Latest from Flavors</p></div><button type="button" className={r['text-button']} onClick={() => onNavigate('notices')}>View all</button></div>
+              <div className={r['tenant-list']}>
+                {recent.length === 0 ? <p style={{ margin: 0, padding: '0 18px 18px', color: '#6b7280' }}>No notices right now.</p> : recent.map(n => (
+                  <button key={n.id} type="button" className={r['tenant-row']} onClick={() => { markRead([n.id]); onNavigate('notices'); }}>
+                    <span className={`${r['tenant-avatar']} ${n.category === 'Urgent' ? r.gold : r.teal}`} aria-hidden="true">{n.category.charAt(0)}</span>
+                    <span className={r['tenant-details']}><b>{n.title}</b><small>{n.category}</small></span>
+                    {readIds.indexOf(n.id) < 0 && <span className={r['tenant-rank']}>New</span>}
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
+        </aside>
+      </div>
+
+      {tabOn('calendar') && (
+        <section className={`${r['module-view']}`} aria-label="Kitchen right now" style={{ marginTop: 15 }}>
+          <div className={r['module-view-heading']}>
+            <div><h2 id="kb-title">Kitchen right now</h2></div>
+            <button type="button" className={r['text-button']} onClick={() => onNavigate('calendar')}>Open schedule</button>
           </div>
+          <ul ref={kbRef} className={`${s.kbList} ${s.kbSlider}`}>
+            {groupsFree.map(({ g, free }) => (
+              <li key={g.category} className={free > 0 ? s.kbFree : s.kbBusy}>
+                <button type="button" onClick={() => goBook('equipment')} aria-label={`${g.title}: ${free} of ${g.units.length} free now. Book`}>
+                  <EquipmentArt hint={g.category} size="md" />
+                  <strong>{g.title}</strong>
+                  <b className={s.kbCount}>{free}<small>/{g.units.length} free</small></b>
+                  <span className={s.kbBars} aria-hidden="true">{g.units.map(u => <i key={u.resourceId} className={isFree(u.resourceId) ? s.kbOn : ''} />)}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
         </section>
       )}
 
-      <section aria-label="A booking from start to finish" className={`${s.band} ${s.bandInk}`}>
-        <div className={s.container}>
-          <div className={s.splitHead}>
-            <div><div className={s.eyebrowOnDark}>One booking, start to finish</div><h2>Early entry and clean-up are on us.</h2></div>
-            <p>Come {early} minutes early to set up and take {clean} minutes after to clean. Both are free. Here is a 4-hour booking starting at 9:00 AM.</p>
+      {tabOn('book') && (
+        <section className={r['module-view']} aria-label="Quick actions" style={{ marginTop: 15 }}>
+          <div className={r['module-view-heading']}><div><h2>More ways to book</h2></div></div>
+          <div className={r['module-stat-grid']}>
+            <button type="button" className={r['module-stat-card']} onClick={() => goBook('whole-kitchen')}><span className={r['kpi-icon']}><RefIcon name="cooking-pot" size={16} /></span><h3>Whole kitchen</h3><p>Book every station for a long prep day.</p></button>
+            <button type="button" className={r['module-stat-card']} onClick={() => goBook('dining')}><span className={r['kpi-icon']}><RefIcon name="utensils" size={16} /></span><h3>Dining room</h3><p>Reserve the dining room by the hour.</p></button>
+            {tabOn('events') && <button type="button" className={r['module-stat-card']} onClick={() => onNavigate('events')}><span className={r['kpi-icon']}><RefIcon name="sparkles" size={16} /></span><h3>Private event</h3><p>Request the room for a private event.</p></button>}
+            {tabOn('support') && <button type="button" className={r['module-stat-card']} onClick={() => onNavigate('support')}><span className={r['kpi-icon']}><RefIcon name="message-square" size={16} /></span><h3>Message Flavors</h3><p>Ask a question or report a problem.</p></button>}
           </div>
-          <div className={s.tl} role="img" aria-label={`Early entry ${early} minutes, booked time 4 hours, clean-up ${clean} minutes`}>
-            <span className={s.tlEarly} style={{ flexBasis: `${(early / exTotal) * 100}%` }}>Early entry</span>
-            <span className={s.tlBook} style={{ flexBasis: `${(EX_MIN / exTotal) * 100}%` }}>Your booking</span>
-            <span className={s.tlClean} style={{ flexBasis: `${(clean / exTotal) * 100}%` }}>Clean-up</span>
-          </div>
-          <div className={s.tlTimes} aria-hidden="true">
-            <span style={{ flexBasis: `${(early / exTotal) * 100}%` }}>{hm(0)} in</span>
-            <span style={{ flexBasis: `${(EX_MIN / exTotal) * 100}%` }}>{hm(early)} starts</span>
-            <span style={{ flexBasis: `${(clean / exTotal) * 100}%` }}>{hm(early + EX_MIN)} ends · {hm(exTotal)} out</span>
-          </div>
-        </div>
-      </section>
-
-      <section aria-label="Before you go" className={s.band}>
-        <div className={s.container}>
-          <div className={s.secHead}><div><div className={s.eyebrow}>Before you go</div><h2>Three things worth knowing</h2></div></div>
-          <ul className={s.threeGrid}>
-            <li><b>24/7</b><strong>Open around the clock</strong><span>Members have their own door code. Every request is confirmed by Flavors, and nothing is paid at booking.</span></li>
-            <li><b>{prepMin}</b><strong>Prep tables every time</strong><span>Even a booking with no cooking equipment includes at least {prepMin} prep tables.</span></li>
-            <li><b>{alertMin}′</b><strong>A reminder before you leave</strong><span>We tell you {alertMin} minutes before your booking ends, with a way to extend. Cancel 24 hours or more ahead to get your hours back.</span></li>
-          </ul>
-        </div>
-      </section>
-
+        </section>
+      )}
+      </div>
     </div>
   );
 }

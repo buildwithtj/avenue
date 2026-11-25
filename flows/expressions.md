@@ -241,8 +241,8 @@ if(contains(createArray('PastDue', 'Unpaid'), coalesce(first(outputs('Get_items_
 - Second trigger condition: `@empty(triggerOutputs()?['body/CancelBookingId'])`. Cancel items have no times; before this they reached `Get_items_3` and failed with "String was not recognized as a valid DateTime" (run 23 Nov 10:58 IST, item 94). The cancellation flow handles them.
 - Live test 23 Nov (automations@, staff on behalf of TDDAdmin): member row 10 set PastDue → request `gaptest-bkg14-1` became booking 88 **Declined** "Refused automatically: a payment is overdue. Please contact Flavors."; PaymentStatus restored to empty; request 95 and booking 88 recycled by id. Not tested: OwnerOverride passing, a member's own (non-staff) request.
 
-## Specified, not built (23 Nov 2026) — Support, Events, Storage
-**None of these six flows exists in Power Automate. They are written down so the build is mechanical once the lists are applied (`schema/lists.v2.json`, [DATA_AND_ACCESS.md](../docs/DATA_AND_ACCESS.md)). Every expression is untested.** All six run at trigger concurrency 1, as the service account `automations@`, and follow the standing rules: member identity = item author (never a field), `Outcome`/`Reply` are display-only and never read back, a refused item gets "Not accepted: …", generic e-mails only (COM-02), and a bare `@expr` for every boolean or date value (`@{...}` makes text).
+## Support, Events, Storage — LIVE (built and tested 23 Nov 2026; first written here as a spec)
+**Correction (23 Nov 2026, P7):** these six flows are no longer "specified, not built": they were built, saved and tested live on 23 Nov (docs/STATUS.md, 23 Nov night: Support new message -> case + Outcome, staff reply echoed; Event request -> case with quote; Storage -> case). The expressions below are the **specification they were built from, not a copy of the live flows**. Before editing any of them, re-read the live expressions from Code view and update this section to match (the live Support flow, for example, was not changed when the portal ThreadId fix shipped). All six run at trigger concurrency 1, as the service account `automations@`, and follow the standing rules: member identity = item author (never a field), `Outcome`/`Reply` are display-only and never read back, a refused item gets "Not accepted: …", generic e-mails only (COM-02), and a bare `@expr` for every boolean or date value (`@{...}` makes text).
 
 Shared steps for the three intake flows (same block as the booking flow): `Author groups` (HTTP request to SharePoint, GET `_api/web/siteusers?$filter=Email eq '@{triggerOutputs()?['body/Author/Email']}'&$expand=Groups&$select=Id,Groups/Title`, header `Accept: application/json;odata=nometadata`), `IsStaff` = `@or(contains(string(body('Author_groups')), 'Avenue Flavors Staff'), contains(string(body('Author_groups')), 'Avenue Flavors Owner'), contains(string(body('Author_groups')), 'Avenue Owners'))`, `Member` = `@{toLower(triggerOutputs()?['body/Author/Email'])}`. Staff may write to these intake lists too; a staff-authored item is treated as the staff member's own message or request (no `OnBehalfOf` in this release).
 
@@ -291,3 +291,68 @@ Trigger: item modified in `AvenueStorageCases`, condition `@or(equals(triggerOut
 - `Request item`: `Get items` on `AvenueStorageRequests`, filter `RequestId eq '@{triggerOutputs()?['body/RequestId']}'`, top 1; if none, stop.
 - Update it: `Outcome` = `@{if(equals(triggerOutputs()?['body/Status/Value'], 'Approved'), 'Approved', 'Not approved')}`, `Reply` = `@{if(equals(triggerOutputs()?['body/Status/Value'], 'Approved'), concat('Approved at $', string(div(int(coalesce(triggerOutputs()?['body/MonthlyCents'], 0)), 100)), ' a month. Flavors will bill you directly.'), 'Flavors could not take this request. Message Flavors for details.')}`.
 - Storage is billed by hand outside Avenue (no invoice, no Stripe object, no host call).
+
+## Redesign flows (specified, not built) — P7, 23 Nov 2026
+**Nothing in this section exists in Power Automate. Every expression is untested.** Same standing rules as above: run as `automations@`, trigger concurrency 1, member identity = item author (never a field), `Outcome`/`Reply` display only, generic e-mails only (COM-02), and a **bare `@expr`** for every boolean, number or date value (`@{...}` makes text). Edits to the live Support flow (R1, R2 below) start by re-reading its Code view. Lists: `schema/lists.v2.json` (AvenueSupportCategories, AvenueSupportFiles, AvenueMyDocuments, AvenueMyHours, AvenueMyBookings are [PROPOSED] and not on the site).
+
+### R1. Support message to case: category from AvenueSupportCategories (edit of the live flow 1)
+Precondition: `Category` is Text on `AvenueSupportMessages` and `AvenueSupportCases` [PROPOSED]. The Choice -> Text conversion of a live column is UNTESTED: create a `gaptest-` copy of the list, add Choice values, convert, and confirm existing values survive before touching the real lists. Until then keep reading `Category/Value`.
+- New step before `Valid`: `Topic` = `Get items` on `AvenueSupportCategories`, Filter Query `FacilityId eq 'flavors-hyattsville' and Title eq '@{replace(trim(coalesce(triggerOutputs()?['body/Category'], '')), '''', '''''')}' and Active eq 1`, Top Count 1.
+- `Valid` (replaces the hard-coded `createArray('Booking', …)` test):
+```
+@and(not(empty(trim(coalesce(triggerOutputs()?['body/Subject'], '')))), not(empty(trim(coalesce(triggerOutputs()?['body/Body'], '')))), less(length(coalesce(triggerOutputs()?['body/Body'], '')), 4001), equals(length(outputs('Topic')?['body/value']), 1))
+```
+- `Create item` / `Update item` on the case: Category = `@{first(outputs('Topic')?['body/value'])?['Title']}` (the catalogue's spelling, not the member's).
+- Not valid: unchanged Outcome text (`Not accepted: a subject, a message (up to 4,000 characters) and a category are needed.`).
+
+### R2. Support attachments to a private library (added to the live flow 1, after the case is created or updated)
+Trigger change first (the P6 portal attaches files with the document trick: create with Outcome `Uploading`, attach, then clear Outcome): trigger **item created or modified**, condition `@and(not(empty(triggerOutputs()?['body/MessageId'])), empty(triggerOutputs()?['body/Outcome']))`. The flow's own Outcome write then does not re-trigger it; a text-only message (one create, no Outcome) behaves as today.
+Limits (developer decision 23 Nov; retention is Q-R3, not invented): images and PDF only, at most 5 files, 10 MB each. A message that breaks the limits is still recorded; the files are not copied and the Outcome says so.
+- `Files` = `Get attachments` (AvenueSupportMessages, Id = `@{triggerOutputs()?['body/ID']}`).
+- `Allowed files` (Filter array), from `@outputs('Files')?['body']`, where:
+```
+@or(endsWith(toLower(item()?['DisplayName']), '.pdf'), endsWith(toLower(item()?['DisplayName']), '.png'), endsWith(toLower(item()?['DisplayName']), '.jpg'), endsWith(toLower(item()?['DisplayName']), '.jpeg'), endsWith(toLower(item()?['DisplayName']), '.gif'), endsWith(toLower(item()?['DisplayName']), '.webp'), endsWith(toLower(item()?['DisplayName']), '.heic'))
+```
+- `Files ok` = `@and(lessOrEquals(length(outputs('Files')?['body']), 5), equals(length(body('Allowed_files')), length(outputs('Files')?['body'])))` (bare boolean).
+- If `Files ok`: Apply to each over `@body('Allowed_files')`: `Get attachment content`; condition `@lessOrEquals(length(base64(body('Get_attachment_content'))), 13981016)` (10 MB as base64 length; larger files are skipped and counted); `Create file` in `AvenueSupportFiles`, folder `/AvenueSupportFiles/@{outputs('Thread_id')}`, name `@{triggerOutputs()?['body/MessageId']}-@{items('Apply_to_each')?['DisplayName']}`; `Update file properties`: FacilityId `flavors-hyattsville`, CaseId `@{outputs('Thread_id')}`, MemberId `@{outputs('Member')}`, MessageId `@{triggerOutputs()?['body/MessageId']}`.
+- The library has the private permission set (staff and owner Contribute, no members). The member keeps the original attachment on their own item; nothing is granted to anyone.
+- Outcome when files were refused: `Received · attachments not kept: send images or PDF, at most 5 files of 10 MB each`.
+
+### R3. Avenue - Support case delete (owner only), spec only
+Developer decision 23 Nov: staff **archive** (Status `Archived`, `ArchivedBy`, `ArchivedAt`); hard delete is owner-only and goes through this flow. Q-R5 (may admins delete at all?) is open: **do not build until the client answers.**
+- Trigger: `When an item is created` in `AvenueHostRequests`, condition `@equals(triggerOutputs()?['body/Kind/Value'], 'DeleteSupportCase')` (needs the choice `DeleteSupportCase` added to Kind; Payload `{"caseId": "<CaseId>"}`).
+- `Is owner` (bare): `@or(contains(string(body('Author_groups')), 'Avenue Flavors Owner'), contains(string(body('Author_groups')), 'Avenue Owners'))` with the same `Author groups` HTTP step as above. Not owner: Outcome `Refused: only the Flavors owner can delete a support case.`; stop.
+- `Case` = `Get items` on `AvenueSupportCases`, `CaseId eq '@{replace(json(triggerOutputs()?['body/Payload'])?['caseId'], '''', '''''')}' and Status eq 'Archived'`, top 1. Only an archived case can be deleted (two deliberate steps). None: Outcome `Refused: archive the case first.`; stop.
+- Delete, one explicit id at a time (never a bulk delete): each `AvenueSupportMessages` item with `ThreadId eq '<CaseId>'`, each `AvenueSupportFiles` file with `CaseId eq '<CaseId>'`, then the case row. SharePoint deletes go to the site recycle bin (restorable for its retention period).
+- Outcome `Deleted case <CaseId>: <n> messages, <m> files`. No e-mail.
+
+### R4. Avenue - My documents mirror (concurrency 1), same pattern as the Membership card
+Trigger: item created or modified in `AvenueMemberDocuments`.
+- `Existing` = `Get items` on `AvenueMyDocuments`, `DocKey eq 'doc-@{triggerOutputs()?['body/ID']}'`, top 1.
+- Superseded rows are removed from the mirror: if `@not(empty(triggerOutputs()?['body/SupersededBy']))`, delete the `Existing` row (if any) and stop.
+- `File` = `Get files (properties only)` on `AvenueDocumentFiles`, filter `SourceSubmissionId eq '@{triggerOutputs()?['body/SourceSubmissionId']}'`, top 1. `FileUrl` = `@{coalesce(first(outputs('File')?['body/value'])?['{Link}'], '')}` (the member's item grant below does NOT grant the file: the link opens only for staff until a file grant is designed, see doubts).
+- Update `Existing` or create: FacilityId, DocKey `doc-@{triggerOutputs()?['body/ID']}`, MemberId `@{toLower(triggerOutputs()?['body/MemberId'])}`, DocType `@{triggerOutputs()?['body/DocType/Value']}`, IssueDate `@triggerOutputs()?['body/IssueDate']` (bare), ExpiryDate `@triggerOutputs()?['body/ExpiryDate']` (bare), Status `@{triggerOutputs()?['body/DocStatus/Value']}`, Verified `@coalesce(triggerOutputs()?['body/Verified'], false)` (bare), FileUrl.
+- Then **Grant access to an item or a folder** on the mirror row: Recipients = MemberId, Role = Can view, Notify = No. The list itself stays private (staff and owner only).
+- If the member's `AvenueMembers` Status is `Inactive` (Get items, top 1): delete the row instead (fail closed, as the membership card does).
+
+### R5. Avenue - My hours mirror (concurrency 1)
+Trigger: item created or modified in `AvenueHoursLedger`.
+- `Key` = `@{toLower(triggerOutputs()?['body/MemberId'])}|@{triggerOutputs()?['body/Period']}`.
+- `Month rows` = `Get items` on `AvenueHoursLedger`, `MemberId eq '@{triggerOutputs()?['body/MemberId']}' and Period eq '@{triggerOutputs()?['body/Period']}'`, top 5000. `Used` (Select, from `@outputs('Month_rows')?['body/value']`, map `@item()?['Hours']`); `UsedHours` = `@{xpath(xml(json(concat('{"r":{"h":', string(body('Used')), '}}'))), 'sum(/r/h)')}` (sum of the month's ledger rows, credits and adjustments included).
+- `Allowance` = MonthlyHours of the member's plan: `Get items` on `AvenueMembers` (MemberId, top 1) then `Get items` on `AvenuePlans` (`PlanId eq '<PlanId>'`, top 1); `AllowanceHours` = `@float(coalesce(first(outputs('Plan')?['body/value'])?['MonthlyHours'], 0))` (bare).
+- `ExtraHours` = `@max(0, sub(float(outputs('UsedHours')), outputs('AllowanceHours')))` (bare). Extra-hour billing rules stay with Q-06/Q-R2; this is display only.
+- Upsert `AvenueMyHours` by `HoursKey eq '<Key>'` (FacilityId, HoursKey, MemberId, Period, UsedHours, AllowanceHours, ExtraHours as bare numbers), then grant the row to the member (Can view, Notify = No).
+
+### R6. Avenue - My bookings mirror (concurrency 1)
+Trigger: item created or modified in `AvenueBookings`, condition `@not(empty(triggerOutputs()?['body/BookedBy']))` (only bookings staff made on a member's behalf; the member already sees their own requests, A2).
+- Upsert `AvenueMyBookings` by `BookingId eq '@{triggerOutputs()?['body/BookingId']}'`: FacilityId, BookingId, MemberId `@{toLower(triggerOutputs()?['body/MemberId'])}`, Space `@{triggerOutputs()?['body/Space/Value']}`, EquipmentIds, StartUtc `@triggerOutputs()?['body/StartUtc']` and EndUtc `@coalesce(triggerOutputs()?['body/ActualEndUtc'], triggerOutputs()?['body/ExtensionTo'], triggerOutputs()?['body/EndUtc'])` (bare dates; check the extension field semantics against the extension flow before building), Status `@{triggerOutputs()?['body/Status/Value']}`.
+- Grant the row to the member (Can view, Notify = No). Cancelled bookings stay in the mirror with Status `Cancelled` (the member sees the cancellation).
+
+### R7. Notice default expiry
+Built in the staff app (Notices: "Hide after (hours)", default 24, empty = keep): `ExpiresAt` = `DateAdd(Now(), hours, TimeUnit.Hours)` at publish. [PROPOSED, Q-R1.] **No flow deletes notices**: expired notices are hidden by the portal (`ExpiresAt` in the past) and stay in the list. If the client later wants a server-side default for notices created elsewhere, a flow on `AvenueNotices` create would set `ExpiresAt` = `@addHours(utcNow(), 24)` (bare) only when `@empty(triggerOutputs()?['body/ExpiresAt'])`; not specified further until Q-R1 is answered. Note: editing a published notice (withdraw -> edit -> publish) creates a new notice item, so the existing "Notice e-mail" flow sends its generic "new notice" e-mail again.
+
+### R8. Re-opened Events/Storage cases (edit of the live flows 4 and 6)
+The staff app can now set a decided case back to `Requested` (Re-open). The live decision-echo flows trigger only on Approved/Declined/Invoiced, so the member's Outcome would keep the old decision. Add `Requested` to both trigger conditions, and in the Outcome expression map `Requested` -> `Re-opened by Flavors` (Reply `Flavors is reviewing your request again.`). Re-read the live Code view first.
+
+### R9. Support reply echo with Archived (edit of the live flow 2)
+Staff can now set Status `Archived` (and change Category). Flow 2 fires on any modification with a non-empty StaffReply and Status not Open, so archiving re-echoes the last reply (idempotent, same text). Change its Outcome expression to `@{if(equals(triggerOutputs()?['body/Status/Value'], 'Archived'), 'Archived by Flavors', if(equals(triggerOutputs()?['body/Status/Value'], 'Closed'), 'Closed by Flavors', 'Answered'))}` (the portal from P6 shows an Archived chip for any Outcome starting "Archived") and keep the optional member e-mail off. Re-read the live Code view first.

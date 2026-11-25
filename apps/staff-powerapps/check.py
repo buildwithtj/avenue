@@ -21,7 +21,8 @@ ALLOWED_CONTROL_TYPES = {
     "Image",
     "Timer",
     "Gallery@2.15.0",
-    "GroupContainer@1.3.0"
+    "GroupContainer@1.3.0",
+    "Form@2.4.4"   # edit form for attachments (Member admin > Documents); its Attachments card is added in Studio
 }
 
 EXPECTED_NAV_BUTTONS = [
@@ -58,10 +59,11 @@ ALLOWED_DATA_SOURCES = {
     "AvenueRequiredDocTypes",
     "AvenueApplicants", "AvenueInvoices", "AvenueHostRequests",
     "AvenueSensors", "AvenueSensorLatest", "AvenueSensorHourly", "AvenueTempExcursions",
-    "AvenueSupportCases", "AvenueEventCases", "AvenueStorageCases", "AvenueStaffCapabilities"
+    "AvenueSupportCases", "AvenueEventCases", "AvenueStorageCases", "AvenueStaffCapabilities",
+    "AvenueSupportCategories", "AvenueSupportFiles", "AvenueSupportMessages", "AvenueDocumentSubmissions", "AvenueDiningTables", "AvenueTeamMembers"
 }
 
-ALLOWED_NAV_TARGETS = {f"Screen{i}" for i in range(1, 23)}
+ALLOWED_NAV_TARGETS = {f"Screen{i}" for i in range(1, 24)}
 SKIP_NAV_FILES = {"approved-extensions.pa.yaml"}
 
 ALLOWED_POWER_FX_FUNCTIONS = {
@@ -70,10 +72,10 @@ ALLOWED_POWER_FX_FUNCTIONS = {
     "Day", "Defaults", "Filter", "First", "ForAll", "GUID", "GroupBy", "If", "IfError",
     "IsBlank", "IsMatch", "IsNumeric", "Launch", "Left", "Len", "LookUp",
     "Lower", "Mod", "Month", "Navigate", "Notify", "Now", "ParseJSON", "Patch",
-    "RGBA", "Refresh", "Remove", "Reset", "Right", "Round", "RoundDown",
+    "RGBA", "Refresh", "Remove", "RemoveIf", "Reset", "Right", "Round", "RoundDown",
     "Set", "Sort", "SortByColumns", "Split", "StartsWith", "Substitute", "Switch", "Sum",
     "Table", "Text", "TimeZoneOffset", "Today", "Trim", "UpdateIf",
-    "Upper", "Find", "User", "Value", "Weekday", "With", "Year"
+    "Upper", "Find", "User", "Value", "Weekday", "With", "Year", "SubmitForm", "EditForm", "ResetForm"
 }
 
 REQUIRED_SCREEN_NAMES = [
@@ -174,7 +176,7 @@ def check_screens(screens_dir):
                 errors.append(f"[{filename}] Navigate({clean_target}) points to a screen that is not in this release.")
             if clean_target not in ALLOWED_NAV_TARGETS:
                 errors.append(
-                    f"[{filename}] Invalid Navigate target '{clean_target}'. Must be Screen1..Screen20."
+                    f"[{filename}] Invalid Navigate target '{clean_target}'. Must be Screen1..Screen23."
                 )
 
         # 4. Check Avenue<Something> data sources

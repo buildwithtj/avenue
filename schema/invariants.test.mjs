@@ -115,7 +115,7 @@ test('AvenueNoticeDrafts exists with access "private"; AvenueRequiredDocTypes ex
   assert(reqDocTypes, 'AvenueRequiredDocTypes must exist');
 });
 
-test('the set of list titles equals the 37 named in DATA_AND_ACCESS.md section 1', () => {
+test('the set of list titles equals the 43 named in DATA_AND_ACCESS.md section 1', () => {
   const expectedTitles = [
     // catalog
     'AvenueFacilities',
@@ -125,6 +125,7 @@ test('the set of list titles equals the 37 named in DATA_AND_ACCESS.md section 1
     'AvenueChecklistQuestions',
     'AvenueNotices',
     'AvenueRequiredDocTypes',
+    'AvenueSupportCategories',
     // calendar
     'AvenueCalendar',
     // private
@@ -146,6 +147,10 @@ test('the set of list titles equals the 37 named in DATA_AND_ACCESS.md section 1
     'AvenueSupportCases',
     'AvenueEventCases',
     'AvenueStorageCases',
+    'AvenueSupportFiles',
+    'AvenueMyDocuments',
+    'AvenueMyHours',
+    'AvenueMyBookings',
     // ownerWrite
     'AvenueComplianceOverrides',
     'AvenueStaffCapabilities',
@@ -158,10 +163,40 @@ test('the set of list titles equals the 37 named in DATA_AND_ACCESS.md section 1
     'AvenueSupportMessages',
     'AvenueEventRequests',
     'AvenueStorageRequests',
-    'AvenueTeamMembers'
+    'AvenueTeamMembers',
+    'AvenueNoticeReads'
   ];
 
   const actualTitles = defs.lists.map((l) => l.title);
-  assert.equal(actualTitles.length, 37);
+  assert.equal(actualTitles.length, 43);
   assert.deepEqual(actualTitles.slice().sort(), expectedTitles.slice().sort());
+});
+
+test('member-visible mirrors (AvenueMy*) are private lists keyed by an indexed MemberId; members get item-level read from a flow only', () => {
+  const mirrors = defs.lists.filter((l) => /^AvenueMy[A-Z]/.test(l.title));
+  assert.deepEqual(mirrors.map((l) => l.title).sort(), ['AvenueMyBookings', 'AvenueMyDocuments', 'AvenueMyHours', 'AvenueMyMembership']);
+  for (const l of mirrors) {
+    assert.equal(l.access, 'private', `${l.title} must be private at list level`);
+    const m = l.fields.find((f) => f.name === 'MemberId');
+    assert.ok(m && m.indexed, `${l.title}.MemberId must exist and be indexed`);
+    assert.ok(l.fields.some((f) => f.unique), `${l.title} needs a unique key for the mirror upsert`);
+  }
+});
+
+test('support topics: AvenueSupportCategories is a catalog list; support Category is Text and cases can be Archived', () => {
+  const cat = defs.lists.find((l) => l.title === 'AvenueSupportCategories');
+  assert.equal(cat.access, 'catalog');
+  assert.deepEqual(cat.fields.map((f) => f.name), ['FacilityId', 'SortOrder', 'Active']);
+  for (const t of ['AvenueSupportMessages', 'AvenueSupportCases']) {
+    assert.equal(defs.lists.find((l) => l.title === t).fields.find((f) => f.name === 'Category').type, 'Text');
+  }
+  assert.ok(defs.lists.find((l) => l.title === 'AvenueSupportCases').fields.find((f) => f.name === 'Status').choices.includes('Archived'));
+  const files = defs.lists.find((l) => l.title === 'AvenueSupportFiles');
+  assert.equal(files.access, 'private'); assert.equal(files.library, true);
+});
+
+test('applicants: staff-made applications and the recorded invite checklist', () => {
+  const app = defs.lists.find((l) => l.title === 'AvenueApplicants');
+  assert.ok(app.fields.find((f) => f.name === 'Source').choices.includes('Staff'));
+  for (const n of ['InviteSent', 'InviteAccepted', 'GroupAdded']) assert.equal(app.fields.find((f) => f.name === n)?.type, 'Boolean');
 });

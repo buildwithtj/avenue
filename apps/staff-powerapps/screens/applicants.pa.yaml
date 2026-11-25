@@ -239,7 +239,7 @@
         Control: GroupContainer@1.3.0
         Variant: ManualLayout
         Properties:
-          Height: =704
+          Height: =1342
           Width: =1366
           AlignInContainer: =AlignInContainer.Center
           FillPortions: =0
@@ -556,7 +556,7 @@
               Width: =210
               Height: =40
               OnSelect: |-
-                =With({mm: LookUp(AvenueMembers, MemberId = Lower(appGal.Selected.Email))}, If(IsBlank(mm), Notify("No member record yet for this e-mail: wait for the payment to be confirmed (or add the member on the Members screen).", NotificationType.Warning), IfError(Patch(AvenueMembers, mm, {Status: {Value: "Active"}}); Patch(AvenueApplicants, appGal.Selected, {Stage: {Value: "Active"}, DecidedBy: User().Email, DecidedAt: Now(), Note: If(IsBlank(Trim(appNoteIn.Text)), appGal.Selected.Note, Trim(appNoteIn.Text))}); Reset(appNoteIn); Notify("Approved. The member can book once their membership card updates (about a minute).", NotificationType.Success), Notify("Could not approve.", NotificationType.Error))))
+                =With({mm: LookUp(AvenueMembers, MemberId = Lower(appGal.Selected.Email))}, If(IsBlank(mm), IfError(Patch(AvenueMembers, Defaults(AvenueMembers), {Title: Left(Coalesce(appGal.Selected.BusinessName, appGal.Selected.Email), 255), FacilityId: "flavors-hyattsville", MemberId: Lower(appGal.Selected.Email), BusinessName: appGal.Selected.BusinessName, PlanId: appGal.Selected.PlanId, CollectionDay: appGal.Selected.CollectionDay, Status: {Value: "Onboarding"}, PayMethod: If(IsBlank(appGal.Selected.PayMethod.Value), Blank(), {Value: appGal.Selected.PayMethod.Value}), ChangeReason: "Created from application " & appGal.Selected.ApplicantId & " (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ")"}); Patch(AvenueApplicants, appGal.Selected, {Stage: {Value: "Onboarding"}, DecidedBy: User().Email, DecidedAt: Now(), Note: If(IsBlank(Trim(appNoteIn.Text)), appGal.Selected.Note, Trim(appNoteIn.Text))}); Reset(appNoteIn); Notify("There was no member record, so one was created with status Onboarding (no bookings yet). Press Approve again when the documents are in.", NotificationType.Information), Notify("Could not create the member record.", NotificationType.Error)), IfError(Patch(AvenueMembers, mm, {Status: {Value: "Active"}, ChangeReason: "Approved from application " & appGal.Selected.ApplicantId & " (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ")"}); Patch(AvenueApplicants, appGal.Selected, {Stage: {Value: "Active"}, DecidedBy: User().Email, DecidedAt: Now(), Note: If(IsBlank(Trim(appNoteIn.Text)), appGal.Selected.Note, Trim(appNoteIn.Text))}); Reset(appNoteIn); Notify("Approved. The member can book once their membership card updates (about a minute).", NotificationType.Success), Notify("Could not approve.", NotificationType.Error))))
               Fill: =RGBA(201,162,77,1)
               Color: =RGBA(31,31,31,1)
               HoverFill: =RGBA(179,141,60,1)
@@ -571,15 +571,15 @@
               RadiusTopRight: =8
               RadiusBottomLeft: =8
               RadiusBottomRight: =8
-              Visible: =!IsBlank(appGal.Selected) && (If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) = "Onboarding" || If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) = "Paid")
+              Visible: =!IsBlank(appGal.Selected) && (If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) = "Onboarding" || If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) = "Paid") && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
         - appInvited:
             Control: Classic/Button
             Properties:
               Text: |-
-                ="Invite sent: move to onboarding"
+                ="Invite sent: to onboarding"
               X: =690
               Y: =324
-              Width: =280
+              Width: =210
               Height: =40
               OnSelect: |-
                 =IfError(Patch(AvenueApplicants, appGal.Selected, {Stage: {Value: "Onboarding"}, DecidedBy: User().Email, DecidedAt: Now(), Note: If(IsBlank(Trim(appNoteIn.Text)), appGal.Selected.Note, Trim(appNoteIn.Text))}); Reset(appNoteIn); Notify("Moved to onboarding. They upload documents after signing in.", NotificationType.Success), Notify("Could not save.", NotificationType.Error))
@@ -597,7 +597,7 @@
               RadiusTopRight: =8
               RadiusBottomLeft: =8
               RadiusBottomRight: =8
-              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) = "InviteNeeded"
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) = "InviteNeeded" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
         - appReject:
             Control: Classic/Button
             Properties:
@@ -622,17 +622,901 @@
               RadiusTopRight: =8
               RadiusBottomLeft: =8
               RadiusBottomRight: =8
-              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected"
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
               BorderColor: =RGBA(155,44,44,1)
               HoverBorderColor: =RGBA(155,44,44,1)
+        - appReopen:
+            Control: Classic/Button
+            Properties:
+              Text: ="Re-open application"
+              X: =690
+              Y: =324
+              Width: =210
+              Height: =40
+              OnSelect: |-
+                =If(IsBlank(Trim(appNoteIn.Text)), Notify("Write why in the note first.", NotificationType.Warning), With({paid: !IsBlank(appGal.Selected.PaidAt) || appGal.Selected.Source.Value = "Staff"}, IfError(Patch(AvenueApplicants, LookUp(AvenueApplicants, ApplicantId = appGal.Selected.ApplicantId), {Stage: {Value: If(paid, "InviteNeeded", "PaymentPending")}, ExpiresAt: If(paid, appGal.Selected.ExpiresAt, DateAdd(Now(), 14, TimeUnit.Days)), Note: Trim(Coalesce(appGal.Selected.Note, "") & Char(10) & "Re-opened: " & Trim(appNoteIn.Text) & " (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ")")}); Reset(appNoteIn); Notify("Re-opened.", NotificationType.Success), Notify("Could not re-open.", NotificationType.Error))))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =!IsBlank(appGal.Selected) && (If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) = "Rejected" || If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) = "Expired") && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+        - appDocs:
+            Control: Label
+            Properties:
+              Text: =If(IsBlank(appGal.Selected), "", "Documents " & CountRows(Filter(Filter(AvenueRequiredDocTypes, Active = true) As r, !IsBlank(LookUp(AvenueMemberDocuments, MemberId = Lower(appGal.Selected.Email) && DocType.Value = r.DocType.Value && IsBlank(SupersededBy) && DocStatus.Value <> "Expired")))) & " of " & CountRows(Filter(AvenueRequiredDocTypes, Active = true)) & " required on file")
+              X: =1060
+              Y: =324
+              Width: =270
+              Height: =40
+              Color: =RGBA(15,76,92,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+              VerticalAlign: =VerticalAlign.Middle
         - appHelp:
             Control: Label
             Properties:
               Text: |-
-                ="Invite needed: the person paid on the public join page; a SharePoint admin must send their guest invitation (automatic invites need tenant consent, Q-M3). Rejecting does not refund: the owner refunds in Stripe. Approval after payment is the default until the client answers Q-05."
+                ="Invite needed: a SharePoint admin must send their guest invitation (automatic invites need tenant consent, Q-M3); record it in the checklist below. Rejecting does not refund: the owner refunds in Stripe. Approval does not yet require all documents (Q-05, Q-11)."
               X: =690
               Y: =376
               Width: =640
               Height: =64
               Color: =RGBA(91,99,112,1)
               Size: =11
+        - appEdHead:
+            Control: Label
+            Properties:
+              Text: ="Edit application"
+              X: =690
+              Y: =450
+              Width: =640
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected"
+        - appEdContact:
+            Control: Classic/TextInput
+            Properties:
+              Default: =Coalesce(appGal.Selected.ContactName, "")
+              HintText: ="Contact name"
+              X: =690
+              Y: =480
+              Width: =310
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected"
+        - appEdPhone:
+            Control: Classic/TextInput
+            Properties:
+              Default: =Coalesce(appGal.Selected.Phone, "")
+              HintText: ="Phone"
+              X: =1010
+              Y: =480
+              Width: =320
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected"
+        - appEdPlan:
+            Control: Classic/DropDown
+            Properties:
+              Items: |-
+                =ForAll(SortByColumns(Filter(AvenuePlans, FacilityId = "flavors-hyattsville", Active = true), "PlanId", SortOrder.Ascending), {Value: PlanId})
+              Default: =Coalesce(appGal.Selected.PlanId, "")
+              AllowEmptySelection: =true
+              X: =690
+              Y: =524
+              Width: =250
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected"
+        - appEdDay:
+            Control: Classic/TextInput
+            Properties:
+              Default: =If(IsBlank(appGal.Selected.CollectionDay), "", Text(appGal.Selected.CollectionDay))
+              HintText: ="Day 1-15"
+              Format: =TextFormat.Number
+              X: =950
+              Y: =524
+              Width: =110
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected"
+        - appEdTeam:
+            Control: Classic/TextInput
+            Properties:
+              Default: =If(IsBlank(appGal.Selected.TeamSize), "", Text(appGal.Selected.TeamSize))
+              HintText: ="Team size"
+              Format: =TextFormat.Number
+              X: =1070
+              Y: =524
+              Width: =110
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected"
+        - appEdSave:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save changes"
+              X: =1190
+              Y: =524
+              Width: =140
+              Height: =36
+              OnSelect: |-
+                =If(!((IsBlank(Trim(appEdDay.Text)) || (Value(appEdDay.Text) >= 1 && Value(appEdDay.Text) <= 15 && Value(appEdDay.Text) = RoundDown(Value(appEdDay.Text), 0))) && (IsBlank(Trim(appEdTeam.Text)) || (Value(appEdTeam.Text) >= 1 && Value(appEdTeam.Text) <= 50 && Value(appEdTeam.Text) = RoundDown(Value(appEdTeam.Text), 0)))), Notify("Collection day must be 1 to 15 and team size 1 to 50.", NotificationType.Warning), IfError(Patch(AvenueApplicants, LookUp(AvenueApplicants, ApplicantId = appGal.Selected.ApplicantId), {ContactName: Trim(appEdContact.Text), Phone: Trim(appEdPhone.Text), PlanId: Coalesce(appEdPlan.Selected.Value, appGal.Selected.PlanId), CollectionDay: If(IsBlank(Trim(appEdDay.Text)), Blank(), Value(appEdDay.Text)), TeamSize: If(IsBlank(Trim(appEdTeam.Text)), Blank(), Value(appEdTeam.Text)), Note: Trim(Coalesce(appGal.Selected.Note, "") & Char(10) & "Edited" & " (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ")" & If(IsBlank(Trim(appNoteIn.Text)), "", ": " & Trim(appNoteIn.Text)))}); Reset(appNoteIn); Notify("Application saved. The e-mail cannot be changed (it becomes the sign-in): reject and create a new application instead.", NotificationType.Success), Notify("Could not save.", NotificationType.Error)))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+        - appInvHead:
+            Control: Label
+            Properties:
+              Text: ="Invite checklist (recorded by staff)"
+              X: =690
+              Y: =574
+              Width: =640
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected"
+        - appInviteSentLbl:
+            Control: Label
+            Properties:
+              Text: ="Invite sent"
+              X: =690
+              Y: =604
+              Width: =120
+              Height: =32
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              VerticalAlign: =VerticalAlign.Middle
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected"
+        - appInviteSent:
+            Control: Classic/Toggle
+            Properties:
+              Default: =Coalesce(appGal.Selected.InviteSent, false)
+              X: =810
+              Y: =606
+              Width: =84
+              Height: =30
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected"
+        - appInviteAcceptedLbl:
+            Control: Label
+            Properties:
+              Text: ="Invite accepted"
+              X: =904
+              Y: =604
+              Width: =120
+              Height: =32
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              VerticalAlign: =VerticalAlign.Middle
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected"
+        - appInviteAccepted:
+            Control: Classic/Toggle
+            Properties:
+              Default: =Coalesce(appGal.Selected.InviteAccepted, false)
+              X: =1024
+              Y: =606
+              Width: =84
+              Height: =30
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected"
+        - appGroupAddedLbl:
+            Control: Label
+            Properties:
+              Text: ="In Members group"
+              X: =1118
+              Y: =604
+              Width: =120
+              Height: =32
+              Color: =RGBA(31,31,31,1)
+              Size: =12
+              VerticalAlign: =VerticalAlign.Middle
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected"
+        - appGroupAdded:
+            Control: Classic/Toggle
+            Properties:
+              Default: =Coalesce(appGal.Selected.GroupAdded, false)
+              X: =1238
+              Y: =606
+              Width: =84
+              Height: =30
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected"
+        - appInvSave:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save checklist"
+              X: =690
+              Y: =646
+              Width: =200
+              Height: =36
+              OnSelect: |-
+                =IfError(Patch(AvenueApplicants, LookUp(AvenueApplicants, ApplicantId = appGal.Selected.ApplicantId), {InviteSent: appInviteSent.Value, InviteAccepted: appInviteAccepted.Value, GroupAdded: appGroupAdded.Value, Note: Trim(Coalesce(appGal.Selected.Note, "") & Char(10) & "Checklist: sent " & If(appInviteSent.Value, "yes", "no") & ", accepted " & If(appInviteAccepted.Value, "yes", "no") & ", group " & If(appGroupAdded.Value, "yes", "no") & " (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ")")}); Notify("Checklist saved.", NotificationType.Success), Notify("Could not save.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =!IsBlank(appGal.Selected) && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Active" && If(appGal.Selected.Stage.Value = "PaymentPending" && !IsBlank(appGal.Selected.ExpiresAt) && appGal.Selected.ExpiresAt < Now(), "Expired", appGal.Selected.Stage.Value) <> "Rejected" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+        - appNewPanel:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =16
+              Y: =690
+              Width: =656
+              Height: =200
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - appNewHead:
+            Control: Label
+            Properties:
+              Text: ="New application (made by staff)"
+              X: =32
+              Y: =700
+              Width: =600
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =14
+              FontWeight: =FontWeight.Bold
+        - appNewBiz:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Business name"
+              X: =32
+              Y: =732
+              Width: =300
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - appNewContact:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Contact name"
+              X: =342
+              Y: =732
+              Width: =314
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - appNewEmail:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Sign-in e-mail"
+              X: =32
+              Y: =776
+              Width: =300
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - appNewPhone:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Phone (optional)"
+              X: =342
+              Y: =776
+              Width: =314
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - appNewPlan:
+            Control: Classic/DropDown
+            Properties:
+              Items: |-
+                =ForAll(SortByColumns(Filter(AvenuePlans, FacilityId = "flavors-hyattsville", Active = true), "PlanId", SortOrder.Ascending), {Value: PlanId})
+              AllowEmptySelection: =true
+              Default: =""
+              X: =32
+              Y: =820
+              Width: =240
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - appNewDay:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Day 1-15"
+              Format: =TextFormat.Number
+              X: =282
+              Y: =820
+              Width: =100
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - appNewTeam:
+            Control: Classic/TextInput
+            Properties:
+              Default: ="1"
+              HintText: ="Team"
+              Format: =TextFormat.Number
+              X: =392
+              Y: =820
+              Width: =80
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - appNewAdd:
+            Control: Classic/Button
+            Properties:
+              Text: ="Create application"
+              X: =482
+              Y: =820
+              Width: =174
+              Height: =36
+              OnSelect: |-
+                =If(!IsBlank(LookUp(AvenueMembers, MemberId = Lower(Trim(appNewEmail.Text)))), Notify("This e-mail already has a member record: edit it in Member admin.", NotificationType.Warning), IfError(Patch(AvenueApplicants, Defaults(AvenueApplicants), {Title: Left(Trim(appNewBiz.Text), 255), FacilityId: "flavors-hyattsville", ApplicantId: "app-staff-" & Text(GUID()), Email: Lower(Trim(appNewEmail.Text)), BusinessName: Trim(appNewBiz.Text), ContactName: Trim(appNewContact.Text), Phone: Trim(appNewPhone.Text), PlanId: appNewPlan.Selected.Value, CollectionDay: If(IsBlank(Trim(appNewDay.Text)), Blank(), Value(appNewDay.Text)), TeamSize: If(IsBlank(Trim(appNewTeam.Text)), 1, Value(appNewTeam.Text)), Stage: {Value: "InviteNeeded"}, Source: {Value: "Staff"}, InviteSent: false, InviteAccepted: false, GroupAdded: false, Note: "Created by staff" & " (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ")" & ". No payment link was sent; payment is arranged outside Avenue until STR-06."}); Reset(appNewBiz); Reset(appNewContact); Reset(appNewEmail); Reset(appNewPhone); Reset(appNewPlan); Reset(appNewDay); Reset(appNewTeam); Notify("Application created at Invite needed.", NotificationType.Success), Notify("Could not create the application.", NotificationType.Error)))
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              DisplayMode: =If(!IsBlank(Trim(appNewBiz.Text)) && !IsBlank(Trim(appNewContact.Text)) && IsMatch(Trim(appNewEmail.Text), Match.Email) && !IsBlank(appNewPlan.Selected.Value) && (IsBlank(Trim(appNewDay.Text)) || (Value(appNewDay.Text) >= 1 && Value(appNewDay.Text) <= 15 && Value(appNewDay.Text) = RoundDown(Value(appNewDay.Text), 0))) && (IsBlank(Trim(appNewTeam.Text)) || (Value(appNewTeam.Text) >= 1 && Value(appNewTeam.Text) <= 50 && Value(appNewTeam.Text) = RoundDown(Value(appNewTeam.Text), 0))), DisplayMode.Edit, DisplayMode.Disabled)
+              Visible: =(Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+        - appNewHelp:
+            Control: Label
+            Properties:
+              Text: ="Plan, contact, e-mail and day are required. [PROPOSED] staff-made applications skip payment (Stripe stays in test mode, STR-06)."
+              X: =32
+              Y: =860
+              Width: =624
+              Height: =24
+              Color: =RGBA(91,99,112,1)
+              Size: =10
+        - appPipeHead:
+            Control: Label
+            Properties:
+              Text: ="Onboarding pipeline"
+              X: =24
+              Y: =910
+              Width: =800
+              Height: =32
+              Color: =RGBA(15,76,92,1)
+              Size: =18
+              FontWeight: =FontWeight.Bold
+        - appPipeHelp:
+            Control: Label
+            Properties:
+              Text: ="Every open application by stage. Select it in the list above to act on it. Documents counts only the required types (Setup)."
+              X: =24
+              Y: =940
+              Width: =1300
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+        - appPipeAppliedPanel:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =20
+              Y: =970
+              Width: =214
+              Height: =340
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - appPipeAppliedCap:
+            Control: Label
+            Properties:
+              Text: ="Applied (" & CountRows(appPipeAppliedGal.AllItems) & ")"
+              X: =32
+              Y: =978
+              Width: =190
+              Height: =26
+              Color: =RGBA(15,76,92,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - appPipeAppliedGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =Filter(AddColumns(Filter(AvenueApplicants, FacilityId = "flavors-hyattsville"), PipeDocs, With({em: Lower(Email)}, CountRows(Filter(Filter(AvenueRequiredDocTypes, Active = true) As r, !IsBlank(LookUp(AvenueMemberDocuments, MemberId = em && DocType.Value = r.DocType.Value && IsBlank(SupersededBy) && DocStatus.Value <> "Expired"))))), PipeStage, With({st: Stage.Value, em: Lower(Email)}, If(st = "PaymentPending" && (IsBlank(ExpiresAt) || ExpiresAt > Now()), "Applied", st = "Paid" || (st = "InviteNeeded" && InviteSent <> true), "Paid", st = "InviteNeeded" || (st = "Onboarding" && !(Source.Value = "Portal" || (InviteAccepted = true && GroupAdded = true))), "Invited", st = "Onboarding", "Documents", st = "Active", If(LookUp(AvenueMembers, MemberId = em).Status.Value = "Active", "Active", "Approved"), "Closed"))), PipeStage = "Applied")
+              X: =24
+              Y: =1008
+              Width: =206
+              Height: =296
+              TemplateSize: =52
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - appPipeAppliedName:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.BusinessName, ThisItem.Email)
+                    X: =6
+                    Y: =2
+                    Width: =190
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+                    Size: =11
+                    FontWeight: =FontWeight.Semibold
+              - appPipeAppliedMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Source.Value, "-") & " · docs " & ThisItem.PipeDocs & " of " & CountRows(Filter(AvenueRequiredDocTypes, Active = true))
+                    X: =6
+                    Y: =26
+                    Width: =190
+                    Height: =20
+                    Color: =RGBA(91,99,112,1)
+                    Size: =9
+              - appPipeAppliedGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =51
+                    Width: =174
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - appPipePaidPanel:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =242
+              Y: =970
+              Width: =214
+              Height: =340
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - appPipePaidCap:
+            Control: Label
+            Properties:
+              Text: ="Paid / skipped (" & CountRows(appPipePaidGal.AllItems) & ")"
+              X: =254
+              Y: =978
+              Width: =190
+              Height: =26
+              Color: =RGBA(15,76,92,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - appPipePaidGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =Filter(AddColumns(Filter(AvenueApplicants, FacilityId = "flavors-hyattsville"), PipeDocs, With({em: Lower(Email)}, CountRows(Filter(Filter(AvenueRequiredDocTypes, Active = true) As r, !IsBlank(LookUp(AvenueMemberDocuments, MemberId = em && DocType.Value = r.DocType.Value && IsBlank(SupersededBy) && DocStatus.Value <> "Expired"))))), PipeStage, With({st: Stage.Value, em: Lower(Email)}, If(st = "PaymentPending" && (IsBlank(ExpiresAt) || ExpiresAt > Now()), "Applied", st = "Paid" || (st = "InviteNeeded" && InviteSent <> true), "Paid", st = "InviteNeeded" || (st = "Onboarding" && !(Source.Value = "Portal" || (InviteAccepted = true && GroupAdded = true))), "Invited", st = "Onboarding", "Documents", st = "Active", If(LookUp(AvenueMembers, MemberId = em).Status.Value = "Active", "Active", "Approved"), "Closed"))), PipeStage = "Paid")
+              X: =246
+              Y: =1008
+              Width: =206
+              Height: =296
+              TemplateSize: =52
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - appPipePaidName:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.BusinessName, ThisItem.Email)
+                    X: =6
+                    Y: =2
+                    Width: =190
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+                    Size: =11
+                    FontWeight: =FontWeight.Semibold
+              - appPipePaidMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Source.Value, "-") & " · docs " & ThisItem.PipeDocs & " of " & CountRows(Filter(AvenueRequiredDocTypes, Active = true))
+                    X: =6
+                    Y: =26
+                    Width: =190
+                    Height: =20
+                    Color: =RGBA(91,99,112,1)
+                    Size: =9
+              - appPipePaidGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =51
+                    Width: =174
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - appPipeInvitedPanel:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =464
+              Y: =970
+              Width: =214
+              Height: =340
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - appPipeInvitedCap:
+            Control: Label
+            Properties:
+              Text: ="Invited (" & CountRows(appPipeInvitedGal.AllItems) & ")"
+              X: =476
+              Y: =978
+              Width: =190
+              Height: =26
+              Color: =RGBA(15,76,92,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - appPipeInvitedGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =Filter(AddColumns(Filter(AvenueApplicants, FacilityId = "flavors-hyattsville"), PipeDocs, With({em: Lower(Email)}, CountRows(Filter(Filter(AvenueRequiredDocTypes, Active = true) As r, !IsBlank(LookUp(AvenueMemberDocuments, MemberId = em && DocType.Value = r.DocType.Value && IsBlank(SupersededBy) && DocStatus.Value <> "Expired"))))), PipeStage, With({st: Stage.Value, em: Lower(Email)}, If(st = "PaymentPending" && (IsBlank(ExpiresAt) || ExpiresAt > Now()), "Applied", st = "Paid" || (st = "InviteNeeded" && InviteSent <> true), "Paid", st = "InviteNeeded" || (st = "Onboarding" && !(Source.Value = "Portal" || (InviteAccepted = true && GroupAdded = true))), "Invited", st = "Onboarding", "Documents", st = "Active", If(LookUp(AvenueMembers, MemberId = em).Status.Value = "Active", "Active", "Approved"), "Closed"))), PipeStage = "Invited")
+              X: =468
+              Y: =1008
+              Width: =206
+              Height: =296
+              TemplateSize: =52
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - appPipeInvitedName:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.BusinessName, ThisItem.Email)
+                    X: =6
+                    Y: =2
+                    Width: =190
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+                    Size: =11
+                    FontWeight: =FontWeight.Semibold
+              - appPipeInvitedMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Source.Value, "-") & " · docs " & ThisItem.PipeDocs & " of " & CountRows(Filter(AvenueRequiredDocTypes, Active = true))
+                    X: =6
+                    Y: =26
+                    Width: =190
+                    Height: =20
+                    Color: =RGBA(91,99,112,1)
+                    Size: =9
+              - appPipeInvitedGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =51
+                    Width: =174
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - appPipeDocumentsPanel:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =686
+              Y: =970
+              Width: =214
+              Height: =340
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - appPipeDocumentsCap:
+            Control: Label
+            Properties:
+              Text: ="Documents (" & CountRows(appPipeDocumentsGal.AllItems) & ")"
+              X: =698
+              Y: =978
+              Width: =190
+              Height: =26
+              Color: =RGBA(15,76,92,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - appPipeDocumentsGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =Filter(AddColumns(Filter(AvenueApplicants, FacilityId = "flavors-hyattsville"), PipeDocs, With({em: Lower(Email)}, CountRows(Filter(Filter(AvenueRequiredDocTypes, Active = true) As r, !IsBlank(LookUp(AvenueMemberDocuments, MemberId = em && DocType.Value = r.DocType.Value && IsBlank(SupersededBy) && DocStatus.Value <> "Expired"))))), PipeStage, With({st: Stage.Value, em: Lower(Email)}, If(st = "PaymentPending" && (IsBlank(ExpiresAt) || ExpiresAt > Now()), "Applied", st = "Paid" || (st = "InviteNeeded" && InviteSent <> true), "Paid", st = "InviteNeeded" || (st = "Onboarding" && !(Source.Value = "Portal" || (InviteAccepted = true && GroupAdded = true))), "Invited", st = "Onboarding", "Documents", st = "Active", If(LookUp(AvenueMembers, MemberId = em).Status.Value = "Active", "Active", "Approved"), "Closed"))), PipeStage = "Documents")
+              X: =690
+              Y: =1008
+              Width: =206
+              Height: =296
+              TemplateSize: =52
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - appPipeDocumentsName:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.BusinessName, ThisItem.Email)
+                    X: =6
+                    Y: =2
+                    Width: =190
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+                    Size: =11
+                    FontWeight: =FontWeight.Semibold
+              - appPipeDocumentsMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Source.Value, "-") & " · docs " & ThisItem.PipeDocs & " of " & CountRows(Filter(AvenueRequiredDocTypes, Active = true))
+                    X: =6
+                    Y: =26
+                    Width: =190
+                    Height: =20
+                    Color: =RGBA(91,99,112,1)
+                    Size: =9
+              - appPipeDocumentsGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =51
+                    Width: =174
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - appPipeApprovedPanel:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =908
+              Y: =970
+              Width: =214
+              Height: =340
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - appPipeApprovedCap:
+            Control: Label
+            Properties:
+              Text: ="Approved (" & CountRows(appPipeApprovedGal.AllItems) & ")"
+              X: =920
+              Y: =978
+              Width: =190
+              Height: =26
+              Color: =RGBA(15,76,92,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - appPipeApprovedGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =Filter(AddColumns(Filter(AvenueApplicants, FacilityId = "flavors-hyattsville"), PipeDocs, With({em: Lower(Email)}, CountRows(Filter(Filter(AvenueRequiredDocTypes, Active = true) As r, !IsBlank(LookUp(AvenueMemberDocuments, MemberId = em && DocType.Value = r.DocType.Value && IsBlank(SupersededBy) && DocStatus.Value <> "Expired"))))), PipeStage, With({st: Stage.Value, em: Lower(Email)}, If(st = "PaymentPending" && (IsBlank(ExpiresAt) || ExpiresAt > Now()), "Applied", st = "Paid" || (st = "InviteNeeded" && InviteSent <> true), "Paid", st = "InviteNeeded" || (st = "Onboarding" && !(Source.Value = "Portal" || (InviteAccepted = true && GroupAdded = true))), "Invited", st = "Onboarding", "Documents", st = "Active", If(LookUp(AvenueMembers, MemberId = em).Status.Value = "Active", "Active", "Approved"), "Closed"))), PipeStage = "Approved")
+              X: =912
+              Y: =1008
+              Width: =206
+              Height: =296
+              TemplateSize: =52
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - appPipeApprovedName:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.BusinessName, ThisItem.Email)
+                    X: =6
+                    Y: =2
+                    Width: =190
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+                    Size: =11
+                    FontWeight: =FontWeight.Semibold
+              - appPipeApprovedMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Source.Value, "-") & " · docs " & ThisItem.PipeDocs & " of " & CountRows(Filter(AvenueRequiredDocTypes, Active = true))
+                    X: =6
+                    Y: =26
+                    Width: =190
+                    Height: =20
+                    Color: =RGBA(91,99,112,1)
+                    Size: =9
+              - appPipeApprovedGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =51
+                    Width: =174
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - appPipeActivePanel:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =1130
+              Y: =970
+              Width: =214
+              Height: =340
+              DisplayMode: =DisplayMode.Disabled
+              Fill: =RGBA(255,255,255,0.64)
+              DisabledFill: =RGBA(255,255,255,0.64)
+              DisabledColor: =RGBA(255,255,255,0.64)
+              BorderColor: =RGBA(15,76,92,0.10)
+              DisabledBorderColor: =RGBA(15,76,92,0.10)
+              BorderThickness: =1
+              RadiusTopLeft: =14
+              RadiusTopRight: =14
+              RadiusBottomLeft: =14
+              RadiusBottomRight: =14
+        - appPipeActiveCap:
+            Control: Label
+            Properties:
+              Text: ="Active (" & CountRows(appPipeActiveGal.AllItems) & ")"
+              X: =1142
+              Y: =978
+              Width: =190
+              Height: =26
+              Color: =RGBA(15,76,92,1)
+              Size: =12
+              FontWeight: =FontWeight.Bold
+        - appPipeActiveGal:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =Filter(AddColumns(Filter(AvenueApplicants, FacilityId = "flavors-hyattsville"), PipeDocs, With({em: Lower(Email)}, CountRows(Filter(Filter(AvenueRequiredDocTypes, Active = true) As r, !IsBlank(LookUp(AvenueMemberDocuments, MemberId = em && DocType.Value = r.DocType.Value && IsBlank(SupersededBy) && DocStatus.Value <> "Expired"))))), PipeStage, With({st: Stage.Value, em: Lower(Email)}, If(st = "PaymentPending" && (IsBlank(ExpiresAt) || ExpiresAt > Now()), "Applied", st = "Paid" || (st = "InviteNeeded" && InviteSent <> true), "Paid", st = "InviteNeeded" || (st = "Onboarding" && !(Source.Value = "Portal" || (InviteAccepted = true && GroupAdded = true))), "Invited", st = "Onboarding", "Documents", st = "Active", If(LookUp(AvenueMembers, MemberId = em).Status.Value = "Active", "Active", "Approved"), "Closed"))), PipeStage = "Active")
+              X: =1134
+              Y: =1008
+              Width: =206
+              Height: =296
+              TemplateSize: =52
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - appPipeActiveName:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.BusinessName, ThisItem.Email)
+                    X: =6
+                    Y: =2
+                    Width: =190
+                    Height: =24
+                    Color: =RGBA(31,31,31,1)
+                    Size: =11
+                    FontWeight: =FontWeight.Semibold
+              - appPipeActiveMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Source.Value, "-") & " · docs " & ThisItem.PipeDocs & " of " & CountRows(Filter(AvenueRequiredDocTypes, Active = true))
+                    X: =6
+                    Y: =26
+                    Width: =190
+                    Height: =20
+                    Color: =RGBA(91,99,112,1)
+                    Size: =9
+              - appPipeActiveGalSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =51
+                    Width: =174
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)

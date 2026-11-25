@@ -36,7 +36,8 @@ $badTint: var(--av-bad-tint);
   box-sizing: border-box;
   *, *::before, *::after { box-sizing: border-box; }
   :where(h1, h2, h3) { margin: 0; font-weight: 700; letter-spacing: -.02em; font-family: var(--av-heading-font); }
-  :focus-visible { outline: 3px solid var(--av-accent); outline-offset: 2px; box-shadow: 0 0 0 2px var(--av-ink); }
+  :focus-visible { outline: 2px solid #0F4C5C; outline-offset: 2px; box-shadow: 0 0 0 4px #fff; } /* teal ring, 9.5:1 on white (the reference's gold ring is 2.4:1) */
+  .tabbar :focus-visible, .siteFooter :focus-visible, .splash :focus-visible { outline-color: #fff; box-shadow: none; }
   :global(.ms-Button--primary) { background: $primary !important; border-color: $primary !important; color: #fff !important; border-radius: 999px; }
 @media (hover: hover) { :global(.ms-Button--primary:hover) { background: $primaryDark !important; border-color: $primaryDark !important; } }
   :global(.ms-Button--primary:active) { background: $primaryDark !important; border-color: $primaryDark !important; }
@@ -640,15 +641,15 @@ $badTint: var(--av-bad-tint);
   --av-subtle: #5B6370;
   --av-surface: #ffffff;
   --av-canvas: #F4F5F7;
-  --av-border: #E1E4E9;
-  --av-border-strong: #6B7280;
+  --av-border: #E8EAEC;
+  --av-border-strong: #5B6370;
   --av-accent: #C9A24D;
   --av-accent-deep: #0F4C5C;
   --av-accent-tint: #F4EBD3;
   --av-on-accent: #0F4C5C;
   --av-free: #0F4C5C;
   --av-free-tint: #DCE8EB;
-  --av-taken: #6B7280;
+  --av-taken: #5B6370;
   --av-taken-tint: #E8EAED;
   --av-ease: cubic-bezier(.2, .8, .2, 1);
   --av-spring: cubic-bezier(.34, 1.56, .64, 1);
@@ -662,10 +663,11 @@ $badTint: var(--av-bad-tint);
   --av-wait-tint: #F6EDD3;
   --av-bad: #8E3445;
   --av-bad-tint: #E8EAED;
-  --av-radius: 4px;
+  --av-radius: 9px;
   // Design tokens (plan docs/MEMBER_PORTAL_AUDIT_AND_UI_PLAN.md, phase 0). One family, one scale; later phases use these.
-  --av-font: "Avenue Sans", "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
-  --av-heading-font: var(--av-font);
+  // Native system UI stacks: SF Pro on iOS/macOS, Roboto on Android, Segoe UI Variable on Windows; nothing is downloaded (decision 24 Nov 2026).
+  --av-font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, 'Segoe UI Variable Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --av-heading-font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, 'Segoe UI Variable Display', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --av-fs-caption: 12px;  // the floor: nothing smaller
   --av-fs-small: 14px;
   --av-fs-body: 16px;
@@ -804,3 +806,17 @@ $badTint: var(--av-bad-tint);
 .stack { grid-template-columns: minmax(0, 1fr); }
 .stack > * { min-width: 0; max-width: 100%; }
 
+
+/* v10b: legacy Check in / Documents blocks in the reference's look */
+.spaceCard { border: 1px solid #E9EBED; border-radius: 9px; font-size: 13px; transition: border-color .2s, transform .2s; }
+.spaceOn { border-color: #0F4C5C; background: #EAF0F1; box-shadow: 0 0 0 1px #0F4C5C; }
+@media (hover: hover) { .spaceCard:hover { border-color: #C9A24D; transform: translateY(-1px); } }
+.segment { gap: 6px; }
+.segmentBtn { min-height: 40px; border: 1px solid #DDE1E3; border-radius: 7px; font-size: 13px; background: #fff; }
+.segmentOn { border-color: #0F4C5C; background: #EAF0F1; color: #0F4C5C; }
+.questionCard { border: 1px solid #E9EBED; border-radius: 9px; padding: 14px 16px; }
+.yesNoBtn { min-height: 44px; border: 1px solid #DDE1E3; border-radius: 7px; font-size: 14px; }
+.yesOn { border-color: #0F4C5C; background: #EAF0F1; color: #0F4C5C; }
+.noOn { border-color: #8A2C2C; background: #F8E7E9; color: #8A2C2C; }
+.checkProgress { font-size: 12px; letter-spacing: .5px; color: #5B6370; }
+.history summary { font-size: 13px; font-weight: 650; }

@@ -8,7 +8,8 @@ import type { AvenueReadSource } from '../../../avenue/readSource';
 import { type IAlert, bookingAlerts, markAlertsSeen, markNoticesRead, readNoticeIds, unseenAlerts } from '../../../avenue/ui-helpers';
 import { actionItems } from '../../../avenue/home';
 import { localDay } from '../../../avenue/calendar';
-import { rise, useReducedMotion } from './motion';
+import rr from './Ref.module.scss';
+import { ModuleCard, EmptyArt, RefIcon } from './RefUi';
 
 /** "Wed 18 Nov, 9:00 AM – 1:00 PM" in the facility's time zone. */
 export function formatWhen(startUtc: string, endUtc: string, timeZone: string): string {
@@ -44,18 +45,11 @@ export function StatusBadge(props: { status?: BookingStatus; label?: string }): 
 }
 
 export function Section(props: { title: string; description?: string; actions?: React.ReactNode; children: React.ReactNode }): React.ReactElement {
-  const reduced: boolean = useReducedMotion();
   return (
-    <section {...rise(0, reduced, styles.card)} aria-label={props.title}>
-      <div className={styles.cardHeader}>
-        <div>
-          <h2 className={styles.cardTitle}>{props.title}</h2>
-          {props.description && <p className={styles.muted}>{props.description}</p>}
-        </div>
-        {props.actions && <div className={styles.cardActions}>{props.actions}</div>}
-      </div>
+    <ModuleCard title={props.title} actions={props.actions}>
+      {props.description && <p className={rr['module-lede']}>{props.description}</p>}
       {props.children}
-    </section>
+    </ModuleCard>
   );
 }
 
@@ -68,15 +62,15 @@ export function ErrorBar(props: { error?: string; onDismiss?: () => void }): Rea
 /** A read that failed: one plain sentence and a retry, never the raw SharePoint error text (plan F4). */
 export function LoadError(props: { error?: string; what: string; onRetry: () => void }): React.ReactElement {
   return props.error ? (
-    <div className={s_nm.errorPanel} role="alert">
+    <div className={rr['ref-alert']} role="alert">
       <strong>{`We could not load ${props.what}.`}</strong><span>Check your connection and try again. If it keeps happening, tell the Flavors team.</span>
-      <button type="button" className={s_nm.btn} onClick={props.onRetry}>Try again</button>
+      <button type="button" className={rr['secondary-button']} onClick={props.onRetry}>Try again</button>
     </div>
   ) : <></>;
 }
 
 export function Empty(props: { children: React.ReactNode }): React.ReactElement {
-  return <p className={styles.empty}>{props.children}</p>;
+  return <div className={rr['ref-empty']} role="status"><EmptyArt /><p>{props.children}</p></div>;
 }
 
 /** Shows a plain message instead of a blank web part if any screen throws while rendering. */
@@ -129,15 +123,46 @@ export function SkeletonBlock(props: { height?: number; label?: string }): React
   return <div className={styles.skeleton} style={{ height: props.height || 64 }} role="status" aria-label={props.label || 'Loading'} />;
 }
 
-/** Notice read state, shared by every screen: marking a notice read anywhere updates the bell, banner, ribbon and list at once. */
-export function useReadIds(): [number[], (ids: number[]) => void] {
+type ReadStore = Partial<Pick<AvenueReadSource, 'listMyNoticeReads' | 'markNoticesRead'>>;
+// One server read per source per page load; resolves false when the AvenueNoticeReads list is missing or unreadable.
+const serverReads: WeakMap<object, Promise<boolean>> = new WeakMap();
+
+/** Merges the member's server-side reads ([PROPOSED] AvenueNoticeReads) into this browser's list. Never rejects. */
+export function syncServerReads(source: ReadStore | undefined): Promise<boolean> {
+  if (!source || typeof source.listMyNoticeReads !== 'function') { return Promise.resolve(false); }
+  let p: Promise<boolean> | undefined = serverReads.get(source);
+  if (!p) {
+    p = source.listMyNoticeReads()
+      .then(ids => { markNoticesRead(ids); window.dispatchEvent(new Event('avenue-notices-read')); return true; })
+      .catch(() => false);
+    serverReads.set(source, p);
+  }
+  return p;
+}
+
+/**
+ * Notice read state, shared by every screen: marking a notice read anywhere updates the bell, banner, ribbon and list at once.
+ * localStorage is the instant, offline layer; with a source, reads are also saved to and merged from the member's own
+ * AvenueNoticeReads items [PROPOSED]. If that list does not exist (404 or any error) it silently stays local only.
+ */
+export function useReadIds(source?: ReadStore): [number[], (ids: number[]) => void] {
   const [ids, setIds] = React.useState<number[]>(() => readNoticeIds());
   React.useEffect(() => {
     const on = (): void => setIds(readNoticeIds());
     window.addEventListener('avenue-notices-read', on);
+    syncServerReads(source).catch(() => undefined);
     return () => window.removeEventListener('avenue-notices-read', on);
-  }, []);
-  const mark = (add: number[]): void => { setIds(markNoticesRead(add)); window.dispatchEvent(new Event('avenue-notices-read')); };
+  }, [source]);
+  const mark = (add: number[]): void => {
+    const before: number[] = readNoticeIds();
+    const fresh: number[] = add.filter(n => before.indexOf(n) < 0);
+    setIds(markNoticesRead(add));
+    window.dispatchEvent(new Event('avenue-notices-read'));
+    if (fresh.length > 0 && source && typeof source.markNoticesRead === 'function') {
+      const save = source.markNoticesRead.bind(source);
+      syncServerReads(source).then(ok => (ok ? save(fresh) : undefined)).catch(() => undefined);
+    }
+  };
   return [ids, mark];
 }
 

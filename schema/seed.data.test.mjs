@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { buildSeed, zoned, PREFIX } from './seed.data.mjs';
+import { buildSeed, buildSupportTopics, zoned, PREFIX } from './seed.data.mjs';
 
 const schema = JSON.parse(readFileSync(new URL('./lists.v2.json', import.meta.url)));
 const fieldsOf = Object.fromEntries(schema.lists.map(l => [l.title, new Set(['Title', ...l.fields.map(f => f.name)])]));
@@ -46,4 +46,13 @@ test('no price, secret or real address is seeded', () => {
   const s = JSON.stringify(buildSeed({ now: NOW }));
   assert.ok(!/ExtraHourRate/.test(s));
   assert.ok(!/@(?!example\.invalid)[a-z0-9.-]+\.[a-z]{2,}/i.test(s));
+});
+test('support topics: the five current categories, real fields, never matched by the demo-/gaptest- cleanups', () => {
+  const rows = buildSupportTopics();
+  assert.deepEqual(rows.map(r => r.fields.Title), ['Booking', 'Billing', 'Documents', 'Equipment', 'Other']);
+  for (const r of rows) {
+    assert.equal(r.key, r.fields.Title);
+    assert.ok(!r.key.startsWith(PREFIX) && !r.key.startsWith('gaptest-'));
+    for (const k of Object.keys(r.fields)) assert.ok(fieldsOf[r.list].has(k), `${r.list}.${k} is not in the schema`);
+  }
 });

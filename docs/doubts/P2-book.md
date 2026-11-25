@@ -1,0 +1,15 @@
+# P2 — Book redesign: doubts (23 Nov 2026)
+
+Scope: plan R4-R6, §3.4, §4.2. Nothing deployed. Checked with `tsc --noEmit` (clean for P2 files) and eslint; Jest run by P2 from a scratch compile (not `npm run build`): BookFlow.test 8/8 passed, styleRules 4/4 passed; full suite 407/409, the 2 failures are SupportView/newModules (not P2 files).
+
+1. **"Add at least one item"** — today an equipment booking with no cooking unit is valid (prep tables only). I kept that: prep tables count as a cart item, so the message shows only when the cart is really empty (e.g. `minPrepTables: 0` and nothing picked). If Flavors wants "at least one cooking unit", that is a booking-rule change: question, not engineering choice.
+2. **Plan-hours wording** — "Uses X of your Y plan hours": X is this booking only; a second line says what is left this month (or the extra-hours estimate when over). Hours already used come from `hoursThisMonth` (Approved or hours-kept requests in the booking's month), as before.
+3. **Extra-hours estimate** — hours over × `extraHourRate`, labelled "estimate, billed with your next payment". No rounding or billing cut-off invented; if the rate is missing only the hours over are shown. Whether the real charge matches (Q-01/Q-02, billing-core) is not checked here.
+4. **Cancellation line** "Cancel 24 hours or more ahead to get your hours back" is the text from the brief; I did not find a client source for it in this task. Confirm against REQUIREMENTS before release. The plan asks for a policy link in the sheet; not added (Sheet has no tab navigation; the intro strip has "How booking works").
+5. **`gsap/Flip` vs `gsap/dist/Flip`** — the brief says `gsap/Flip`, but that resolves to an ES module that Jest cannot load (the rig has no transform for node_modules). I import `gsap/dist/Flip` (UMD, same API, types included). The SPFx webpack bundle with this import is not verified (no build run by P2).
+6. **Sheet.tsx** got one optional prop `motion?: 'css' | 'external'`: with 'external' the CSS entry/exit is skipped and closing is immediate, so GSAP does not double-animate. `data-motion` still follows the user's setting. Default behaviour unchanged for every other caller.
+7. **Phone bottom sheet** — the existing `.sheetBottom` fills the screen; for the review sheet only it is made a real bottom sheet (`.sheetBottom:has(.bk7Review)`, 92vh). `:has()` is needed (Safari 15.4+, Chrome 105+).
+8. **Bar above the tab bar** — the tab bar is border-box with the safe-area padding inside `--tab-h`, so `bottom: var(--tab-h)` already clears the iPhone home indicator. On mid there is no tab bar; the bar now sticks at `bottom: env(safe-area-inset-bottom)` (it had an undefined `--tab-h` before). Not checked on a device.
+9. **Step chips** — "Confirmed" removed; "Choose / Review" kept (Review is marked while the sheet is open).
+10. **Generated typings** — `temp/sass-ts/.../Site.module.scss.d.ts` was hand-appended with the 15 `bk7*` names so `tsc --noEmit` passes before a build; the lead's build regenerates it.
+11. **Motion licence** — GSAP use is [PROPOSED, needs licence OK §9] per the plan.

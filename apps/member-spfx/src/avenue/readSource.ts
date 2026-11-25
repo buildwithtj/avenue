@@ -6,14 +6,14 @@
 // filter and the fail-closed row mapping below are scoping and defence in depth
 // against misconfigured or malformed rows. They are not authorization.
 
-import { type EventPackage, EVENT_PACKAGES, type IMyEventRequest, type IMyStorageRequest, type IMySupportMessage, type ITeamMember, type StorageItem, STORAGE_ITEMS, type SupportCategory, SUPPORT_CATEGORIES, type FlagReason, FLAG_REASONS, type IMyFlag, type CheckInKind, CHECKIN_KINDS, type HostRequestKind, type IMyHostRequest, type IPlan, type PayMethod, DOC_TYPES, type DocType, type IBookingRequestInput, type ICalendarEntry, type IChecklistQuestion, type EquipmentCategory, EQUIPMENT_CATEGORIES, type IDiningTable, type IFacility,
+import { type EventPackage, EVENT_PACKAGES, type IMyEventRequest, type IMyStorageRequest, type IMySupportMessage, type ITeamMember, type StorageItem, STORAGE_ITEMS, SUPPORT_CATEGORIES, BOOKING_STATUSES, type BookingStatus, type FlagReason, FLAG_REASONS, type IMyFlag, type CheckInKind, CHECKIN_KINDS, type HostRequestKind, type IMyHostRequest, type IPlan, type PayMethod, DOC_TYPES, type DocType, type IBookingRequestInput, type ICalendarEntry, type IChecklistQuestion, type EquipmentCategory, EQUIPMENT_CATEGORIES, type IDiningTable, type IFacility,
   type IIntakeWriter, type IMyCheckIn, type IMyDocumentSubmission, type IMyExtension, type IMyMembership, type IMyRequest, type INotice, type IResource, NOTICE_CATEGORIES, type NoticeCategory, SPACES, type Space } from './contracts';
 import { toCancelItem, toExtendItem, toIntakeItem, validateExtension, validateRequest } from './booking';
 import { type ICheckInInput, toCheckInItem, validateCheckIn } from './checkin';
 import { type IDocumentInput, safeFileName, toDocumentItem, validateDocument } from './documents';
 import { type IFlagInput, toFlagItem, validateFlag } from './compliance';
 import { parseOutcome } from './outcome';
-import { type ISupportInput, toSupportItem, validateSupport } from './support';
+import { type ISupportInput, toSupportItem, validateAttachments, validateSupport } from './support';
 import { type IEventInput, toEventItem, validateEvent } from './events';
 import { type IStorageInput, toStorageItem, validateStorage } from './storage';
 import { toTeamItem, validateTeamName } from './team';
@@ -43,11 +43,19 @@ export const LISTS = {
   supportMessages: 'AvenueSupportMessages',
   eventRequests: 'AvenueEventRequests',
   storageRequests: 'AvenueStorageRequests',
-  teamMembers: 'AvenueTeamMembers'
+  teamMembers: 'AvenueTeamMembers',
+  /** [PROPOSED] Notices the member has read (own items), so read state follows them across devices. */
+  noticeReads: 'AvenueNoticeReads',
+  /** [PROPOSED] Member-visible mirror of AvenueMemberDocuments (one row per document, shared only with its member). */
+  myDocuments: 'AvenueMyDocuments',
+  /** [PROPOSED] Member-visible mirror of AvenueBookings, so bookings staff make for a member show up (A2). */
+  myBookings: 'AvenueMyBookings',
+  /** [PROPOSED] Staff-managed "About" choices for Messages with Flavors (R16). */
+  supportCategories: 'AvenueSupportCategories'
 } as const;
 
 /** Intake lists where each member reads only the items they wrote. */
-const OWN_ITEMS: string[] = [LISTS.requests, LISTS.documentSubmissions, LISTS.checkInSubmissions, LISTS.complianceFlags, LISTS.hostRequests, LISTS.supportMessages, LISTS.eventRequests, LISTS.storageRequests, LISTS.teamMembers];
+const OWN_ITEMS: string[] = [LISTS.requests, LISTS.documentSubmissions, LISTS.checkInSubmissions, LISTS.complianceFlags, LISTS.hostRequests, LISTS.supportMessages, LISTS.eventRequests, LISTS.storageRequests, LISTS.teamMembers, LISTS.noticeReads];
 
 /** PlanId is the sheet plan name in lower case ("mobile kitchen-10", "legacy: emerging-10a"); no quote can reach the OData filter. */
 const PLAN_ID: RegExp = /^[A-Za-z0-9 :._-]{1,80}$/;
@@ -219,7 +227,9 @@ export function toNotice(row: Row, nowMs: number): INotice | undefined {
   const title: string | undefined = text(row, 'Title');
   const publishedUtc: string | undefined = instant(row, 'PublishedAt');
   const expiresUtc: string | undefined = instant(row, 'ExpiresAt');
-  if (typeof row.Id !== 'number' || !title || !publishedUtc || (expiresUtc && Date.parse(expiresUtc) <= nowMs)) {
+  // Scheduled for later (PublishAt in the future): not shown yet. An empty PublishAt means published now.
+  const publishAt: string | undefined = instant(row, 'PublishAt');
+  if (typeof row.Id !== 'number' || !title || !publishedUtc || (expiresUtc && Date.parse(expiresUtc) <= nowMs) || (publishAt && Date.parse(publishAt) > nowMs)) {
     return undefined;
   }
   const rawCat: string | undefined = text(row, 'Category');
@@ -252,16 +262,76 @@ function defined<T>(value: T | undefined): value is T {
   return value !== undefined;
 }
 
+/** Expanded AttachmentFiles (array, or {results} in verbose OData); only site-relative or https links are kept. */
+export function attachmentFiles(row: Row): { name: string; url: string }[] {
+  const raw: unknown = row.AttachmentFiles;
+  const list: unknown[] = Array.isArray(raw) ? raw : raw && Array.isArray((raw as Row).results) ? (raw as Row).results as unknown[] : [];
+  return list.map(f => {
+    const name: string | undefined = f && typeof f === 'object' ? text(f as Row, 'FileName') : undefined;
+    const url: string | undefined = f && typeof f === 'object' ? safeUrl(text(f as Row, 'ServerRelativeUrl')) : undefined;
+    return name && url ? { name, url } : undefined;
+  }).filter(defined);
+}
+
+/** [PROPOSED] Maps an AvenueMyBookings row to the member's booking shape. Foreign, incomplete or inverted rows are dropped. */
+export function toMirrorBooking(row: Row, facilityId: string): IMyRequest | undefined {
+  const requestId: string | undefined = text(row, 'BookingId');
+  const space: string | undefined = text(row, 'Space');
+  const startUtc: string | undefined = instant(row, 'StartUtc');
+  const endUtc: string | undefined = instant(row, 'EndUtc');
+  const status: string | undefined = text(row, 'Status');
+  if (text(row, 'FacilityId') !== facilityId || !requestId || !REF_ID.test(requestId) || !space || SPACES.indexOf(space as Space) < 0 || !startUtc || !endUtc || endUtc <= startUtc) {
+    return undefined;
+  }
+  return {
+    requestId, space: space as Space, equipmentIds: (text(row, 'EquipmentIds') || '').split(';').map(x => x.trim()).filter(Boolean),
+    startUtc, endUtc, cancelSent: false, cancelRequested: false,
+    status: BOOKING_STATUSES.indexOf(status as BookingStatus) >= 0 ? status as BookingStatus : undefined
+  };
+}
+
+/** Adds mirror bookings the member's own requests do not already have (the member's own row wins: it carries the echoed note). */
+export function mergeMirrorBookings(own: IMyRequest[], mirror: IMyRequest[], cancelled: string[] = []): IMyRequest[] {
+  const have: string[] = own.map(r => r.requestId);
+  const extra: IMyRequest[] = mirror.filter(m => have.indexOf(m.requestId) < 0)
+    .map(m => (cancelled.indexOf(m.requestId) >= 0 ? { ...m, cancelSent: true } : m));
+  return own.concat(extra.filter((m, i) => extra.findIndex(x => x.requestId === m.requestId) === i));
+}
+
+/** [PROPOSED] Maps an AvenueMyDocuments row. Its Outcome is phrased so the existing review states read it ("Received…" / "Not accepted…"). */
+export function toMirrorDocument(row: Row): IMyDocumentSubmission | undefined {
+  const docType: string | undefined = text(row, 'DocType');
+  const expiryDate: string | undefined = ymd(text(row, 'ExpiryDate'));
+  if (typeof row.Id !== 'number' || !docType || DOC_TYPES.indexOf(docType as DocType) < 0 || !expiryDate) { return undefined; }
+  const status: string | undefined = text(row, 'Status');
+  const verified: boolean = flag(row, 'Verified') === true;
+  const rejected: boolean = /^(rejected|not accepted)/i.test(status || '');
+  return {
+    submissionId: `record-${row.Id}`, docType: docType as DocType, issueDate: ymd(text(row, 'IssueDate')) || '', expiryDate,
+    outcome: rejected ? 'Not accepted by Flavors. Please send it again.' : 'Received. Flavors will verify it.',
+    fromRecord: true, verified: verified && !rejected, recordStatus: status
+  };
+}
+
+/** Records first; a submission that is the same document (type + expiry) as a record is dropped so it is not listed twice. */
+export function mergeDocuments(records: IMyDocumentSubmission[], submissions: IMyDocumentSubmission[]): IMyDocumentSubmission[] {
+  const key = (d: IMyDocumentSubmission): string => `${d.docType}|${d.expiryDate}`;
+  const recorded: string[] = records.map(key);
+  return records.concat(submissions.filter(d => recorded.indexOf(key(d)) < 0));
+}
+
 export class AvenueReadSource {
   private readonly _webUrl: string;
   private readonly _fetchJson: FetchJson;
   private readonly _writer: IIntakeWriter | undefined;
   public readonly facilityId: string;
   private readonly _authorId: number | undefined;
+  private readonly _memberEmail: string | undefined;
 
   /** `authorId`: the signed-in user's SharePoint id. Own-items lists are also filtered by it, because site owners and admins
    * bypass the list's "read own items only" setting and would otherwise see every member's requests as their own. */
-  public constructor(webUrl: string, facilityId: string, fetchJson: FetchJson, writer?: IIntakeWriter, authorId?: number) {
+  /** `memberEmail`: the signed-in member; needed to read the mirror lists (no e-mail = mirrors are not read, fail closed). */
+  public constructor(webUrl: string, facilityId: string, fetchJson: FetchJson, writer?: IIntakeWriter, authorId?: number, memberEmail?: string) {
     if (!SAFE_ID.test(facilityId)) {
       // Fail closed, and keeps the id safe to embed in an OData filter.
       throw new Error('Avenue: facility id is missing or invalid.');
@@ -271,6 +341,8 @@ export class AvenueReadSource {
     this._fetchJson = fetchJson;
     this._writer = writer;
     this._authorId = typeof authorId === 'number' && Number.isInteger(authorId) && authorId > 0 ? authorId : undefined;
+    const email: string = (memberEmail || '').trim().toLowerCase();
+    this._memberEmail = EMAIL.test(email) ? email : undefined;
   }
 
   public async getFacility(): Promise<IFacility> {
@@ -348,7 +420,19 @@ export class AvenueReadSource {
         });
       }
     }
-    return result.sort((a, b) => a.startUtc.localeCompare(b.startUtc));
+    // A2: bookings staff made for the member live only in the mirror. A missing or failing mirror changes nothing.
+    const mirror: IMyRequest[] = await this.listMyBookingsMirror().catch((): IMyRequest[] => []);
+    return mergeMirrorBookings(result, mirror, cancelled).sort((a, b) => a.startUtc.localeCompare(b.startUtc));
+  }
+
+  /**
+   * [PROPOSED] The member's rows of AvenueMyBookings (each shared only with its member; the e-mail filter keeps a staff preview
+   * to their own). Rejects when the list does not exist; empty without a member e-mail.
+   */
+  public async listMyBookingsMirror(): Promise<IMyRequest[]> {
+    if (!this._memberEmail) { return []; }
+    const rows: Row[] = await this._items(LISTS.myBookings, 'FacilityId,BookingId,Space,EquipmentIds,StartUtc,EndUtc,Status,MemberId', ` and MemberId eq '${this._memberEmail}'`);
+    return rows.map(r => toMirrorBooking(r, this.facilityId)).filter(defined);
   }
 
   /**
@@ -448,14 +532,14 @@ export class AvenueReadSource {
 
   /** The member's own checklist submissions. */
   public async listMyCheckIns(): Promise<IMyCheckIn[]> {
-    const rows: Row[] = await this._items(LISTS.checkInSubmissions, 'FacilityId,SubmissionId,BookingId,Kind,Outcome,PersonName', '')
-      .catch(() => this._items(LISTS.checkInSubmissions, 'FacilityId,SubmissionId,BookingId,Kind,Outcome', ''));
+    const rows: Row[] = await this._items(LISTS.checkInSubmissions, 'FacilityId,SubmissionId,BookingId,Kind,Outcome,PersonName,Created', '')
+      .catch(() => this._items(LISTS.checkInSubmissions, 'FacilityId,SubmissionId,BookingId,Kind,Outcome,Created', ''));
     return rows.map(r => {
       const submissionId: string | undefined = text(r, 'SubmissionId');
       const bookingId: string | undefined = text(r, 'BookingId');
       const kind: string | undefined = text(r, 'Kind');
       return submissionId && bookingId && CHECKIN_KINDS.indexOf(kind as CheckInKind) >= 0
-        ? { submissionId, bookingId, kind: kind as CheckInKind, outcome: text(r, 'Outcome'), personName: text(r, 'PersonName') }
+        ? { submissionId, bookingId, kind: kind as CheckInKind, outcome: text(r, 'Outcome'), personName: text(r, 'PersonName'), createdUtc: instant(r, 'Created') }
         : undefined;
     }).filter(defined);
   }
@@ -475,7 +559,7 @@ export class AvenueReadSource {
   /** The member's own document submissions and what happened to each. */
   public async listMyDocuments(): Promise<IMyDocumentSubmission[]> {
     const rows: Row[] = await this._items(LISTS.documentSubmissions, 'FacilityId,SubmissionId,DocType,IssueDate,ExpiryDate,Outcome', '');
-    return rows.map(r => {
+    const submissions: IMyDocumentSubmission[] = rows.map(r => {
       const submissionId: string | undefined = text(r, 'SubmissionId');
       const docType: string | undefined = text(r, 'DocType');
       const issueDate: string | undefined = ymd(text(r, 'IssueDate'));
@@ -483,7 +567,13 @@ export class AvenueReadSource {
       return submissionId && docType && DOC_TYPES.indexOf(docType as DocType) >= 0 && issueDate && expiryDate
         ? { submissionId, docType: docType as DocType, issueDate, expiryDate, outcome: text(r, 'Outcome') }
         : undefined;
-    }).filter(defined).sort((a, b) => b.expiryDate.localeCompare(a.expiryDate));
+    }).filter(defined);
+    // [PROPOSED] AvenueMyDocuments: verified records incl. staff uploads. Missing list or any error = submissions only, as before.
+    const records: IMyDocumentSubmission[] = this._memberEmail
+      ? await this._items(LISTS.myDocuments, 'Id,FacilityId,DocType,IssueDate,ExpiryDate,Status,Verified,FileUrl,MemberId', ` and MemberId eq '${this._memberEmail}'`)
+        .then(rs => rs.map(toMirrorDocument).filter(defined)).catch((): IMyDocumentSubmission[] => [])
+      : [];
+    return mergeDocuments(records, submissions).sort((a, b) => b.expiryDate.localeCompare(a.expiryDate));
   }
 
   /**
@@ -536,23 +626,55 @@ export class AvenueReadSource {
 
   /** The member's own messages to Flavors (any thread), with the echoed Outcome and staff Reply. An unreadable list is an empty one. */
   public async listMySupportMessages(): Promise<IMySupportMessage[]> {
-    const rows: Row[] = await this._items(LISTS.supportMessages, 'Id,FacilityId,MessageId,ThreadId,Category,Subject,Body,Outcome,Reply', '');
+    const select: string = 'Id,FacilityId,MessageId,ThreadId,Category,Subject,Body,Outcome,Reply,Created';
+    // Attachments come with the item ($expand=AttachmentFiles); if that read fails, the messages still show without them.
+    const rows: Row[] = await this._items(LISTS.supportMessages, `${select},AttachmentFiles`, '', 'AttachmentFiles')
+      .catch(() => this._items(LISTS.supportMessages, select, ''));
     return rows.map(r => {
       const messageId: string | undefined = text(r, 'MessageId'), threadId: string | undefined = text(r, 'ThreadId') || text(r, 'MessageId'), category: string | undefined = text(r, 'Category'), subject: string | undefined = text(r, 'Subject');
-      return typeof r.Id === 'number' && messageId && threadId && subject && SUPPORT_CATEGORIES.indexOf(category as SupportCategory) >= 0
-        ? { id: r.Id, messageId, threadId, category: category as SupportCategory, subject, body: text(r, 'Body') || '', outcome: text(r, 'Outcome'), reply: text(r, 'Reply') }
+      const attachments: { name: string; url: string }[] = attachmentFiles(r);
+      // Any non-empty category is kept: categories are staff-managed, and a retired one must not hide a conversation.
+      return typeof r.Id === 'number' && messageId && threadId && subject && category
+        ? { id: r.Id, messageId, threadId, category, subject, body: text(r, 'Body') || '', outcome: text(r, 'Outcome'), reply: text(r, 'Reply'), ...(text(r, 'Created') ? { created: text(r, 'Created') as string } : {}), ...(attachments.length ? { attachments } : {}) }
         : undefined;
     }).filter(defined);
   }
 
+  /** [PROPOSED] Active "About" choices from AvenueSupportCategories in SortOrder; the built-in list when it is missing, empty or unreadable. */
+  public async listSupportCategories(): Promise<string[]> {
+    const rows: Row[] = await this._items(LISTS.supportCategories, 'FacilityId,Title,SortOrder,Active', ' and Active eq 1').catch((): Row[] => []);
+    const out: string[] = [];
+    rows.slice().sort((a, b) => (count(a, 'SortOrder', -1e6, 1e6) ?? 0) - (count(b, 'SortOrder', -1e6, 1e6) ?? 0))
+      .forEach(r => { const t: string | undefined = text(r, 'Title'); if (t && t.length <= 60 && out.indexOf(t) < 0) { out.push(t); } });
+    return out.length > 0 ? out : SUPPORT_CATEGORIES.slice();
+  }
+
   /** Sends one message. `threadId` is the thread being answered, or undefined to start a new one (the thread id is then the message id). */
-  public async submitSupportMessage(input: ISupportInput, messageId: string, threadId?: string): Promise<void> {
+  /**
+   * With files: the same three steps as a document (item marked "Uploading" → attach each → clear the mark), so the flow
+   * processes the message only once every file is on it. `categories`: the choices offered (default the built-in list).
+   */
+  public async submitSupportMessage(input: ISupportInput, messageId: string, threadId?: string, files: Array<Blob & { name: string }> = [], categories?: string[]): Promise<void> {
     const writer: IIntakeWriter = this._requireWriter();
     if (input.facilityId !== this.facilityId) { throw new Error('Avenue: message is for a different facility.'); }
     if (!REF_ID.test(messageId) || (threadId !== undefined && !REF_ID.test(threadId))) { throw new Error('Avenue: invalid message id.'); }
-    const errors: string[] = validateSupport(input);
+    const errors: string[] = validateSupport(input, categories).concat(validateAttachments(files));
     if (errors.length > 0) { throw new Error(errors.join(' ')); }
-    await writer.add(LISTS.supportMessages, toSupportItem(input, messageId, threadId));
+    if (files.length === 0) {
+      await writer.add(LISTS.supportMessages, toSupportItem(input, messageId, threadId));
+      return;
+    }
+    const id: number = await writer.add(LISTS.supportMessages, { ...toSupportItem(input, messageId, threadId), Outcome: 'Uploading' });
+    const used: string[] = [];
+    for (const f of files) {
+      // Two files with the same safe name would collide on the item: number the repeats.
+      const base: string = safeFileName(f.name);
+      let name: string = base;
+      for (let n: number = 2; used.indexOf(name.toLowerCase()) >= 0; n++) { name = base.replace(/(\.[^.]*)?$/, `-${n}$1`); }
+      used.push(name.toLowerCase());
+      await writer.attach(LISTS.supportMessages, id, name, f);
+    }
+    await writer.update(LISTS.supportMessages, id, { Outcome: null });
   }
 
   /** The member's own event requests, newest first. */
@@ -621,8 +743,24 @@ export class AvenueReadSource {
 
   /** Published, unexpired notices: pinned first, then newest. */
   public async listNotices(nowMs: number = Date.now()): Promise<INotice[]> {
-    const rows: Row[] = await this._items(LISTS.notices, 'Id,FacilityId,Title,Body,PublishedAt,Category,Pinned,ExpiresAt,Audience', ' and Active eq 1');
+    // PublishAt may not exist on the live list yet: fall back to the old select rather than lose every notice.
+    const rows: Row[] = await this._items(LISTS.notices, 'Id,FacilityId,Title,Body,PublishedAt,Category,Pinned,ExpiresAt,Audience,PublishAt', ' and Active eq 1')
+      .catch(() => this._items(LISTS.notices, 'Id,FacilityId,Title,Body,PublishedAt,Category,Pinned,ExpiresAt,Audience', ' and Active eq 1'));
     return sortNotices(rows.map(r => toNotice(r, nowMs)).filter(defined));
+  }
+
+  /** [PROPOSED] Ids of notices the member has read on any device (own items). Rejects when the list does not exist yet. */
+  public async listMyNoticeReads(): Promise<number[]> {
+    const rows: Row[] = await this._items(LISTS.noticeReads, 'FacilityId,NoticeId', '');
+    return rows.map(r => r.NoticeId).filter((n): n is number => typeof n === 'number');
+  }
+
+  /** [PROPOSED] Records notices as read, one own item per notice. Display convenience only; nothing trusts it. */
+  public async markNoticesRead(ids: number[]): Promise<void> {
+    const writer: IIntakeWriter = this._requireWriter();
+    for (const id of ids.filter(n => Number.isInteger(n) && n > 0)) {
+      await writer.add(LISTS.noticeReads, { Title: `Notice ${id}`, FacilityId: this.facilityId, NoticeId: id });
+    }
   }
 
   private _requireWriter(): IIntakeWriter {
@@ -644,11 +782,11 @@ export class AvenueReadSource {
     return rows.map(r => toCalendarEntry(r, this.facilityId)).filter(defined);
   }
 
-  private async _items(list: string, select: string, extraFilter: string): Promise<Row[]> {
+  private async _items(list: string, select: string, extraFilter: string, expand?: string): Promise<Row[]> {
     const own: string = this._authorId !== undefined && OWN_ITEMS.indexOf(list) >= 0 ? ` and AuthorId eq ${this._authorId}` : '';
     const filter: string = encodeURIComponent(`FacilityId eq '${this.facilityId}'${extraFilter}${own}`);
     let url: string | undefined =
-      `${this._webUrl}/_api/web/lists/getbytitle('${list}')/items?$select=${select}&$filter=${filter}&$top=${PAGE_SIZE}`;
+      `${this._webUrl}/_api/web/lists/getbytitle('${list}')/items?$select=${select}${expand ? `&$expand=${expand}` : ''}&$filter=${filter}&$top=${PAGE_SIZE}`;
     const rows: Row[] = [];
     for (let page: number = 0; url; page++) {
       if (page >= MAX_PAGES) {

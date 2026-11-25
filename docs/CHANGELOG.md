@@ -1,5 +1,90 @@
 # Changelog
 
+## 2026-11-25 — staging 1.7.1.0 deployed (live portal still 2.19.0.0)
+- Hero shortcut count badge: red fill, white number, 2 px white ring, no inherited text shadow. Bundle avenue-portal-web-part_e128198f0274dd0c67a3.js; package 362,975 B; 449 tests. Uploaded + deployed as TDDAdmin; returning browsers kept the old bundle until the SharePoint service worker was unregistered.
+
+## 2026-11-25 — staging 1.7.0.0 deployed (live portal still 2.19.0.0)
+- Client UI feedback round: Book (date strip 60 days + calendar input, month labels, square selected day, time picker highlighted until chosen, equipment groups as cards, recent bookings first, redundant lines removed), Home (uniform Your month cards: value + ok/warn/bad/info pill + detail + pill button; Kitchen right now cover-flow with centre scale via `useCenterScale`; More ways to book rows; hero without blur/scrim; flat sheet; black text), Schedule (title only, day sheet max 60vh), My bookings (edge-to-edge square strip, Next tab, booking + progress in one card, Check in/Book side by side), page heads (facility name restyled, no "Workspace", no back button), footer on phones, notifications menu scrolls, plan/module cards with firmer edges, tab bar without the active circle.
+- New `components/smoothScrollX.ts`: eased wheel/trackpad and mouse-drag glide for horizontal rails only, settles on snap points; touch native. Vertical scrolling untouched (Lenis decision stands).
+- Bundle avenue-portal-web-part_61251a177db984bf67c2.js; package 362,904 B. 449 tests. Uploaded + deployed as TDDAdmin; fresh tab confirmed.
+
+## 2026-11-24 — staging 1.6.0.0 deployed (live portal still 2.19.0.0)
+- Uploaded + deployed as TDDAdmin; fresh 412px frame loads bundle 164194ea, hero 0-412 px. Seen on SharePoint: Home only (Notices band and 'Your month' section with circular icons). Book, Schedule, My bookings, Check in, Messages not checked on SharePoint; no real phone.
+
+## 2026-11-24 — staging 1.6.0.0 built (not deployed)
+- Items 1-16 of the phone feedback batch: floating glass cart capsule (inset 12 px + safe area, count badge, two lines, Review pill; springs in, hidden when empty), four separate mode cards (2x2, selected = filled teal + check + lift), glass date panel with mesh (idle loop only on screen), 4-step Book visual + "How booking works" link, equipment tilt, Home plan-hours ring + ambient light, animated empty states, success celebration (check + 10 dots, skipped under reduced motion), trimmed ledes, key-fact type scale, two-thumb time-range slider (44 px thumbs, 30-min snap, drag bubble, keyboard, summary "8:30 AM – 2:30 PM · 6 h"), compact tablet/desktop footer with "More links" (hidden on phones), physical button press + ripple, section heading rows + 8-px spacing tokens, Schedule Timeline as stat row + collapsible category groups (circular icons, counts, unit rows with status pill and mini bar, tap = book), comma lists to chips, system font stack (0 KB webfont).
+- Fixes found while verifying: the phone header never switched to glass on Home because the scroll listener fell back to `window` when the page was not yet taller than the scroller (now matched on overflow only); the footer "More links" menu showed while closed (absolute child of closed `<details>`); Schedule refresh used a clock icon; group icons now differ by category; Schedule Book is a small pill.
+- Lenis rejected (fought programmatic scrolling); see DECISIONS. Bundle avenue-portal-web-part_164194ea1f7bb99cbeb7.js 1,166,093 B (1.5.0.0: 1,125,293; +40.8 KB); package 358,537 B (+8.8 KB). 449 tests pass. Live config restored to 2.22.0.0.
+
+## 2026-11-24 — staging 1.5.0.0 deployed (live portal still 2.19.0.0)
+- Uploaded + deployed as TDDAdmin. Fresh 390px frame (service worker unregistered) loads bundle 04f21dbb (class suffix f40341a5); hero spans 0-390 px. Seen: Home only (circular 3D icons, short notices strip, smaller Book button). Not checked on SharePoint: Messages chat, Check in stepper, date bubbles, hero pin while scrolling, other pages, real iPhone.
+
+## 2026-11-24 — staging 1.5.0.0 built (not deployed)
+- A circular 3D icon primitive everywhere (shared `.ico3d` plus the existing tile classes), B notices strip about 94 px, C Book circle 52 px / 24 px plus, D icons use `viewBox -1 -1 26 26` + `overflow: visible`, E Check in focal "Checklist" title and one easing family, F header inset >= 16 px + safe area and a full-bleed width taken from the scroller's visible width, G Messages as a chat console (list, topic, subject, chat; two panes on wider screens; `created` read for times/day separators), H circular date bubbles, I primitives on Book/Membership/Documents.
+- Hero is pinned (sticky, no transform, no scroll handler); the content sheet rises over it; overlay text fades by IntersectionObserver. Root cause of the "margin around the hero": `.page { overflow-x: clip }` (v14) clipped the full-bleed hero to the gutter; fixed.
+- Animation rules from the installed design-engineering skills applied (see the final report). 449 tests pass.
+
+## 2026-11-24 — design skills installed
+- Emil Kowalski's design-engineering skills added under .claude/skills/ (MIT; see DECISIONS). Not committed.
+
+## 2026-11-24 — staging 1.4.0.0 built: mobile UI v2 (not deployed)
+- Phone: edge-to-edge shell (root measures and removes SharePoint's offset, one `--gut` variable), Netflix-style hero (crisp / blurred / dark, copy fades on scroll), small gold pill CTA, transparent header with the official logo crossfading white to teal, new Notices block (icon, title, count, See all, glass cards with category tile and labelled pill), leaf-corner glass stat tiles with count-up and touch tilt, ticket-notch booking cards, clearer booking tracker, standalone round bottom-nav buttons (no container; Book a raised gold circle), separate **More** bottom sheet and **Profile**-only sheet, springy sliding toggles with direction-aware pane slides (My bookings, Schedule, Notices), Schedule view toggle fits (icons), large snapping date strips (My bookings, Book), compact Book pills, arrows inset/hidden on touch, scroll-linked reveals. No new library. `docs/MOBILE_UI_V2_PLAN.md`.
+- Tests 449 pass. Overflow scan (iframe at 320/360/390/430) clean except two known false positives. Instagram reels could not be viewed (login wall). Not seen on a real iPhone.
+
+## 2026-11-24 — staging 1.3.1.0 built (not deployed): phone overflow, tab bar, notices strip, KPI cards, one attention banner
+- Root-cause CSS: every page child can shrink (min-width 0, border-box), text wraps, media capped, page overflow-x clip. My bookings card is one column on phones (time, icons that wrap, 2-line names, status chip); the duplicate "Cancelled" progress line is gone. The raised Book circle sits above its label (3 px gap, labels on one baseline). Home notices are a compact snap strip (84 px cards, dots, single notice = one row, whole strip 100 px). KPI cards ~140 px tall. Five document alerts collapse into one banner (count, worst severity, Show all, Review documents).
+- New `apps/member-spfx/scripts/overflow-scan.browser.js`: real-data scan (local debug preview on the signed-in SharePoint page, container narrowed to 320-430 px). Results: 0 offenders on 13 pages at 343, 360, 390 and 430 px; 320 px 0 after the Documents slide-in settles (the scan saw the entry animation once); 1 px hero scale at 390. It was checked to catch a deliberate 500 px element. NOT checked: real phone, tablet widths, Join page.
+
+## 2026-11-24 — staging 1.3.0.0 deployed (live portal still 2.19.0.0)
+- Uploaded + deployed as TDDAdmin; staging page shows the hero banner on desktop (checked). Phone layout not checked on SharePoint. Note: SharePoint's service worker caches the page; unregister it (or hard refresh) to see a new staging version.
+
+## 2026-11-24 — staging 1.3.0.0 built (not deployed): hero banner (phone full-width / desktop full-bleed), round shortcuts, notice rail, booking tracker, floating frosted tab bar, modern buttons and pill segmented control, live-card overflow fix, unused webfont removed. Tests 447 passed. See docs/UI_RESEARCH_NOTES.md. The Bisstro/Bistro app could not be referenced.
+
+## 2026-11-24 — staff app STAGING copy published
+- "Avenue Staff Console (Staging)" (Save as copy; client's app untouched): redesigned Setup/Notices/Checklist/Support/Events/Storage/Applicants/More + Member admin. gen.py: Category handled as Choice (`.Value`), demo-reset wording/layout fixed (not yet re-pasted). Demo reset verified on a gaptest- member: deletes permanently.
+
+## 2026-11-24 — member demo data, Check in stepper, Documents compliance UI (staging 1.2.0.0, not deployed)
+- `schema/memberdemo.*` (44 live rows tagged demo-md-, with a cleanup script), `ChecklistStepper.tsx`, DocumentsView ring and accordion rows, a motion block in `Ref.module.scss`, new CheckInView and DocumentsView tests (443 total), build-staging manifest version fix.
+
+## 2026-11-24 — member console 2.22.0.0 (live line) / staging 1.1.0.0: fixed sidebar, official logo, every page on the reference blocks (built, NOT deployed)
+- **Sidebar really fixed:** the sticky rule had `inset: auto` after `top: 0`, which reset `top`; fixed, height now follows the real scroll container (`--av-vh`, ResizeObserver), nav list scrolls inside, help card + user row pinned, compact on short windows (<=900 px high hides the help card, <=640 hides the workspace card). Verified on the live SharePoint page via the debug preview: sidebar top stayed at 47 px and bottom at 834 px while the page scrolled to the end; footer stays in the main column.
+- **Official logo** (Brand Logo/SVG.svg cropped; A mark alone in the collapsed rail) in the sidebar, mobile bar and footer; text wordmark removed.
+- **Mobile bar:** logo left, bell + avatar right (40 px, 8 px gaps); stray service-bell icon replaced by the reference bell. Home phone: full-width primary button, even KPI cards, chips under numbers, alert card wraps with a full-width button, content padded above the tab bar.
+- **Pages rebuilt on lifted reference blocks (module card, row, stat card, setting row, tabs, empty state, modal fields):** Notices, Documents (required list + upload form + my documents), Billing (cards + invoice rows), Membership, Check in, Messages, Events, Storage, My team, Policies; shared `Section`/`Empty`/`LoadError` now render reference cards; Sheet/dialogs restyled; Book, Schedule, Join/Welcome use the reference card/segmented/chip skin (their inner layouts keep Avenue's own widgets).
+- **Home photo card** (`homeImage` in assets/index.ts, one line to swap; lazy, fixed 16:10, scrim, fallback tile, hover zoom only with hover + motion allowed) + `HomeImage.test.tsx`.
+- **Accessibility/motion:** muted text `#5b6370`, gold chip text `#80601e`, teal focus ring (the reference's gold ring and `#6b7280` fail 3:1 / 4.5:1); `contrast.test.ts`; shimmer skeletons, staggered row entry, dialog pop, progress grow, 44 px touch targets on coarse pointers, all off under reduced motion. Research: docs/UI_RESEARCH_NOTES.md.
+- Build: 441 tests pass (live line 2.22.0.0 `member-spfx.sppkg`, bundle 112ac9e0...; staging 1.1.0.0 `member-spfx-staging.sppkg`, bundle 31ee0ce3..., app Name without parentheses). Not uploaded.
+
+## 2026-11-24 — staging member console deployed (live portal untouched)
+- Staging package 1.0.0.0 uploaded + deployed; new page Member-portal-staging.aspx created from the live page's settings with the staging web part. Live remains 2.19.0.0. Package-name fix: no parentheses in the app Name.
+
+## 2026-11-24 — Member portal 2.21.0.0 / staging 1.0.0.0: reference console UI lifted (BUILT, not deployed)
+- UI taken from https://culina-rust.vercel.app/ (look only; no calendar component): its own stylesheet ported rule for rule into `Ref.module.scss` (sidebar, rail, workspace card, nav, help card, profile, top bar, breadcrumbs, page header, KPI cards, section cards, rows, chips, buttons), markup lifted into `AvenuePortal.tsx` (sidebar + top bar on wide screens, collapsible 72 px rail) and `HomeView.tsx`; `RefUi.tsx` holds the icon set and the page-header block. Other pages take the same blocks through shared styles (page header, cards, buttons, chips, My bookings rows). Mid/phone keep the existing top bar, hamburger menu and bottom bar.
+- New `npm run build:staging` produces a separate staging package (see DEPLOYMENT_AND_OPERATIONS.md). Visual check was done with a throwaway harness (outside the repo), not on SharePoint.
+
+## 2026-11-23 (late) — member portal 2.20.0.0 BUILT (not deployed): reference console look
+- Wide layout (>= 1100 px): 246 px sidebar (MEMBER and ACCOUNT groups, workspace card, help card, user row) + light top bar with breadcrumb and bell; narrower keeps the top bar and phone tab bar. Home: reference header (date eyebrow, greeting with gold period, Book kitchen time) + 4 KPI cards from real data (next booking, plan hours with bar, documents with Needs attention chip, balance due), next-booking card, Coming up list, My plan, Notices. Teal primary buttons, 9/7/20 px radii, 27 px / 650 page titles, font token Arial, Helvetica. The reference's calendar is not used. 427 tests pass. Not seen in a browser yet.
+
+## 2026-11-23 (late) — DEMO ONLY: member reset (remove before go-live)
+- `schema/memberreset.browser.js` (report, then apply) and a Member admin > Profile button "Delete this member and all their data" (needs the member's e-mail typed to confirm; owner/manage-members capability). Both recycle one member's rows (site recycle bin) so a demo member can start again from Join. Staff app regenerated (1,658 controls, check.py OK); **not yet pasted into Power Apps Studio, not tested live**. Logged in DECISIONS_AND_OPEN_QUESTIONS.md.
+
+## 2026-11-23 (late) — member portal 2.19.0.0 LIVE
+- Uploaded and deployed as TDDAdmin; CurrentVersionDeployed true; live page loads bundle avenue-portal-web-part_416264a8de93f80620ed.js. Flows R1–R9 and the staff app screens are still pending.
+
+## 2026-11-23 (late) — live deploy step 1: lists reconciled, topics seeded
+- Live site: 62 additive list/field/choice changes; Choice->Text proven on a gaptest list then recycled; 5 support topics seeded. Category columns left as Choice and live flows untouched (see STATUS).
+
+## 2026-11-23 (late) — P7/P8: staff CRUD, schema, flow specs, host plans (local only, not deployed)
+- Staff app: Screen23 Member admin; Applicants edit/new/re-open/invite checklist/pipeline; Setup plans prices, dining tables, support topics, Fridge, 11 doc types; Notices edit + hide-after hours; Support thread/attachments/archive/topics; Checklist inline edit + Wellness; Events/Storage edit + re-open; capability toggles hide buttons (not security). Frozen screens byte-identical. Guide: docs/STAFF_CRUD_GUIDE.md.
+- Schema 43 lists (+ support topics seed as real config); invariants 11 tests. Flow specs R1–R9 (not built). Host: AvenuePlans read-only bridge with fallback, +8 tests (83).
+
+## 2026-11-23 (late) — P5/P6: documents mirror + required list, check-in labels, support tickets with attachments (code only, not built or deployed)
+- Documents: reads [PROPOSED] AvenueMyDocuments merged with own submissions (silent fallback); required list (sheet's 7 types when AvenueRequiredDocTypes is empty) with Current / Waiting for verification / Expiring (30-15-10) / Expired / Missing and an Upload button per type; summary row; friendly load/send errors.
+- Check in: sent checklists show booking date, time and equipment instead of ids (A1).
+- Bookings staff make for a member: [PROPOSED] AvenueMyBookings merged inside `listMyRequests` (A2), silent fallback.
+- Messages: categories from [PROPOSED] AvenueSupportCategories (fallback to the built-in five); reader keeps unknown categories; attachments (5 × 10 MB, images/PDF) with the 3-step upload; thread view with status chip and bubbles. The live support flow and the Category column must change first: `docs/doubts/P5P6-docs-support.md`.
+- Jest suite passed in a scratch run (425 tests); not `npm run build`.
+
 ## 2026-11-23 (night) — client UI feedback doc: dates, schedule day, equipment rows (2.17.0.0, LIVE)
 - Source: the developer's Google Doc of four phone screenshots (23 Nov). My bookings date strip and the Book date grid share one clean chip style: weekday over a large numeral, rounded white card, no tear-off band; days without a booking stay readable (no 55 % fade); today outlined (gold on Book), the picked day solid ink.
 - Schedule month: on phone and mid widths a tap on a day with bookings opens that day in the drawer, so the member no longer scrolls past the six-week grid; a hint says so. Desktop keeps the side panel.
@@ -598,3 +683,18 @@ Staff Console screens (Requests with conflict list, Schedule Screen19, Notices, 
 - Member portal 2.14.0.0 deployed to the tenant app catalog and live (Support, Events, Storage, Team in the profile drawer). Needed an explicit Deploy after upload.
 - Member portal 2.14.1.0: Support new-thread fix (ThreadId left empty for a new conversation). Live-tested Support, Storage, Team, Event request; test rows removed.
 - 2026-11-23: docs/MEMBER_PORTAL_AUDIT_AND_UI_PLAN.md — member portal functional audit, UI/notices/font/motion research and plan, responsive audit at 7 widths + code review. Plan only, nothing implemented.
+- 2026-11-23: docs/END_TO_END_TEST_GUIDE.md — one complete test guide for portal 2.17.0.0, staff app, flows, host (Stripe test), sensors, UI, responsive matrix, accessibility, privacy, cleanup and results log. TEST_CHECKLIST.md and HOW_TO_TEST_DELIVERY_1.md marked superseded.
+- 2026-11-23: release/testing/avenue-test-checklist.html — interactive, responsive checklist of the 129 end-to-end checks (Pass/Fail/Blocked/N/A, notes, progress, filters, search, CSV export, copy summary, dark mode; saves on the device).
+- 2026-11-23: review meeting → docs/REDESIGN_AND_ADMIN_CRUD_PLAN.md (19 findings, 14 other issues, page-by-page redesign, staff CRUD matrix, onboarding pipeline, GSAP, phases ≈21 d, 10 client questions) and docs/API_CALLS.md. Plan only.
+
+## 2026-11-23 — redesign phase 1 (2.18.0.0, built, not deployed)
+- Hero on the page grid (was 79 px right of every other section); web part declares full-bleed.
+- Nav: bar slims from 64 to 54 px after scrolling; avatar highlighted on account screens; phone bar Home · My bookings · Book (raised centre) · Schedule · More (opens the account menu); Notices stay under the bell.
+- Every secondary screen (Check in, Documents and compliance, Billing and payments, My membership, Messages, Event request, Storage, My team) gets the same page header as the main pages: back link, eyebrow, 60 px title (36 px phone), one-line lede; repeated inner titles hidden.
+- New Policies and help page (booking, cancelling, plans and payments with the open plans from AvenuePlans/the client sheet, documents, events and storage, terms and privacy pending from Flavors); linked from the footer and the account menu (replaces the 3-line "Facility policies" fold).
+- Footer: brand + Message Flavors, Membership, Kitchen, Policies and help columns; year computed.
+- Home: bento overview (Coming up, Hours, Balance due, Notices incl. read ones, Documents, Book something bigger); the early-entry band and "Three things" moved into Policies and help.
+- New test PoliciesView.test.tsx. 368 tests pass.
+
+## 2026-11-23 — redesign P2–P6 integrated (member portal 2.19.0.0, built, not deployed)
+- Lead integration: wired Membership → Messages link; fixed the Book cart hours wording (extra time counted for this booking only, not the month's earlier overage); documents without a mirror record stay "Current" (no regression before AvenueMyDocuments exists). Full build 426 tests; GSAP Flip from gsap/dist/Flip builds in SPFx.

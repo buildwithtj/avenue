@@ -5,7 +5,9 @@ import { formatCents } from '../../../avenue/billing';
 import { localDay } from '../../../avenue/calendar';
 import { DINING_SEATS, EXTRA_HOUR_CENTS, DEPOSIT_CENTS, PACKAGES, eventQuote, validateEvent } from '../../../avenue/events';
 import { type AvenueReadSource, newSubmissionId } from '../../../avenue/readSource';
-import { toast } from './feedback';
+import { toast, celebrate } from './feedback';
+import rx from './Ref.module.scss';
+import { ModuleCard } from './RefUi';
 import { Empty, RequestStatus, formatDate, useCalendarDay, useLoad, LoadError } from './ui';
 
 export interface IEventsViewProps { source: AvenueReadSource; facilityId: string; timeZone: string }
@@ -35,13 +37,14 @@ export default function EventsView(props: IEventsViewProps): React.ReactElement 
     if (errors.length > 0) { setError(errors.join(' ')); return; }
     setBusy(true); setError(undefined);
     source.submitEventRequest(input, newSubmissionId('evt'), today)
-      .then(() => { toast('Event request sent. Nothing was charged.'); setBusy(false); setPkg(''); setDate(''); setGuests(''); setNotes(''); mine.reload(); })
+      .then(() => { toast('Event request sent. Nothing was charged.'); celebrate('Request sent'); setBusy(false); setPkg(''); setDate(''); setGuests(''); setNotes(''); mine.reload(); })
       .catch((err: Error) => { setError(err.message); setBusy(false); });
   };
 
   return (
     <section className={s.nm} aria-label="Event request">
-      <header className={s.nmHead}><div><h2>Event request</h2><p className={s.cwHelp}>Book the dining room for a private event. Flavors approves every request; sending one charges nothing.</p></div></header>
+      <ModuleCard eyebrow="PRIVATE EVENTS" title="Event request">
+        <p className={rx['module-lede']}>Book the dining room for a private event. Flavors approves every request; sending one charges nothing.</p>
       <form className={s.nmForm} onSubmit={submit}>
         <fieldset className={s.nmPkgs}>
           <legend>Package</legend>
@@ -70,7 +73,8 @@ export default function EventsView(props: IEventsViewProps): React.ReactElement 
         {error && <p className={s.cwErr} role="alert">{error}</p>}
         <div className={s.cwActions}><button type="submit" className={s.cwYes} disabled={busy}>{busy ? 'Sending…' : 'Send request'}</button></div>
       </form>
-      <h3 className={s.nmSub}>Your requests</h3>
+      </ModuleCard>
+      <ModuleCard eyebrow="HISTORY" title="Your requests">
       <LoadError error={mine.error} what="your event requests" onRetry={mine.reload} />
       {mine.data && mine.data.length === 0 && <Empty>No event requests yet.</Empty>}
       <ul className={s.nmList}>
@@ -81,6 +85,7 @@ export default function EventsView(props: IEventsViewProps): React.ReactElement 
           </li>
         ))}
       </ul>
+      </ModuleCard>
     </section>
   );
 }

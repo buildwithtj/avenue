@@ -613,3 +613,62 @@
               Height: =40
               Color: =RGBA(91,99,112,1)
               Size: =11
+        - stoSaveAmt:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save amount"
+              X: =690
+              Y: =540
+              Width: =200
+              Height: =40
+              OnSelect: |-
+                =IfError(Patch(AvenueStorageCases, LookUp(AvenueStorageCases, CaseId = stoGal.Selected.CaseId), {MonthlyCents: Round(Value(stoAmt.Text) * 100, 0), Notes: Trim(Coalesce(stoGal.Selected.Notes, "") & Char(10) & "Amount changed to $" & Text(Value(stoAmt.Text), "0.00") & " by " & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM"))}); Notify("Amount saved.", NotificationType.Success), Notify("Could not save.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              DisplayMode: =If(IsNumeric(stoAmt.Text) && Value(stoAmt.Text) > 0, DisplayMode.Edit, DisplayMode.Disabled)
+              Visible: =!IsBlank(stoGal.Selected) && stoGal.Selected.Status.Value = "Approved"
+        - stoReopen:
+            Control: Classic/Button
+            Properties:
+              Text: ="Re-open (back to Requested)"
+              X: =900
+              Y: =540
+              Width: =260
+              Height: =40
+              OnSelect: |-
+                =If(IsBlank(Trim(stoReason.Text)), Notify("Write why in the reason box first.", NotificationType.Warning), IfError(Patch(AvenueStorageCases, LookUp(AvenueStorageCases, CaseId = stoGal.Selected.CaseId), {Status: {Value: "Requested"}, Notes: Trim(Coalesce(stoGal.Selected.Notes, "") & Char(10) & "Re-opened: " & Trim(stoReason.Text) & " by " & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM"))}); Reset(stoReason); Notify("Re-opened.", NotificationType.Success), Notify("Could not save.", NotificationType.Error)))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =!IsBlank(stoGal.Selected) && (stoGal.Selected.Status.Value = "Approved" || stoGal.Selected.Status.Value = "Declined")

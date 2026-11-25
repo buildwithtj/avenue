@@ -1,17 +1,20 @@
 // SharePoint bridge (docs/MODULES_PLAN.md §11.2). Host -> SharePoint goes through NARROW per-list flows, one URL each (its signature is the
-// secret): SP_BRIDGE_APPLICANTS / _MEMBERS / _INVOICES / _LEDGER (read only) and SP_BRIDGE_GRANT. SharePoint -> host arrives at
+// secret): SP_BRIDGE_APPLICANTS / _MEMBERS / _INVOICES / _LEDGER (read only), optional SP_BRIDGE_PLANS (read only, [PROPOSED]) and SP_BRIDGE_GRANT. SharePoint -> host arrives at
 // POST /api/bridge/request from the flow "Avenue - Host requests" with header x-avenue-bridge-key. Identity is the item author the flow passes.
 import { randomUUID, timingSafeEqual, createHash } from 'node:crypto';
-import { planById, lookupKey, EVENT_PACKAGES, DEPOSIT_CENTS } from './plans.mjs';
+import { PLANS, planById, lookupKey, EVENT_PACKAGES, DEPOSIT_CENTS } from './plans.mjs';
 
 export const FACILITY = 'flavors-hyattsville';
 const DAY = 86400;
 const OPEN_STAGES = ['PaymentPending', 'Paid', 'InviteNeeded', 'Onboarding'];
 
 const WRITABLE = new Set(['AvenueApplicants', 'AvenueInvoices', 'AvenueMembers', 'AvenueSensorLatest', 'AvenueSensorHourly', 'AvenueTempExcursions']);
-const READABLE = new Set([...WRITABLE, 'AvenueHoursLedger', 'AvenueSensors']);   // ledger and the sensor catalogue are read only
+const READ_ONLY = new Set(['AvenueHoursLedger', 'AvenueSensors', 'AvenuePlans']);   // ledger, sensor catalogue and plans are read only
+const READABLE = new Set([...WRITABLE, ...READ_ONLY]);
 export const BRIDGE_ENV = { AvenueApplicants: 'SP_BRIDGE_APPLICANTS', AvenueMembers: 'SP_BRIDGE_MEMBERS', AvenueInvoices: 'SP_BRIDGE_INVOICES', AvenueHoursLedger: 'SP_BRIDGE_LEDGER' };
 /** Sensors are optional (docs/ENVIRONMENT_PLAN.md): one narrow flow per list, not part of `complete`. */
+/** [PROPOSED] Optional read-only plans flow: /join and the Join request read AvenuePlans instead of plans.mjs (fallback). Not part of `complete`. */
+export const PLANS_ENV = { AvenuePlans: 'SP_BRIDGE_PLANS' };
 export const SENSOR_ENV = { AvenueSensors: 'SP_BRIDGE_SENSORS', AvenueSensorLatest: 'SP_BRIDGE_SENSOR_LATEST', AvenueSensorHourly: 'SP_BRIDGE_SENSOR_HOURLY', AvenueTempExcursions: 'SP_BRIDGE_EXCURSIONS' };
 const NAME = /^[A-Za-z][A-Za-z0-9_]*$/;
 const lit = (s) => String(s).replace(/'/g, "''");   // OData string literal body
@@ -36,7 +39,7 @@ export function createBridge({ urls = {}, grantUrl, fetch, sleep = (ms) => new P
   }
   const check = (name, write) => { if (!(write ? WRITABLE : READABLE).has(name)) throw new Error(`bridge: list ${name} not allowed`); };
   const relay = (name, method, suffix, headers, body) => {
-    if ((name === 'AvenueHoursLedger' || name === 'AvenueSensors') && method !== 'GET') throw new Error(`bridge: ${name} is read only`);
+    if (READ_ONLY.has(name) && method !== 'GET') throw new Error(`bridge: ${name} is read only`);
     return call(urls[name], { method, suffix, headers, ...(body !== undefined ? { body } : {}) }, `${method} ${name}${suffix.split('?')[0]}`);
   };
   const names = (a) => { for (const n of a) if (!NAME.test(n)) throw new Error('bridge: bad field name'); return a; };
@@ -66,11 +69,11 @@ export function createBridge({ urls = {}, grantUrl, fetch, sleep = (ms) => new P
 /** Builds the bridge from env. `complete` is true only when all four list flows and the grant flow are configured. */
 export function bridgeFromEnv(env, fetch) {
   const pick = (m) => Object.fromEntries(Object.entries(m).map(([list, v]) => [list, env[v] || '']));
-  const urls = pick(BRIDGE_ENV), sensorUrls = pick(SENSOR_ENV);
+  const urls = pick(BRIDGE_ENV), sensorUrls = pick(SENSOR_ENV), planUrls = pick(PLANS_ENV);
   const grantUrl = env.SP_BRIDGE_GRANT || '';
-  const any = grantUrl || Object.values({ ...urls, ...sensorUrls }).some(Boolean);
-  return { bridge: any ? createBridge({ urls: { ...urls, ...sensorUrls }, grantUrl, fetch }) : undefined, complete: !!grantUrl && Object.values(urls).every(Boolean),
-    sensorsComplete: Object.values(sensorUrls).every(Boolean) };
+  const any = grantUrl || Object.values({ ...urls, ...sensorUrls, ...planUrls }).some(Boolean);
+  return { bridge: any ? createBridge({ urls: { ...urls, ...sensorUrls, ...planUrls }, grantUrl, fetch }) : undefined, complete: !!grantUrl && Object.values(urls).every(Boolean),
+    sensorsComplete: Object.values(sensorUrls).every(Boolean), plansConfigured: !!planUrls.AvenuePlans };
 }
 
 export const q = (s) => `'${String(s).replace(/'/g, "''")}'`;   // OData string literal
@@ -80,9 +83,9 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const str = (v, min, max) => { const s = String(v ?? '').trim(); return s.length >= min && s.length <= max ? s : undefined; };
 
 /** Validates join input; returns {value} or {errors}. */
-export function validateJoin(p) {
+export function validateJoin(p, plans = PLANS) {
   const errors = [];
-  const plan = planById(p?.planId);
+  const plan = planById(p?.planId, plans);
   if (!plan || !plan.openToNew) errors.push('Choose a current membership plan.');
   const businessName = str(p?.businessName, 2, 120); if (!businessName) errors.push('Business name is required (2–120 characters).');
   const contactName = str(p?.contactName, 2, 120); if (!contactName) errors.push('Contact name is required (2–120 characters).');
@@ -105,7 +108,8 @@ export function nextAnchor(day, nowSec) {
 export async function startJoin({ email, input, source }, deps) {
   email = String(email || '').trim().toLowerCase();
   if (!EMAIL.test(email)) return { outcome: 'Refused: a valid e-mail address is needed.' };
-  const v = validateJoin(input);
+  const plans = deps.plans ? await deps.plans() : PLANS;   // [PROPOSED] SharePoint AvenuePlans when the plans flow is set, else plans.mjs
+  const v = validateJoin(input, plans);
   if (v.errors) return { outcome: `Refused: ${v.errors.join(' ')}`, errors: v.errors };
   const j = v.value;
   if ((await deps.bridge.query('AvenueMembers', `MemberId eq ${q(email)} and Status eq 'Active'`, ['MemberId'], 1)).length)
@@ -127,7 +131,7 @@ export async function startJoin({ email, input, source }, deps) {
     });
     return { outcome: 'Test mode: payment skipped, nothing was charged. Refresh this page to open your account.', ...(portal ? {} : { link: `${deps.publicBaseUrl}/join/done` }) };
   }
-  const [price] = await deps.stripe.pricesByLookupKeys(deps.account, [lookupKey(j.planId, j.payMethod)]);
+  const [price] = await deps.stripe.pricesByLookupKeys(deps.account, [lookupKey(j.planId, j.payMethod, plans)]);
   if (!price) throw new Error(`stripe: no price for ${j.planId}`);
   await deps.bridge.upsert('AvenueApplicants', 'ApplicantId', applicantId, {
     FacilityId: FACILITY, ApplicantId: applicantId, Email: email, BusinessName: j.businessName, ContactName: j.contactName, Phone: j.phone,

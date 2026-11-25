@@ -106,6 +106,11 @@ export function toast(text: string, tone: Tone = 'ok', withSound: boolean = true
   try { window.dispatchEvent(new CustomEvent<IToast>('avenue-toast', { detail: { id: next++, text, tone } })); } catch { /* old browser */ }
 }
 
+/** A once-only success moment (request sent, checklist sent, document sent): the shell plays a short check + dots burst. Never call it on a repeat click. */
+export function celebrate(text: string): void {
+  try { window.dispatchEvent(new CustomEvent<{ text: string }>('avenue-celebrate', { detail: { text } })); } catch { /* old browser */ }
+}
+
 export function alertsSupported(): boolean { return typeof window !== 'undefined' && 'Notification' in window; }
 
 /** Asks for desktop-alert permission. Call only from a tap. */

@@ -27,43 +27,59 @@ const field = (label: RegExp): Element => Array.from(host.querySelectorAll('labe
 const msg = (id: number, thread: string, o: object = {}): object => ({ id, messageId: `m${id}`, threadId: thread, category: 'Billing', subject: 'Invoice question', body: `Body ${id}`, ...o });
 
 describe('SupportView', () => {
+  const sendBtn = (): HTMLButtonElement => host.querySelector('button[aria-label="Send"]') as HTMLButtonElement;
+  const row = (re: RegExp): HTMLButtonElement => Array.from(host.querySelectorAll('button')).find(b => re.test(b.textContent || '')) as HTMLButtonElement;
+  /** New message -> topic tile -> subject -> chat. */
+  const startChat = async (topic: RegExp, subject: string): Promise<void> => {
+    await click(btn(/New message/));
+    await click(row(topic));
+    await set(field(/Subject/), subject);
+    await click(btn(/Start chat/));
+  };
   it('shows the empty state and refuses an empty message without calling the source', async () => {
     const sent: unknown[][] = [];
     const src = { listMySupportMessages: async () => [], submitSupportMessage: async (...a: unknown[]) => { sent.push(a); } } as never;
     await draw(<SupportView source={src} facilityId="f" />);
     expect(host.textContent).toContain('No messages yet');
-    await click(btn(/New message/)); await click(btn(/^Send$/));
+    await click(btn(/New message/));
+    expect(host.textContent).toContain('What is it about?');
+    await click(row(/^Billing/));
+    expect(btn(/Start chat/).disabled).toBe(true);
+    await set(field(/Subject/), 'Invoice');
+    await click(btn(/Start chat/));
+    await click(sendBtn());
     expect(sent.length).toBe(0);
-    expect(host.querySelector('[role="alert"]')?.textContent).toContain('Choose what your message is about.');
+    expect(host.querySelector('[role="alert"]')?.textContent).toContain('Your message needs 5 to 2000 characters.');
   });
   it('shows the error the source returns when sending fails', async () => {
     const src = { listMySupportMessages: async () => [], submitSupportMessage: async () => { throw new Error('Avenue: requests cannot be sent from this page.'); } } as never;
     await draw(<SupportView source={src} facilityId="f" />);
-    await click(btn(/New message/));
-    await set(field(/About/), 'Other'); await set(field(/Subject/), 'Hello there'); await set(field(/Message/), 'Some text here');
-    await click(btn(/^Send$/));
+    await startChat(/^General/, 'Hello there');
+    expect(host.textContent).toContain('Chat assistant (coming soon)');
+    await set(field(/Message/), 'Some text here');
+    await click(sendBtn());
     expect(host.querySelector('[role="alert"]')?.textContent).toContain('requests cannot be sent');
   });
   it('sends category, subject and body; the thread id is left to the source', async () => {
     const sent: unknown[][] = [];
     const src = { listMySupportMessages: async () => [], submitSupportMessage: async (...a: unknown[]) => { sent.push(a); } } as never;
     await draw(<SupportView source={src} facilityId="fac1" />);
-    await click(btn(/New message/));
-    await set(field(/About/), 'Billing'); await set(field(/Subject/), 'Invoice'); await set(field(/Message/), 'Please check it');
-    await click(btn(/^Send$/));
+    await startChat(/^Billing/, 'Invoice');
+    await set(field(/Message/), 'Please check it');
+    await click(sendBtn());
     expect(sent[0][0]).toEqual({ facilityId: 'fac1', category: 'Billing', subject: 'Invoice', body: 'Please check it' });
     expect(String(sent[0][1])).toMatch(/^msg-/); expect(sent[0][2]).toBeUndefined();
   });
-  it('lists threads newest first with Reply received, shows the reply, and replies in the same thread', async () => {
+  it('lists threads newest first with their status, shows the reply, and replies in the same thread', async () => {
     const sent: unknown[][] = [];
     const rows = [msg(1, 'a', { subject: 'First', reply: 'We fixed it' }), msg(2, 'b', { subject: 'Second' })];
     const src = { listMySupportMessages: async () => rows, submitSupportMessage: async (...a: unknown[]) => { sent.push(a); } } as never;
     await draw(<SupportView source={src} facilityId="f" />);
-    const cards = Array.from(host.querySelectorAll('li button')).map(b => b.textContent || '');
-    expect(cards[0]).toContain('Second'); expect(cards[1]).toContain('First'); expect(cards[1]).toContain('Reply received'); expect(cards[0]).not.toContain('Reply received');
-    await click(host.querySelectorAll('li button')[1]);
+    const cards = Array.from(host.querySelectorAll('ul li button')).filter(b => /First|Second/.test(b.textContent || '')).map(b => b.textContent || '');
+    expect(cards[0]).toContain('Second'); expect(cards[1]).toContain('First'); expect(cards[1]).toContain('Answered'); expect(cards[0]).toContain('Open');
+    await click(row(/First/));
     expect(host.textContent).toContain('Reply from Flavors'); expect(host.textContent).toContain('We fixed it');
-    await set(field(/Reply/), 'Thank you'); await click(btn(/^Send$/));
+    await set(field(/Reply/), 'Thank you'); await click(sendBtn());
     expect(sent[0][0]).toMatchObject({ category: 'Billing', subject: 'Re: First', body: 'Thank you' }); expect(sent[0][2]).toBe('a');
   });
   it('shows a load error', async () => {

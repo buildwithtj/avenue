@@ -132,8 +132,8 @@ export function equipmentChips(space: string, ids: string[] | undefined, resourc
 }
 
 // ---- Notices: per-device read state ----
-// [PROPOSED] Read state is kept in this browser only (localStorage). Per-member read state across devices needs an
-// own-items list (AvenueNoticeReads, plan section 5.2); until the client wants it, a cleared browser shows old notices as unread.
+// localStorage is the instant, offline layer. [PROPOSED] useReadIds also merges and saves the member's own AvenueNoticeReads
+// items so read state follows them across devices; until that list exists it stays per browser.
 export const NOTICES_READ_KEY: string = 'avenue.notices.read';
 const READ_CAP: number = 300;
 
@@ -156,6 +156,19 @@ export function markNoticesRead(ids: number[], storage: IStorageLike | undefined
   const merged: number[] = readNoticeIds(storage).concat(ids).filter((n, i, all) => all.indexOf(n) === i).slice(-READ_CAP);
   try { if (storage) { storage.setItem(NOTICES_READ_KEY, JSON.stringify(merged)); } } catch { /* private window or full: keep going */ }
   return merged;
+}
+
+const DAY_MS: number = 86400000;
+
+/** "Recent" tab: published in the last 7 days. */
+export function isRecentNotice(n: { publishedUtc: string }, nowMs: number): boolean {
+  return nowMs - Date.parse(n.publishedUtc) <= 7 * DAY_MS;
+}
+
+/** "Expires in 5 h" when the notice's ExpiresAt is within 48 hours; otherwise undefined. */
+export function noticeExpiryLabel(n: { expiresUtc?: string }, nowMs: number): string | undefined {
+  const left: number = n.expiresUtc ? Date.parse(n.expiresUtc) - nowMs : NaN;
+  return left > 0 && left <= 2 * DAY_MS ? `Expires in ${Math.max(1, Math.ceil(left / 3600000))} h` : undefined;
 }
 
 export function unreadNotices(notices: INotice[], readIds: number[]): INotice[] {

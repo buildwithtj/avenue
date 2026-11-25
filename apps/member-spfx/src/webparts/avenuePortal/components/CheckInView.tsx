@@ -1,14 +1,17 @@
 import * as React from 'react';
-import { DefaultButton, PrimaryButton, Spinner } from '@fluentui/react';
+import { celebrate } from './feedback';
 import styles from './AvenuePortal.module.scss';
 import type { Answer } from '../../../avenue/checkin';
-import { checkInCountdown, defaultBooking, eligibleBookings, progress, recordState, suggestKind } from '../../../avenue/checklist';
+import { checkInCountdown, defaultBooking, eligibleBookings, progress, recordState, sentChecklistLabel, suggestKind } from '../../../avenue/checklist';
+import ChecklistStepper from './ChecklistStepper';
 import WellnessCheck from './WellnessCheck';
 import { wellnessNames } from '../../../avenue/team';
 import s from './Site.module.scss';
 import type { CheckInKind, IChecklistQuestion, IFacility, IMyCheckIn, IMyRequest } from '../../../avenue/contracts';
 import { dateParts } from '../../../avenue/home';
 import { type AvenueReadSource, newSubmissionId } from '../../../avenue/readSource';
+import rx from './Ref.module.scss';
+import { ModuleCard, ModuleRow } from './RefUi';
 import { Empty, ErrorBar, useLoad } from './ui';
 
 export interface ICheckInViewProps {
@@ -75,12 +78,12 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
     return (
       <div className={styles.errorPanel} role="alert">
         <strong>We could not load check-in.</strong><span>{data.error}</span>
-        <DefaultButton text="Try again" onClick={data.reload} />
+        <button type="button" className={rx['secondary-button']} onClick={data.reload}>Try again</button>
       </div>
     );
   }
   if (!data.data) {
-    return <Spinner label="Loading check-in" />;
+    return <div className={rx['ref-skeleton']} role="status" aria-label="Loading check-in" />;
   }
 
   const now: number = Date.now();
@@ -107,7 +110,7 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
     setError(undefined);
     const id: string = newSubmissionId('chk');
     source.submitCheckIn({ facilityId: facility.facilityId, bookingId, kind: activeKind, answers }, data.data!.questions, id)
-      .then(() => { setSentId(id); setAnswers({}); })
+      .then(() => { setSentId(id); setAnswers({}); celebrate('Checklist sent'); })
       .catch((err: Error) => setError(`${err.message} Your answers are kept; you can send it again.`))
       .then(() => { inFlight.current = false; setSending(false); }, () => { inFlight.current = false; setSending(false); });
   };
@@ -115,17 +118,17 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
   if (sentId) {
     const r = recordState(sentItem);
     return (
-      <section className={`${styles.sentCard} ${r.state === 'recorded' ? styles.sentOk : r.state === 'not-recorded' ? styles.sentBad : ''}`} aria-live="polite" aria-label="Checklist result">
-        <div className={styles.eyebrow}>{activeKind} checklist</div>
-        <h2 className={styles.sentTitle}>{r.state === 'recorded' ? 'Checklist recorded.' : r.state === 'not-recorded' ? 'Checklist not recorded.' : 'Checklist sent.'}</h2>
-        <p>{r.text}</p>
-        <div className={styles.nextActions}>
-          {activeKind === 'Entry' && data.data.questions.some(q => q.kind === 'Wellness') && (
-            <PrimaryButton className={styles.bigButton} text="Next: team wellness" onClick={() => { setSentId(undefined); setKind('Wellness'); }} />
-          )}
-          <DefaultButton className={styles.bigButton} text="Done" onClick={() => { setSentId(undefined); }} />
-        </div>
-      </section>
+      <div aria-live="polite" aria-label="Checklist result">
+        <ModuleCard eyebrow={`${activeKind} checklist`.toUpperCase()} title={r.state === 'recorded' ? 'Checklist recorded.' : r.state === 'not-recorded' ? 'Checklist not recorded.' : 'Checklist sent.'} count={r.state === 'recorded' ? 'Recorded' : r.state === 'not-recorded' ? 'Not recorded' : 'Sent'}>
+          <p className={rx['module-lede']}>{r.text}</p>
+          <div className={rx['modal-footer']} style={{ borderTop: 0, justifyContent: 'flex-start', paddingTop: 0 }}>
+            {activeKind === 'Entry' && data.data.questions.some(q => q.kind === 'Wellness') && (
+              <button type="button" className={rx['primary-button']} onClick={() => { setSentId(undefined); setKind('Wellness'); }}>Next: team wellness</button>
+            )}
+            <button type="button" className={rx['secondary-button']} onClick={() => { setSentId(undefined); }}>Done</button>
+          </div>
+        </ModuleCard>
+      </div>
     );
   }
 
@@ -134,7 +137,7 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
       {eligible.length === 0 ? (
         <Empty>You have no approved booking today or in the next 24 hours, so there is no checklist to complete.</Empty>
       ) : (
-        <section className={styles.bookForm} aria-label="Checklist">
+        <ModuleCard eyebrow="BEFORE AND AFTER YOUR BOOKING" title="Checklist" icon="clipboard-check" focal ariaLabel="Checklist">
           <fieldset className={styles.fieldset}>
             <legend className={styles.sectionLabel}>Which booking?</legend>
             <div className={styles.spaceCards}>
@@ -144,7 +147,7 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
                   <label key={b.requestId} className={`${styles.spaceCard} ${bookingId === b.requestId ? styles.spaceOn : ''}`}>
                     <input type="radio" name="booking" checked={bookingId === b.requestId} onChange={() => chooseBooking(b.requestId)} />
                     <strong>{p.weekday} {p.month} {p.day}, {p.time}</strong>
-                    <span>{b.equipmentIds && b.equipmentIds.length > 0 ? `${b.space} · ${b.equipmentIds.join(', ')}` : b.space}</span>
+                    <span className={s.kitChips}><i>{b.space}</i>{(b.equipmentIds || []).slice(0, 2).map(x => <i key={x}>{x}</i>)}{(b.equipmentIds || []).length > 2 && <i>+{(b.equipmentIds || []).length - 2}</i>}</span>
                   </label>
                 );
               })}
@@ -169,67 +172,33 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
             <Empty>Flavors has not set up the {activeKind.toLowerCase()} checklist yet.</Empty>
           ) : (
             <>
-              <div className={styles.checkProgress} aria-live="polite">{prog.answered} of {prog.total} answered</div>
-              <ul className={styles.questionList}>
-                {questions.map(q => (
-                  <li key={q.id} className={styles.questionCard}>
-                    <div id={`q-${q.id}`} className={styles.questionText}>{q.text}</div>
-                    <div className={styles.yesNo} role="radiogroup" aria-labelledby={`q-${q.id}`}>
-                      {(['Yes', 'No'] as Answer[]).map(a => (
-                        <button key={a} id={`q-${q.id}-${a}`} type="button" role="radio" aria-checked={answers[q.id] === a}
-                          tabIndex={answers[q.id] === a || (!answers[q.id] && a === 'Yes') ? 0 : -1}
-                          className={`${styles.yesNoBtn} ${answers[q.id] === a ? (a === 'Yes' ? styles.yesOn : styles.noOn) : ''}`}
-                          onKeyDown={e => {
-                            if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].indexOf(e.key) >= 0) {
-                              e.preventDefault();
-                              const other: Answer = a === 'Yes' ? 'No' : 'Yes';
-                              setAnswers({ ...answers, [q.id]: other });
-                              window.setTimeout(() => { const el: HTMLElement | null = document.getElementById(`q-${q.id}-${other}`); if (el) { el.focus(); } }, 0);
-                            }
-                          }}
-                          onClick={() => setAnswers({ ...answers, [q.id]: a })}>{a}</button>
-                      ))}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              {prog.noCount > 0 && <p className={styles.hint}>Flavors can see every answer, including the ones marked No.</p>}
+              <ChecklistStepper key={`${bookingId}-${activeKind}`} questions={questions} answers={answers} onAnswer={(id, a) => setAnswers(prev => ({ ...prev, [id]: a }))} onSend={send} sending={sending} canSend={!!bookingId && prog.complete} />
             </>
           )}
 
           {activeKind !== 'Wellness' && (
             <>
               <ErrorBar error={error} onDismiss={() => setError(undefined)} />
-              <div className={styles.stepActions}>
-                <PrimaryButton className={styles.bigButton} text={sending ? 'Sending…' : 'Send checklist'} onClick={send} disabled={sending || !bookingId || !prog.complete} />
-              </div>
             </>
           )}
-        </section>
+        </ModuleCard>
       )}
 
-      <section aria-label="Sent checklists">
-        <h2 className={styles.sectionLabel}>Sent checklists</h2>
+      <ModuleCard eyebrow="HISTORY" title="Sent checklists" count={`${data.data.history.length}`}>
         {data.data.history.length === 0 ? <Empty>None yet.</Empty> : (
-          <ul className={styles.bookGroup}>
+          <div className={rx['module-booking-list']}>
             {data.data.history.slice().reverse().slice(0, 20).map(h => {
-              const b: IMyRequest | undefined = byId.get(h.bookingId);
-              const p = b ? dateParts(b.startUtc, b.endUtc, tz) : undefined;
               const r = recordState(h);
               return (
-                <li key={h.submissionId} className={styles.bookCard}>
-                  <div className={styles.bookBody}>
-                    <span className={styles.rowTitle}>{h.kind === 'Wellness' ? `Wellness: ${h.personName || 'team member'}` : `${h.kind} checklist`}</span>
-                    <span className={styles.rowMeta}>{p ? `${p.weekday} ${p.month} ${p.day}, ${p.time}` : h.bookingId}</span>
-                    <span><span className={`${styles.statusPill} ${r.state === 'recorded' ? styles.statusOk : r.state === 'not-recorded' ? styles.statusBad : styles.statusWaiting}`}>{r.state === 'recorded' ? 'Recorded' : r.state === 'not-recorded' ? 'Not recorded' : 'Being recorded'}</span></span>
-                    {r.state === 'not-recorded' && <span className={styles.muted}>{r.text}</span>}
-                  </div>
-                </li>
+                <ModuleRow key={h.submissionId} avatar={h.kind.charAt(0)} tone={r.state === 'recorded' ? 'teal' : r.state === 'not-recorded' ? 'slate' : 'gold'}
+                  title={h.kind === 'Wellness' ? `Wellness: ${h.personName || 'team member'}` : `${h.kind} checklist`} sub={sentChecklistLabel(h, byId.get(h.bookingId), tz)}
+                  status={r.state === 'recorded' ? 'Recorded' : r.state === 'not-recorded' ? 'Not recorded' : 'Sent'} statusTone={r.state === 'recorded' ? 'ok' : r.state === 'not-recorded' ? 'bad' : 'wait'}
+                  extra={r.state === 'not-recorded' ? <span>{r.text}</span> : undefined} />
               );
             })}
-          </ul>
+          </div>
         )}
-      </section>
+      </ModuleCard>
     </div>
   );
 }

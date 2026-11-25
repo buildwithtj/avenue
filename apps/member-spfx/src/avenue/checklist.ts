@@ -6,6 +6,7 @@
 import type { CheckInKind, IChecklistQuestion, IFacility, IMyCheckIn, IMyRequest } from './contracts';
 import { bookingWindows } from './windows';
 import type { Answer } from './checkin';
+import { dateParts } from './home';
 
 const HOUR_MS: number = 60 * 60 * 1000;
 
@@ -78,4 +79,20 @@ export function checkInCountdown(startUtc: string, nowMs: number, earlyMin: numb
   const start: number = Date.parse(startUtc);
   if (isNaN(start) || nowMs < start - earlyMin * MIN_MS || nowMs > start + graceMin * MIN_MS) { return undefined; }
   return Math.max(0, Math.ceil((start + graceMin * MIN_MS - nowMs) / MIN_MS));
+}
+
+/**
+ * A1: what a sent checklist was for, without ids. The booking's date, time and equipment when the member can read it (own
+ * request or the booking mirror); otherwise "Booking" and the day the checklist was sent.
+ */
+export function sentChecklistLabel(h: IMyCheckIn, booking: IMyRequest | undefined, timeZone: string): string {
+  if (booking) {
+    const p = dateParts(booking.startUtc, booking.endUtc, timeZone);
+    const what: string = booking.equipmentIds && booking.equipmentIds.length > 0 ? booking.equipmentIds.join(', ') : booking.space;
+    return `${p.weekday} ${p.month} ${p.day}, ${p.time} · ${what}`;
+  }
+  if (h.createdUtc && !isNaN(Date.parse(h.createdUtc))) {
+    return `Booking · sent ${new Intl.DateTimeFormat('en-US', { timeZone, weekday: 'short', month: 'short', day: 'numeric' }).format(new Date(h.createdUtc))}`;
+  }
+  return 'Booking';
 }

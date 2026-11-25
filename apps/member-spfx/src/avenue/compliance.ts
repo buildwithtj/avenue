@@ -126,3 +126,55 @@ export function onboarding(membership: { status?: string; planName?: string; col
   ];
   return { steps, complete: steps.every(x => x.done), missing, sent, required: required.length };
 }
+
+// ---- Required documents list (R12). ----
+
+/** [PROPOSED] fallback: the sheet's seven types (CATEGORIES) while AvenueRequiredDocTypes is empty (Q-11 unanswered). */
+export function requiredOrSheet(required: DocType[]): DocType[] {
+  return required.length > 0 ? required : wizardSteps().map(x => x.item.type);
+}
+
+export type RequiredState = 'current' | 'waiting' | 'expiring' | 'expired' | 'missing';
+
+export interface IRequiredRow {
+  type: DocType;
+  /** Plain-words help from CATEGORIES, when the type is one of the seven. */
+  help?: string;
+  state: RequiredState;
+  doc?: IMyDocumentSubmission;
+  /** Days to expiry (negative once expired). */
+  daysLeft?: number;
+  /** The sheet's warning step reached: 30, 15 or 10 days. */
+  warn?: number;
+  /** Flavors did not accept the newest upload. */
+  rejected?: boolean;
+}
+
+const DAY: number = 24 * 60 * 60 * 1000;
+
+/**
+ * Status of each required type from the newest document of that type. A valid document is "current"; it is "waiting" only
+ * when the member-visible record (AvenueMyDocuments) explicitly says Flavors has not verified it yet, so without that list the
+ * page behaves as before. A rejected one counts as missing.
+ */
+export function requiredRows(types: DocType[], docs: IMyDocumentSubmission[], todayYmd: string): IRequiredRow[] {
+  const newest = newestPerType(docs);
+  const help: Record<string, string> = {};
+  wizardSteps().forEach(x => { help[x.item.type] = x.item.help; });
+  return types.map(type => {
+    const doc: IMyDocumentSubmission | undefined = newest.get(type);
+    if (!doc) { return { type, help: help[type], state: 'missing' as RequiredState }; }
+    const rejected: boolean = (doc.outcome || '').indexOf('Not accepted') === 0;
+    const daysLeft: number = Math.round((Date.parse(`${doc.expiryDate}T12:00:00Z`) - Date.parse(`${todayYmd}T12:00:00Z`)) / DAY);
+    const warn: number | undefined = WARN_DAYS.slice().sort((a, b) => a - b).filter(d => daysLeft >= 0 && daysLeft <= d)[0];
+    const date: DateState = dateState(doc.expiryDate, todayYmd);
+    const state: RequiredState = rejected ? 'missing' : date === 'expired' ? 'expired' : date === 'expiring' ? 'expiring' : doc.verified === false ? 'waiting' : 'current';
+    return { type, help: help[type], state, doc, daysLeft, warn, rejected };
+  });
+}
+
+export function requiredSummary(rows: IRequiredRow[]): Record<RequiredState, number> {
+  const out: Record<RequiredState, number> = { current: 0, waiting: 0, expiring: 0, expired: 0, missing: 0 };
+  rows.forEach(r => { out[r.state] += 1; });
+  return out;
+}

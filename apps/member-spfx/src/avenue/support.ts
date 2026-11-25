@@ -1,11 +1,13 @@
 // Messages with Flavors: validation, the intake item, and thread grouping. Pure. No promise about reply times (Q-13).
-import { SUPPORT_CATEGORIES, type IMySupportMessage, type SupportCategory } from './contracts';
+import { SUPPORT_CATEGORIES, type IMySupportMessage } from './contracts';
 
-export interface ISupportInput { facilityId: string; category: SupportCategory | ''; subject: string; body: string }
+/** `category` is free text: the choices come from AvenueSupportCategories (staff-managed), falling back to SUPPORT_CATEGORIES. */
+export interface ISupportInput { facilityId: string; category: string; subject: string; body: string }
 
-export function validateSupport(i: ISupportInput): string[] {
+/** `categories`: the choices the member was offered (listSupportCategories); the flow checks again. */
+export function validateSupport(i: ISupportInput, categories: string[] = SUPPORT_CATEGORIES): string[] {
   const e: string[] = [];
-  if (SUPPORT_CATEGORIES.indexOf(i.category as SupportCategory) < 0) { e.push('Choose what your message is about.'); }
+  if (!i.category || categories.indexOf(i.category) < 0) { e.push('Choose what your message is about.'); }
   const s: number = i.subject.trim().length, b: number = i.body.trim().length;
   if (s < 3 || s > 120) { e.push('The subject needs 3 to 120 characters.'); }
   if (b < 5 || b > 2000) { e.push('Your message needs 5 to 2000 characters.'); }
@@ -22,7 +24,7 @@ export function toSupportItem(i: ISupportInput, messageId: string, threadId?: st
 export interface IThread {
   threadId: string;
   subject: string;
-  category: SupportCategory;
+  category: string;
   /** Oldest first. */
   messages: IMySupportMessage[];
   /** Staff replied to the newest message and the member has not written since. */
@@ -42,3 +44,38 @@ export function groupThreads(messages: IMySupportMessage[]): IThread[] {
 }
 
 export const anyReplyWaiting = (messages: IMySupportMessage[]): boolean => groupThreads(messages).some(t => t.replyReceived);
+
+// ---- Attachments (decision 23 Nov 2026: images and PDF, up to 5 files x 10 MB; checked here and again by the flow). ----
+export const ATTACH_EXTENSIONS: string[] = ['jpg', 'jpeg', 'png', 'heic', 'heif', 'webp', 'pdf'];
+export const ATTACH_ACCEPT: string = 'image/jpeg,image/png,image/heic,image/heif,image/webp,application/pdf,.jpg,.jpeg,.png,.heic,.heif,.webp,.pdf';
+export const MAX_ATTACHMENTS: number = 5;
+export const MAX_ATTACHMENT_BYTES: number = 10 * 1024 * 1024;
+
+const extOf = (name: string): string => { const d: number = name.lastIndexOf('.'); return d >= 0 ? name.slice(d + 1).toLowerCase() : ''; };
+
+/** Checked by extension, because some browsers give HEIC files no MIME type. */
+export function validateAttachments(files: { name: string; size: number }[]): string[] {
+  const e: string[] = [];
+  if (files.length > MAX_ATTACHMENTS) { e.push(`Attach up to ${MAX_ATTACHMENTS} files.`); }
+  files.forEach(f => {
+    if (ATTACH_EXTENSIONS.indexOf(extOf(f.name)) < 0) { e.push(`${f.name}: attach a photo (JPEG, PNG, HEIC, WebP) or a PDF.`); }
+    else if (f.size <= 0 || f.size > MAX_ATTACHMENT_BYTES) { e.push(`${f.name}: each file must be smaller than 10 MB.`); }
+  });
+  return e;
+}
+
+export const isImageName = (name: string): boolean => ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif'].indexOf(extOf(name)) >= 0;
+
+export type ThreadStatus = 'Open' | 'Answered' | 'Closed' | 'Archived' | 'Uploading';
+
+/**
+ * Ticket status from the newest message's echoed Outcome/Reply (display only). "Closed by Flavors" and "Answered" are what the
+ * reply flow writes; [PROPOSED] "Archived…" is the Outcome staff set when they archive a case. "Uploading" means files never finished.
+ */
+export function threadStatus(t: IThread): ThreadStatus {
+  const o: string = (t.last.outcome || '').trim();
+  if (o === 'Uploading') { return 'Uploading'; }
+  if (/^archived/i.test(o)) { return 'Archived'; }
+  if (/^closed/i.test(o)) { return 'Closed'; }
+  return t.replyReceived || /^answered/i.test(o) ? 'Answered' : 'Open';
+}

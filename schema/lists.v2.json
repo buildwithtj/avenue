@@ -1372,7 +1372,8 @@
           "type": "Choice",
           "choices": [
             "Portal",
-            "Public"
+            "Public",
+            "Staff"
           ]
         },
         {
@@ -1402,6 +1403,21 @@
         {
           "name": "Note",
           "type": "Note"
+        },
+        {
+          "name": "InviteSent",
+          "type": "Boolean",
+          "default": false
+        },
+        {
+          "name": "InviteAccepted",
+          "type": "Boolean",
+          "default": false
+        },
+        {
+          "name": "GroupAdded",
+          "type": "Boolean",
+          "default": false
         }
       ]
     },
@@ -1748,7 +1764,7 @@
       "title": "AvenueSupportMessages",
       "access": "intake",
       "itemLevel": true,
-      "description": "A member message to Flavors (\"Messages with Flavors\"). Own items only. A flow copies it to AvenueSupportCases for staff; a second flow echoes the staff reply into Reply and Outcome (display only). [PROPOSED] 23 Nov 2026, not on the live site.",
+      "description": "A member message to Flavors (\"Messages with Flavors\"). Own items only. A flow copies it to AvenueSupportCases for staff; a second flow echoes the staff reply into Reply and Outcome (display only). [PROPOSED] 23 Nov 2026, not on the live site. [PROPOSED 23 Nov 2026] Category is Text (was Choice) so topics come from AvenueSupportCategories; the live Choice->Text conversion is UNTESTED: try it on a gaptest- copy of the list first.",
       "fields": [
         {
           "name": "FacilityId",
@@ -1767,14 +1783,7 @@
         },
         {
           "name": "Category",
-          "type": "Choice",
-          "choices": [
-            "Booking",
-            "Billing",
-            "Documents",
-            "Equipment",
-            "Other"
-          ]
+          "type": "Text"
         },
         {
           "name": "Subject",
@@ -1925,9 +1934,27 @@
       ]
     },
     {
+      "title": "AvenueNoticeReads",
+      "access": "intake",
+      "itemLevel": true,
+      "description": "Notices the member has read, one row per notice, so read state follows them across devices. Own items only; display convenience, no flow. [PROPOSED] 23 Nov 2026, not on the live site.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "NoticeId",
+          "type": "Number",
+          "indexed": true
+        }
+      ]
+    },
+    {
       "title": "AvenueSupportCases",
       "access": "private",
-      "description": "Staff-side copy of member support messages, one row per conversation (ThreadId). Written by the support flows; staff set StaffReply. [PROPOSED] 23 Nov 2026, not on the live site.",
+      "description": "Staff-side copy of member support messages, one row per conversation (ThreadId). Written by the support flows; staff set StaffReply. [PROPOSED] 23 Nov 2026, not on the live site. [PROPOSED 23 Nov 2026] Category is Text (was Choice) so topics come from AvenueSupportCategories; the live Choice->Text conversion is UNTESTED: try it on a gaptest- copy of the list first.",
       "fields": [
         {
           "name": "FacilityId",
@@ -1952,14 +1979,7 @@
         },
         {
           "name": "Category",
-          "type": "Choice",
-          "choices": [
-            "Booking",
-            "Billing",
-            "Documents",
-            "Equipment",
-            "Other"
-          ]
+          "type": "Text"
         },
         {
           "name": "Subject",
@@ -1975,7 +1995,8 @@
           "choices": [
             "Open",
             "Answered",
-            "Closed"
+            "Closed",
+            "Archived"
           ]
         },
         {
@@ -1992,6 +2013,14 @@
         },
         {
           "name": "CreatedAt",
+          "type": "DateTime"
+        },
+        {
+          "name": "ArchivedBy",
+          "type": "Text"
+        },
+        {
+          "name": "ArchivedAt",
           "type": "DateTime"
         }
       ]
@@ -2189,6 +2218,186 @@
         },
         {
           "name": "Note",
+          "type": "Text"
+        }
+      ]
+    },
+    {
+      "title": "AvenueSupportCategories",
+      "access": "catalog",
+      "description": "Topics a member can pick in \"Messages with Flavors\" (Title = topic name). Staff and owner edit them in Setup > Support topics; the support flow accepts only an Active title. Retire with Active = No; delete only when no case uses it. [PROPOSED] 23 Nov 2026, not on the live site.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "SortOrder",
+          "type": "Number"
+        },
+        {
+          "name": "Active",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "title": "AvenueSupportFiles",
+      "access": "private",
+      "library": true,
+      "description": "Private copies of attachments members add to support messages (images and PDF, at most 5 files of 10 MB each per message), written by the support flow and linked to the case by CaseId. Staff only. [PROPOSED] 23 Nov 2026, not on the live site.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "CaseId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "MessageId",
+          "type": "Text"
+        }
+      ]
+    },
+    {
+      "title": "AvenueMyDocuments",
+      "access": "private",
+      "description": "[PROPOSED] Member-visible copy of each member's registered documents (AvenueMemberDocuments). Maintained by the flow \"Avenue - My documents mirror\"; each row is shared (read) only with its member, like AvenueMyMembership. List-level: staff and owner only. 23 Nov 2026, not on the live site.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "DocKey",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "DocType",
+          "type": "Text"
+        },
+        {
+          "name": "IssueDate",
+          "type": "DateTime",
+          "dateOnly": true
+        },
+        {
+          "name": "ExpiryDate",
+          "type": "DateTime",
+          "dateOnly": true
+        },
+        {
+          "name": "Status",
+          "type": "Text"
+        },
+        {
+          "name": "Verified",
+          "type": "Boolean",
+          "default": false
+        },
+        {
+          "name": "FileUrl",
+          "type": "Note"
+        }
+      ]
+    },
+    {
+      "title": "AvenueMyHours",
+      "access": "private",
+      "description": "[PROPOSED] Member-visible hours per member per facility month, summed from AvenueHoursLedger by the flow \"Avenue - My hours mirror\"; each row is shared (read) only with its member. List-level: staff and owner only. 23 Nov 2026, not on the live site.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "HoursKey",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Period",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "UsedHours",
+          "type": "Number"
+        },
+        {
+          "name": "AllowanceHours",
+          "type": "Number"
+        },
+        {
+          "name": "ExtraHours",
+          "type": "Number"
+        }
+      ]
+    },
+    {
+      "title": "AvenueMyBookings",
+      "access": "private",
+      "description": "[PROPOSED] Member-visible copy of bookings staff made on a member's behalf (A2: those are authored by staff, so the member cannot see the request). Maintained by the flow \"Avenue - My bookings mirror\"; each row is shared (read) only with its member. 23 Nov 2026, not on the live site.",
+      "fields": [
+        {
+          "name": "FacilityId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "BookingId",
+          "type": "Text",
+          "indexed": true,
+          "unique": true
+        },
+        {
+          "name": "MemberId",
+          "type": "Text",
+          "indexed": true
+        },
+        {
+          "name": "Space",
+          "type": "Text"
+        },
+        {
+          "name": "EquipmentIds",
+          "type": "Text"
+        },
+        {
+          "name": "StartUtc",
+          "type": "DateTime"
+        },
+        {
+          "name": "EndUtc",
+          "type": "DateTime"
+        },
+        {
+          "name": "Status",
           "type": "Text"
         }
       ]

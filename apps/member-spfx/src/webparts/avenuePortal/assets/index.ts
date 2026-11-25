@@ -18,5 +18,7 @@ export function equipmentImage(equipmentId: string, category?: string): string |
 export const heroImage: string = DINING_ROOM;
 export const diningRoomImage: string = DINING_ROOM;
 
-export { LOGO_ON_DARK as brandLogoOnDark, LOGO_ON_LIGHT as brandLogoOnLight } from './brand.generated';
-export { AVENUE_FONT_WOFF2 } from './fontData.generated';
+export { LOGO_ON_DARK as brandLogoOnDark, LOGO_ON_LIGHT as brandLogoOnLight, LOGO_MARK as brandMark } from './brand.generated';
+
+/** The picture on the Home page. Swap the client's final image by changing ONLY this line (any data URI or URL). */
+export const homeImage: string = DINING_ROOM;

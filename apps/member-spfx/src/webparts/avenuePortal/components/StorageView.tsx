@@ -4,7 +4,9 @@ import { STORAGE_ITEMS, type IMyStorageRequest, type StorageItem } from '../../.
 import { formatCents } from '../../../avenue/billing';
 import { estimateCents, offerFor, OFFERS, validateStorage } from '../../../avenue/storage';
 import { type AvenueReadSource, newSubmissionId } from '../../../avenue/readSource';
-import { toast } from './feedback';
+import { toast, celebrate } from './feedback';
+import rx from './Ref.module.scss';
+import { ModuleCard } from './RefUi';
 import { Empty, RequestStatus, useLoad, LoadError } from './ui';
 
 export interface IStorageViewProps { source: AvenueReadSource; facilityId: string }
@@ -28,13 +30,14 @@ export default function StorageView(props: IStorageViewProps): React.ReactElemen
     if (errors.length > 0) { setError(errors.join(' ')); return; }
     setBusy(true); setError(undefined);
     source.submitStorageRequest(input, newSubmissionId('sto'))
-      .then(() => { toast('Storage request sent. Nothing was charged.'); setBusy(false); setItem(''); setQty('1'); setNotes(''); mine.reload(); })
+      .then(() => { toast('Storage request sent. Nothing was charged.'); celebrate('Request sent'); setBusy(false); setItem(''); setQty('1'); setNotes(''); mine.reload(); })
       .catch((err: Error) => { setError(err.message); setBusy(false); });
   };
 
   return (
     <section className={s.nm} aria-label="Storage request">
-      <header className={s.nmHead}><div><h2>Storage</h2><p className={s.cwHelp}>Ask for fridge, freezer or dry storage. Flavors confirms availability and the price before anything is billed.</p></div></header>
+      <ModuleCard eyebrow="STORAGE" title="Storage">
+        <p className={rx['module-lede']}>Ask for fridge, freezer or dry storage. Flavors confirms availability and the price before anything is billed.</p>
       <form className={s.nmForm} onSubmit={submit}>
         <label>What do you need?
           <select value={item} onChange={e => setItem(e.target.value as StorageItem | '')}>
@@ -52,7 +55,8 @@ export default function StorageView(props: IStorageViewProps): React.ReactElemen
         {error && <p className={s.cwErr} role="alert">{error}</p>}
         <div className={s.cwActions}><button type="submit" className={s.cwYes} disabled={busy}>{busy ? 'Sending…' : 'Send request'}</button></div>
       </form>
-      <h3 className={s.nmSub}>Your requests</h3>
+      </ModuleCard>
+      <ModuleCard eyebrow="HISTORY" title="Your requests">
       <LoadError error={mine.error} what="your storage requests" onRetry={mine.reload} />
       {mine.data && mine.data.length === 0 && <Empty>No storage requests yet.</Empty>}
       <ul className={s.nmList}>
@@ -63,6 +67,7 @@ export default function StorageView(props: IStorageViewProps): React.ReactElemen
           </li>
         ))}
       </ul>
+      </ModuleCard>
     </section>
   );
 }

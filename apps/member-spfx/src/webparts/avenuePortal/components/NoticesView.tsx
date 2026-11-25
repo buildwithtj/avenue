@@ -2,11 +2,12 @@ import * as React from 'react';
 import s from './Site.module.scss';
 import { NOTICE_CATEGORIES, type IFacility, type INotice, type NoticeCategory } from '../../../avenue/contracts';
 import { type AvenueReadSource, sortNotices } from '../../../avenue/readSource';
-import { NOTICE_GROUPS, noticeGroup, noticeParagraphs, noticeWhen, type NoticeGroup } from '../../../avenue/ui-helpers';
+import { NOTICE_GROUPS, isRecentNotice, noticeExpiryLabel, noticeGroup, noticeParagraphs, noticeWhen, type NoticeGroup } from '../../../avenue/ui-helpers';
 import { useLoad, useReadIds } from './ui';
-import { EquipmentArt } from './EquipmentArt';
 import { Sheet } from './Sheet';
 import { rise, useReducedMotion } from './motion';
+import r from './Ref.module.scss';
+import { EmptyState, ModuleCard, PageHead, Tabs } from './RefUi';
 
 export interface INoticesViewProps {
   source: AvenueReadSource;
@@ -22,13 +23,16 @@ const preview = (body: string): string => noticeParagraphs(body).join(' ');
 
 // Notices from Flavors as a notification list (plan phase 2): dense rows grouped Pinned / Today / This week / Earlier,
 // unread dot, category icon, one-line preview, short time; the full notice opens in the drawer and is marked read.
-// Bodies are plain text: React renders them as text, so markup in a notice is shown, never run. Read state is per device.
+// Tabs: Recent (published in the last 7 days) and All; read notices stay listed, dimmed. Bodies are plain text: React renders
+// them as text, so markup in a notice is shown, never run. Read state: this browser plus [PROPOSED] AvenueNoticeReads.
 export default function NoticesView(props: INoticesViewProps): React.ReactElement {
   const { source, facility } = props;
   const reduced: boolean = useReducedMotion();
   const notices = useLoad<INotice[]>(() => (props.notices ? Promise.resolve(props.notices) : source.listNotices()), [source, props.notices]);
   const [filter, setFilter] = React.useState<Filter>('All');
-  const [read, markRead] = useReadIds();
+  // Opens on Recent when it has anything, else All, so the page never opens on an empty tab.
+  const [tab, setTab] = React.useState<'Recent' | 'All' | undefined>(undefined);
+  const [read, markRead] = useReadIds(source);
   const [openId, setOpenId] = React.useState<number | undefined>(undefined);
   const close = React.useCallback(() => setOpenId(undefined), []);
   const nowMs: number = Date.now();
@@ -38,9 +42,12 @@ export default function NoticesView(props: INoticesViewProps): React.ReactElemen
     return <div className={s.container}><div className={s.errorPanel} role="alert"><strong>We could not load notices.</strong><span>Check your connection and try again.</span><button type="button" className={s.btn} onClick={notices.reload}>Try again</button></div></div>;
   }
   if (!notices.data) { return <div className={s.container}><div className={s.skeleton} style={{ height: 240 }} role="status" aria-label="Loading notices" /></div>; }
-  const all: INotice[] = sortNotices(notices.data);
+  const recent: INotice[] = sortNotices(notices.data).filter(n => isRecentNotice(n, nowMs));
+  const shown: 'Recent' | 'All' = tab || (recent.length > 0 ? 'Recent' : 'All');
+  const all: INotice[] = shown === 'Recent' ? recent : sortNotices(notices.data);
   const unread = (n: INotice): boolean => read.indexOf(n.id) < 0;
   const unreadCount: number = all.filter(unread).length;
+  const totalUnread: INotice[] = notices.data.filter(unread);
   const list: INotice[] = filter === 'All' ? all : filter === 'Unread' ? all.filter(unread) : all.filter(n => n.category === filter);
   const mark = (ids: number[]): void => { markRead(ids); if (props.onRead) { props.onRead(); } };
   const open = (n: INotice): void => { setOpenId(n.id); if (unread(n)) { mark([n.id]); } };
@@ -53,13 +60,14 @@ export default function NoticesView(props: INoticesViewProps): React.ReactElemen
 
   return (
     <section aria-label="Notices" className={s.nt}>
-      <div className={s.pageHead}>
-        <div className={`${s.container} ${s.headRow}`}>
-          <h1 className={s.pageTitle}>Notices</h1>
-          {unreadCount > 0 && <button type="button" className={s.linkBtn} onClick={() => mark(all.map(n => n.id))}>Mark all as read ({unreadCount})</button>}
-        </div>
-      </div>
-      <div className={s.container}>
+      <PageHead
+        eyebrow={props.facility.title}
+        title="Notices"
+        lede={`News and updates from ${props.facility.title}.`}
+        action={totalUnread.length > 0 ? <button type="button" className={r['secondary-button']} onClick={() => mark(totalUnread.map(n => n.id))}>Mark all as read ({totalUnread.length})</button> : undefined}
+      />
+      <ModuleCard eyebrow={props.facility.title} title="Notices" count={`${all.length} ${shown === 'Recent' ? 'in the last 7 days' : 'total'}`}>
+        <Tabs<'Recent' | 'All'> label="Show notices" value={shown} items={[{ key: 'Recent', label: 'Recent' }, { key: 'All', label: 'All' }]} onChange={setTab} />
         <div className={s.ntFilters} role="group" aria-label="Filter notices">
           {(['All', 'Unread'] as Filter[]).concat(NOTICE_CATEGORIES).map(c => (
             <button key={c} type="button" className={filter === c ? s.ntFilterOn : ''} aria-pressed={filter === c} onClick={() => setFilter(c)}>
@@ -68,31 +76,29 @@ export default function NoticesView(props: INoticesViewProps): React.ReactElemen
           ))}
         </div>
         {groups.length === 0 ? (
-          <div className={s.ntEmpty}><EquipmentArt hint="Prep table" size="md" /><div><strong>{filter === 'All' ? 'No notices right now.' : filter === 'Unread' ? 'You are all caught up.' : `No ${filter.toLowerCase()} notices right now.`}</strong><p>New notices from Flavors appear here, and the bell in the top bar shows how many are unread.</p></div></div>
+          <EmptyState icon="bell" title={filter === 'All' ? (shown === 'Recent' ? 'No notices in the last 7 days.' : 'No notices right now.') : filter === 'Unread' ? 'You are all caught up.' : `No ${filter.toLowerCase()} notices.`} sub={shown === 'Recent' ? 'Older notices are under All.' : 'Flavors posts news and schedule changes here.'} />
         ) : groups.map(({ g, items }) => (
-          <div key={g} className={s.ntGroup}>
-            <h2 className={s.ntGroupHead}>{g}</h2>
-            <ul className={s.ntRows}>
+          <div key={`${shown}-${g}`} className={`${s.ntGroup} ${s.pane}`} data-dir={shown === 'All' ? 'fwd' : 'back'}>
+            <h3 className={r['module-sub']}>{g}</h3>
+            <ul className={`${s.ntRows} ${r['module-booking-list']}`}>
               {items.map(n => (
-                <li key={n.id} data-notice={n.id} {...rise(index++, reduced, `${unread(n) ? s.ntUnread : ''} ${n.category === 'Urgent' ? s.ntRowUrgent : ''}`)}>
-                  <button type="button" className={s.ntRow} onClick={() => open(n)} aria-haspopup="dialog">
-                    <span className={s.ntDotCell}>{unread(n) && <span className={s.ntDot} data-testid="unread-dot" role="img" aria-label="Unread" />}</span>
-                    <span className={`${s.ntIcon} ${CAT[n.category]}`} aria-hidden="true">{n.category.charAt(0)}</span>
-                    <span className={s.ntText}>
-                      <strong>{n.title}</strong>
-                      <span className={s.ntPreview}>{preview(n.body)}</span>
+                <li key={n.id} data-notice={n.id} {...rise(index++, reduced, `${unread(n) ? s.ntUnread : s.ntRead} ${n.category === 'Urgent' ? s.ntRowUrgent : ''}`)}>
+                  <button type="button" className={`${r['module-row']} ${r['module-row-btn']}`} onClick={() => open(n)} aria-haspopup="dialog">
+                    <span className={`${r['tenant-avatar']} ${n.category === 'Urgent' ? r.gold : r.teal}`} aria-hidden="true">{n.category.charAt(0)}</span>
+                    <span className={r['module-row-copy']}>
+                      <strong>{unread(n) && <span className={s.ntDot} data-testid="unread-dot" role="img" aria-label="Unread" />}{n.title}</strong>
+                      <span>{preview(n.body)}</span>
                     </span>
-                    <span className={s.ntSide}>
-                      <time dateTime={n.publishedUtc}>{noticeWhen(n.publishedUtc, nowMs, facility.timeZone)}</time>
-                      {n.category === 'Urgent' && <span className={`${s.ntTag} ${s.ntUrgent}`}>Urgent</span>}
-                    </span>
+                    <time className={r['module-row-time']} dateTime={n.publishedUtc}>{noticeWhen(n.publishedUtc, nowMs, facility.timeZone)}</time>
+                    {n.category === 'Urgent' && <span className={`${r['module-status']} ${r['is-bad']}`}>Urgent</span>}
+                    {noticeExpiryLabel(n, nowMs) && <span className={`${r['module-status']} ${r['is-pending']}`}>{noticeExpiryLabel(n, nowMs)}</span>}
                   </button>
                 </li>
               ))}
             </ul>
           </div>
         ))}
-      </div>
+      </ModuleCard>
       {opened && (
         <Sheet title={opened.title} onClose={close}>
           <div className={s.ntMeta}>

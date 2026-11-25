@@ -3,7 +3,7 @@
   "solution": {
     "name": "Avenue member portal",
     "id": "6a7c7ab4-da56-4cca-b6eb-8f52994dbe6f",
-    "version": "2.17.0.0",
+    "version": "2.22.0.0",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "developer": {
@@ -29,7 +29,7 @@
         "title": "member-spfx Feature",
         "description": "The feature that activates elements of the member-spfx solution.",
         "id": "29c9efca-8597-4632-8cce-7f7cb0b362b5",
-        "version": "2.17.0.0"
+        "version": "2.22.0.0"
       }
     ]
   },

@@ -13,6 +13,7 @@ import { tabOn } from '../../../avenue/release';
 import { ScrollRow } from './ScrollRow';
 import { agendaGroups, buildIcs, icsFileName, monthStrip, phaseView } from '../../../avenue/ui-view';
 import { EquipmentArt } from './EquipmentArt';
+import { BookingProgress, RefIcon } from './RefUi';
 import { Sheet } from './Sheet';
 import { formatWhen, useLoad } from './ui';
 
@@ -39,7 +40,10 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
   const { source, facility, onBook } = props;
   const resources: IResource[] = props.resources || [];
   const tz: string = facility.timeZone;
-  const [view, setView] = React.useState<'upcoming' | 'past'>('upcoming');
+  const [view, setViewRaw] = React.useState<'upcoming' | 'past'>('upcoming');
+  // Which way the panes slide: towards Past = forward, back to Upcoming = back.
+  const [pdir, setPdir] = React.useState<'fwd' | 'back'>('fwd');
+  const setView = (v: 'upcoming' | 'past'): void => { setPdir(v === 'past' ? 'fwd' : 'back'); setViewRaw(v); };
   const [openId, setOpenId] = React.useState<string | undefined>();
   const requests = useLoad<IMyRequest[]>(() => source.listMyRequests(), [source]);
   // Poll only while something is waiting for an answer; settled bookings do not change by themselves.
@@ -60,18 +64,31 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
   const [newEnd, setNewEnd] = React.useState<string>('');
   const [extendError, setExtendError] = React.useState<string | undefined>();
   const [focusDay, setFocusDay] = React.useState<string | undefined>();
+  const anchorRef: React.MutableRefObject<HTMLButtonElement | null> = React.useRef<HTMLButtonElement | null>(null);
 
   const now: number = Date.now();
   const all: IMyRequest[] = requests.data || [];
   const groups = agendaGroups(all, tz, now, view);
   const todayYmd: string = localDay(new Date(now), tz);
-  const strip = monthStrip(all, todayYmd, tz, 31);
+  const strip = monthStrip(all, todayYmd, tz, 31, view);
+  // The day the strip opens on: the first upcoming booked day ("Next"), or in Past the most recent booked one.
+  const booked = strip.filter(d => d.booked);
+  const anchorYmd: string | undefined = view === 'past' ? (booked[booked.length - 1] || { ymd: undefined }).ymd : (booked[0] || { ymd: undefined }).ymd;
+  // "3:30p": fits the 58 px day card.
+  const shortTime = (iso: string): string => new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', minute: '2-digit' }).format(new Date(iso)).replace(/\s?([AP])M$/, (_m: string, x: string) => x.toLowerCase());
+  const STRIP_TONE: Record<string, string> = { Approved: s.monthOk, Pending: s.monthWait, Mixed: s.monthMixed };
   const open: IMyRequest | undefined = all.filter(r => r.requestId === openId)[0];
 
   const cancellable = (r: IMyRequest): boolean => !r.cancelSent && !r.cancelRequested && (r.status === 'Approved' || r.status === 'Pending' || !r.status) && Date.parse(r.startUtc) > now;
   const hhmm = (iso: string): string => new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(iso));
   const extendable = (r: IMyRequest): boolean => r.status === 'Approved' && Date.parse(r.endUtc) > now && !extensionWaiting(r.extension);
   const openExtend = (r: IMyRequest): void => { setDone(undefined); setExtendError(undefined); setNewEnd(hhmm(new Date(Date.parse(r.endUtc) + 3600000).toISOString())); setExtend(r); };
+
+  // Open the strip scrolled to the anchor day (once per view, after the bookings load).
+  React.useEffect(() => {
+    const el: HTMLButtonElement | null = anchorRef.current;
+    if (el && typeof el.scrollIntoView === 'function') { el.scrollIntoView({ block: 'nearest', inline: 'center' }); }
+  }, [!!requests.data, view]);
 
   // Deep link (the reminder e-mail): open the booking, and its Extend dialog when asked. Once.
   const linked: React.MutableRefObject<boolean> = React.useRef<boolean>(false);
@@ -205,7 +222,7 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
     <section aria-label="My bookings" className={s.mb}>
       <div className={s.pageHead}>
         <div className={`${s.container} ${s.headRow}`}>
-          <div><h1 className={s.pageTitle}>My bookings</h1>
+          <div><p className={s.pgEyebrow}>{props.facility.title}</p><h1 className={s.pageTitle}>My bookings<span className={s.rDot} aria-hidden="true">.</span></h1>
             <dl className={s.factRow}>
               <div><dt>{liveNow ? 'Now' : 'Next'}</dt><dd>{liveNow ? `In the kitchen until ${localTime(liveNow.endUtc, tz)}` : nextUp ? `${facilityDayLabel(localDay(nextUp.startUtc, tz), todayYmd)}, ${localTime(nextUp.startUtc, tz)}` : 'Nothing booked'}</dd></div>
               <div><dt>Waiting for Flavors</dt><dd>{waitingCount}</dd></div>
@@ -217,8 +234,8 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
               <button type="button" aria-pressed={view === 'upcoming'} onClick={() => setView('upcoming')}>Upcoming</button>
               <button type="button" aria-pressed={view === 'past'} onClick={() => setView('past')}>Past</button>
             </div>
-            {props.onCheckIn && tabOn('checkin') && <button type="button" className={s.btn} onClick={props.onCheckIn}>Check in</button>}
-            <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={onBook}>Book</button>
+            {props.onCheckIn && tabOn('checkin') && <button type="button" className={s.btn} onClick={props.onCheckIn}><RefIcon name="clipboard-check" size={17} />Check in</button>}
+            <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={onBook}><RefIcon name="plus" size={17} />Book</button>
           </div>
         </div>
       </div>
@@ -227,21 +244,31 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
         {error && <div className={s.errorPanel} role="alert">{error}</div>}
         {requests.error && <div className={s.errorPanel} role="alert">{`Could not load your bookings. ${requests.error}`}</div>}
 
+        <div key={view} className={s.pane} data-dir={pdir}>
+        <div className={s.stripHead}><b>{new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', month: 'long', year: 'numeric' }).format(new Date(`${focusDay || anchorYmd || todayYmd}T12:00:00Z`))}</b><button type="button" onClick={() => { const el: HTMLElement | null = document.querySelector(`[data-ymd="${todayYmd}"]`); if (el && el.scrollIntoView) { el.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' }); } }}>Today</button></div>
+        <div className={s.datePanel} data-idle>
         <ScrollRow label="days">
-        <ol className={s.monthStrip} aria-label="Next 31 days, booked days marked">
+        <ol className={s.monthStrip} aria-label={view === 'past' ? 'Last 31 days, booked days marked' : 'Next 31 days, booked days marked'}>
           {strip.map(d => {
             const dt = new Date(`${d.ymd}T12:00:00Z`);
+            const isNext: boolean = view === 'upcoming' && d.ymd === anchorYmd;
+            const what: string = d.status === 'Approved' ? 'approved' : d.status === 'Pending' ? 'waiting for approval' : 'approved and waiting';
             return (
               <li key={d.ymd}>
-                <button type="button" className={`${s.monthDay} ${d.booked ? s.monthBooked : ''} ${d.today ? s.monthToday : ''} ${focusDay === d.ymd ? s.monthFocus : ''}`} disabled={!d.booked} aria-label={`${facilityDayLabel(d.ymd, todayYmd)}${d.booked ? ', booked' : ''}`}
-                  onClick={() => { setView('upcoming'); setFocusDay(d.ymd); const el: HTMLElement | null = document.getElementById(`day-${d.ymd}`); if (el && el.scrollIntoView) { el.scrollIntoView({ block: 'start', behavior: 'smooth' }); } }}>
-                  <span>{new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: 'short' }).format(dt)}</span><b>{dt.getUTCDate()}</b><i aria-hidden="true" />
+                <button type="button" ref={d.ymd === anchorYmd ? anchorRef : undefined} data-ymd={d.ymd} data-status={d.status}
+                  className={`${s.monthDay} ${d.booked ? `${s.monthBooked} ${s.monthFill} ${STRIP_TONE[d.status || ''] || ''}` : ''} ${d.today ? s.monthToday : ''} ${focusDay === d.ymd ? s.monthFocus : ''}`} disabled={!d.booked}
+                  aria-label={`${facilityDayLabel(d.ymd, todayYmd)}${d.booked ? `, ${d.count} ${d.count === 1 ? 'booking' : 'bookings'} ${what}${d.firstStartUtc ? ` from ${localTime(d.firstStartUtc, tz)}` : ', continues overnight'}` : ''}${isNext ? ', next booking' : ''}`}
+                  onClick={e => { setFocusDay(d.ymd); if (e.currentTarget.scrollIntoView) { e.currentTarget.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' }); } const el: HTMLElement | null = document.getElementById(`day-${d.ymd}`); if (el && el.scrollIntoView) { el.scrollIntoView({ block: 'start', behavior: 'smooth' }); } }}>
+                  {isNext && <em className={s.monthNext} aria-hidden="true">Next</em>}
+                  <span>{new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: 'short' }).format(dt)}</span><b>{dt.getUTCDate()}</b>
+                  {d.booked && <small className={s.monthTime} aria-hidden="true">{d.firstStartUtc ? shortTime(d.firstStartUtc) : 'cont.'}</small>}
                 </button>
               </li>
             );
           })}
         </ol>
         </ScrollRow>
+        </div>
 
         {!requests.data && !requests.error && <div className={s.skeleton} style={{ height: 160 }} role="status" aria-label="Loading your bookings" />}
         {requests.data && groups.length === 0 && (
@@ -266,11 +293,12 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
                           <span className={s.mbBody}>
                             {live && <span className={s.mbNow}><i aria-hidden="true" />In the kitchen until {localTime(r.endUtc, tz)}</span>}
                             <span className={s.mbKit} aria-hidden="true">{units.slice(0, 4).map(u => <EquipmentArt key={u.resourceId} unit={u} size="xs" />)}{units.length === 0 && <EquipmentArt hint={r.space === 'Kitchen' ? 'prep' : 'dining'} size="xs" />}{units.length > 4 && <i>+{units.length - 4}</i>}</span>
-                            <strong>{chips.slice(0, 3).join(', ')}{chips.length > 3 ? ` and ${chips.length - 3} more` : ''}</strong>
+                            <strong className={s.kitChips}>{chips.slice(0, 2).map(c => <i key={c}>{c}</i>)}{chips.length > 2 && <i>+{chips.length - 2}</i>}</strong>
                             {r.note && <em className={s.mbNote}>{r.note}</em>}
                           </span>
                           <span className={`${s.mbStamp} ${STAMP[r.status || 'Pending']}`}>{stampText(r)}</span>
                         </button>
+                        {r.status !== 'Cancelled' && r.status !== 'Declined' && <BookingProgress status={r.status} live={live} past={view === 'past'} />}
                       </li>
                     );
                   })}
@@ -278,6 +306,7 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
               </section>
             );
           })}
+        </div>
         </div>
       </div>
 

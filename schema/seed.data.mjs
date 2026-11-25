@@ -57,3 +57,11 @@ export function buildSeed({ now = Date.now(), facilityId = 'flavors-hyattsville'
   add('AvenueNoticeDrafts', 'notice-draft', { Body: 'Sample DRAFT: this must never be visible to members.', State: 'Draft' });
   return rows;
 }
+
+// Support topics (AvenueSupportCategories). REAL configuration, not demo data: the five categories the portal and the support flow used
+// before topics became a list. Title is the topic name (no "demo-" prefix), so seedRun() upserts them by Title and seedCleanup(), which
+// removes only "demo-" titles, never touches them; a gaptest- cleanup does not either. Retire a topic with Active = false, never delete a used one.
+export const SUPPORT_TOPICS = ['Booking', 'Billing', 'Documents', 'Equipment', 'Other'];
+export function buildSupportTopics({ facilityId = 'flavors-hyattsville' } = {}) {
+  return SUPPORT_TOPICS.map((t, i) => ({ list: 'AvenueSupportCategories', key: t, fields: { Title: t, FacilityId: facilityId, SortOrder: (i + 1) * 10, Active: true } }));
+}

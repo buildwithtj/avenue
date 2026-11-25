@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { PageHead, RefIcon } from './RefUi';
+import { tiltProps } from './mobileFx';
+import RangeSlider from './RangeSlider';
 import s from './Site.module.scss';
 import {
   type BookingMode, type ISelectionInput, type ISelectionResult, DEFAULT_MIN_PREP_TABLES, DINING_KEY,
@@ -14,7 +17,10 @@ import { hoursLabel, lengthBounds, lengthLabel, minuteToUtc } from '../../../ave
 import { categoryGroups } from '../../../avenue/ui-view';
 import { EquipmentArt } from './EquipmentArt';
 import { formatWhen, useCalendarDay, useLoad } from './ui';
-import { buzz, toast } from './feedback';
+import { buzz, celebrate, toast } from './feedback';
+import { Sheet } from './Sheet';
+import { useSize } from './motion';
+import { popIn, useFlipList, useSheetMotion } from './gsapMotion';
 
 export interface IBookFlowProps {
   source: AvenueReadSource;
@@ -26,15 +32,17 @@ export interface IBookFlowProps {
   /** Equipment picked on the Schedule: starts the request with this piece ticked. */
   preselectUnit?: string;
   preselectMode?: BookingMode;
+  /** Opens another portal tab ("How booking works" goes to Policies and help). */
+  onNavigate?: (tab: 'policies') => void;
 }
 
-type Step = 'choose' | 'review';
 const WHAT: { mode: BookingMode; title: string; sub: string; art: string }[] = [
   { mode: 'equipment', title: 'Equipment', sub: 'Choose the stoves, ovens and tables you need', art: 'Stove' },
   { mode: 'whole-kitchen', title: 'Whole kitchen', sub: 'Every station and prep table', art: 'Oven' },
   { mode: 'dining', title: 'Dining room', sub: 'Tables and chairs for a group', art: 'dining' },
   { mode: 'private-event', title: 'Private event', sub: 'Kitchen and dining room together', art: 'dining' }
 ];
+const MODE_ICON: Record<BookingMode, string> = { equipment: 'cooking-pot', 'whole-kitchen': 'house', dining: 'utensils', 'private-event': 'sparkles' };
 const SUMMARY: Record<BookingMode, string> = { equipment: 'Equipment', 'whole-kitchen': 'Whole kitchen', dining: 'Dining room', 'private-event': 'Private event' };
 
 type MarkState = 'sending' | 'checking' | 'approved' | 'waiting' | 'declined' | 'cancelled';
@@ -73,11 +81,21 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
   const today: string = localDay(new Date(), tz);
 
   const pre: boolean = !!props.preselectUnit && cooking.some(u => u.resourceId === props.preselectUnit);
-  const [step, setStep] = React.useState<Step>('choose');
+  const [reviewOpen, setReviewOpen] = React.useState<boolean>(false);
+  const size = useSize();
+  const reviewRef: React.RefObject<HTMLDivElement> = React.useRef<HTMLDivElement>(null);
+  const cartRef: React.RefObject<HTMLUListElement> = React.useRef<HTMLUListElement>(null);
+  const closeSheet = useSheetMotion(reviewRef, reviewOpen, size === 'phone');
   const [mode, setMode] = React.useState<BookingMode>(props.preselectMode || 'equipment');
   // Client sheet (19 Nov 2026): private events are booked as 4 / 6 / 8 / 12-hour packages, so the shortest is 4 hours (UI limit; further hours are extra).
   const bounds = mode === 'private-event' ? { ...baseBounds, min: Math.max(baseBounds.min, 240), max: Math.max(baseBounds.max, 240) } : baseBounds;
   const [day, setDay] = React.useState<string>(today);
+  const daysRef: React.RefObject<HTMLDivElement> = React.useRef<HTMLDivElement>(null);
+  // The picked day slides to the centre of the strip (phone), so the neighbours on both sides stay visible.
+  React.useEffect(() => {
+    const on: Element | null = daysRef.current ? daysRef.current.querySelector('[aria-pressed="true"]') : null;
+    if (on && daysRef.current && daysRef.current.scrollWidth > daysRef.current.clientWidth + 4) { const row: HTMLElement = daysRef.current; const b: HTMLElement = on as HTMLElement; row.scrollTo({ left: b.offsetLeft - (row.clientWidth - b.offsetWidth) / 2, behavior: 'smooth' }); }
+  }, [day]);
   const [startMin, setStartMin] = React.useState<number | undefined>();
   const [endMin, setEndMin] = React.useState<number | undefined>();
   const [unitIds, setUnitIds] = React.useState<string[]>(pre && props.preselectUnit ? [props.preselectUnit] : []);
@@ -148,7 +166,6 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
   const result: ISelectionResult | undefined = timed && startMin !== undefined ? validateSelection(sel(unitIds, startMin)) : undefined;
   const problems: string[] = result ? result.problems.slice() : [];
   if (mode === 'dining' && !peopleOk) { problems.push(totalSeats !== undefined && peopleNum > totalSeats ? `The dining room seats ${totalSeats}.` : 'Enter how many people are coming.'); }
-  const needsPick: boolean = mode === 'equipment' || mode === 'dining';
   const startUtc: string | undefined = timed && startMin !== undefined ? minuteToUtc(timeline, startMin) : undefined;
   const endUtc: string | undefined = timed && endMin !== undefined ? minuteToUtc(timeline, endMin) : undefined;
 
@@ -158,17 +175,50 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
     return { free: st.free, until: st.takenUntilUtc ? localTime(st.takenUntilUtc, tz) : undefined, untilUtc: st.takenUntilUtc };
   };
   const planHours: number | undefined = me.data && me.data.membership ? me.data.membership.monthlyHours : undefined;
-  let hoursLine: string | undefined;
+  const rate: number | undefined = me.data && me.data.membership ? me.data.membership.extraHourRate : undefined;
+  // Plan hours: this booking against the plan, and an extra-hours estimate only when it goes over.
+  let usage: { uses: string; left?: string; extra?: string } | undefined;
   if (planHours !== undefined && startUtc && endUtc && me.data) {
-    const p = hoursPreview(Date.parse(endUtc) - Date.parse(startUtc), planHours, hoursThisMonth(me.data.requests, tz, new Date(startUtc)));
-    hoursLine = p.over > 0 ? `Uses ${hoursLabel(p.thisBooking)}, ${hoursLabel(p.over)} over plan. Extra is billed next payment.` : `Uses ${hoursLabel(p.thisBooking)}, ${hoursLabel(p.leftAfter)} left this month.`;
+    const used: number = hoursThisMonth(me.data.requests, tz, new Date(startUtc));
+    const p = hoursPreview(Date.parse(endUtc) - Date.parse(startUtc), planHours, used);
+    // Extra time added by THIS booking only: a member already over plan is not charged the month's earlier overage again here.
+    const extraThis: number = Math.round((p.over - Math.max(0, used - planHours)) * 100) / 100;
+    usage = { uses: `This booking: ${hoursLabel(p.thisBooking)} · ${Math.round(used * 100) / 100} of ${planHours} plan hours used this month`, left: p.over > 0 ? undefined : `${hoursLabel(p.leftAfter)} left this month after this booking` };
+    if (extraThis > 0) {
+      const usd: string | undefined = rate !== undefined ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(extraThis * rate) : undefined;
+      usage.extra = `${extraThis >= p.thisBooking ? 'All of it is extra time' : `${hoursLabel(extraThis)} of it is extra time`}${usd ? `: ${hoursLabel(extraThis)} × $${rate} = ${usd}` : ''} (estimate, billed with your next payment)`;
+    }
   }
   const fridge: string | undefined = result ? result.resolvedUnitIds.filter(id => resources.some(r => r.resourceId === id && r.category === 'Fridge'))[0] : undefined;
-  const equipmentText: string = mode === 'equipment'
-    ? `${unitIds.length > 0 ? unitIds.map(title).join(', ') : 'No cooking equipment'} + ${result && result.resolvedUnitIds.length > 0 ? result.resolvedUnitIds.filter(id => prep.some(p => p.resourceId === id)).length : prepCount} prep tables${fridge ? ` + ${title(fridge)} (included)` : ''}`
-    : mode === 'dining' ? `${peopleOk ? peopleNum : '?'} people` : mode === 'whole-kitchen' ? 'All kitchen equipment and prep tables' : 'Kitchen and dining room';
+  const prepShown: number = result && result.resolvedUnitIds.length > 0 ? result.resolvedUnitIds.filter(id => prep.some(p => p.resourceId === id)).length : prepCount;
+  const groupOf = (id: string): string => (categoryGroups(resources).filter(g => g.units.some(u => u.resourceId === id))[0] || { title: 'Equipment' }).title;
+  // What is in "Your booking": picked pieces (removable), then what comes with them.
+  const rows: { id: string; label: string; group: string; removable: boolean }[] = mode === 'equipment'
+    ? unitIds.map(id => ({ id, label: title(id), group: groupOf(id), removable: true }))
+      .concat(prepShown > 0 ? [{ id: 'prep', label: `${prepShown} prep ${prepShown === 1 ? 'table' : 'tables'}`, group: 'Included', removable: false }] : [])
+      .concat(fridge ? [{ id: fridge, label: `${title(fridge)} (included)`, group: 'Included', removable: false }] : [])
+    : [{ id: mode, label: mode === 'dining' ? `Dining room${peopleOk ? ` · ${peopleNum} people` : ''}` : mode === 'whole-kitchen' ? 'All kitchen equipment and prep tables' : 'Kitchen and dining room', group: SUMMARY[mode], removable: false }];
+  const itemCount: number = mode === 'equipment' ? rows.length : 1;
 
-  const ready: boolean = timed && startMin !== undefined && slotOk(startMin) && problems.length === 0;
+  // Why Review is not available yet, in the member's words (first reason wins).
+  const missing: string | undefined = !timed ? 'Pick your hours'
+    : itemCount === 0 ? 'Add at least one item'
+    : problems.length > 0 ? problems[0]
+    : startMin !== undefined && !slotOk(startMin) ? 'Those hours are no longer free. Pick other hours.' : undefined;
+  const ready: boolean = missing === undefined;
+  const capture = useFlipList(cartRef, rows.map(x => x.id).join('|'));
+  const removeUnit = (id: string): void => { buzz('tap'); capture(); setUnitIds(unitIds.filter(x => x !== id)); };
+  const openReview = (): void => { if (!ready) { return; } buzz('tap'); setErrors([]); setReviewOpen(true); };
+  // Closing after a send starts a fresh booking, so the same request is not sent twice. Stable, so the Sheet does not
+  // re-run its focus effect on every render (polling re-renders while it is open).
+  const sentRef: React.MutableRefObject<string | undefined> = React.useRef<string | undefined>();
+  sentRef.current = sentId;
+  const closeReview = React.useCallback((): void => {
+    closeSheet(() => {
+      setReviewOpen(false);
+      if (sentRef.current) { setSentId(undefined); setSentRequest(undefined); setStartMin(undefined); setEndMin(undefined); setUnitIds([]); setErrors([]); }
+    });
+  }, [closeSheet]);
   const send = (): void => {
     if (inFlight.current || sending || !result || startUtc === undefined || endUtc === undefined) { return; }
     if (problems.length > 0) { setErrors(problems); return; }
@@ -180,47 +230,15 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
     inFlight.current = true;
     setSending(true);
     source.submitRequest(body, id, catalog, Date.now())
-      .then(() => { setSentSummary(`${SUMMARY[mode]} · ${formatWhen(startUtc, endUtc, tz)}`); setSentId(id); toast('Request sent to Flavors'); })
+      .then(() => { setSentSummary(`${SUMMARY[mode]} · ${formatWhen(startUtc, endUtc, tz)}`); setSentId(id); toast('Request sent to Flavors'); celebrate('Request sent'); })
       .catch((err: Error) => { setErrors([`${err.message} Your choices are kept; you can send again.`]); toast('Could not send. Your choices are kept.', 'bad'); })
       .then(() => { inFlight.current = false; setSending(false); }, () => { inFlight.current = false; setSending(false); });
   };
 
-  if (sending && !sentId) {
-    return (
-      <section className={s.result} aria-live="polite" aria-label="Sending your request">
-        <SendMark state="sending" />
-        <div className={s.eyebrow}>Sending</div>
-        <h2 className={s.display}>Sending your request…</h2>
-        <p className={s.muted}>{SUMMARY[mode]}{startUtc && endUtc ? ` · ${formatWhen(startUtc, endUtc, tz)}` : ''}</p>
-      </section>
-    );
-  }
-  if (sentId) {
-    const o = sentOutcome(sentRequest);
-    return (
-      <section className={`${s.result} ${o.state === 'approved' ? s.resultOk : o.state === 'declined' ? s.resultBad : ''}`} aria-live="polite" aria-label="Booking request result">
-        <SendMark state={o.state as MarkState} />
-        <div className={s.eyebrow}>{o.final ? 'Result' : 'Sent'}</div>
-        <h2 className={s.display}>{o.title}</h2>
-        <p>{o.detail}</p>
-        <p className={s.muted}>{sentSummary}</p>
-        {!o.final && <p className={`${s.muted} ${s.waitDots}`}>Checking with Flavors<i /><i /><i /></p>}
-        {!o.final && <p className={s.muted}>You can leave this page; the result also appears in My bookings.</p>}
-        <div className={s.row}>
-          <button type="button" className={`${s.btn} ${s.btnInk}`} onClick={props.onSent}>View my bookings</button>
-          <button type="button" className={s.btn} onClick={() => { setSentId(undefined); setSentRequest(undefined); setStartMin(undefined); setEndMin(undefined); setUnitIds([]); setStep('choose'); setErrors([]); }}>Book something else</button>
-        </div>
-      </section>
-    );
-  }
-
-  const at: number = step === 'choose' ? 0 : 1;
-  const steps: string[] = ['Choose', 'Review', 'Confirmed'];
-  const action: React.ReactElement = step === 'review'
-    ? <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={send} disabled={sending || problems.length > 0}>{sending ? <><i className={s.btnSpin} aria-hidden="true" />Sending…</> : 'Send request'}</button>
-    : <button type="button" className={`${s.btn} ${s.btnCitrus}`} disabled={!ready} onClick={() => { buzz('tap'); setStep('review'); }}>Review request</button>;
+  const at: number = reviewOpen ? 1 : 0;
+  const steps: string[] = ['Choose', 'Review'];
   const lines = startUtc && endUtc ? timeLines({ startUtc, endUtc }, facility) : undefined;
-  const dayOpts: string[] = Array.from({ length: 14 }, (_, i) => addDays(today, i));
+  const dayOpts: string[] = Array.from({ length: 60 }, (_, i) => addDays(today, i));
   const fmt = (d: string, o: Intl.DateTimeFormatOptions): string => new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', ...o }).format(new Date(`${d}T12:00:00Z`));
   const at12 = (m: number): string => (m >= timeline.totalMinutes ? 'Midnight' : localTime(minuteToUtc(timeline, m), tz));
   const okStarts: number[] = starts.filter(m => slotOk(m, bounds.min));
@@ -268,30 +286,142 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
     return `${segs.length} ${segs.length === 1 ? 'booking' : 'bookings'}`;
   };
 
+  const whenText: string | undefined = startUtc && endUtc ? formatWhen(startUtc, endUtc, tz) : undefined;
+  const usageLines: React.ReactElement | undefined = usage && (
+    <div className={s.bk7Usage}>
+      <p><strong>{usage.uses}</strong>{usage.left ? <span>{usage.left}</span> : undefined}</p>
+      {usage.extra && <p className={s.bk7Extra}>{usage.extra}</p>}
+    </div>
+  );
+  // Desktop: the "Your booking" cart column, always in view next to the equipment.
+  const cart: React.ReactElement = (
+    <aside className={s.bk7Cart} aria-label="Your booking">
+      <h2>Your booking</h2>
+      <p className={s.bk7When}>{whenText ? <><strong>{whenText}</strong><span>{lengthLabel(lengthMin)}</span></> : <span>{SUMMARY[mode]} · no hours picked yet</span>}</p>
+      <ul ref={cartRef} className={s.bk7Items}>
+        {rows.map(x => (
+          <li key={x.id} data-flip-id={x.id}>
+            <span>{x.label}</span>
+            {x.removable && <button type="button" className={s.bk7Remove} aria-label={`Remove ${x.label}`} onClick={() => removeUnit(x.id)}>×</button>}
+          </li>
+        ))}
+      </ul>
+      {usageLines}
+      {missing && <p className={s.bk7Missing} role="status">{missing}</p>}
+      <button type="button" className={`${s.btn} ${s.btnCitrus} ${s.bk7Go}`} disabled={!ready} onClick={openReview}>Review request</button>
+      <p className={s.bfFine}>Nothing to pay now. Flavors confirms every request.</p>
+    </aside>
+  );
+
+  const groups: string[] = rows.map(x => x.group).filter((g, i, a) => a.indexOf(g) === i);
+  const outcome = sentOutcome(sentRequest);
+  let sheetBody: React.ReactElement;
+  let sheetFoot: React.ReactElement;
+  if (sentId) {
+    sheetBody = (
+      <section className={`${s.bk7Sent} ${outcome.state === 'approved' ? s.resultOk : outcome.state === 'declined' ? s.resultBad : ''}`} aria-live="polite" aria-label="Booking request result">
+        <SendMark state={outcome.state as MarkState} />
+        <h3>{outcome.final ? outcome.title : 'Request sent — Flavors will confirm'}</h3>
+        {outcome.detail && <p>{outcome.detail}</p>}
+        <p className={s.muted}>{sentSummary}</p>
+        {!outcome.final && <p className={`${s.muted} ${s.waitDots}`}>Checking with Flavors<i /><i /><i /></p>}
+        {!outcome.final && <p className={s.muted}>You can close this; the result also appears in My bookings.</p>}
+      </section>
+    );
+    sheetFoot = (
+      <div className={s.row}>
+        <button type="button" className={`${s.btn} ${s.btnInk}`} onClick={props.onSent}>View my bookings</button>
+        <button type="button" className={s.btn} onClick={closeReview}>Book something else</button>
+      </div>
+    );
+  } else {
+    sheetBody = (
+      <>
+        {groups.map(g => (
+          <section key={g} className={s.bk7Group} aria-label={g}>
+            <div className={s.bk7GroupHead}><h3>{g}</h3><button type="button" className={s.linkBtn} onClick={closeReview}>Edit</button></div>
+            <ul className={s.bk7Items}>
+              {rows.filter(x => x.group === g).map(x => (
+                <li key={x.id}>
+                  <span>{x.label}</span>
+                  {x.removable && <button type="button" className={s.linkBtn} aria-label={`Remove ${x.label}`} onClick={() => removeUnit(x.id)}>Remove</button>}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+        <dl className={s.facts}>
+          <div><dt>When</dt><dd>{whenText} · {lengthLabel(lengthMin)}</dd></div>
+        </dl>
+        {lines && <ul className={s.windows}><li>{lines.early}</li><li>{lines.booked}</li><li>{lines.cleaning}</li></ul>}
+        {usageLines}
+        <p className={s.muted}>Cancel 24 hours or more ahead to get your hours back.</p>
+        <p className={s.muted}>Nothing to pay now. Flavors confirms every request, and the answer appears in My bookings.</p>
+        {(errors.length > 0 || problems.length > 0) && <ul className={s.problems} role="alert">{(errors.length > 0 ? errors : problems).map((x, i) => <li key={i}>{x}</li>)}</ul>}
+      </>
+    );
+    sheetFoot = (
+      <div className={s.row}>
+        <button type="button" className={s.btn} onClick={closeReview} disabled={sending}>Back</button>
+        <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={send} disabled={sending || !ready}>{sending ? <><i className={s.btnSpin} aria-hidden="true" />Sending…</> : 'Send request'}</button>
+      </div>
+    );
+  }
+
   return (
     <section className={s.bf} aria-label="Book kitchen time">
       <div className={s.container}>
+        <PageHead eyebrow={props.facility.title} title="Book the kitchen" />
+        <div className={s.flowSteps}>
+          <span className={s.srOnly}>Pick a day, your hours and the equipment. Flavors confirms every request; nothing is charged now.</span>
+          {props.onNavigate && <button type="button" className={s.flowHow} onClick={() => { if (props.onNavigate) { props.onNavigate('policies'); } }}><RefIcon name="circle-question-mark" size={16} />How booking works</button>}
+        </div>
         <ol className={s.steps} aria-label="Booking steps">
           {steps.map((n, i) => <li key={n} className={i < at ? s.stepDone : i === at ? s.stepNow : ''} aria-current={i === at ? 'step' : undefined}><b>{i < at ? '✓' : i + 1}</b>{n}</li>)}
         </ol>
-        {step === 'choose' && (
-          <div className={s.bk}>
+        {me.data && me.data.requests.length > 0 && (
+          <section className={s.bfRecent} aria-label="Recent bookings">
+            <h2>Recent bookings</h2>
+            <ul>
+              {me.data.requests.slice().sort((a, b) => Date.parse(b.startUtc) - Date.parse(a.startUtc)).slice(0, 3).map(r => (
+                <li key={r.requestId}>
+                  <span><strong>{r.space === 'Whole facility' ? 'Private event' : r.space}</strong><em>{formatWhen(r.startUtc, r.endUtc, tz)}</em></span>
+                  <b className={s.bfRecentSt} data-status={r.status || 'Pending'}>{r.cancelRequested && r.status !== 'Cancelled' ? 'Cancel requested' : r.status || 'Sent'}</b>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+        <div className={`${s.bk} ${size === 'wide' ? s.bk7Wide : ''}`}>
             <div className={s.bkSide} role="group" aria-label="When">
-              <h1 className={s.bfTitle}>Book the kitchen</h1>
-              <div className={s.bkModes} role="group" aria-label="What you need">
-                {WHAT.map(w => <button key={w.mode} type="button" aria-pressed={mode === w.mode} className={mode === w.mode ? s.bkModeOn : ''} onClick={() => pickMode(w.mode)}>{w.title}</button>)}
-              </div>
-
-              <h2 className={s.bkLabel}>1 · Date</h2>
-              <div className={s.bkDays}>
-                {dayOpts.map(d => (
-                  <button key={d} type="button" aria-pressed={day === d} aria-label={fmt(d, { weekday: 'long', month: 'long', day: 'numeric' })} className={`${day === d ? s.bkDayOn : ''} ${d === today ? s.bkDayToday : ''}`} onClick={() => pickDay(d)}>
-                    <span>{d === today ? 'Today' : fmt(d, { weekday: 'short' })}</span><b>{fmt(d, { day: 'numeric' })}</b>
+              
+              <div className={`${s.bkModes} ${s.modeRow}`} role="group" aria-label="What you need">
+                {WHAT.map(w => (
+                  <button key={w.mode} type="button" aria-pressed={mode === w.mode} className={`${s.modeCard} ${mode === w.mode ? s.bkModeOn : ''}`} onClick={e => { pickMode(w.mode); const b: HTMLElement = e.currentTarget; if (b.scrollIntoView) { b.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' }); } }}>
+                    <span className={`${s.ico3d} ${s.ico44}`} data-tone={w.mode === 'dining' ? 'sky' : w.mode === 'private-event' ? 'gold' : 'teal'}><RefIcon name={MODE_ICON[w.mode]} size={20} /></span>
+                    <span className={s.modeLabel}>{w.title}</span>
+                    <i className={s.modeCheck} aria-hidden="true"><RefIcon name="check" size={12} /></i>
                   </button>
                 ))}
               </div>
 
-              <h2 className={s.bkLabel}>2 · Your hours</h2>
+              <div className={s.bkDateHead}>
+                <h2 className={s.bkLabel}>1 · Date</h2>
+                <strong>{fmt(day, { month: 'long', year: 'numeric' })}</strong>
+                <label className={s.bkCalBtn} title="Pick any date"><RefIcon name="calendar-days" size={18} /><span>Calendar</span><input type="date" min={today} value={day} aria-label="Pick any date" onChange={e => { if (e.target.value && e.target.value >= today) { pickDay(e.target.value); } }} /></label>
+              </div>
+              <div className={s.bkDateCard}><div className={s.bkDays} ref={daysRef}>
+                {(dayOpts.indexOf(day) < 0 ? dayOpts.concat(day) : dayOpts).map((d, i) => (
+                  <button key={d} type="button" aria-pressed={day === d} aria-label={fmt(d, { weekday: 'long', month: 'long', day: 'numeric' })} className={`${day === d ? s.bkDayOn : ''} ${d === today ? s.bkDayToday : ''}`} onClick={() => pickDay(d)}>
+                    {(i === 0 || d.slice(8) === '01') && <em className={s.bkMon}>{fmt(d, { month: 'short' })}</em>}
+                    <span>{d === today ? 'Today' : fmt(d, { weekday: 'short' })}</span><b>{fmt(d, { day: 'numeric' })}</b>
+                  </button>
+                ))}
+              </div></div>
+
+              <div className={s.bkHours} data-pending={timed ? '0' : '1'}>
+              <h2 className={s.bkLabel}>2 · Pick your time</h2>
+              {!timed && <p className={s.bkHint}><RefIcon name="clock-3" size={16} />Tap a green time block, then drag the handles to set your start and end.</p>}
               {!cal.ready ? <div className={s.skeleton} style={{ height: 120 }} role="status" aria-label="Checking what is booked" />
                 : windows.length === 0 ? <p className={s.bfEmpty}>Nothing is free on this day for {SUMMARY[mode].toLowerCase()}. Try another day.</p> : (
                   <>
@@ -312,30 +442,20 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
                     </ul>
                     {win && startMin !== undefined && endMin !== undefined && (
                       <div className={s.range} role="group" aria-label="Start and end time">
-                        <div className={s.rangeRead}>
-                          <div><small>Start</small><b>{at12(startMin)}</b></div>
-                          <span>{dur(endMin - startMin)}</span>
-                          <div><small>End</small><b>{at12(endMin)}</b></div>
-                        </div>
-                        <div className={s.rangeTrack}>
-                          <i style={{ left: `${((startMin - win.a) / (win.b - win.a)) * 100}%`, width: `${((endMin - startMin) / (win.b - win.a)) * 100}%` }} />
-                          <input type="range" aria-label="Start time" min={win.a} max={win.b} step={bounds.step} value={startMin}
-                            onChange={e => { const v: number = Math.min(Number(e.target.value), endMin - bounds.min); if (v !== startMin) { buzz('tap'); setStartMin(v); } }} />
-                          <input type="range" aria-label="End time" min={win.a} max={win.b} step={bounds.step} value={endMin}
-                            onChange={e => { const v: number = Math.min(Math.max(Number(e.target.value), startMin + bounds.min), startMin + bounds.max); if (v !== endMin) { buzz('tap'); setEndMin(v); } }} />
-                        </div>
-                        <div className={s.rangeEnds} aria-hidden="true"><span>{at12(win.a)}</span><span>{at12(win.b)}</span></div>
+                        <RangeSlider min={win.a} max={win.b} step={bounds.step} start={startMin} end={endMin} minLen={bounds.min} maxLen={bounds.max} format={at12}
+                          onChange={(a2, b2) => { if (a2 !== startMin) { setStartMin(a2); } if (b2 !== endMin) { setEndMin(b2); } }} />
                       </div>
                     )}
                   </>
                 )}
               {cal.failed && <p className={s.muted}>We could not check what is booked. You can still send a request; our team will check it.</p>}
+              </div>
             </div>
 
             <div className={s.bkMain}>
               <div className={s.bkHead}>
                 <h2>{mode === 'equipment' ? 'Your equipment' : SUMMARY[mode]}</h2>
-                <p>{timed && startUtc && endUtc ? `Availability for ${formatWhen(startUtc, endUtc, tz)}` : `Availability on ${day === today ? 'today' : fmt(day, { weekday: 'long', month: 'short', day: 'numeric' })}. Pick your hours to check them.`}</p>
+                {timed && startUtc && endUtc && <p>{`Availability for ${formatWhen(startUtc, endUtc, tz)}`}</p>}
                 <ul className={s.bkKey} aria-hidden="true"><li><i className={s.bkKeyBusy} />Booked</li><li><i className={s.bkKeyWin} />Your time</li></ul>
                 <div className={s.bkScale} aria-hidden="true"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>12 AM</span></div>
               </div>
@@ -351,9 +471,13 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
                           const on: boolean = unitIds.indexOf(u.resourceId) >= 0;
                           const alt: number | undefined = !f.free && f.untilUtc ? moveTo(f.untilUtc, u.resourceId) : undefined;
                           return (
-                            <li key={u.resourceId} className={`${on ? s.bkUnitOn : ''} ${timed && !f.free ? s.bkUnitOff : ''}`}>
+                            <li key={u.resourceId} className={`${on ? s.bkUnitOn : ''} ${timed && !f.free ? s.bkUnitOff : ''}`} {...tiltProps()}>
                               <button type="button" disabled={!f.free && !on} aria-pressed={on} data-unit={u.resourceId} className={s.bkUnitBtn}
-                                onClick={() => { buzz('tap'); setUnitIds(on ? unitIds.filter(x => x !== u.resourceId) : unitIds.concat(u.resourceId)); }}>
+                                onClick={e => {
+                                  buzz('tap'); capture();
+                                  if (!on) { popIn(e.currentTarget.querySelector(`.${s.bkTick}`) || undefined); }
+                                  setUnitIds(on ? unitIds.filter(x => x !== u.resourceId) : unitIds.concat(u.resourceId));
+                                }}>
                                 <EquipmentArt unit={u} size="sm" />
                                 <span className={s.bkUnitText}><strong title={u.title}>{u.title}</strong><i className={s.leader} aria-hidden="true" />
                                   <em className={timed ? (f.free ? s.bkFree : s.bkTaken) : ''}>{timed ? (f.free ? (on ? 'Yours' : 'Free') : `Taken till ${f.until || ''}`) : dayNote(u.resourceId)}</em>
@@ -402,64 +526,27 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
                 </section>
               )}
             </div>
+            {size === 'wide' && cart}
           </div>
-        )}
-        <div className={s.bfLayout}>
-          <div className={s.bfMain}>
-            {step === 'review' && startUtc && endUtc && (
-              <>
-                <h1 className={s.bfTitle}>Review and send</h1>
-                <div className={s.bfTicket}>
-                  <dl className={s.facts}>
-                    <div><dt>What</dt><dd>{SUMMARY[mode]}</dd></div>
-                    <div><dt>When</dt><dd>{formatWhen(startUtc, endUtc, tz)} · {lengthLabel(lengthMin)}</dd></div>
-                    <div><dt>Includes</dt><dd>{equipmentText}</dd></div>
-                  </dl>
-                  {lines && <ul className={s.windows}><li>{lines.early}</li><li>{lines.booked}</li><li>{lines.cleaning}</li></ul>}
-                  {hoursLine && <p className={s.hoursLine}>{hoursLine}</p>}
-                  <p className={s.muted}>Nothing to pay now. Flavors confirms every request, and the answer appears in My bookings.</p>
-                  {(errors.length > 0 || problems.length > 0) && <ul className={s.problems} role="alert">{(errors.length > 0 ? errors : problems).map((p, i) => <li key={i}>{p}</li>)}</ul>}
-                </div>
-              </>
-            )}
-          </div>
-
-          <aside className={s.bfSummary} aria-label="Your booking">
-            <h2>Your booking</h2>
-            <dl>
-              <div><dt>What</dt><dd>{SUMMARY[mode]}</dd></div>
-              <div><dt>When</dt><dd>{startUtc && endUtc ? formatWhen(startUtc, endUtc, tz) : 'Choose a start and end time'}</dd></div>
-              {startUtc && <div><dt>Length</dt><dd>{lengthLabel(lengthMin)}</dd></div>}
-              {startUtc && needsPick && <div><dt>Includes</dt><dd>{equipmentText}</dd></div>}
-            </dl>
-            {hoursLine && <p className={s.hoursLine}>{hoursLine}</p>}
-            <p className={s.bfFine}>Nothing to pay now. Flavors confirms every request.</p>
-            <div className={s.bfSummaryAct}>{action}</div>
-            {step === 'review' && <button type="button" className={s.linkBtn} onClick={() => setStep('choose')}>Change details</button>}
-          </aside>
-        </div>
-        {step === 'choose' && me.data && me.data.requests.length > 0 && (
-          <section className={s.bfRecent} aria-label="Recent bookings">
-            <h2>Recent bookings</h2>
-            <ul>
-              {me.data.requests.slice().sort((a, b) => Date.parse(b.startUtc) - Date.parse(a.startUtc)).slice(0, 3).map(r => (
-                <li key={r.requestId}>
-                  <span><strong>{r.space === 'Whole facility' ? 'Private event' : r.space}</strong><em>{formatWhen(r.startUtc, r.endUtc, tz)}</em></span>
-                  <b className={s.bfRecentSt} data-status={r.status || 'Pending'}>{r.cancelRequested && r.status !== 'Cancelled' ? 'Cancel requested' : r.status || 'Sent'}</b>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
       </div>
 
-      <div className={s.bfBar}>
-        <div className={s.container}>
-          {step === 'review' ? <button type="button" className={s.btn} onClick={() => setStep('choose')}>Back</button> : <span />}
-          <span className={s.bfBarText}>{startUtc && endUtc ? `${SUMMARY[mode]} · ${formatWhen(startUtc, endUtc, tz)}` : 'Pick your hours'}</span>
-          {action}
+      {size !== 'wide' && (
+        <div className={`${s.bfBar} ${s.bk7Bar}`} data-empty={!timed && rows.length === 0 ? '1' : '0'}>
+          <div className={s.container}>
+            <span className={s.capIco} aria-hidden="true"><span className={`${s.ico3d} ${s.ico40}`}><RefIcon name="cooking-pot" size={18} /></span>{itemCount > 0 && ready && <b key={itemCount} className={s.capBadge}>{itemCount}</b>}</span>
+            <span className={s.capText}>
+              <span key={ready ? itemCount : 'm'} className={s.bfBarText}>{ready ? `${itemCount} ${itemCount === 1 ? 'item' : 'items'} · ${hoursLabel(lengthMin / 60)}` : missing}</span>
+              {startUtc && endUtc && <small className={s.capWhen}>{formatWhen(startUtc, endUtc, tz)}</small>}
+            </span>
+            <button type="button" className={`${s.btn} ${s.btnCitrus} ${s.capGo}`} disabled={!ready} onClick={openReview}>Review<RefIcon name="chevron-right" size={16} /></button>
+          </div>
         </div>
-      </div>
+      )}
+      {reviewOpen && (
+        <Sheet title={sentId ? 'Request sent' : 'Review and send'} side={size === 'phone' ? 'auto' : 'center'} motion="external" onClose={closeReview} footer={sheetFoot}>
+          <div ref={reviewRef} className={s.bk7Review}>{sheetBody}</div>
+        </Sheet>
+      )}
     </section>
   );
 }

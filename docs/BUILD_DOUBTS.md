@@ -182,3 +182,6 @@ Built in Power Automate as `automations@` with a lean design (trigger + "Send an
 8. **Flow checker shows a warning on the two copied flows (storage request, storage decision)** before first run; it did not stop saving or running. Not investigated further.
 9. **Test rows were removed again by explicit id** (EventRequests 1-2, EventCases 1, StorageRequests 1-2, StorageCases 1, SupportMessages 1-4, SupportCases 1; all had `gaptest-` ids). Nothing left from this build.
 10. **Sender of the REST test items was `automations@`**; no real member was used. A member who is not in AvenueMembers is refused for events and storage (the flow reads the member row).
+
+## Redesign build doubts (23 Nov 2026)
+Per builder: [P2 Book](doubts/P2-book.md) · [P3 bookings + notices](doubts/P3-bookings-notices.md) · [P4 membership + billing](doubts/P4-membership-billing.md) · [P5/P6 documents + support](doubts/P5P6-docs-support.md) · [P7/P8 staff + schema](doubts/P7-staff-schema.md).

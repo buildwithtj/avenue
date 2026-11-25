@@ -28,6 +28,8 @@ export interface IProfileDrawerProps {
   full: boolean;
   setFull: (v: boolean) => void;
   onNavigate: (tab: TabKey) => void;
+  /** Phone: the avatar opens the person's profile only (summary, details, preferences, sign out). Destinations live in the More sheet. */
+  profileOnly?: boolean;
 }
 
 const EXIT_MS = 220;
@@ -152,7 +154,7 @@ function DrawerBody(props: IProfileDrawerProps): React.ReactElement {
         {data.loading && !data.data && <div className={s.pdSkel} role="status" aria-label="Loading your account"><i /><i /><i /></div>}
         {data.error && !data.data && <p className={s.pdNote} role="alert">We could not load your account summary. {data.error}</p>}
 
-        {model && model.attention.length > 0 && (
+        {!props.profileOnly && model && model.attention.length > 0 && (
           <section aria-label="Needs attention" className={s.pdGroup}>
             <h3>Needs attention</h3>
             <Rows rows={model.attention} onPick={go} start={0} />
@@ -170,10 +172,22 @@ function DrawerBody(props: IProfileDrawerProps): React.ReactElement {
             </dl>
           </section>
         )}
-        {model && model.account.length > 0 && (
+        {!props.profileOnly && model && model.account.length > 0 && (
           <section aria-label="Your account" className={s.pdGroup}>
             <h3>Your account</h3>
             <Rows rows={model.account} onPick={go} start={2} />
+          </section>
+        )}
+        {props.profileOnly && (
+          <section aria-label="Your details" className={s.pdGroup}>
+            <h3>Your details</h3>
+            <dl className={s.pdDetails}>
+              <div><dt>Name</dt><dd>{props.userName}</dd></div>
+              <div><dt>Sign-in e-mail</dt><dd>{isDemo ? 'Demo account' : userEmail}</dd></div>
+              {m && m.businessName && <div><dt>Business</dt><dd>{m.businessName}</dd></div>}
+              {m && m.planName && <div><dt>Plan</dt><dd>{m.planName}{m.monthlyHours !== undefined ? ` · ${m.monthlyHours} h a month` : ''}</dd></div>}
+              {m && m.status && <div><dt>Status</dt><dd>{m.status}</dd></div>}
+            </dl>
           </section>
         )}
         {model && model.onboarding && (
@@ -197,16 +211,11 @@ function DrawerBody(props: IProfileDrawerProps): React.ReactElement {
           </ul>
         </section>
 
-        <section aria-label="Help" className={s.pdGroup}>
+        {!props.profileOnly && <section aria-label="Help" className={s.pdGroup}>
           <h3>Help</h3>
           {model && model.help.length > 0 && <Rows rows={model.help} onPick={go} start={4} />}
-          <details className={s.pdDetails}>
-            <summary>Facility policies</summary>
-            <p>Flavors confirms every request.</p>
-            <p>Cancel 24 hours or more ahead to get your hours back.</p>
-            <p>Early entry and clean-up time are free.</p>
-          </details>
-        </section>
+          <button type="button" className={s.pdPolicies} onClick={() => { onClose(); window.setTimeout(() => onNavigate('policies'), 0); }}><strong>Policies and help</strong><span>Booking, cancelling, payments, documents</span></button>
+        </section>}
 
         {!isDemo && <a className={s.pdSignOut} href={signOut}>Sign out</a>}
       </div>

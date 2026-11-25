@@ -1,5 +1,7 @@
 # Test checklist: staff app and flows (seed data)
 
+> **Superseded 23 Nov 2026 by [END_TO_END_TEST_GUIDE.md](END_TO_END_TEST_GUIDE.md)** (member portal 2.17.0.0, staff app, flows, host, sensors, responsive). Kept for history.
+
 Prepared 14 Nov 2026. Real site, **no test environment**: every row you create is seed data. Use `gaptest-` ids and remove rows by explicit id only (see Cleanup). Stripe is not connected; nothing here charges anyone.
 
 ## Before the tester starts (owner/admin does this)

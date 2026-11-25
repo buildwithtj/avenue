@@ -6,7 +6,7 @@ const fs: { readFileSync(p: string, enc: string): string } = require('fs');
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const cwd: () => string = require('process').cwd;
 const dir = cwd() + '/src/webparts/avenuePortal/components/';
-const sheets = ['Site.module.scss', 'AvenuePortal.module.scss'].map(f => ({ f, css: fs.readFileSync(dir + f, 'utf8') }));
+const sheets = ['Site.module.scss', 'AvenuePortal.module.scss', 'Ref.module.scss'].map(f => ({ f, css: fs.readFileSync(dir + f, 'utf8') }));
 
 describe('stylesheet rules', () => {
   it('never squeezes the font (no font-stretch)', () => {

@@ -12,6 +12,7 @@ import { createTableStore } from './store.mjs';
 import { createSqliteTable } from './sqliteTable.mjs';
 import { createSwiftClient } from './swiftClient.mjs';
 import { createSensorJob } from './sensorJob.mjs';
+import { createPlanSource } from './plans.mjs';
 
 const MAX_BODY = 256 * 1024;
 const send = (res, status, body) => { const s = JSON.stringify(body); res.writeHead(status, { 'content-type': 'application/json', 'content-length': Buffer.byteLength(s), 'cache-control': 'no-store' }); res.end(s); };
@@ -52,7 +53,7 @@ export function createApp(deps, log = () => {}) {
         if (only('POST')) { const r = await bridgeRequest({ headers: req.headers, rawBody: await readBody(req) }, d); status = r.status; send(res, status, r.body); }
       } else if ((path === '/join' || path === '/join/done') && deps.joinPublic) {
         if (path === '/join/done') { if (only('GET')) html(res, status = 200, donePage()); }
-        else if (req.method === 'GET') html(res, status = 200, joinForm());
+        else if (req.method === 'GET') html(res, status = 200, joinForm({}, [], d.plans ? await d.plans() : undefined));
         else if (only('POST')) {
           const ip = String(req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').split(',')[0].trim();
           const r = await joinPost(await readBody(req), ip, d); status = r.status;
@@ -85,6 +86,7 @@ export function depsFromEnv(env, { fetchImpl = fetch } = {}) {
     stripe: env.STRIPE_SECRET_KEY ? createStripeClient({ secretKey: env.STRIPE_SECRET_KEY, fetch: fetchImpl }) : undefined,
     account: env.STRIPE_ACCOUNT || allowedAccounts[0],
     bridge: bridgeEnv.bridge, bridgeComplete: bridgeEnv.complete,
+    plans: bridgeEnv.plansConfigured ? createPlanSource({ bridge: bridgeEnv.bridge, nowSec, log: line => console.log(line) }) : undefined,   // [PROPOSED] AvenuePlans, fallback plans.mjs
     bridgeKey: env.BRIDGE_KEY || '', portalUrl: env.PORTAL_URL || '', publicBaseUrl: (env.PUBLIC_BASE_URL || '').replace(/\/$/, ''),
     joinPublic: env.JOIN_PUBLIC === '1', applicationDays: Number(env.APPLICATION_DAYS || 14),
     paymentsRequired: !(env.PAYMENTS_REQUIRED === '0' && /^(sk|rk)_test_/.test(env.STRIPE_SECRET_KEY || ''))   // only a test key can switch payment off

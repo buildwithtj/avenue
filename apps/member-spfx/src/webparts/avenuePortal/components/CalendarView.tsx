@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { RefIcon } from './RefUi';
 import s from './Site.module.scss';
 import { DINING_KEY, buildBusyMap, cookingUnits, dayTimeline, type IDayTimeline, type ITimelineSegment } from '../../../avenue/availability';
 import { addDays, groupByDay, localDay, localTime } from '../../../avenue/calendar';
@@ -26,20 +27,22 @@ const LEVEL: string[] = [s.heat0, s.heat1, s.heat2, s.heat3, s.heat4];
 
 // Facility schedule: the board for one day, or a week of equipment x day heat. Names are the member display name only (the
 // existing shared-calendar rule). On phones the day becomes a list per piece of equipment.
+/** Category icons for the grouped day view. */
+const GROUP_ICON: Record<string, string> = { Stove: 'cooking-pot', Oven: 'oven', 'Pizza oven': 'oven', Grill: 'flame', Warmer: 'flame', Other: 'settings-2', Rack: 'archive', Refrigeration: 'archive', Fridge: 'archive', 'Prep table': 'layout-dashboard', Mixer: 'settings-2' };
+
 export default function CalendarView(props: ICalendarViewProps): React.ReactElement {
   const { source, facility, resources } = props;
   const tz: string = facility.timeZone;
   const size = useSize();
   const today: string = localDay(new Date(), tz);
   const [day, setDay] = React.useState<string>(today);
-  const [view, setView] = React.useState<'month' | 'cards' | 'day' | 'week'>('month');
+  const [view, setViewRaw] = React.useState<'month' | 'cards' | 'day' | 'week'>('month');
+  const [vdir, setVdir] = React.useState<'fwd' | 'back'>('fwd');
+  const setView = (v: 'month' | 'cards' | 'day' | 'week'): void => { const o: string[] = ['month', 'cards', 'day', 'week']; setVdir(o.indexOf(v) >= o.indexOf(view) ? 'fwd' : 'back'); setViewRaw(v); };
   const [filter, setFilter] = React.useState<'all' | 'free' | 'busy'>('all');
   const cal = useCalendarDay(source, day, view === 'week' ? 7 : 1);
   const busy = React.useMemo(() => buildBusyMap(cal.entries), [cal.entries]);
   const units: IResource[] = React.useMemo(() => resources.concat({ resourceId: DINING_KEY, title: 'Dining room', kind: 'Space', category: 'Other', sortOrder: 100000 }), [resources]);
-  const zoneName: string = ((): string => {
-    try { const t: string = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'longGeneric' } as Intl.DateTimeFormatOptions).format(new Date()); return t.indexOf(', ') > 0 ? t.slice(t.indexOf(', ') + 2) : tz; } catch { return tz; }
-  })();
   const timeline: IDayTimeline = React.useMemo(() => dayTimeline(units, busy, day, tz), [units, busy, day, tz]);
   const wf: ITimelineSegment[] = React.useMemo(() => dayTimeline([{ resourceId: 'wf', title: 'wf', kind: 'Space' }], buildBusyMap(cal.entries.filter(e => e.space === 'Whole facility')), day, tz).rows[0].segments, [cal.entries, day, tz]);
 
@@ -70,8 +73,9 @@ export default function CalendarView(props: ICalendarViewProps): React.ReactElem
       <div className={s.pageHead}>
         <div className={`${s.container} ${s.headRow}`}>
           <div>
-            <h1 className={s.pageTitle}>{view === 'month' ? 'Kitchen schedule' : view === 'week' ? 'The week at a glance' : facilityDayLabel(day, today)}</h1>
-            <p className={s.scSub}>{view === 'month' ? 'Approved bookings only' : view === 'week' ? `${range(day)} – ${range(addDays(day, 6))}` : long(day)}, {zoneName}</p>
+            <p className={s.pgEyebrow}>{props.facility.title}</p>
+            <h1 className={s.pageTitle}>{view === 'month' ? 'Kitchen schedule' : view === 'week' ? 'The week at a glance' : facilityDayLabel(day, today)}<span className={s.rDot} aria-hidden="true">.</span></h1>
+            {view !== 'month' && <p className={s.scSub}>{view === 'week' ? `${range(day)} – ${range(addDays(day, 6))}` : long(day)}</p>}
             <dl className={s.factRow}>
               <div><dt>{day === today ? 'Free now' : 'Free all day'}</dt><dd>{cal.ready ? `${cookingFree} of ${cookingAll}` : '…'}</dd></div>
               <div><dt>{day === today ? 'Bookings today' : `Bookings ${short(day)}`}</dt><dd>{cal.ready ? dayCount : '…'}</dd></div>
@@ -79,25 +83,28 @@ export default function CalendarView(props: ICalendarViewProps): React.ReactElem
             </dl>
           </div>
           <div className={s.row}>
-            <div className={s.segmented} role="group" aria-label="Schedule view">
-              <button type="button" aria-pressed={view === 'month'} onClick={() => setView('month')}>Calendar</button>
-              <button type="button" aria-pressed={view === 'cards'} onClick={() => setView('cards')}>Equipment</button>
-              <button type="button" aria-pressed={view === 'day'} onClick={() => setView('day')}>Timeline</button>
-              <button type="button" aria-pressed={view === 'week'} onClick={() => setView('week')}>Week view</button>
+            <div className={`${s.segmented} ${s.segIcons}`} role="group" aria-label="Schedule view">
+              <button type="button" aria-pressed={view === 'month'} onClick={() => setView('month')}><RefIcon name="calendar-days" /><span>Calendar</span></button>
+              <button type="button" aria-pressed={view === 'cards'} onClick={() => setView('cards')}><RefIcon name="cooking-pot" /><span>Equipment</span></button>
+              <button type="button" aria-pressed={view === 'day'} onClick={() => setView('day')}><RefIcon name="clock-3" /><span>Timeline</span></button>
+              <button type="button" aria-pressed={view === 'week'} onClick={() => setView('week')}><RefIcon name="activity" /><span>Week view</span></button>
             </div>
-            {props.onBook && <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={() => props.onBook && props.onBook()}>Book</button>}
+            {props.onBook && <button type="button" className={`${s.btn} ${s.btnCitrus} ${s.bookPill}`} onClick={() => props.onBook && props.onBook()}><RefIcon name="plus" size={16} />Book</button>}
           </div>
         </div>
       </div>
 
-      {view === 'month' && <div className={s.container}><MonthCalendar source={source} facility={facility} resources={resources} /></div>}
-      {view !== 'month' && <div className={s.container}>
-        <div className={s.dayNav}>
-          <button type="button" className={s.iconBtn} aria-label={view === 'week' ? 'Previous week' : 'Previous day'} onClick={() => setDay(addDays(day, view === 'week' ? -7 : -1))}>‹</button>
-          <label className={s.dateField}><span className={s.srOnly}>Pick a date</span><input type="date" value={day} onChange={e => { if (e.target.value) { setDay(e.target.value); } }} /></label>
-          <button type="button" className={s.iconBtn} aria-label={view === 'week' ? 'Next week' : 'Next day'} onClick={() => setDay(addDays(day, view === 'week' ? 7 : 1))}>›</button>
-          <button type="button" className={s.btn} onClick={() => setDay(today)} disabled={day === today}>Today</button>
-          <button type="button" className={s.iconBtn} aria-label="Refresh" title="Refresh" onClick={cal.reload}>↻</button>
+      {view === 'month' && <div key="v-month" className={`${s.container} ${s.pane}`} data-dir={vdir}><MonthCalendar source={source} facility={facility} resources={resources} /></div>}
+      {view !== 'month' && <div key={`v-${view}`} className={`${s.container} ${s.pane}`} data-dir={vdir}>
+        <div className={s.dateHead}>
+          <button type="button" className={s.roundBtn} aria-label={view === 'week' ? 'Previous week' : 'Previous day'} onClick={() => setDay(addDays(day, view === 'week' ? -7 : -1))}><RefIcon name="chevron-left" size={18} /></button>
+          <h2 className={s.dateTitle}>{new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: 'short', day: 'numeric', month: 'short' }).format(new Date(`${day}T12:00:00Z`))}</h2>
+          <button type="button" className={s.roundBtn} aria-label={view === 'week' ? 'Next week' : 'Next day'} onClick={() => setDay(addDays(day, view === 'week' ? 7 : 1))}><RefIcon name="chevron-right" size={18} /></button>
+          <span className={s.dateTools}>
+            {day !== today && <button type="button" className={s.todayPill} onClick={() => setDay(today)}>Today</button>}
+            <label className={s.roundBtn} title="Pick a date"><span className={s.srOnly}>Pick a date</span><RefIcon name="calendar-days" size={18} /><input type="date" value={day} onChange={e => { if (e.target.value) { setDay(e.target.value); } }} /></label>
+            <button type="button" className={s.roundBtn} aria-label="Refresh" title="Refresh" onClick={cal.reload}><RefIcon name="rotate-cw" size={18} /></button>
+          </span>
         </div>
 
         {cal.failed && <div className={s.errorPanel} role="alert"><strong>We could not load the schedule.</strong><button type="button" className={s.btn} onClick={cal.reload}>Try again</button></div>}
@@ -149,7 +156,7 @@ export default function CalendarView(props: ICalendarViewProps): React.ReactElem
 
         {cal.ready && !cal.failed && view === 'day' && (
           <>
-            {timeline.rows.every(r => r.segments.length === 0) && <p className={s.muted}>Nothing is booked on this day.</p>}
+            {size !== 'phone' && timeline.rows.every(r => r.segments.length === 0) && <p className={s.muted}>Nothing is booked on this day.</p>}
             {size !== 'phone' && <Board timeline={timeline} tz={tz} lanes={lanes} nowMs={Date.now()} step={30} label="Schedule board" />}
             {size === 'phone' && (
               <div className={s.agendaByUnit} data-testid="schedule-list">
@@ -160,7 +167,28 @@ export default function CalendarView(props: ICalendarViewProps): React.ReactElem
                     <ul>{r.segments.filter(sg => !isWf(sg)).map((sg, i) => <li key={i}><strong>{timeOf(sg.startMin)} – {timeOf(sg.endMin)}</strong><span>{sg.label || 'Booked'}</span></li>)}</ul>
                   </article>
                 ))}
-                {idle.length > 0 && <p className={s.muted}>{wf.length > 0 ? 'No separate bookings: ' : 'Free all day: '}{idle.map(r => r.title).join(', ')}</p>}
+                <div className={s.dayStat} role="status"><i aria-hidden="true" /><b>{idle.length === timeline.rows.length ? `All ${timeline.rows.length}` : `${idle.length} of ${timeline.rows.length}`}</b><span>units free {day === today ? 'today' : 'all day'}</span></div>
+                {categoryGroups(resources, true).map((g, gi) => {
+                  const rowsG = g.units.map(u => ({ u, segs: ((timeline.rows.filter(r2 => r2.unitId === u.resourceId)[0] || { segments: [] }).segments as ITimelineSegment[]).filter(sg => !isWf(sg)) }));
+                  const freeN: number = rowsG.filter(x => x.segs.length === 0).length;
+                  return (
+                    <details key={g.category} className={s.grp} open={gi === 0}>
+                      <summary><span className={`${s.ico3d} ${s.ico40}`}><RefIcon name={GROUP_ICON[String(g.category)] || 'cooking-pot'} size={18} /></span><b>{g.title}</b><em className={freeN === rowsG.length ? s.pillOk : freeN === 0 ? s.pillBad : s.pillWait}>{freeN} of {rowsG.length} free</em></summary>
+                      <ul className={s.grpRows}>
+                        {rowsG.map(({ u, segs }) => (
+                          <li key={u.resourceId}>
+                            <button type="button" className={s.grpRow} onClick={() => props.onBook && props.onBook(u.resourceId)} disabled={!props.onBook}>
+                              <EquipmentArt unit={u} size="xs" />
+                              <span className={s.grpName}>{u.title}</span>
+                              <em className={segs.length === 0 ? s.pillOk : segs.length === 1 ? s.pillBad : s.pillWait}>{segs.length === 0 ? 'Free' : segs.length === 1 ? `Busy ${timeOf(segs[0].startMin)}–${timeOf(segs[0].endMin)}` : 'Partly free'}</em>
+                              <span className={s.grpBar} aria-hidden="true">{segs.map((sg, i) => <i key={i} style={{ left: `${(sg.startMin / timeline.totalMinutes) * 100}%`, width: `${((sg.endMin - sg.startMin) / timeline.totalMinutes) * 100}%` }} />)}</span>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  );
+                })}
               </div>
             )}
           </>

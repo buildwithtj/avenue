@@ -23,9 +23,9 @@ button:hover{background:#0B3A47}.err{background:#FDECEA;border:1px solid #F5C2BD
 const page = (title, body) => `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><style>${CSS}</style></head>
 <body><header><b aria-hidden="true">◆</b><span>Avenue · Flavors Culinary Hub</span></header><main>${body}</main></body></html>`;
 
-export function joinForm(values = {}, errors = []) {
+export function joinForm(values = {}, errors = [], plans = PLANS) {
   const v = (k) => esc(values[k]);
-  const group = (g) => PLANS.filter(p => p.openToNew && p.group === g).map(p => `<label class="plan"><input type="radio" name="planId" value="${esc(p.planId)}"${values.planId === p.planId ? ' checked' : ''} required>
+  const group = (g) => plans.filter(p => p.openToNew && p.group === g).map(p => `<label class="plan"><input type="radio" name="planId" value="${esc(p.planId)}"${values.planId === p.planId ? ' checked' : ''} required>
 <strong>${esc(p.name)}</strong><span>${usd(p.priceCents)}/mo by bank</span><br><span class="muted">${usd(p.cardPriceCents)} by card · ${p.hours} h/month · extra $${p.extraRate}/h</span></label>`).join('');
   const days = Array.from({ length: 15 }, (_, i) => i + 1).map(d => `<option value="${d}"${Number(values.collectionDay) === d ? ' selected' : ''}>${ord(d)} of the month</option>`).join('');
   return page('Become a member · Flavors', `<h1>Become a member</h1><p class="muted">Choose a plan, tell us about your business and pay securely with Stripe. After payment Flavors sends your Avenue sign-in invitation; you then upload your compliance documents.</p>
@@ -69,5 +69,5 @@ export async function joinPost(rawBody, ip, deps) {
   try { r = await startJoin({ email: f.email, input: { ...f, teamSize: Number(f.teamSize || 1), collectionDay: Number(f.collectionDay) }, source: 'Public' }, deps); }
   catch (e) { deps.log?.(`join failed: ${e.message}`); return { status: 503, html: page('Try again later', '<h1>Sorry, something went wrong</h1><p>Nothing was charged. Please try again later.</p>') }; }
   if (r.link) return { status: 303, location: r.link };
-  return { status: 400, html: joinForm(f, r.errors || [r.outcome.replace(/^Refused: /, '')]) };
+  return { status: 400, html: joinForm(f, r.errors || [r.outcome.replace(/^Refused: /, '')], deps.plans ? await deps.plans() : undefined) };
 }

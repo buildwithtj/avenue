@@ -235,3 +235,13 @@ export const DEMO_INVOICES: IInvoice[] = [
     ]
   }
 ];
+
+export type InvoiceChip = 'Paid' | 'Open' | 'Past due' | 'Void';
+
+/** The four member-facing invoice states. An open invoice past its due date (or one Stripe marked uncollectible) is Past due; a draft is still Open. */
+export function invoiceChip(inv: IInvoice, todayYmd: string): InvoiceChip {
+  if (inv.status === 'paid') { return 'Paid'; }
+  if (inv.status === 'void') { return 'Void'; }
+  if (inv.status === 'uncollectible' || (inv.status === 'open' && !!inv.dueDate && inv.dueDate < todayYmd)) { return 'Past due'; }
+  return 'Open';
+}

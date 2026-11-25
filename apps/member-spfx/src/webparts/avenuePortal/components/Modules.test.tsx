@@ -109,7 +109,7 @@ describe('welcome timeline', () => {
 describe('billing', () => {
   const inv = (o: Record<string, unknown>): unknown => ({ invoiceId: 'in_1', periodStart: '2026-11-05', periodEnd: '2026-12-05', currency: 'usd', amountDueCents: 82400, amountPaidCents: 0, status: 'open', dueDate: '2026-11-05', isEstimate: false, lines: [], ...o });
   const billingSource = (invoices: unknown[], paymentStatus = 'Current'): never => ({
-    listMyInvoices: async () => invoices, listMyRequests: async () => [],
+    listMyInvoices: async () => invoices, listMyRequests: async () => [], listPlans: async () => sheetPlans(),
     getMyMembership: async () => ({ status: 'Active', planId: 'emerging-10', planName: 'Emerging-10', collectionDay: 5, payMethod: 'Bank', paymentStatus }),
     listMyHostRequests: async () => [], submitHostRequest: async () => undefined
   }) as never;

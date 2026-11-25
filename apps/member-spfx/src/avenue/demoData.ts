@@ -50,6 +50,9 @@ export const demoWriter: IIntakeWriter = {
     if (list === LISTS.documentSubmissions && row.Outcome === null) {
       row.Outcome = 'Received. Flavors will verify it.';
     }
+    if (list === LISTS.supportMessages && row.Outcome === null) {
+      row.Outcome = 'Received. Flavors will reply here.';
+    }
     return Promise.resolve();
   },
   attach: (list: string, id: number) => {

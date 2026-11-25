@@ -63,7 +63,8 @@ export default class AvenuePortalWebPart extends BaseClientSideWebPart<IAvenuePo
           facilityId,
           demo ? demoFetchJson : this._spFetchJson,
           demo ? demoWriter : this._spWriter,
-          demo ? undefined : this.context.pageContext.legacyPageContext.userId
+          demo ? undefined : this.context.pageContext.legacyPageContext.userId,
+          demo ? undefined : userEmailOf(this.context.pageContext.user.email, this.context.pageContext.user.loginName)
         );
       } catch {
         this._source = undefined; // missing/invalid facility id: render "not configured"

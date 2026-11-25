@@ -4,6 +4,8 @@ import type { ITeamMember } from '../../../avenue/contracts';
 import { type AvenueReadSource, newSubmissionId } from '../../../avenue/readSource';
 import { validateTeamName } from '../../../avenue/team';
 import { toast } from './feedback';
+import rx from './Ref.module.scss';
+import { ModuleCard } from './RefUi';
 import { Empty, useLoad, LoadError } from './ui';
 
 export interface ITeamViewProps { source: AvenueReadSource }
@@ -33,7 +35,8 @@ export default function TeamView(props: ITeamViewProps): React.ReactElement {
   const gone: ITeamMember[] = team.filter(m => !m.active);
   return (
     <section className={s.nm} aria-label="My team">
-      <header className={s.nmHead}><div><h2>My team</h2><p className={s.cwHelp}>People who work with you. Their names are filled in for you in the wellness check at check-in.</p></div></header>
+      <ModuleCard eyebrow="YOUR TEAM" title="My team">
+        <p className={rx['module-lede']}>People who work with you. Their names are filled in for you in the wellness check at check-in.</p>
       <form className={s.wlAdd} onSubmit={add}>
         <label className={s.srOnly} htmlFor="team-name">Name</label>
         <input id="team-name" value={name} maxLength={80} placeholder="Name" onChange={e => setName(e.target.value)} />
@@ -64,6 +67,7 @@ export default function TeamView(props: ITeamViewProps): React.ReactElement {
           </ul>
         </details>
       )}
+      </ModuleCard>
     </section>
   );
 }

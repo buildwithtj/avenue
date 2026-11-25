@@ -361,7 +361,7 @@
         - qHelp:
             Control: Label
             Properties:
-              Text: ="Flavors' own entry and exit checklist questions (Q-10). Members answer Yes or No to each."
+              Text: ="Flavors' own entry, exit and team wellness questions (Q-10). Members answer Yes or No to each. Edit a question in place and press Save on its row."
               X: =20
               Y: =0
               Width: =1300
@@ -371,7 +371,7 @@
         - qKind:
             Control: Classic/DropDown
             Properties:
-              Items: =["Entry", "Exit"]
+              Items: =["Entry", "Exit", "Wellness"]
               Default: ="Entry"
               X: =20
               Y: =40
@@ -438,7 +438,7 @@
               Text: ="Entry checklist"
               X: =20
               Y: =90
-              Width: =640
+              Width: =430
               Height: =30
               Color: =RGBA(31,31,31,1)
               FontWeight: =FontWeight.Semibold
@@ -449,48 +449,78 @@
               Items: =SortByColumns(Filter(AvenueChecklistQuestions, Active = true, Kind.Value = "Entry"), "SortOrder", SortOrder.Ascending)
               X: =20
               Y: =125
-              Width: =640
+              Width: =430
               Height: =560
-              TemplateSize: =56
+              TemplateSize: =92
               Fill: =RGBA(0,0,0,0)
               BorderThickness: =0
               TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
             Children:
-              - qEntryItem:
-                  Control: Label
+              - qEntryOrd:
+                  Control: Classic/TextInput
                   Properties:
-                    Text: =Text(ThisItem.SortOrder) & ". " & ThisItem.Question
+                    Default: =Text(ThisItem.SortOrder)
+                    Format: =TextFormat.Number
                     X: =8
                     Y: =6
-                    Width: =480
-                    Height: =44
+                    Width: =52
+                    Height: =36
+                    BorderColor: =RGBA(225,228,233,1)
+                    BorderThickness: =1
                     Color: =RGBA(31,31,31,1)
+                    Fill: =RGBA(255,255,255,1)
+              - qEntryQ:
+                  Control: Classic/TextInput
+                  Properties:
+                    Default: =ThisItem.Question
+                    Mode: =TextMode.MultiLine
+                    X: =66
+                    Y: =6
+                    Width: =340
+                    Height: =44
+                    Size: =11
+                    BorderColor: =RGBA(225,228,233,1)
+                    BorderThickness: =1
+                    Color: =RGBA(31,31,31,1)
+                    Fill: =RGBA(255,255,255,1)
+              - qEntrySave:
+                  Control: Classic/Button
+                  Properties:
+                    Text: ="Save"
+                    X: =66
+                    Y: =54
+                    Width: =90
+                    Height: =30
+                    Size: =11
+                    OnSelect: |-
+                      =If(IsBlank(Trim(qEntryQ.Text)) || !IsNumeric(qEntryOrd.Text), Notify("Enter the question and a number for its order.", NotificationType.Warning), IfError(Patch(AvenueChecklistQuestions, LookUp(AvenueChecklistQuestions, ID = ThisItem.ID), {Title: Left(Trim(qEntryQ.Text), 255), Question: Trim(qEntryQ.Text), SortOrder: Value(qEntryOrd.Text)}); Notify("Question saved.", NotificationType.Success), Notify("Could not save the question.", NotificationType.Error)))
               - qEntryRemove:
                   Control: Classic/Button
                   Properties:
                     Text: ="Remove"
-                    X: =500
-                    Y: =10
-                    Width: =120
-                    Height: =34
+                    X: =166
+                    Y: =54
+                    Width: =90
+                    Height: =30
+                    Size: =11
                     OnSelect: |-
-                      =Patch(AvenueChecklistQuestions, ThisItem, {Active: false}); Notify("Question removed.", NotificationType.Information)
+                      =IfError(Patch(AvenueChecklistQuestions, LookUp(AvenueChecklistQuestions, ID = ThisItem.ID), {Active: false}); Notify("Question removed (kept as inactive).", NotificationType.Information), Notify("Could not remove it.", NotificationType.Error))
               - qEntryListSep:
                   Control: Label
                   Properties:
                     Text: =""
                     X: =8
-                    Y: =55
-                    Width: =608
+                    Y: =91
+                    Width: =398
                     Height: =1
                     Fill: =RGBA(225,228,233,1)
         - qExitHead:
             Control: Label
             Properties:
               Text: ="Exit checklist"
-              X: =680
+              X: =465
               Y: =90
-              Width: =640
+              Width: =430
               Height: =30
               Color: =RGBA(31,31,31,1)
               FontWeight: =FontWeight.Semibold
@@ -499,40 +529,152 @@
             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
             Properties:
               Items: =SortByColumns(Filter(AvenueChecklistQuestions, Active = true, Kind.Value = "Exit"), "SortOrder", SortOrder.Ascending)
-              X: =680
+              X: =465
               Y: =125
-              Width: =640
+              Width: =430
               Height: =560
-              TemplateSize: =56
+              TemplateSize: =92
               Fill: =RGBA(0,0,0,0)
               BorderThickness: =0
               TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
             Children:
-              - qExitItem:
-                  Control: Label
+              - qExitOrd:
+                  Control: Classic/TextInput
                   Properties:
-                    Text: =Text(ThisItem.SortOrder) & ". " & ThisItem.Question
+                    Default: =Text(ThisItem.SortOrder)
+                    Format: =TextFormat.Number
                     X: =8
                     Y: =6
-                    Width: =480
-                    Height: =44
+                    Width: =52
+                    Height: =36
+                    BorderColor: =RGBA(225,228,233,1)
+                    BorderThickness: =1
                     Color: =RGBA(31,31,31,1)
+                    Fill: =RGBA(255,255,255,1)
+              - qExitQ:
+                  Control: Classic/TextInput
+                  Properties:
+                    Default: =ThisItem.Question
+                    Mode: =TextMode.MultiLine
+                    X: =66
+                    Y: =6
+                    Width: =340
+                    Height: =44
+                    Size: =11
+                    BorderColor: =RGBA(225,228,233,1)
+                    BorderThickness: =1
+                    Color: =RGBA(31,31,31,1)
+                    Fill: =RGBA(255,255,255,1)
+              - qExitSave:
+                  Control: Classic/Button
+                  Properties:
+                    Text: ="Save"
+                    X: =66
+                    Y: =54
+                    Width: =90
+                    Height: =30
+                    Size: =11
+                    OnSelect: |-
+                      =If(IsBlank(Trim(qExitQ.Text)) || !IsNumeric(qExitOrd.Text), Notify("Enter the question and a number for its order.", NotificationType.Warning), IfError(Patch(AvenueChecklistQuestions, LookUp(AvenueChecklistQuestions, ID = ThisItem.ID), {Title: Left(Trim(qExitQ.Text), 255), Question: Trim(qExitQ.Text), SortOrder: Value(qExitOrd.Text)}); Notify("Question saved.", NotificationType.Success), Notify("Could not save the question.", NotificationType.Error)))
               - qExitRemove:
                   Control: Classic/Button
                   Properties:
                     Text: ="Remove"
-                    X: =500
-                    Y: =10
-                    Width: =120
-                    Height: =34
+                    X: =166
+                    Y: =54
+                    Width: =90
+                    Height: =30
+                    Size: =11
                     OnSelect: |-
-                      =Patch(AvenueChecklistQuestions, ThisItem, {Active: false}); Notify("Question removed.", NotificationType.Information)
+                      =IfError(Patch(AvenueChecklistQuestions, LookUp(AvenueChecklistQuestions, ID = ThisItem.ID), {Active: false}); Notify("Question removed (kept as inactive).", NotificationType.Information), Notify("Could not remove it.", NotificationType.Error))
               - qExitListSep:
                   Control: Label
                   Properties:
                     Text: =""
                     X: =8
-                    Y: =55
-                    Width: =608
+                    Y: =91
+                    Width: =398
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - qWellnessHead:
+            Control: Label
+            Properties:
+              Text: ="Wellness checklist"
+              X: =910
+              Y: =90
+              Width: =430
+              Height: =30
+              Color: =RGBA(31,31,31,1)
+              FontWeight: =FontWeight.Semibold
+        - qWellnessList:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: =SortByColumns(Filter(AvenueChecklistQuestions, Active = true, Kind.Value = "Wellness"), "SortOrder", SortOrder.Ascending)
+              X: =910
+              Y: =125
+              Width: =430
+              Height: =560
+              TemplateSize: =92
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+            Children:
+              - qWellnessOrd:
+                  Control: Classic/TextInput
+                  Properties:
+                    Default: =Text(ThisItem.SortOrder)
+                    Format: =TextFormat.Number
+                    X: =8
+                    Y: =6
+                    Width: =52
+                    Height: =36
+                    BorderColor: =RGBA(225,228,233,1)
+                    BorderThickness: =1
+                    Color: =RGBA(31,31,31,1)
+                    Fill: =RGBA(255,255,255,1)
+              - qWellnessQ:
+                  Control: Classic/TextInput
+                  Properties:
+                    Default: =ThisItem.Question
+                    Mode: =TextMode.MultiLine
+                    X: =66
+                    Y: =6
+                    Width: =340
+                    Height: =44
+                    Size: =11
+                    BorderColor: =RGBA(225,228,233,1)
+                    BorderThickness: =1
+                    Color: =RGBA(31,31,31,1)
+                    Fill: =RGBA(255,255,255,1)
+              - qWellnessSave:
+                  Control: Classic/Button
+                  Properties:
+                    Text: ="Save"
+                    X: =66
+                    Y: =54
+                    Width: =90
+                    Height: =30
+                    Size: =11
+                    OnSelect: |-
+                      =If(IsBlank(Trim(qWellnessQ.Text)) || !IsNumeric(qWellnessOrd.Text), Notify("Enter the question and a number for its order.", NotificationType.Warning), IfError(Patch(AvenueChecklistQuestions, LookUp(AvenueChecklistQuestions, ID = ThisItem.ID), {Title: Left(Trim(qWellnessQ.Text), 255), Question: Trim(qWellnessQ.Text), SortOrder: Value(qWellnessOrd.Text)}); Notify("Question saved.", NotificationType.Success), Notify("Could not save the question.", NotificationType.Error)))
+              - qWellnessRemove:
+                  Control: Classic/Button
+                  Properties:
+                    Text: ="Remove"
+                    X: =166
+                    Y: =54
+                    Width: =90
+                    Height: =30
+                    Size: =11
+                    OnSelect: |-
+                      =IfError(Patch(AvenueChecklistQuestions, LookUp(AvenueChecklistQuestions, ID = ThisItem.ID), {Active: false}); Notify("Question removed (kept as inactive).", NotificationType.Information), Notify("Could not remove it.", NotificationType.Error))
+              - qWellnessListSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =91
+                    Width: =398
                     Height: =1
                     Fill: =RGBA(225,228,233,1)

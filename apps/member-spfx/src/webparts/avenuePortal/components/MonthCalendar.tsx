@@ -81,13 +81,11 @@ export default function MonthCalendar(props: IMonthCalendarProps): React.ReactEl
           <div className={s.eyebrow}>{fmt(sel, { weekday: 'long' })}</div>
           <h3>{selTitle}</h3>
           {detail}
-          <p className={s.mcNote}>Approved bookings only. Names and equipment, nothing else.</p>
         </aside>
       </div>
       {sheet && stacked && (
-        <Sheet title={`${fmt(sel, { weekday: 'long' })}, ${selTitle}`} onClose={closeSheet}>
+        <Sheet peek title={`${fmt(sel, { weekday: 'long' })}, ${selTitle}`} onClose={closeSheet}>
           {detail}
-          <p className={s.mcNote}>Approved bookings only. Names and equipment, nothing else.</p>
         </Sheet>
       )}
     </div>

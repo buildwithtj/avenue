@@ -1,5 +1,7 @@
+# NOTE: Category is a CHOICE on AvenueSupportCases/Messages until the R1 flow edit + Text conversion; code uses Category.Value. Switch back to Text then.
 # Generates the staff-app screen YAML (pasted into Power Apps Studio). Run: python3 gen.py
 # Formulas containing ": " or " #" are emitted as YAML block scalars, which Power Apps requires.
+# NOTE: Category is a CHOICE on AvenueSupportCases/Messages until the R1 flow edit + Text conversion; code uses Category.Value. Switch back to Text then.
 # Design system (shell, tokens, panels, chips, thumbnails) is defined once here; every screen uses these helpers.
 import re, os, json
 from release import *
@@ -21,6 +23,17 @@ GLASS, GLASS_EDGE = 'RGBA(255,255,255,0.64)', 'RGBA(15,76,92,0.10)'
 GLASS_BAR = 'RGBA(11,58,71,0.93)'
 GREY = SUBTLE
 SEMI = 'FontWeight.Semibold'
+
+# Owner logins (client sheet). Defined once; used by the owner override, Permissions and owner-only buttons.
+OWNER_EMAILS = '["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]'
+def CAN(cap):
+    """Staff capability toggle (AvenueStaffCapabilities, Permissions screen) for button Visible. USABILITY ONLY, NOT SECURITY:
+    SharePoint still lets any staff account edit the lists; real enforcement is a flow/list-permission task (Q-15).
+    No row for this e-mail = allowed (so the app works before the owner fills the list); the owner always sees everything."""
+    return ('(Lower(User().Email) in ' + OWNER_EMAILS + ' || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).' + cap + ', true))')
+# The 11 document types (same choices as AvenueMemberDocuments.DocType in schema/lists.v2.json).
+OWNER_SN_EARLY = 'Lower(User().Email) in ' + OWNER_EMAILS
+DOC_TYPES = '["Permit", "Licence", "Insurance", "Certification", "County food permit", "MD good standing", "Liability insurance", "Workers comp or waiver", "Food safety manager", "Food manager card", "Food handler card"]'
 
 # Optional per-section tweaks for top-level controls (used by the tabbed Setup screen): _DY shifts integer Y, _VIS adds a Visible formula.
 _DY, _VIS = 0, None
@@ -515,64 +528,94 @@ _DY = 0
 Y0 = cy('Screen6')
 DANGER = dict(Fill=SURFACE, Color=BAD, BorderColor=BAD, BorderThickness=1, HoverFill=BADTINT, HoverColor=BAD, HoverBorderColor=BAD, PressedFill=BADTINT)
 parts = nav('n', 'Screen6', 'Notices')
+# Editing: varNEdit holds the draft being edited (a row of AvenueNoticeDrafts). Editing a PUBLISHED notice = withdraw it (the Withdrawn copy is
+# kept as the record) + open a new Draft copy here; Publish then creates a fresh notice. Members see it as a new notice (new id).
+# Expiry [PROPOSED, Q-R1]: "Hide after N hours", default 24, empty = keep until withdrawn. Expired notices are hidden, never deleted.
+# A draft stores ExpiresAt = save time + N h; publishing a draft keeps the same N h from the publish time (DateDiff from Modified).
+NE = 'varNEdit'
+CANPOST = CAN('PostNotices')
 parts.append(panel('nPanelNew', 24, Y0, 640, 688))
-parts.append(head('nNewHead', '"Write a notice"', 44, Y0 + 12, 560, 20))
+parts.append(head('nNewHead', 'If(IsBlank(' + NE + '), "Write a notice", "Editing draft: " & ' + NE + '.Title)', 44, Y0 + 12, 560, 20))
 parts.append(hint('nNewHelp', '"Publishing shows it to all members in the portal. Any e-mail only says there is a new notice (COM-02). Drafts stay private to staff."', 44, Y0 + 52, 600, 36))
-parts.append(ctl('nNoticeTitle', 'Classic/TextInput', {'Default': '""', 'HintText': '"Title"', 'X': 44, 'Y': Y0 + 96, 'Width': 600, 'Height': 40, 'Size': 14}))
-parts.append(ctl('nBody', 'Classic/TextInput', {'Default': '""', 'HintText': '"Notice text"', 'Mode': 'TextMode.MultiLine', 'X': 44, 'Y': Y0 + 144, 'Width': 600, 'Height': 200}))
+parts.append(ctl('nNoticeTitle', 'Classic/TextInput', {'Default': 'If(IsBlank(' + NE + '), "", ' + NE + '.Title)', 'HintText': '"Title"', 'X': 44, 'Y': Y0 + 96, 'Width': 600, 'Height': 40, 'Size': 14}))
+parts.append(ctl('nBody', 'Classic/TextInput', {'Default': 'If(IsBlank(' + NE + '), "", ' + NE + '.Body)', 'HintText': '"Notice text"', 'Mode': 'TextMode.MultiLine', 'X': 44, 'Y': Y0 + 144, 'Width': 600, 'Height': 200}))
 parts.append(label('nCatLbl', '"Category"', 44, Y0 + 360, 120, 24, Size=12, FontWeight='FontWeight.Bold', Color=SUBTLE))
-parts.append(ctl('nCategory', 'Classic/DropDown', {'Items': '["General", "Maintenance", "Schedule", "Urgent"]', 'Default': '"General"', 'X': 44, 'Y': Y0 + 386, 'Width': 190, 'Height': 36}))
+parts.append(ctl('nCategory', 'Classic/DropDown', {'Items': '["General", "Maintenance", "Schedule", "Urgent"]', 'Default': 'If(IsBlank(' + NE + '), "General", Coalesce(' + NE + '.Category.Value, "General"))', 'X': 44, 'Y': Y0 + 386, 'Width': 190, 'Height': 36}))
 parts.append(label('nPinLbl', '"Pin to top"', 260, Y0 + 360, 120, 24, Size=12, FontWeight='FontWeight.Bold', Color=SUBTLE))
-parts.append(ctl('nPinned', 'Classic/Toggle', {'Default': 'false', 'X': 260, 'Y': Y0 + 388, 'Width': 90, 'Height': 30}))
-parts.append(label('nExpLbl', '"Hide after (optional)"', 380, Y0 + 360, 200, 24, Size=12, FontWeight='FontWeight.Bold', Color=SUBTLE))
-# Blank DefaultDate = no expiry. Stored as the end of the chosen day (device time zone).
-parts.append(ctl('nExpires', 'Classic/DatePicker', {'DefaultDate': 'Blank()', 'IsEditable': 'false', 'InputTextPlaceholder': '"No end date"', 'X': 380, 'Y': Y0 + 386, 'Width': 190, 'Height': 36}))
-parts.append(button2('nExpClear', 'Clear', 578, Y0 + 386, 66, 36, 'Reset(nExpires)', Size=10))
-N_OK = '!IsBlank(Trim(nNoticeTitle.Text)) && !IsBlank(Trim(nBody.Text)) && (IsBlank(nExpires.SelectedDate) || nExpires.SelectedDate >= Today())'
-N_EXP = 'If(IsBlank(nExpires.SelectedDate), Blank(), DateAdd(DateAdd(nExpires.SelectedDate, 1, TimeUnit.Days), -1, TimeUnit.Minutes))'
+parts.append(ctl('nPinned', 'Classic/Toggle', {'Default': 'If(IsBlank(' + NE + '), false, Coalesce(' + NE + '.Pinned, false))', 'X': 260, 'Y': Y0 + 388, 'Width': 90, 'Height': 30}))
+parts.append(label('nExpLbl', '"Hide after (hours)"', 380, Y0 + 360, 200, 24, Size=12, FontWeight='FontWeight.Bold', Color=SUBTLE))
+N_LEFT = 'DateDiff(' + NE + '.Modified, ' + NE + '.ExpiresAt, TimeUnit.Hours)'
+parts.append(ctl('nExpHours', 'Classic/TextInput', {'Default': 'If(IsBlank(' + NE + '), "24", If(IsBlank(' + NE + '.ExpiresAt), "", Text(Max(1, ' + N_LEFT + '))))', 'HintText': '"Empty = keep"', 'Format': 'TextFormat.Number',
+                                                    'X': 380, 'Y': Y0 + 386, 'Width': 120, 'Height': 36}))
+parts.append(hint('nExpHelp', '"24 h by default [PROPOSED, Q-R1]; empty keeps it until withdrawn. Expired notices are hidden, not deleted."', 508, Y0 + 382, 140, 48, Size=9))
+N_OK = '!IsBlank(Trim(nNoticeTitle.Text)) && !IsBlank(Trim(nBody.Text)) && (IsBlank(Trim(nExpHours.Text)) || (IsNumeric(nExpHours.Text) && Value(nExpHours.Text) > 0))'
+N_EXP = 'If(IsBlank(Trim(nExpHours.Text)), Blank(), DateAdd(Now(), Value(nExpHours.Text), TimeUnit.Hours))'
 N_EXTRA = 'Category: {Value: nCategory.Selected.Value}, Pinned: nPinned.Value, ExpiresAt: ' + N_EXP
+N_RESET = 'Reset(nNoticeTitle); Reset(nBody); Reset(nCategory); Reset(nPinned); Reset(nExpHours)'
+N_DRAFT_ROW = 'LookUp(AvenueNoticeDrafts, ID = ' + NE + '.ID)'
+N_WARN = 'Notify("Enter a title and the notice text; hide-after must be empty or a number of hours above 0.", NotificationType.Warning)'
 parts.append(button('nPublish', 'Publish', 44, Y0 + 452, 200, 44,
-    'If(!(' + N_OK + '), Notify("Enter a title and the notice text (an expiry date cannot be in the past).", NotificationType.Warning), IfError(Patch(AvenueNotices, Defaults(AvenueNotices), {Title: Left(Trim(nNoticeTitle.Text), 255), Body: nBody.Text, FacilityId: ' + FAC + ', PublishedAt: Now(), Active: true, ' + N_EXTRA + '}); Reset(nNoticeTitle); Reset(nBody); Reset(nCategory); Reset(nPinned); Reset(nExpires); Notify("Notice published.", NotificationType.Success), Notify("Could not publish the notice.", NotificationType.Error)))'))
+    'If(!(' + N_OK + '), ' + N_WARN + ', IfError(Patch(AvenueNotices, Defaults(AvenueNotices), {Title: Left(Trim(nNoticeTitle.Text), 255), Body: nBody.Text, FacilityId: ' + FAC + ', PublishedAt: Now(), Active: true, ' + N_EXTRA + '}); '
+    'If(!IsBlank(' + NE + '), Remove(AvenueNoticeDrafts, ' + N_DRAFT_ROW + ')); Set(' + NE + ', Blank()); ' + N_RESET + '; Notify("Notice published.", NotificationType.Success), Notify("Could not publish the notice.", NotificationType.Error)))', Visible=CANPOST))
 parts.append(button2('nDraft', 'Save as draft', 256, Y0 + 452, 200, 44,
-    'If(!(' + N_OK + '), Notify("Enter a title and the notice text (an expiry date cannot be in the past).", NotificationType.Warning), IfError(Patch(AvenueNoticeDrafts, Defaults(AvenueNoticeDrafts), {Title: Left(Trim(nNoticeTitle.Text), 255), Body: nBody.Text, FacilityId: ' + FAC + ', State: {Value: "Draft"}, ' + N_EXTRA + '}); Reset(nNoticeTitle); Reset(nBody); Reset(nCategory); Reset(nPinned); Reset(nExpires); Notify("Draft saved. Members cannot see it.", NotificationType.Success), Notify("Could not save the draft.", NotificationType.Error)))'))
+    'If(!(' + N_OK + '), ' + N_WARN + ', IfError(Patch(AvenueNoticeDrafts, If(IsBlank(' + NE + '), Defaults(AvenueNoticeDrafts), ' + N_DRAFT_ROW + '), {Title: Left(Trim(nNoticeTitle.Text), 255), Body: nBody.Text, FacilityId: ' + FAC + ', State: {Value: "Draft"}, ' + N_EXTRA + '}); '
+    'Set(' + NE + ', Blank()); ' + N_RESET + '; Notify("Draft saved. Members cannot see it.", NotificationType.Success), Notify("Could not save the draft.", NotificationType.Error)))', Visible=CANPOST))
+parts.append(button2('nEditCancel', 'Stop editing', 468, Y0 + 452, 176, 44, 'Set(' + NE + ', Blank()); ' + N_RESET, Visible='!IsBlank(' + NE + ')'))
+parts.append(hint('nEditHelp', '"Stop editing keeps the draft as it was last saved."', 44, Y0 + 504, 600, 24, Visible='!IsBlank(' + NE + ')'))
 parts.append(panel('nPanelList', 680, Y0, 662, 336))
 parts.append(head('nListHead', '"Published (members can read these)"', 700, Y0 + 12, 620, 16))
+N_WITHDRAW_COPY = 'Patch(AvenueNoticeDrafts, Defaults(AvenueNoticeDrafts), {Title: ThisItem.Title, Body: ThisItem.Body, FacilityId: ThisItem.FacilityId, State: {Value: "Withdrawn"}, Category: ThisItem.Category, Pinned: ThisItem.Pinned, ExpiresAt: ThisItem.ExpiresAt, PublishedAt: ThisItem.PublishedAt, WithdrawnAt: Now(), WithdrawnBy: User().Email})'
 parts.append(gallery('nList', 'SortByColumns(Filter(AvenueNotices, Active = true), "Pinned", SortOrder.Descending, "PublishedAt", SortOrder.Descending)', 688, Y0 + 52, 646, 276, 76, [
-    child('nItemTitle', 'ThisItem.Title', 8, 6, 480, 28, FontWeight='FontWeight.Bold', Size=13),
-    child('nItemMeta', 'If(ThisItem.Pinned = true, "PINNED · ", "") & Coalesce(ThisItem.Category.Value, "General") & " · " & Text(ThisItem.PublishedAt, "d mmm yyyy, h:mm AM/PM") & If(IsBlank(ThisItem.ExpiresAt), "", If(ThisItem.ExpiresAt < Now(), " · EXPIRED (hidden from members)", " · hides " & Text(ThisItem.ExpiresAt, "d mmm")))', 8, 36, 480, 34, Size=10, Color=SUBTLE),
-    ('nWithdraw', 'Classic/Button', dict({'Text': '"Withdraw"', 'X': 508, 'Y': 20, 'Width': 120, 'Height': 34, 'Size': 12, 'FontWeight': SEMI, **_RAD,
-        'OnSelect': 'IfError(Patch(AvenueNoticeDrafts, Defaults(AvenueNoticeDrafts), {Title: ThisItem.Title, Body: ThisItem.Body, FacilityId: ThisItem.FacilityId, State: {Value: "Withdrawn"}, Category: ThisItem.Category, Pinned: ThisItem.Pinned, ExpiresAt: ThisItem.ExpiresAt, PublishedAt: ThisItem.PublishedAt, WithdrawnAt: Now(), WithdrawnBy: User().Email}); Remove(AvenueNotices, ThisItem); Notify("Notice withdrawn. Members can no longer read it.", NotificationType.Information), Notify("Could not withdraw the notice.", NotificationType.Error))'}, **DANGER))]))
+    child('nItemTitle', 'ThisItem.Title', 8, 6, 400, 28, FontWeight='FontWeight.Bold', Size=13),
+    child('nItemMeta', 'If(ThisItem.Pinned = true, "PINNED · ", "") & Coalesce(ThisItem.Category.Value, "General") & " · " & Text(ThisItem.PublishedAt, "d mmm yyyy, h:mm AM/PM") & If(IsBlank(ThisItem.ExpiresAt), "", If(ThisItem.ExpiresAt < Now(), " · EXPIRED (hidden from members)", " · hides " & Text(ThisItem.ExpiresAt, "d mmm, h:mm AM/PM")))', 8, 36, 400, 34, Size=10, Color=SUBTLE),
+    ('nEdit', 'Classic/Button', {'Text': '"Edit"', 'X': 420, 'Y': 20, 'Width': 80, 'Height': 34, 'Size': 12, 'FontWeight': SEMI, **_RAD, 'Fill': SURFACE, 'Color': OLIVE, 'BorderColor': OLIVE, 'BorderThickness': 1, 'Visible': CANPOST,
+        'OnSelect': 'IfError(' + N_WITHDRAW_COPY + '; Set(' + NE + ', Patch(AvenueNoticeDrafts, Defaults(AvenueNoticeDrafts), {Title: ThisItem.Title, Body: ThisItem.Body, FacilityId: ThisItem.FacilityId, State: {Value: "Draft"}, Category: ThisItem.Category, Pinned: ThisItem.Pinned, ExpiresAt: ThisItem.ExpiresAt})); Remove(AvenueNotices, ThisItem); '
+                    'Notify("Withdrawn for editing (members no longer see it). Change it on the left and press Publish.", NotificationType.Information), Notify("Could not open the notice for editing.", NotificationType.Error))'}),
+    ('nWithdraw', 'Classic/Button', dict({'Text': '"Withdraw"', 'X': 508, 'Y': 20, 'Width': 120, 'Height': 34, 'Size': 12, 'FontWeight': SEMI, **_RAD, 'Visible': CANPOST,
+        'OnSelect': 'IfError(' + N_WITHDRAW_COPY + '; Remove(AvenueNotices, ThisItem); Notify("Notice withdrawn. Members can no longer read it.", NotificationType.Information), Notify("Could not withdraw the notice.", NotificationType.Error))'}, **DANGER))]))
 parts.append(panel('nPanelDrafts', 680, Y0 + 352, 662, 336))
 parts.append(head('nDraftHead', '"Drafts and withdrawn (staff only)"', 700, Y0 + 364, 620, 16))
+N_KEEP = 'DateDiff(ThisItem.Modified, ThisItem.ExpiresAt, TimeUnit.Minutes)'
 parts.append(gallery('nDrafts', 'SortByColumns(AvenueNoticeDrafts, "Created", SortOrder.Descending)', 688, Y0 + 404, 646, 276, 76, [
-    child('nDrTitle', 'ThisItem.Title', 8, 6, 430, 28, FontWeight='FontWeight.Bold', Size=13),
-    child('nDrMeta', 'Coalesce(ThisItem.Category.Value, "General") & If(ThisItem.Pinned = true, " · pinned", "") & " · " & ThisItem.State.Value & If(ThisItem.State.Value = "Withdrawn", " · by " & ThisItem.WithdrawnBy & " " & Text(ThisItem.WithdrawnAt, "d mmm, h:mm AM/PM"), " · saved " & Text(ThisItem.Created, "d mmm, h:mm AM/PM"))', 8, 36, 430, 34, Size=10, Color=SUBTLE),
-    ('nDrPublish', 'Classic/Button', {'Text': '"Publish"', 'X': 448, 'Y': 20, 'Width': 90, 'Height': 34, 'Size': 12, 'FontWeight': SEMI, 'Fill': CITRUS, 'Color': SURFACE, 'HoverFill': CITRUS_DK, 'BorderThickness': 0, **_RAD,
-        'OnSelect': 'If(!IsBlank(ThisItem.ExpiresAt) && ThisItem.ExpiresAt < Now(), Notify("Its hide-after date has passed, so members would never see it. Write it again with a new date.", NotificationType.Warning), IfError(Patch(AvenueNotices, Defaults(AvenueNotices), {Title: ThisItem.Title, Body: ThisItem.Body, FacilityId: ThisItem.FacilityId, Category: ThisItem.Category, Pinned: ThisItem.Pinned, ExpiresAt: ThisItem.ExpiresAt, PublishedAt: Now(), Active: true}); Remove(AvenueNoticeDrafts, ThisItem); Notify("Notice published.", NotificationType.Success), Notify("Could not publish the notice.", NotificationType.Error)))'}),
-    ('nDrDelete', 'Classic/Button', dict({'Text': '"Delete"', 'X': 546, 'Y': 20, 'Width': 80, 'Height': 34, 'Size': 12, 'FontWeight': SEMI, **_RAD,
+    child('nDrTitle', 'ThisItem.Title', 8, 6, 350, 28, FontWeight='FontWeight.Bold', Size=13),
+    child('nDrMeta', 'Coalesce(ThisItem.Category.Value, "General") & If(ThisItem.Pinned = true, " · pinned", "") & " · " & ThisItem.State.Value & If(ThisItem.State.Value = "Withdrawn", " · by " & ThisItem.WithdrawnBy & " " & Text(ThisItem.WithdrawnAt, "d mmm, h:mm AM/PM"), " · saved " & Text(ThisItem.Modified, "d mmm, h:mm AM/PM"))', 8, 36, 350, 34, Size=10, Color=SUBTLE),
+    ('nDrEdit', 'Classic/Button', {'Text': '"Edit"', 'X': 368, 'Y': 20, 'Width': 72, 'Height': 34, 'Size': 12, 'FontWeight': SEMI, **_RAD, 'Fill': SURFACE, 'Color': OLIVE, 'BorderColor': OLIVE, 'BorderThickness': 1,
+        'Visible': 'ThisItem.State.Value = "Draft" && ' + CANPOST, 'OnSelect': 'Set(' + NE + ', ThisItem)'}),
+    ('nDrPublish', 'Classic/Button', {'Text': '"Publish"', 'X': 448, 'Y': 20, 'Width': 90, 'Height': 34, 'Size': 12, 'FontWeight': SEMI, 'Fill': CITRUS, 'Color': SURFACE, 'HoverFill': CITRUS_DK, 'BorderThickness': 0, **_RAD, 'Visible': CANPOST,
+        'OnSelect': 'If(!IsBlank(ThisItem.ExpiresAt) && ' + N_KEEP + ' <= 0, Notify("Its hide-after time had already passed when it was saved. Edit it and set new hours.", NotificationType.Warning), IfError(Patch(AvenueNotices, Defaults(AvenueNotices), {Title: ThisItem.Title, Body: ThisItem.Body, FacilityId: ThisItem.FacilityId, Category: ThisItem.Category, Pinned: ThisItem.Pinned, '
+                    'ExpiresAt: If(IsBlank(ThisItem.ExpiresAt), Blank(), DateAdd(Now(), ' + N_KEEP + ', TimeUnit.Minutes)), PublishedAt: Now(), Active: true}); Remove(AvenueNoticeDrafts, ThisItem); Notify("Notice published.", NotificationType.Success), Notify("Could not publish the notice.", NotificationType.Error)))'}),
+    ('nDrDelete', 'Classic/Button', dict({'Text': '"Delete"', 'X': 546, 'Y': 20, 'Width': 80, 'Height': 34, 'Size': 12, 'FontWeight': SEMI, **_RAD, 'Visible': CANPOST,
         'OnSelect': 'If(ThisItem.State.Value = "Draft", IfError(Remove(AvenueNoticeDrafts, ThisItem); Notify("Draft deleted.", NotificationType.Information), Notify("Could not delete the draft.", NotificationType.Error)), Notify("Withdrawn notices are kept as a record.", NotificationType.Warning))'}, **DANGER))]))
 write('notices.pa.yaml', parts)
 
 # ---------- Checklist setup (Screen7) ----------
 parts = nav('q', 'Screen7', 'Checklist setup')
 _DY = cy('Screen7') - 60
-parts.append(label('qHelp', '"Flavors\' own entry and exit checklist questions (Q-10). Members answer Yes or No to each."', 20, 60, 1300, 30, Size=12, Color='RGBA(96,94,92,1)'))
-parts.append(ctl('qKind', 'Classic/DropDown', {'Items': '["Entry", "Exit"]', 'Default': '"Entry"', 'X': 20, 'Y': 100, 'Width': 160, 'Height': 36}))
+parts.append(label('qHelp', '"Flavors\' own entry, exit and team wellness questions (Q-10). Members answer Yes or No to each. Edit a question in place and press Save on its row."', 20, 60, 1300, 30, Size=12, Color='RGBA(96,94,92,1)'))
+parts.append(ctl('qKind', 'Classic/DropDown', {'Items': '["Entry", "Exit", "Wellness"]', 'Default': '"Entry"', 'X': 20, 'Y': 100, 'Width': 160, 'Height': 36}))
 parts.append(ctl('qText', 'Classic/TextInput', {'Default': '""', 'HintText': '"Question"', 'X': 190, 'Y': 100, 'Width': 700, 'Height': 36}))
 parts.append(ctl('qOrder', 'Classic/TextInput', {'Default': '"1"', 'HintText': '"Order"', 'Format': 'TextFormat.Number', 'X': 900, 'Y': 100, 'Width': 90, 'Height': 36}))
 parts.append(button('qAdd', 'Add question', 1000, 100, 180, 36,
     'If(IsBlank(Trim(qText.Text)), Notify("Enter the question.", NotificationType.Warning), Patch(AvenueChecklistQuestions, Defaults(AvenueChecklistQuestions), {Title: Left(Trim(qText.Text), 255), FacilityId: ' + FAC + ', Kind: {Value: qKind.Selected.Value}, Question: Trim(qText.Text), SortOrder: Value(qOrder.Text), Active: true}); Reset(qText); Notify("Question added.", NotificationType.Success))'))
-for i, kind in enumerate(['Entry', 'Exit']):
-    x = 20 + i * 660
-    parts.append(label(f'q{kind}Head', f'"{kind} checklist"', x, 150, 640, 30, FontWeight='FontWeight.Semibold'))
-    parts.append(gallery(f'q{kind}List', f'SortByColumns(Filter(AvenueChecklistQuestions, Active = true, Kind.Value = "{kind}"), "SortOrder", SortOrder.Ascending)', x, 185, 640, 560, 56, [
-        child(f'q{kind}Item', 'Text(ThisItem.SortOrder) & ". " & ThisItem.Question', 8, 6, 480, 44),
-        (f'q{kind}Remove', 'Classic/Button', {'Text': '"Remove"', 'X': 500, 'Y': 10, 'Width': 120, 'Height': 34, 'OnSelect': 'Patch(AvenueChecklistQuestions, ThisItem, {Active: false}); Notify("Question removed.", NotificationType.Information)'})]))
+for i, kind in enumerate(['Entry', 'Exit', 'Wellness']):
+    x = 20 + i * 445
+    parts.append(label(f'q{kind}Head', f'"{kind} checklist"', x, 150, 430, 30, FontWeight='FontWeight.Semibold'))
+    parts.append(gallery(f'q{kind}List', f'SortByColumns(Filter(AvenueChecklistQuestions, Active = true, Kind.Value = "{kind}"), "SortOrder", SortOrder.Ascending)', x, 185, 430, 560, 92, [
+        (f'q{kind}Ord', 'Classic/TextInput', {'Default': 'Text(ThisItem.SortOrder)', 'Format': 'TextFormat.Number', 'X': 8, 'Y': 6, 'Width': 52, 'Height': 36, 'BorderColor': BORDER, 'BorderThickness': 1, 'Color': TEXT, 'Fill': SURFACE}),
+        (f'q{kind}Q', 'Classic/TextInput', {'Default': 'ThisItem.Question', 'Mode': 'TextMode.MultiLine', 'X': 66, 'Y': 6, 'Width': 340, 'Height': 44, 'Size': 11, 'BorderColor': BORDER, 'BorderThickness': 1, 'Color': TEXT, 'Fill': SURFACE}),
+        (f'q{kind}Save', 'Classic/Button', {'Text': '"Save"', 'X': 66, 'Y': 54, 'Width': 90, 'Height': 30, 'Size': 11,
+            'OnSelect': f'If(IsBlank(Trim(q{kind}Q.Text)) || !IsNumeric(q{kind}Ord.Text), Notify("Enter the question and a number for its order.", NotificationType.Warning), IfError(Patch(AvenueChecklistQuestions, LookUp(AvenueChecklistQuestions, ID = ThisItem.ID), {{Title: Left(Trim(q{kind}Q.Text), 255), Question: Trim(q{kind}Q.Text), SortOrder: Value(q{kind}Ord.Text)}}); Notify("Question saved.", NotificationType.Success), Notify("Could not save the question.", NotificationType.Error)))'}),
+        (f'q{kind}Remove', 'Classic/Button', {'Text': '"Remove"', 'X': 166, 'Y': 54, 'Width': 90, 'Height': 30, 'Size': 11,
+            'OnSelect': 'IfError(Patch(AvenueChecklistQuestions, LookUp(AvenueChecklistQuestions, ID = ThisItem.ID), {Active: false}); Notify("Question removed (kept as inactive).", NotificationType.Information), Notify("Could not remove it.", NotificationType.Error))'})]))
 write('checklist.pa.yaml', parts)
 _DY = 0
 
 RD_ITEM = 'CountRows(Filter(Filter(AvenueRequiredDocTypes, Active = true) As r, !IsBlank(LookUp(AvenueMemberDocuments, MemberId = ThisItem.MemberId && DocType.Value = r.DocType.Value && IsBlank(SupersededBy) && DocStatus.Value <> "Expired"))))'
 RD_SEL = 'CountRows(Filter(Filter(AvenueRequiredDocTypes, Active = true) As r, !IsBlank(LookUp(AvenueMemberDocuments, MemberId = mList.Selected.MemberId && DocType.Value = r.DocType.Value && IsBlank(SupersededBy) && DocStatus.Value <> "Expired"))))'
+def DEACT(sel, reason):
+    """Deactivate a member (never delete): Status Inactive with reason, cancel future bookings, ask the host to end the Stripe subscription.
+    Shared by Members (Screen8, frozen output) and Member admin (Screen23)."""
+    return ('With({m: ' + sel + '}, IfError(Patch(AvenueMembers, m, {Status: {Value: "Inactive"}, ChangeReason: Trim(' + reason + '.Text) & " (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ")"}); Reset(' + reason + '); ForAll(Filter(AvenueBookings, MemberId = m.MemberId, StartUtc > Now(), Status.Value = "Approved" || Status.Value = "Pending") As b, Patch(AvenueBookings, b, {Status: {Value: "Cancelled"}, OverlapNote: "Cancelled because the membership was deactivated."})); If(!IsBlank(m.SubscriptionId), Patch(AvenueHostRequests, Defaults(AvenueHostRequests), {Title: "CancelSubscription", FacilityId: ' + FAC + ', RequestId: "cancel-" & Text(GUID()), Kind: {Value: "CancelSubscription"}, Payload: "{""memberEmail"":""" & m.MemberId & """}"})); Notify("Member deactivated; future bookings cancelled and hours returned. Their Stripe subscription ends at the end of the paid period.", NotificationType.Success), Notify("Could not deactivate the member.", NotificationType.Error)))')
 # ---------- Members (Screen8) ----------
 parts = nav('m', 'Screen8', 'Members')
 _DY = cy('Screen8') - 60
@@ -591,13 +634,12 @@ parts.append(button('mSave', 'Save', 1160, 95, 100, 36,
     'If(!IsBlank(mDayEdit.Text) && !(Value(mDayEdit.Text) >= 1 && Value(mDayEdit.Text) <= 15 && Value(mDayEdit.Text) = RoundDown(Value(mDayEdit.Text), 0)), Notify("Collection day must be a whole number from 1 to 15.", NotificationType.Warning), IfError(Patch(AvenueMembers, mList.Selected, {Status: {Value: mStatus.Selected.Value}, PlanId: Trim(mPlanEdit.Text), CollectionDay: If(IsBlank(mDayEdit.Text), Blank(), Value(mDayEdit.Text)), ChangeReason: If(IsBlank(Trim(mReason.Text)), mList.Selected.ChangeReason, Trim(mReason.Text) & " (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ")")}); Reset(mReason); Notify("Member saved. Their membership card updates within a minute.", NotificationType.Success), Notify("Could not save the member.", NotificationType.Error)))',
     DisplayMode='If(IsBlank(mList.Selected) || (' + REACT + ' && IsBlank(Trim(mReason.Text))), DisplayMode.Disabled, DisplayMode.Edit)'))
 parts.append(button('mDeactivate', 'Deactivate and cancel future bookings', 690, 140, 360, 36,
-    'With({m: mList.Selected}, IfError(Patch(AvenueMembers, m, {Status: {Value: "Inactive"}, ChangeReason: Trim(mReason.Text) & " (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ")"}); Reset(mReason); ForAll(Filter(AvenueBookings, MemberId = m.MemberId, StartUtc > Now(), Status.Value = "Approved" || Status.Value = "Pending") As b, Patch(AvenueBookings, b, {Status: {Value: "Cancelled"}, OverlapNote: "Cancelled because the membership was deactivated."})); If(!IsBlank(m.SubscriptionId), Patch(AvenueHostRequests, Defaults(AvenueHostRequests), {Title: "CancelSubscription", FacilityId: ' + FAC + ', RequestId: "cancel-" & Text(GUID()), Kind: {Value: "CancelSubscription"}, Payload: "{""memberEmail"":""" & m.MemberId & """}"})); Notify("Member deactivated; future bookings cancelled and hours returned. Their Stripe subscription ends at the end of the paid period.", NotificationType.Success), Notify("Could not deactivate the member.", NotificationType.Error)))',
+    DEACT('mList.Selected', 'mReason'),
     DisplayMode='If(IsBlank(mList.Selected) || mList.Selected.Status.Value = "Inactive" || IsBlank(Trim(mReason.Text)), DisplayMode.Disabled, DisplayMode.Edit)', Fill='RGBA(164,38,44,1)'))
 parts.append(label('mDeactHelp', 'If(IsBlank(mList.Selected), "", "Onboarding: " & ' + RD_SEL + ' & " of " & CountRows(Filter(AvenueRequiredDocTypes, Active = true)) & " required documents on file. ") & "Removing their sign-in to the site is a SharePoint admin step (guest access); this keeps all history."', 690, 178, 640, 38, Size=11, Color='RGBA(96,94,92,1)'))
 parts.append(label('mUpHead', '"Upcoming bookings"', 690, 220, 360, 30, FontWeight='FontWeight.Semibold'))
 # Owner-only override of the overdue booking block (BKG-14). ponytail: a UI gate only (owner logins from the client sheet); SharePoint
 # still lets staff edit AvenueMembers (logged in docs/CLIENT_REVIEW_DEFAULTS.md, Q-15). Move to an owner-write list if staff must be stopped.
-OWNER_EMAILS = '["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]'
 parts.append(button('mOverride', 'Allow bookings (owner override)', 1060, 216, 270, 34,
     'IfError(Patch(AvenueMembers, mList.Selected, {PaymentStatus: {Value: "OwnerOverride"}, ChangeReason: "Overdue booking block lifted by " & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM")}); Notify("Override saved: new bookings are allowed until the next payment status change.", NotificationType.Success), Notify("Could not save the override.", NotificationType.Error))',
     Visible='!IsBlank(mList.Selected) && (mList.Selected.PaymentStatus.Value = "PastDue" || mList.Selected.PaymentStatus.Value = "Unpaid") && Lower(User().Email) in ' + OWNER_EMAILS))
@@ -682,14 +724,17 @@ parts = nav('u', 'Screen11', 'Setup')
 EQ_VIS = 'Coalesce(varSetupTab, "equip") = "equip"'
 RU_VIS = 'Coalesce(varSetupTab, "equip") = "rules"'
 P_VIS = 'Coalesce(varSetupTab, "equip") = "plans"'
-for i, (tid, cap, w, vis) in enumerate([('equip', 'Equipment', 168, EQ_VIS), ('rules', 'Facility rules', 168, RU_VIS), ('plans', 'Plans, documents, hours', 232, P_VIS)]):
-    x = 24 + [0, 176, 352][i]
+TB_VIS = 'Coalesce(varSetupTab, "equip") = "tables"'
+TP_VIS = 'Coalesce(varSetupTab, "equip") = "topics"'
+for i, (tid, cap, w, vis) in enumerate([('equip', 'Equipment', 168, EQ_VIS), ('rules', 'Facility rules', 168, RU_VIS), ('plans', 'Plans, documents, hours', 232, P_VIS),
+                                        ('tables', 'Dining tables', 168, TB_VIS), ('topics', 'Support topics', 168, TP_VIS)]):
+    x = 24 + [0, 176, 352, 592, 768][i]
     parts.append(button(f'uTab{tid.capitalize()}', cap, x, Y0, w, 40, f'Set(varSetupTab, "{tid}")', Fill=f'If({vis}, {OLIVE}, {SURFACE})', Color=f'If({vis}, {CREAM}, {OLIVE})',
                         BorderColor=OLIVE, BorderThickness=1, HoverFill=f'If({vis}, {OLIVE}, {CREAM})', HoverColor=f'If({vis}, {CREAM}, {OLIVE})', PressedFill=INK2, Size=13))
 
 # ----- Tab 1: Equipment (master list left, edit form right) -----
 _DY, _VIS = 0, EQ_VIS
-CATS = '["Stove", "Grill", "Oven", "Warmer", "Pizza oven", "Mixer", "Prep table", "Other"]'
+CATS = '["Stove", "Grill", "Oven", "Warmer", "Pizza oven", "Fridge", "Mixer", "Prep table", "Other"]'
 EQ_SEL = 'uEqGal.Selected'
 parts.append(panel('uEqPanelList', 24, Y1, 520, H))
 parts.append(head('uEqHead', '"Equipment units"', 44, Y1 + 12, 440, 16))
@@ -705,7 +750,7 @@ parts.append(head('uEqAddHead', '"Add a unit"', 44, Y1 + H - 112, 300, 14))
 parts.append(ctl('uEqNew', 'Classic/TextInput', {'Default': '""', 'HintText': '"Name, e.g. Stove #3"', 'X': 44, 'Y': Y1 + H - 80, 'Width': 220, 'Height': 36}))
 parts.append(ctl('uEqNewCat', 'Classic/DropDown', {'Items': CATS, 'Default': '"Stove"', 'X': 272, 'Y': Y1 + H - 80, 'Width': 140, 'Height': 36}))
 parts.append(button('uEqAdd', 'Add', 420, Y1 + H - 80, 104, 36,
-    'If(IsBlank(Trim(uEqNew.Text)), Notify("Enter the unit name.", NotificationType.Warning), IfError(Patch(AvenueEquipment, Defaults(AvenueEquipment), {Title: Left(Trim(uEqNew.Text), 255), FacilityId: ' + FAC + ', EquipmentId: Lower(Substitute(Trim(uEqNew.Text), " ", "-")), Kind: {Value: If(uEqNewCat.Selected.Value = "Prep table", "Prep table", "Equipment")}, Category: {Value: uEqNewCat.Selected.Value}, SortOrder: Coalesce(First(SortByColumns(Filter(AvenueEquipment, FacilityId = ' + FAC + '), "SortOrder", SortOrder.Descending)).SortOrder, 0) + 10, BookableByMembers: true, Active: true}); Reset(uEqNew); Notify("Unit added. Select it to add a description, photo and location.", NotificationType.Success), Notify("Could not add it. The id (name in lower case with dashes) may already exist: find it in the list and tick Active instead.", NotificationType.Error)))'))
+    'If(IsBlank(Trim(uEqNew.Text)), Notify("Enter the unit name.", NotificationType.Warning), IfError(Patch(AvenueEquipment, Defaults(AvenueEquipment), {Title: Left(Trim(uEqNew.Text), 255), FacilityId: ' + FAC + ', EquipmentId: Lower(Substitute(Trim(uEqNew.Text), " ", "-")), Kind: {Value: If(uEqNewCat.Selected.Value = "Prep table", "Prep table", "Equipment")}, Category: {Value: uEqNewCat.Selected.Value}, SortOrder: Coalesce(First(SortByColumns(Filter(AvenueEquipment, FacilityId = ' + FAC + '), "SortOrder", SortOrder.Descending)).SortOrder, 0) + 10, BookableByMembers: true, Active: true}); Reset(uEqNew); Notify("Unit added. Select it to add a description, photo and location.", NotificationType.Success), Notify("Could not add it. The id (name in lower case with dashes) may already exist: find it in the list and tick Active instead.", NotificationType.Error)))', Visible='(' + EQ_VIS + ') && ' + CAN('ManageEquipment')))
 parts.append(hint('uEqHelp', '"The list is PARTIAL until the client\'s Equipment tab arrives (Q-B7). Names are what members see."', 44, Y1 + H - 36, 480, 28, Size=10))
 
 parts.append(panel('uEqPanelEdit', 560, Y1, 782, H))
@@ -727,7 +772,7 @@ parts.append(label('uEqActLbl', '"Active"', 865, Y1 + 340, 60, 30, Size=12))
 parts.append(ctl('uEqActive', 'Classic/Toggle', {'Default': 'Coalesce(' + EQ_SEL + '.Active, true)', 'X': 930, 'Y': Y1 + 340, 'Width': 95, 'Height': 30}))
 parts.append(button('uEqSave', 'Save unit', 580, Y1 + 392, 200, 44,
     'IfError(Patch(AvenueEquipment, ' + EQ_SEL + ', {Title: Left(Trim(uEqTitle.Text), 255), Category: {Value: uEqCat.Selected.Value}, Kind: {Value: If(uEqCat.Selected.Value = "Prep table", "Prep table", "Equipment")}, GroupId: Trim(uEqGroup.Text), SortOrder: If(IsBlank(Trim(uEqSort.Text)), Blank(), Value(uEqSort.Text)), Description: uEqDesc.Text, Location: Trim(uEqLoc.Text), PhotoUrl: Trim(uEqPhoto.Text), BookableByMembers: uEqBook.Value, Active: uEqActive.Value}); Refresh(AvenueEquipment); Notify("Unit saved.", NotificationType.Success), Notify("Could not save the unit.", NotificationType.Error))',
-    DisplayMode='If(IsBlank(' + EQ_SEL + ') || IsBlank(Trim(uEqTitle.Text)) || IsBlank(uEqCat.Selected) || (!IsBlank(Trim(uEqSort.Text)) && !IsNumeric(uEqSort.Text)), DisplayMode.Disabled, DisplayMode.Edit)'))
+    DisplayMode='If(IsBlank(' + EQ_SEL + ') || IsBlank(Trim(uEqTitle.Text)) || IsBlank(uEqCat.Selected) || (!IsBlank(Trim(uEqSort.Text)) && !IsNumeric(uEqSort.Text)), DisplayMode.Disabled, DisplayMode.Edit)', Visible='(' + EQ_VIS + ') && ' + CAN('ManageEquipment')))
 parts.append(hint('uEqSaveHelp', '"To retire a unit, untick Active and Save. It disappears from member booking but its history stays."', 580, Y1 + 444, 742, 24))
 
 # ----- Tab 2: Facility rules (AvenueFacilities) -----
@@ -772,25 +817,39 @@ parts.append(hint('uRuHelp', '"Empty means not set; nothing is assumed (Q-B1 to 
 
 # ----- Tab 3: Plans, required documents, hours adjustment (original content, shifted under the tab row) -----
 _VIS = P_VIS
-parts.append(panel('uPlanPanelL', 16, Y1, 656, 300))
+parts.append(panel('uPlanPanelL', 16, Y1, 656, 440))
 parts.append(panel('uPlanPanelR', 680, Y1, 662, H))
 _DY = Y1 - 56
-parts.append(label('uPlanHead', '"Plans"', 20, 60, 640, 30, FontWeight='FontWeight.Semibold'))
-parts.append(gallery('uPlanGal', 'SortByColumns(Filter(AvenuePlans, FacilityId = ' + FAC + ', Active = true), "PlanId", SortOrder.Ascending)', 20, 95, 640, 150, 40, [
-    child('uPlanItem', 'ThisItem.PlanId & " · " & ThisItem.MonthlyHours & " h/month · " & If(IsBlank(ThisItem.ExtraHourRate), "extra-hour rate not set", "$" & ThisItem.ExtraHourRate & "/h")', 8, 6, 480, 28),
-    ('uPlanRemove', 'Classic/Button', {'Text': '"Remove"', 'X': 500, 'Y': 3, 'Width': 120, 'Height': 34, 'OnSelect': 'Patch(AvenuePlans, ThisItem, {Active: false}); Notify("Plan removed.", NotificationType.Information)'})]))
-parts.append(ctl('uPlanId', 'Classic/TextInput', {'Default': '""', 'HintText': '"Plan id"', 'X': 20, 'Y': 255, 'Width': 150, 'Height': 36}))
-parts.append(ctl('uPlanHours', 'Classic/TextInput', {'Default': '""', 'HintText': '"Hours / month"', 'Format': 'TextFormat.Number', 'X': 180, 'Y': 255, 'Width': 120, 'Height': 36}))
-parts.append(ctl('uPlanRate', 'Classic/TextInput', {'Default': '""', 'HintText': '"$ per extra hour"', 'Format': 'TextFormat.Number', 'X': 310, 'Y': 255, 'Width': 130, 'Height': 36}))
-parts.append(button('uPlanSave', 'Save plan', 450, 255, 120, 36,
-    'If(IsBlank(Trim(uPlanId.Text)) || !IsNumeric(uPlanHours.Text), Notify("Enter a plan id and its hours per month.", NotificationType.Warning), IfError(Patch(AvenuePlans, Coalesce(LookUp(AvenuePlans, PlanId = Trim(uPlanId.Text)), Defaults(AvenuePlans)), {Title: Trim(uPlanId.Text), FacilityId: ' + FAC + ', PlanId: Trim(uPlanId.Text), MonthlyHours: Value(uPlanHours.Text), ExtraHourRate: If(IsBlank(uPlanRate.Text), Blank(), Value(uPlanRate.Text)), Active: true}); Reset(uPlanId); Reset(uPlanHours); Reset(uPlanRate); Notify("Plan saved.", NotificationType.Success), Notify("Could not save the plan.", NotificationType.Error)))'))
-parts.append(label('uPlanHelp', '"Plan names, hours and rates come from the client (Q-04, Q-25). Leave empty until supplied. An existing id is updated."', 20, 296, 640, 36, Size=11, Color='RGBA(96,94,92,1)'))
+PL_SEL = 'uPlanGal.Selected'
+parts.append(label('uPlanHead', '"Plans (select one to load it; inactive plans are greyed)"', 20, 60, 640, 30, FontWeight='FontWeight.Semibold'))
+# All plans, active first. Remove = Active false (members keep their plan id); Reactivate turns it back on. Plans are never deleted.
+parts.append(gallery('uPlanGal', 'SortByColumns(Filter(AvenuePlans, FacilityId = ' + FAC + '), "Active", SortOrder.Descending, "PlanId", SortOrder.Ascending)', 20, 95, 640, 190, 40, [
+    child('uPlanItem', 'If(ThisItem.Active, "", "INACTIVE · ") & ThisItem.PlanId & " · " & ThisItem.MonthlyHours & " h · " & If(IsBlank(ThisItem.PriceCents), "price not set", "$" & Text(ThisItem.PriceCents / 100, "#,##0") & " bank / $" & Text(Coalesce(ThisItem.CardPriceCents, 0) / 100, "#,##0") & " card") & " · " & Coalesce(ThisItem.PlanGroup.Value, "-") & If(ThisItem.OpenToNew = false, " · closed to new", "")', 8, 6, 480, 28,
+          Size=11, Color='If(ThisItem.Active, ' + TEXT + ', ' + SUBTLE + ')'),
+    ('uPlanRemove', 'Classic/Button', {'Text': 'If(ThisItem.Active, "Remove", "Reactivate")', 'X': 500, 'Y': 3, 'Width': 120, 'Height': 34, 'Visible': CAN('ManageMembers'),
+        'OnSelect': 'IfError(Patch(AvenuePlans, LookUp(AvenuePlans, PlanId = ThisItem.PlanId), {Active: !ThisItem.Active}); Notify(If(ThisItem.Active, "Plan removed: hidden from new members, existing members keep it.", "Plan reactivated."), NotificationType.Information), Notify("Could not save the plan.", NotificationType.Error))'})]))
+parts.append(ctl('uPlanId', 'Classic/TextInput', {'Default': 'Coalesce(' + PL_SEL + '.PlanId, "")', 'HintText': '"Plan id"', 'X': 20, 'Y': 295, 'Width': 150, 'Height': 36}))
+parts.append(ctl('uPlanHours', 'Classic/TextInput', {'Default': 'If(IsBlank(' + PL_SEL + '), "", Text(' + PL_SEL + '.MonthlyHours))', 'HintText': '"Hours / month"', 'Format': 'TextFormat.Number', 'X': 180, 'Y': 295, 'Width': 120, 'Height': 36}))
+parts.append(ctl('uPlanRate', 'Classic/TextInput', {'Default': 'If(IsBlank(' + PL_SEL + '.ExtraHourRate), "", Text(' + PL_SEL + '.ExtraHourRate))', 'HintText': '"$ per extra hour"', 'Format': 'TextFormat.Number', 'X': 310, 'Y': 295, 'Width': 130, 'Height': 36}))
+parts.append(ctl('uPlanGroup', 'Classic/DropDown', {'Items': '["Emerging", "Mobile Kitchen", "Legacy"]', 'Default': 'Coalesce(' + PL_SEL + '.PlanGroup.Value, "Emerging")', 'X': 450, 'Y': 295, 'Width': 210, 'Height': 36}))
+parts.append(ctl('uPlanPrice', 'Classic/TextInput', {'Default': 'If(IsBlank(' + PL_SEL + '.PriceCents), "", Text(' + PL_SEL + '.PriceCents / 100, "0.00"))', 'HintText': '"$ a month (bank)"', 'X': 20, 'Y': 341, 'Width': 150, 'Height': 36}))
+parts.append(ctl('uPlanCard', 'Classic/TextInput', {'Default': 'If(IsBlank(' + PL_SEL + '.CardPriceCents), "", Text(' + PL_SEL + '.CardPriceCents / 100, "0.00"))', 'HintText': '"$ a month (card)"', 'X': 180, 'Y': 341, 'Width': 150, 'Height': 36}))
+parts.append(label('uPlanOpenLbl', '"Open to new members"', 340, 341, 160, 36, Size=12, VerticalAlign='VerticalAlign.Middle'))
+parts.append(ctl('uPlanOpen', 'Classic/Toggle', {'Default': 'Coalesce(' + PL_SEL + '.OpenToNew, true)', 'X': 500, 'Y': 344, 'Width': 90, 'Height': 30}))
+PL_MONEY = lambda n: '(IsBlank(Trim(' + n + '.Text)) || (IsNumeric(' + n + '.Text) && Value(' + n + '.Text) >= 0))'
+PL_CENTS = lambda n: 'If(IsBlank(Trim(' + n + '.Text)), Blank(), Round(Value(' + n + '.Text) * 100, 0))'
+parts.append(button('uPlanSave', 'Save plan', 20, 387, 160, 36,
+    'If(IsBlank(Trim(uPlanId.Text)) || !IsNumeric(uPlanHours.Text), Notify("Enter a plan id and its hours per month.", NotificationType.Warning), !(' + PL_MONEY('uPlanPrice') + ' && ' + PL_MONEY('uPlanCard') + ' && ' + PL_MONEY('uPlanRate') + '), Notify("Prices and the rate must be empty or a number from 0 up.", NotificationType.Warning), '
+    'IfError(Patch(AvenuePlans, Coalesce(LookUp(AvenuePlans, PlanId = Trim(uPlanId.Text)), Defaults(AvenuePlans)), {Title: Trim(uPlanId.Text), FacilityId: ' + FAC + ', PlanId: Trim(uPlanId.Text), MonthlyHours: Value(uPlanHours.Text), ExtraHourRate: If(IsBlank(uPlanRate.Text), Blank(), Value(uPlanRate.Text)), '
+    'PriceCents: ' + PL_CENTS('uPlanPrice') + ', CardPriceCents: ' + PL_CENTS('uPlanCard') + ', PlanGroup: {Value: uPlanGroup.Selected.Value}, OpenToNew: uPlanOpen.Value, Active: true}); Notify("Plan saved. An existing id is updated.", NotificationType.Success), Notify("Could not save the plan.", NotificationType.Error)))',
+    Visible='(' + P_VIS + ') && ' + CAN('ManageMembers')))
+parts.append(label('uPlanHelp', '"Prices come from the client sheet (card = bank + 3 %, Q-M1). Changing a price here does not change Stripe prices or existing subscriptions (STR-06, Q-R2). Type a new id to add a plan."', 190, 383, 470, 50, Size=10, Color=SUBTLE))
 parts.append(label('uReqHead', '"Required documents (every active member)"', 690, 60, 640, 30, FontWeight='FontWeight.Semibold'))
 parts.append(label('uReqHelp', '"Leave empty until Flavors decides (Q-11). Nothing is assumed."', 690, 90, 640, 24, Size=11, Color='RGBA(96,94,92,1)'))
 parts.append(gallery('uReqGal', 'Filter(AvenueRequiredDocTypes, FacilityId = ' + FAC + ', Active = true)', 690, 118, 640, 110, 36, [
     child('uReqItem', 'ThisItem.DocType.Value', 8, 4, 480, 28),
     ('uReqRemove', 'Classic/Button', {'Text': '"Remove"', 'X': 500, 'Y': 1, 'Width': 120, 'Height': 32, 'OnSelect': 'Patch(AvenueRequiredDocTypes, ThisItem, {Active: false}); Notify("No longer required.", NotificationType.Information)'})]))
-parts.append(ctl('uReqType', 'Classic/DropDown', {'Items': '["Permit", "Licence", "Insurance", "Certification"]', 'X': 690, 'Y': 236, 'Width': 220, 'Height': 36}))
+parts.append(ctl('uReqType', 'Classic/DropDown', {'Items': DOC_TYPES, 'X': 690, 'Y': 236, 'Width': 220, 'Height': 36}))
 parts.append(button('uReqAdd', 'Require', 920, 236, 120, 36,
     'If(!IsBlank(LookUp(AvenueRequiredDocTypes, DocType.Value = uReqType.Selected.Value && Active = true)), Notify("Already required.", NotificationType.Warning), IfError(Patch(AvenueRequiredDocTypes, Defaults(AvenueRequiredDocTypes), {Title: uReqType.Selected.Value, FacilityId: ' + FAC + ', DocType: {Value: uReqType.Selected.Value}, Active: true}); Notify("Now required.", NotificationType.Success), Notify("Could not save.", NotificationType.Error)))'))
 REQ_GAP = 'Filter(Filter(AvenueRequiredDocTypes, Active = true) As r, IsBlank(LookUp(AvenueMemberDocuments, MemberId = ThisItem.MemberId && DocType.Value = r.DocType.Value && IsBlank(SupersededBy) && DocStatus.Value <> "Expired")))'
@@ -808,6 +867,55 @@ parts.append(button('uAdjSave', 'Record adjustment', 690, 598, 220, 38,
     'With({id: "adj-" & Text(GUID())}, IfError(Patch(AvenueHoursLedger, Defaults(AvenueHoursLedger), {Title: "Adjustment", FacilityId: ' + FAC + ', EntryId: id, ChargeKey: id, MemberId: uAdjMember.Selected.Id, BookingId: "", Period: ' + EPERIOD + ', Hours: Value(uAdjHours.Text), Reason: {Value: "Adjustment"}, Note: Trim(uAdjWhy.Text) & " (by " & User().Email & ")"}); Reset(uAdjHours); Reset(uAdjWhy); Notify("Adjustment recorded.", NotificationType.Success), Notify("Could not record the adjustment.", NotificationType.Error)))',
     DisplayMode='If(IsBlank(uAdjMember.Selected) || !IsNumeric(uAdjHours.Text) || Value(uAdjHours.Text) = 0 || IsBlank(Trim(uAdjWhy.Text)), DisplayMode.Disabled, DisplayMode.Edit)'))
 parts.append(label('uAdjHelp', '"Counts in the staff dashboard hours. The member portal counts approved bookings, so it does not show adjustments yet."', 690, 642, 640, 40, Size=11, Color='RGBA(96,94,92,1)'))
+_DY = 0
+
+# ----- Tab 4: Dining tables (AvenueDiningTables, catalog). Never deleted: untick Active to retire. -----
+_VIS = TB_VIS
+TB_SEL = 'uTbGal.Selected'
+parts.append(panel('uTbPanelList', 24, Y1, 520, H))
+parts.append(head('uTbHead', '"Dining tables"', 44, Y1 + 12, 440, 16))
+parts.append(gallery('uTbGal', 'SortByColumns(Filter(AvenueDiningTables, FacilityId = ' + FAC + '), "TableId", SortOrder.Ascending)', 32, Y1 + 48, 504, H - 64, 48, [
+    child('uTbItem', 'ThisItem.TableId & " · " & Coalesce(Text(ThisItem.Seats), "?") & " seats" & If(ThisItem.Active, "", " · INACTIVE")', 8, 8, 460, 30, Color='If(ThisItem.Active, ' + TEXT + ', ' + SUBTLE + ')')]))
+parts.append(panel('uTbPanelEdit', 560, Y1, 782, 300))
+parts.append(head('uTbEditHead', '"Add or edit a table (select one on the left to load it)"', 580, Y1 + 12, 740, 16))
+parts.append(ctl('uTbId', 'Classic/TextInput', {'Default': 'Coalesce(' + TB_SEL + '.TableId, "")', 'HintText': '"Table id, e.g. table-1"', 'X': 580, 'Y': Y1 + 56, 'Width': 260, 'Height': 36}))
+parts.append(ctl('uTbSeats', 'Classic/TextInput', {'Default': 'If(IsBlank(' + TB_SEL + '), "", Text(' + TB_SEL + '.Seats))', 'HintText': '"Seats"', 'Format': 'TextFormat.Number', 'X': 850, 'Y': Y1 + 56, 'Width': 120, 'Height': 36}))
+parts.append(label('uTbActLbl', '"Active"', 990, Y1 + 56, 60, 36, Size=12, VerticalAlign='VerticalAlign.Middle'))
+parts.append(ctl('uTbActive', 'Classic/Toggle', {'Default': 'Coalesce(' + TB_SEL + '.Active, true)', 'X': 1050, 'Y': Y1 + 59, 'Width': 90, 'Height': 30}))
+parts.append(button('uTbSave', 'Save table', 580, Y1 + 108, 180, 40,
+    'If(IsBlank(Trim(uTbId.Text)) || !IsNumeric(uTbSeats.Text) || Value(uTbSeats.Text) < 1, Notify("Enter a table id and a seat count from 1.", NotificationType.Warning), IfError(Patch(AvenueDiningTables, Coalesce(LookUp(AvenueDiningTables, TableId = Lower(Trim(uTbId.Text))), Defaults(AvenueDiningTables)), '
+    '{Title: Lower(Trim(uTbId.Text)), FacilityId: ' + FAC + ', TableId: Lower(Trim(uTbId.Text)), Seats: Value(uTbSeats.Text), Active: uTbActive.Value}); Notify("Table saved. An existing id is updated.", NotificationType.Success), Notify("Could not save the table.", NotificationType.Error)))',
+    Visible='(' + TB_VIS + ') && ' + CAN('ManageEquipment')))
+parts.append(hint('uTbHelp', '"Seat counts come from the client (Q-22: about 50 seats with the current set-up). To retire a table untick Active and Save; it is kept."', 580, Y1 + 160, 740, 40))
+
+# ----- Tab 5: Support topics (AvenueSupportCategories). The member portal and the support flow read the Active titles. -----
+_VIS = TP_VIS
+TP_SEL = 'uTpGal.Selected'
+TP_USED = 'CountRows(Filter(AvenueSupportCases, FacilityId = ' + FAC + ', Category.Value = ' + TP_SEL + '.Title))'
+parts.append(panel('uTpPanelList', 24, Y1, 520, H))
+parts.append(head('uTpHead', '"Support topics members can choose"', 44, Y1 + 12, 440, 16))
+parts.append(gallery('uTpGal', 'SortByColumns(Filter(AvenueSupportCategories, FacilityId = ' + FAC + '), "SortOrder", SortOrder.Ascending)', 32, Y1 + 48, 504, H - 64, 48, [
+    child('uTpItem', 'Text(ThisItem.SortOrder) & ". " & ThisItem.Title & If(ThisItem.Active, "", " · hidden")', 8, 8, 460, 30, Color='If(ThisItem.Active, ' + TEXT + ', ' + SUBTLE + ')')]))
+parts.append(panel('uTpPanelEdit', 560, Y1, 782, 340))
+parts.append(head('uTpEditHead', 'If(IsBlank(' + TP_SEL + '), "Add a topic", "Edit: " & ' + TP_SEL + '.Title)', 580, Y1 + 12, 740, 16))
+parts.append(ctl('uTpTitle', 'Classic/TextInput', {'Default': 'Coalesce(' + TP_SEL + '.Title, "")', 'HintText': '"Topic, e.g. Billing"', 'X': 580, 'Y': Y1 + 56, 'Width': 300, 'Height': 36}))
+parts.append(ctl('uTpOrder', 'Classic/TextInput', {'Default': 'If(IsBlank(' + TP_SEL + '), "", Text(' + TP_SEL + '.SortOrder))', 'HintText': '"Order"', 'Format': 'TextFormat.Number', 'X': 890, 'Y': Y1 + 56, 'Width': 100, 'Height': 36}))
+parts.append(label('uTpActLbl', '"Shown to members"', 1000, Y1 + 56, 140, 36, Size=12, VerticalAlign='VerticalAlign.Middle'))
+parts.append(ctl('uTpActive', 'Classic/Toggle', {'Default': 'Coalesce(' + TP_SEL + '.Active, true)', 'X': 1140, 'Y': Y1 + 59, 'Width': 90, 'Height': 30}))
+TP_OK = '!IsBlank(Trim(uTpTitle.Text)) && IsNumeric(uTpOrder.Text)'
+# A topic in use keeps its title (cases store the text they were sent with), so Save refuses a rename then.
+parts.append(button('uTpSave', 'Save changes', 580, Y1 + 108, 170, 40,
+    'If(' + TP_USED + ' > 0 && Trim(uTpTitle.Text) <> ' + TP_SEL + '.Title, Notify("Cases use this topic, so it cannot be renamed. Hide it and add a new topic instead.", NotificationType.Warning), IfError(Patch(AvenueSupportCategories, LookUp(AvenueSupportCategories, ID = ' + TP_SEL + '.ID), {Title: Left(Trim(uTpTitle.Text), 255), SortOrder: Value(uTpOrder.Text), Active: uTpActive.Value}); Notify("Topic saved.", NotificationType.Success), Notify("Could not save the topic.", NotificationType.Error)))',
+    DisplayMode='If(!IsBlank(' + TP_SEL + ') && ' + TP_OK + ', DisplayMode.Edit, DisplayMode.Disabled)'))
+parts.append(button2('uTpAdd', 'Add as new topic', 760, Y1 + 108, 190, 40,
+    'If(!IsBlank(LookUp(AvenueSupportCategories, FacilityId = ' + FAC + ' && Title = Trim(uTpTitle.Text))), Notify("That topic already exists.", NotificationType.Warning), IfError(Patch(AvenueSupportCategories, Defaults(AvenueSupportCategories), {Title: Left(Trim(uTpTitle.Text), 255), FacilityId: ' + FAC + ', SortOrder: Value(uTpOrder.Text), Active: uTpActive.Value}); Notify("Topic added.", NotificationType.Success), Notify("Could not add the topic.", NotificationType.Error)))',
+    DisplayMode='If(' + TP_OK + ', DisplayMode.Edit, DisplayMode.Disabled)'))
+# Delete: owner only (UI gate, not security) and only when no support case uses the topic; otherwise hide it (Active off).
+parts.append(button('uTpDelete', 'Delete (owner, unused only)', 960, Y1 + 108, 260, 40,
+    'If(' + TP_USED + ' > 0, Notify("Cases use this topic: untick Shown to members instead.", NotificationType.Warning), IfError(Remove(AvenueSupportCategories, LookUp(AvenueSupportCategories, ID = ' + TP_SEL + '.ID)); Notify("Topic deleted.", NotificationType.Information), Notify("Could not delete the topic.", NotificationType.Error)))',
+    DisplayMode='If(!IsBlank(' + TP_SEL + ') && ' + TP_USED + ' = 0, DisplayMode.Edit, DisplayMode.Disabled)', Visible='(' + TP_VIS + ') && ' + OWNER_SN_EARLY,
+    Fill=SURFACE, Color=BAD, BorderColor=BAD, BorderThickness=1, HoverFill=BADTINT, HoverColor=BAD, PressedFill=BADTINT))
+parts.append(hint('uTpHelp', 'If(IsBlank(' + TP_SEL + '), "", Text(' + TP_USED + ') & " support cases use this topic. ") & "A topic in use cannot be renamed or deleted (cases keep the text they were sent with); hide it instead. The support flow accepts only topics shown to members."', 580, Y1 + 160, 740, 56))
 _DY, _VIS = 0, None
 write('setup.pa.yaml', parts)
 
@@ -1042,7 +1150,8 @@ hub_cards = [
     ('Permissions (Screen17)', 'Navigate(Screen17)', 'Owner only: which staff may use which screens.'),
     ('Reports (Screen18)', 'Navigate(Screen18)', 'Bookings and hours per month, documents, invoices and equipment use.'),
     ('Events (Screen21)', 'Navigate(Screen21)', 'Private-event and dining requests: approve, quote and request the invoices.'),
-    ('Storage (Screen22)', 'Navigate(Screen22)', 'Fridge, freezer and dry-storage requests from members.')
+    ('Storage (Screen22)', 'Navigate(Screen22)', 'Fridge, freezer and dry-storage requests from members.'),
+    ('Member admin (Screen23)', 'Navigate(Screen23)', 'Edit members, hours ledger, documents on a member\'s behalf, team list.')
 ]
 hub_cards = [c for c in hub_cards if on(HUB_MODULE[re.search(r'Screen\d+', c[1]).group()])]
 for i, (title, target, desc) in enumerate(hub_cards):
@@ -1299,33 +1408,75 @@ parts = nav('sup', 'Screen12', 'Support')
 _DY = cy('Screen15') - 60
 SUP_SEL = 'supGal.Selected'
 SUP_REAL = 'LookUp(AvenueSupportCases, CaseId = ' + SUP_SEL + '.CaseId)'
+SUP_L = 'AvenueSupportCases, FacilityId = ' + FAC
+SUP_WHO = 'User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM")'
+# Archive instead of delete (developer decision 23 Nov; Q-R5 open). "All" hides archived cases; the Archived chip shows them.
+# Owner hard delete of a case and its member thread is a flow, specified in flows/expressions.md (not built, no button here).
 parts.append(button('supBack', 'Back to More', 20, 60, 140, 34, 'Navigate(Screen12)'))
 parts.append(head('supHead', '"Messages from members"', 180, 60, 400, 20))
-parts.append(button2('supRefresh', 'Refresh', 1190, 60, 140, 34, 'Refresh(AvenueSupportCases)'))
-case_chips('sup', 'varSupStage', 'AvenueSupportCases', [('All', 'All'), ('Open', 'Open'), ('Answered', 'Answered'), ('Closed', 'Closed')])
-parts.append(gallery('supGal', case_rows('AvenueSupportCases', 'varSupStage', 'Switch(Status.Value, "Open", 0, "Answered", 1, 2)', '"CreatedAt", SortOrder.Descending'), 20, 150, 640, 580, 66, [
+parts.append(ctl('supCatFilter', 'Classic/DropDown', {'Items': 'ForAll(SortByColumns(Filter(AvenueSupportCategories, FacilityId = ' + FAC + '), "SortOrder", SortOrder.Ascending), {Value: Title})', 'Default': '""', 'AllowEmptySelection': 'true',
+                                                       'X': 880, 'Y': 60, 'Width': 290, 'Height': 34}))
+parts.append(hint('supCatHint', '"Topic filter (empty = all topics)"', 660, 64, 214, 28, Visible='IsBlank(supCatFilter.Selected.Value)'))
+parts.append(button2('supRefresh', 'Refresh', 1190, 60, 140, 34, 'Refresh(AvenueSupportCases); Refresh(AvenueSupportMessages); Refresh(AvenueSupportFiles)'))
+for i, (key, cap) in enumerate([('All', 'All'), ('Open', 'Open'), ('Answered', 'Answered'), ('Closed', 'Closed'), ('Archived', 'Archived')]):
+    on_ = f'Coalesce(varSupStage, "All") = "{key}"'
+    n = 'CountRows(Filter(' + SUP_L + ', Status.Value <> "Archived"))' if key == 'All' else 'CountRows(Filter(' + SUP_L + ', Status.Value = "' + key + '"))'
+    parts.append(button(f'supChip{key}', '', 20 + i * 136, 104, 128, 30, f'Set(varSupStage, "{key}")', Text='"' + cap + ' (" & Text(' + n + ') & ")"',
+                        Fill=f'If({on_}, {OLIVE}, {SURFACE})', Color=f'If({on_}, {CREAM}, {OLIVE})', BorderColor=OLIVE, BorderThickness=1,
+                        HoverFill=f'If({on_}, {OLIVE}, {CREAM})', HoverColor=f'If({on_}, {CREAM}, {OLIVE})', PressedFill=INK2, Size=12,
+                        RadiusTopLeft=15, RadiusTopRight=15, RadiusBottomLeft=15, RadiusBottomRight=15))
+# No OR inside Filter (Studio delegation rule): one Filter per status/topic combination.
+SUP_ROWS = ('With({st: Coalesce(varSupStage, "All"), ct: Coalesce(supCatFilter.Selected.Value, "")}, SortByColumns(AddColumns('
+            'If(st = "All", If(ct = "", Filter(' + SUP_L + ', Status.Value <> "Archived"), Filter(' + SUP_L + ', Status.Value <> "Archived", Category.Value = ct)), '
+            'If(ct = "", Filter(' + SUP_L + ', Status.Value = st), Filter(' + SUP_L + ', Status.Value = st, Category.Value = ct))), '
+            'Rank, Switch(Status.Value, "Open", 0, "Answered", 1, "Closed", 2, 3)), "Rank", SortOrder.Ascending, "CreatedAt", SortOrder.Descending))')
+parts.append(gallery('supGal', SUP_ROWS, 20, 150, 640, 580, 66, [
     child('supItemTitle', 'Coalesce(ThisItem.Subject, "(no subject)")', 8, 4, 480, 28, FontWeight='FontWeight.Semibold'),
     child('supItemMeta', 'Coalesce(ThisItem.Category.Value, "-") & " · " & ThisItem.MemberId', 8, 34, 480, 22, Size=11, Color=SUBTLE),
     status_pill('supItemPill', 'ThisItem.Status.Value', ['Open'], ['Answered'])]))
 parts.append(label('supEmpty', '"No conversations in this view yet. Members start them from Messages with Flavors in the portal."', 28, 170, 620, 40, Size=12, Color=SUBTLE,
-                   Visible='CountRows(AvenueSupportCases) = 0'))
+                   Visible='CountRows(supGal.AllItems) = 0'))
 parts.append(label('supSelHead', 'If(IsBlank(' + SUP_SEL + '), "Select a conversation", ' + SUP_SEL + '.Subject)', 690, 150, 640, 30, FontWeight='FontWeight.Semibold'))
 parts.append(label('supSelInfo', 'If(IsBlank(' + SUP_SEL + '), "", "From " & ' + SUP_SEL + '.MemberId & " · " & Coalesce(' + SUP_SEL + '.Category.Value, "-") & " · " & ' + SUP_SEL + '.Status.Value & Char(10) & "Opened " & ' +
-                   f_local(SUP_SEL + '.CreatedAt', 'ddd d mmm, h:mm AM/PM') + ' & If(IsBlank(' + SUP_SEL + '.RepliedAt), "", Char(10) & "Last reply by " & ' + SUP_SEL + '.RepliedBy & " · " & ' + f_local(SUP_SEL + '.RepliedAt', 'ddd d mmm, h:mm AM/PM') + '))', 690, 184, 640, 56, Size=12))
-parts.append(label('supMsgCap', '"Member\'s last message"', 690, 246, 300, 20, Size=11, FontWeight='FontWeight.Bold', Color=SUBTLE))
-parts.append(label('supMsg', 'If(IsBlank(' + SUP_SEL + '), "", Coalesce(' + SUP_SEL + '.LastMessage, ""))', 690, 268, 640, 110, Size=12))
-parts.append(label('supPrevCap', '"Your last reply"', 690, 384, 300, 20, Size=11, FontWeight='FontWeight.Bold', Color=SUBTLE, Visible='!IsBlank(' + SUP_SEL + ') && !IsBlank(' + SUP_SEL + '.StaffReply)'))
-parts.append(label('supPrev', 'If(IsBlank(' + SUP_SEL + '), "", Coalesce(' + SUP_SEL + '.StaffReply, ""))', 690, 406, 640, 60, Size=12, Color=SUBTLE, Visible='!IsBlank(' + SUP_SEL + ') && !IsBlank(' + SUP_SEL + '.StaffReply)'))
-parts.append(ctl('supReplyIn', 'Classic/TextInput', {'Default': '""', 'HintText': '"Reply to the member (required)"', 'Mode': 'TextMode.MultiLine', 'X': 690, 'Y': 474, 'Width': 640, 'Height': 90}))
-SUP_CAN = '!IsBlank(' + SUP_SEL + ') && ' + SUP_SEL + '.Status.Value <> "Closed" && !IsBlank(Trim(supReplyIn.Text))'
-parts.append(button('supSend', 'Send reply', 690, 576, 200, 38,
+                   f_local(SUP_SEL + '.CreatedAt', 'ddd d mmm, h:mm AM/PM') + ' & If(IsBlank(' + SUP_SEL + '.RepliedAt), "", " · last reply by " & ' + SUP_SEL + '.RepliedBy & " " & ' + f_local(SUP_SEL + '.RepliedAt', 'd mmm, h:mm AM/PM') + ') & '
+                   'If(IsBlank(' + SUP_SEL + '.ArchivedAt), "", Char(10) & "Archived by " & ' + SUP_SEL + '.ArchivedBy & " " & ' + f_local(SUP_SEL + '.ArchivedAt', 'd mmm yyyy') + '))', 690, 184, 640, 58, Size=12))
+# Full thread: the member's own AvenueSupportMessages items with this ThreadId. UNKNOWN whether staff accounts can read members' own-items
+# (item-level read) entries; if they cannot, the gallery is empty and the case's LastMessage is shown instead.
+SUP_THREAD = 'If(IsBlank(' + SUP_SEL + '), Blank(), SortByColumns(Filter(AvenueSupportMessages, ThreadId = ' + SUP_SEL + '.ThreadId), "Created", SortOrder.Ascending))'
+parts.append(label('supMsgCap', 'If(CountRows(supThread.AllItems) > 0, "Conversation (" & CountRows(supThread.AllItems) & " messages from the member)", "Member\'s last message (thread not readable here)")', 690, 246, 640, 20, Size=11, FontWeight='FontWeight.Bold', Color=SUBTLE))
+parts.append(gallery('supThread', SUP_THREAD, 690, 268, 640, 190, 70, [
+    child('supThWho', 'Coalesce(ThisItem.Author.DisplayName, "Member") & " · " & Text(ThisItem.Created, "ddd d mmm, h:mm AM/PM")', 8, 2, 600, 20, Size=10, Color=SUBTLE),
+    child('supThBody', 'ThisItem.Body', 8, 22, 600, 44, Size=11)], Visible='CountRows(supThread.AllItems) > 0'))
+parts.append(label('supMsg', 'If(IsBlank(' + SUP_SEL + '), "", Coalesce(' + SUP_SEL + '.LastMessage, ""))', 690, 268, 640, 110, Size=12, Visible='CountRows(supThread.AllItems) = 0'))
+parts.append(label('supFilesCap', '"Attachments (private copies; click to open)"', 690, 464, 640, 20, Size=11, FontWeight='FontWeight.Bold', Color=SUBTLE))
+parts.append(gallery('supFiles', 'If(IsBlank(' + SUP_SEL + '), Blank(), Filter(AvenueSupportFiles, CaseId = ' + SUP_SEL + '.CaseId))', 690, 486, 640, 64, 30, [
+    child('supFileName', "ThisItem.'File name with extension'", 8, 2, 600, 26, Size=11, Color=OLIVE, OnSelect="Launch(ThisItem.'Link to item')")]))
+parts.append(hint('supFilesNone', '"No attachments."', 698, 490, 600, 24, Visible='CountRows(supFiles.AllItems) = 0'))
+parts.append(label('supPrevCap', '"Your last reply"', 690, 556, 300, 20, Size=11, FontWeight='FontWeight.Bold', Color=SUBTLE, Visible='!IsBlank(' + SUP_SEL + ') && !IsBlank(' + SUP_SEL + '.StaffReply)'))
+parts.append(label('supPrev', 'If(IsBlank(' + SUP_SEL + '), "", Coalesce(' + SUP_SEL + '.StaffReply, ""))', 690, 576, 640, 40, Size=11, Color=SUBTLE, Visible='!IsBlank(' + SUP_SEL + ') && !IsBlank(' + SUP_SEL + '.StaffReply)'))
+parts.append(ctl('supReplyIn', 'Classic/TextInput', {'Default': '""', 'HintText': '"Reply to the member (required)"', 'Mode': 'TextMode.MultiLine', 'X': 690, 'Y': 622, 'Width': 640, 'Height': 80}))
+SUP_LIVE = '!IsBlank(' + SUP_SEL + ') && ' + SUP_SEL + '.Status.Value <> "Closed" && ' + SUP_SEL + '.Status.Value <> "Archived"'
+parts.append(button('supSend', 'Send reply', 690, 712, 180, 38,
     'IfError(Patch(AvenueSupportCases, ' + SUP_REAL + ', {StaffReply: Trim(supReplyIn.Text), RepliedBy: User().Email, RepliedAt: Now(), Status: {Value: "Answered"}}); Reset(supReplyIn); '
     'Notify("Reply saved. The member sees it in the portal.", NotificationType.Success), Notify("Could not save the reply.", NotificationType.Error))',
-    DisplayMode='If(' + SUP_CAN + ', DisplayMode.Edit, DisplayMode.Disabled)'))
-parts.append(button2('supClose', 'Close conversation', 900, 576, 200, 38,
+    DisplayMode='If(' + SUP_LIVE + ' && !IsBlank(Trim(supReplyIn.Text)), DisplayMode.Edit, DisplayMode.Disabled)'))
+parts.append(button2('supClose', 'Close', 880, 712, 120, 38,
     'IfError(Patch(AvenueSupportCases, ' + SUP_REAL + ', {Status: {Value: "Closed"}}); Notify("Closed.", NotificationType.Success), Notify("Could not close it.", NotificationType.Error))',
-    DisplayMode='If(!IsBlank(' + SUP_SEL + ') && ' + SUP_SEL + '.Status.Value <> "Closed", DisplayMode.Edit, DisplayMode.Disabled)'))
-parts.append(hint('supHelp', '"Replies are shown to the member in the portal. Nobody is promised a reply time and no contact details are published (Q-13 and Q-P1 are open). The reply text must not be empty."', 690, 624, 640, 44))
+    DisplayMode='If(' + SUP_LIVE + ', DisplayMode.Edit, DisplayMode.Disabled)'))
+parts.append(button2('supReopen', 'Reopen', 1010, 712, 120, 38,
+    'IfError(Patch(AvenueSupportCases, ' + SUP_REAL + ', {Status: {Value: "Open"}, ArchivedBy: "", ArchivedAt: Blank()}); Notify("Reopened.", NotificationType.Success), Notify("Could not reopen it.", NotificationType.Error))',
+    DisplayMode='If(!IsBlank(' + SUP_SEL + ') && (' + SUP_SEL + '.Status.Value = "Closed" || ' + SUP_SEL + '.Status.Value = "Archived"), DisplayMode.Edit, DisplayMode.Disabled)'))
+parts.append(button2('supArchive', 'Archive', 1140, 712, 190, 38,
+    'IfError(Patch(AvenueSupportCases, ' + SUP_REAL + ', {Status: {Value: "Archived"}, ArchivedBy: User().Email, ArchivedAt: Now()}); Notify("Archived: hidden from All, kept for the record. The member\'s own messages are not changed.", NotificationType.Success), Notify("Could not archive it.", NotificationType.Error))',
+    DisplayMode='If(!IsBlank(' + SUP_SEL + ') && ' + SUP_SEL + '.Status.Value <> "Archived", DisplayMode.Edit, DisplayMode.Disabled)'))
+parts.append(ctl('supCatEdit', 'Classic/DropDown', {'Items': 'ForAll(SortByColumns(Filter(AvenueSupportCategories, FacilityId = ' + FAC + ', Active = true), "SortOrder", SortOrder.Ascending), {Value: Title})',
+                                                     'Default': 'Coalesce(' + SUP_SEL + '.Category.Value, "")', 'AllowEmptySelection': 'true', 'X': 690, 'Y': 766, 'Width': 240, 'Height': 36}))
+parts.append(ctl('supStEdit', 'Classic/DropDown', {'Items': '["Open", "Answered", "Closed", "Archived"]', 'Default': 'Coalesce(' + SUP_SEL + '.Status.Value, "Open")', 'X': 940, 'Y': 766, 'Width': 170, 'Height': 36}))
+parts.append(button2('supSaveMeta', 'Save topic and status', 1120, 766, 210, 36,
+    'IfError(Patch(AvenueSupportCases, ' + SUP_REAL + ', {Category: {Value: Coalesce(supCatEdit.Selected.Value, ' + SUP_SEL + '.Category.Value)}, Status: {Value: supStEdit.Selected.Value}, '
+    'ArchivedBy: If(supStEdit.Selected.Value = "Archived", User().Email, ""), ArchivedAt: If(supStEdit.Selected.Value = "Archived", Now(), Blank())}); Notify("Saved (" & ' + SUP_WHO + ' & ").", NotificationType.Success), Notify("Could not save.", NotificationType.Error))',
+    DisplayMode='If(IsBlank(' + SUP_SEL + '), DisplayMode.Disabled, DisplayMode.Edit)'))
+parts.append(hint('supHelp', '"Replies are shown to the member in the portal. Nobody is promised a reply time and no contact details are published (Q-13 and Q-P1 are open). Archive hides a case from All; nothing is deleted from this screen (Q-R5)."', 690, 810, 640, 44))
 write('support.pa.yaml', parts)
 _DY = 0
 
@@ -1375,6 +1526,17 @@ parts.append(button2('evCheck', 'Check again', 1110, 496, 220, 40, 'Refresh(Aven
 parts.append(label('evOut', 'If(IsBlank(varEvReq), "", Coalesce(' + EV_HR + '.Outcome, "Waiting for the server... (press Check again)") & If(IsBlank(' + EV_HR + '.Link), "", Char(10) & ' + EV_HR + '.Link))', 690, 546, 640, 64, Size=11, Color=SUBTLE))
 parts.append(hint('evHelp', 'If(' + EV_SEL + '.EventDate <= Now(), "This event date has passed, so invoices cannot be requested.", "Approving needs a future event date. Payment stays in Stripe test mode until the client approves (STR-06).")', 690, 616, 640, 40,
                   Visible='!IsBlank(' + EV_SEL + ')'))
+# Before Invoiced: correct the recorded quote, or re-open (back to Requested). Re-opening an APPROVED request does not void invoices the server
+# already created: the owner voids them in Stripe (test mode). Every change is appended to Notes with who and when.
+EV_FIX = '!IsBlank(' + EV_SEL + ') && (' + EV_SEL + '.Status.Value = "Approved" || ' + EV_SEL + '.Status.Value = "Declined")'
+EV_WHO = '" by " & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM")'
+parts.append(button2('evSaveQuote', 'Save quote', 690, 666, 200, 40,
+    'IfError(Patch(AvenueEventCases, ' + EV_REAL + ', {QuoteCents: Round(Value(evQuote.Text) * 100, 0), Notes: Trim(Coalesce(' + EV_SEL + '.Notes, "") & Char(10) & "Quote changed to $" & Text(Value(evQuote.Text), "0.00") & ' + EV_WHO + ')}); Notify("Quote saved. Invoices already requested keep the sheet price.", NotificationType.Success), Notify("Could not save.", NotificationType.Error))',
+    DisplayMode='If(IsNumeric(evQuote.Text) && Value(evQuote.Text) >= 0, DisplayMode.Edit, DisplayMode.Disabled)', Visible='!IsBlank(' + EV_SEL + ') && ' + EV_SEL + '.Status.Value = "Approved"'))
+parts.append(button2('evReopen', 'Re-open (back to Requested)', 900, 666, 260, 40,
+    'If(IsBlank(Trim(evReason.Text)), Notify("Write why in the reason box first.", NotificationType.Warning), IfError(Patch(AvenueEventCases, ' + EV_REAL + ', {Status: {Value: "Requested"}, Notes: Trim(Coalesce(' + EV_SEL + '.Notes, "") & Char(10) & "Re-opened: " & Trim(evReason.Text) & ' + EV_WHO + ')}); Reset(evReason); '
+    'Notify(If(' + EV_SEL + '.Status.Value = "Approved", "Re-opened. If invoices were already created, the owner voids them in Stripe (test mode).", "Re-opened."), NotificationType.Success), Notify("Could not save.", NotificationType.Error)))',
+    Visible=EV_FIX))
 write('events.pa.yaml', parts)
 _DY = 0
 
@@ -1410,6 +1572,13 @@ parts.append(button('stoDecline', 'Decline', 900, 502, 140, 40,
     'Notify("Declined.", NotificationType.Success), Notify("Could not save.", NotificationType.Error))',
     DisplayMode='If(' + STO_OPEN + ' && !IsBlank(Trim(stoReason.Text)), DisplayMode.Edit, DisplayMode.Disabled)', Visible=STO_OPEN, **DANGER))
 parts.append(hint('stoHelp', '"Nothing is charged or invoiced from this screen: the owner bills storage by hand (Q-25: storage is not confirmed for Phase 1)."', 690, 552, 640, 40))
+STO_WHO = '" by " & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM")'
+parts.append(button2('stoSaveAmt', 'Save amount', 690, 600, 200, 40,
+    'IfError(Patch(AvenueStorageCases, ' + STO_REAL + ', {MonthlyCents: Round(Value(stoAmt.Text) * 100, 0), Notes: Trim(Coalesce(' + STO_SEL + '.Notes, "") & Char(10) & "Amount changed to $" & Text(Value(stoAmt.Text), "0.00") & ' + STO_WHO + ')}); Notify("Amount saved.", NotificationType.Success), Notify("Could not save.", NotificationType.Error))',
+    DisplayMode='If(IsNumeric(stoAmt.Text) && Value(stoAmt.Text) > 0, DisplayMode.Edit, DisplayMode.Disabled)', Visible='!IsBlank(' + STO_SEL + ') && ' + STO_SEL + '.Status.Value = "Approved"'))
+parts.append(button2('stoReopen', 'Re-open (back to Requested)', 900, 600, 260, 40,
+    'If(IsBlank(Trim(stoReason.Text)), Notify("Write why in the reason box first.", NotificationType.Warning), IfError(Patch(AvenueStorageCases, ' + STO_REAL + ', {Status: {Value: "Requested"}, Notes: Trim(Coalesce(' + STO_SEL + '.Notes, "") & Char(10) & "Re-opened: " & Trim(stoReason.Text) & ' + STO_WHO + ')}); Reset(stoReason); Notify("Re-opened.", NotificationType.Success), Notify("Could not save.", NotificationType.Error)))',
+    Visible='!IsBlank(' + STO_SEL + ') && (' + STO_SEL + '.Status.Value = "Approved" || ' + STO_SEL + '.Status.Value = "Declined")'))
 write('storage.pa.yaml', parts)
 _DY = 0
 
@@ -1444,17 +1613,103 @@ parts.append(label('appSelInfo', 'If(IsBlank(' + SEL + '), "", "Contact: " & Coa
     'If(IsBlank(' + SEL + '.DecidedBy), "", Char(10) & "Decided by " & ' + SEL + '.DecidedBy & " on " & Text(' + SEL + '.DecidedAt, "d mmm yyyy")) & If(IsBlank(' + SEL + '.Note), "", Char(10) & "Note: " & ' + SEL + '.Note))', 690, 184, 640, 120, Size=12))
 parts.append(ctl('appNoteIn', 'Classic/TextInput', {'Default': '""', 'HintText': '"Note (needed to reject; staff only)"', 'Mode': 'TextMode.MultiLine', 'X': 690, 'Y': 312, 'Width': 640, 'Height': 60}))
 DECIDE = lambda stage: 'Patch(AvenueApplicants, ' + SEL + ', {Stage: {Value: "' + stage + '"}, DecidedBy: User().Email, DecidedAt: Now(), Note: If(IsBlank(Trim(appNoteIn.Text)), ' + SEL + '.Note, Trim(appNoteIn.Text))})'
+APP_REAL = 'LookUp(AvenueApplicants, ApplicantId = ' + SEL + '.ApplicantId)'
+APP_WHO = '" (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ")"'
+CANMEM = CAN('ManageMembers')
+# Approve: an existing member row becomes Active. With no member row (staff-made or test-mode application), Approve creates one with
+# status Onboarding (no booking possible yet) and moves the application to Onboarding; approve again once documents are in.
 parts.append(button('appApprove', 'Approve: make active', 690, 384, 210, 40,
-    'With({mm: LookUp(AvenueMembers, MemberId = Lower(' + SEL + '.Email))}, If(IsBlank(mm), Notify("No member record yet for this e-mail: wait for the payment to be confirmed (or add the member on the Members screen).", NotificationType.Warning), '
-    'IfError(Patch(AvenueMembers, mm, {Status: {Value: "Active"}}); ' + DECIDE('Active') + '; Reset(appNoteIn); Notify("Approved. The member can book once their membership card updates (about a minute).", NotificationType.Success), Notify("Could not approve.", NotificationType.Error))))',
-    Visible='!IsBlank(' + SEL + ') && (' + SEL_SHOWN + ' = "Onboarding" || ' + SEL_SHOWN + ' = "Paid")'))
-parts.append(button('appInvited', 'Invite sent: move to onboarding', 690, 384, 280, 40,
+    'With({mm: LookUp(AvenueMembers, MemberId = Lower(' + SEL + '.Email))}, If(IsBlank(mm), '
+    'IfError(Patch(AvenueMembers, Defaults(AvenueMembers), {Title: Left(Coalesce(' + SEL + '.BusinessName, ' + SEL + '.Email), 255), FacilityId: ' + FAC + ', MemberId: Lower(' + SEL + '.Email), BusinessName: ' + SEL + '.BusinessName, PlanId: ' + SEL + '.PlanId, CollectionDay: ' + SEL + '.CollectionDay, '
+    'Status: {Value: "Onboarding"}, PayMethod: If(IsBlank(' + SEL + '.PayMethod.Value), Blank(), {Value: ' + SEL + '.PayMethod.Value}), ChangeReason: "Created from application " & ' + SEL + '.ApplicantId & ' + APP_WHO + '}); ' + DECIDE('Onboarding') + '; Reset(appNoteIn); '
+    'Notify("There was no member record, so one was created with status Onboarding (no bookings yet). Press Approve again when the documents are in.", NotificationType.Information), Notify("Could not create the member record.", NotificationType.Error)), '
+    'IfError(Patch(AvenueMembers, mm, {Status: {Value: "Active"}, ChangeReason: "Approved from application " & ' + SEL + '.ApplicantId & ' + APP_WHO + '}); ' + DECIDE('Active') + '; Reset(appNoteIn); Notify("Approved. The member can book once their membership card updates (about a minute).", NotificationType.Success), Notify("Could not approve.", NotificationType.Error))))',
+    Visible='!IsBlank(' + SEL + ') && (' + SEL_SHOWN + ' = "Onboarding" || ' + SEL_SHOWN + ' = "Paid") && ' + CANMEM))
+parts.append(button('appInvited', 'Invite sent: to onboarding', 690, 384, 210, 40,
     'IfError(' + DECIDE('Onboarding') + '; Reset(appNoteIn); Notify("Moved to onboarding. They upload documents after signing in.", NotificationType.Success), Notify("Could not save.", NotificationType.Error))',
-    Visible='!IsBlank(' + SEL + ') && ' + SEL_SHOWN + ' = "InviteNeeded"'))
+    Visible='!IsBlank(' + SEL + ') && ' + SEL_SHOWN + ' = "InviteNeeded" && ' + CANMEM))
 parts.append(button('appReject', 'Reject', 910, 384, 140, 40,
     'If(IsBlank(Trim(appNoteIn.Text)), Notify("Write why in the note first.", NotificationType.Warning), IfError(' + DECIDE('Rejected') + '; Reset(appNoteIn); Notify("Rejected. Any refund is done by the owner in Stripe.", NotificationType.Success), Notify("Could not save.", NotificationType.Error)))',
-    Visible='!IsBlank(' + SEL + ') && ' + SEL_SHOWN + ' <> "Active" && ' + SEL_SHOWN + ' <> "Rejected"', **DANGER))
-parts.append(label('appHelp', '"Invite needed: the person paid on the public join page; a SharePoint admin must send their guest invitation (automatic invites need tenant consent, Q-M3). Rejecting does not refund: the owner refunds in Stripe. Approval after payment is the default until the client answers Q-05."', 690, 436, 640, 64, Size=11, Color=SUBTLE))
+    Visible='!IsBlank(' + SEL + ') && ' + SEL_SHOWN + ' <> "Active" && ' + SEL_SHOWN + ' <> "Rejected" && ' + CANMEM, **DANGER))
+# Re-open a rejected or expired application: paid or staff-made ones go back to Invite needed, others to Payment pending for 14 days.
+parts.append(button('appReopen', 'Re-open application', 690, 384, 210, 40,
+    'If(IsBlank(Trim(appNoteIn.Text)), Notify("Write why in the note first.", NotificationType.Warning), With({paid: !IsBlank(' + SEL + '.PaidAt) || ' + SEL + '.Source.Value = "Staff"}, IfError(Patch(AvenueApplicants, ' + APP_REAL + ', {Stage: {Value: If(paid, "InviteNeeded", "PaymentPending")}, ExpiresAt: If(paid, ' + SEL + '.ExpiresAt, DateAdd(Now(), 14, TimeUnit.Days)), '
+    'Note: Trim(Coalesce(' + SEL + '.Note, "") & Char(10) & "Re-opened: " & Trim(appNoteIn.Text) & ' + APP_WHO + ')}); Reset(appNoteIn); Notify("Re-opened.", NotificationType.Success), Notify("Could not re-open.", NotificationType.Error))))',
+    Visible='!IsBlank(' + SEL + ') && (' + SEL_SHOWN + ' = "Rejected" || ' + SEL_SHOWN + ' = "Expired") && ' + CANMEM))
+RD_APP = 'CountRows(Filter(Filter(AvenueRequiredDocTypes, Active = true) As r, !IsBlank(LookUp(AvenueMemberDocuments, MemberId = Lower(' + SEL + '.Email) && DocType.Value = r.DocType.Value && IsBlank(SupersededBy) && DocStatus.Value <> "Expired"))))'
+parts.append(label('appDocs', 'If(IsBlank(' + SEL + '), "", "Documents " & ' + RD_APP + ' & " of " & CountRows(Filter(AvenueRequiredDocTypes, Active = true)) & " required on file")', 1060, 384, 270, 40, Size=12, FontWeight='FontWeight.Bold', Color=OLIVE,
+                   VerticalAlign='VerticalAlign.Middle'))
+parts.append(label('appHelp', '"Invite needed: a SharePoint admin must send their guest invitation (automatic invites need tenant consent, Q-M3); record it in the checklist below. Rejecting does not refund: the owner refunds in Stripe. Approval does not yet require all documents (Q-05, Q-11)."', 690, 436, 640, 64, Size=11, Color=SUBTLE))
+
+# ----- Edit the application (contact, plan, day, team size) while it is not Active or Rejected -----
+APP_EDITABLE = '!IsBlank(' + SEL + ') && ' + SEL_SHOWN + ' <> "Active" && ' + SEL_SHOWN + ' <> "Rejected"'
+PLAN_ITEMS = 'ForAll(SortByColumns(Filter(AvenuePlans, FacilityId = ' + FAC + ', Active = true), "PlanId", SortOrder.Ascending), {Value: PlanId})'
+_VIS = APP_EDITABLE
+parts.append(head('appEdHead', '"Edit application"', 690, 510, 640, 14))
+parts.append(ctl('appEdContact', 'Classic/TextInput', {'Default': 'Coalesce(' + SEL + '.ContactName, "")', 'HintText': '"Contact name"', 'X': 690, 'Y': 540, 'Width': 310, 'Height': 36}))
+parts.append(ctl('appEdPhone', 'Classic/TextInput', {'Default': 'Coalesce(' + SEL + '.Phone, "")', 'HintText': '"Phone"', 'X': 1010, 'Y': 540, 'Width': 320, 'Height': 36}))
+parts.append(ctl('appEdPlan', 'Classic/DropDown', {'Items': PLAN_ITEMS, 'Default': 'Coalesce(' + SEL + '.PlanId, "")', 'AllowEmptySelection': 'true', 'X': 690, 'Y': 584, 'Width': 250, 'Height': 36}))
+parts.append(ctl('appEdDay', 'Classic/TextInput', {'Default': 'If(IsBlank(' + SEL + '.CollectionDay), "", Text(' + SEL + '.CollectionDay))', 'HintText': '"Day 1-15"', 'Format': 'TextFormat.Number', 'X': 950, 'Y': 584, 'Width': 110, 'Height': 36}))
+parts.append(ctl('appEdTeam', 'Classic/TextInput', {'Default': 'If(IsBlank(' + SEL + '.TeamSize), "", Text(' + SEL + '.TeamSize))', 'HintText': '"Team size"', 'Format': 'TextFormat.Number', 'X': 1070, 'Y': 584, 'Width': 110, 'Height': 36}))
+DAY_OK = lambda n: '(IsBlank(Trim(' + n + '.Text)) || (Value(' + n + '.Text) >= 1 && Value(' + n + '.Text) <= 15 && Value(' + n + '.Text) = RoundDown(Value(' + n + '.Text), 0)))'
+TEAM_OK = lambda n: '(IsBlank(Trim(' + n + '.Text)) || (Value(' + n + '.Text) >= 1 && Value(' + n + '.Text) <= 50 && Value(' + n + '.Text) = RoundDown(Value(' + n + '.Text), 0)))'
+parts.append(button('appEdSave', 'Save changes', 1190, 584, 140, 36,
+    'If(!(' + DAY_OK('appEdDay') + ' && ' + TEAM_OK('appEdTeam') + '), Notify("Collection day must be 1 to 15 and team size 1 to 50.", NotificationType.Warning), IfError(Patch(AvenueApplicants, ' + APP_REAL + ', {ContactName: Trim(appEdContact.Text), Phone: Trim(appEdPhone.Text), '
+    'PlanId: Coalesce(appEdPlan.Selected.Value, ' + SEL + '.PlanId), CollectionDay: If(IsBlank(Trim(appEdDay.Text)), Blank(), Value(appEdDay.Text)), TeamSize: If(IsBlank(Trim(appEdTeam.Text)), Blank(), Value(appEdTeam.Text)), '
+    'Note: Trim(Coalesce(' + SEL + '.Note, "") & Char(10) & "Edited" & ' + APP_WHO + ' & If(IsBlank(Trim(appNoteIn.Text)), "", ": " & Trim(appNoteIn.Text)))}); Reset(appNoteIn); Notify("Application saved. The e-mail cannot be changed (it becomes the sign-in): reject and create a new application instead.", NotificationType.Success), Notify("Could not save.", NotificationType.Error)))',
+    Visible=APP_EDITABLE + ' && ' + CANMEM))
+
+# ----- Invite checklist: recorded by staff (the invitation itself is a manual SharePoint admin step until Q-M3) -----
+parts.append(head('appInvHead', '"Invite checklist (recorded by staff)"', 690, 634, 640, 14))
+for i, (fld, cap) in enumerate([('InviteSent', 'Invite sent'), ('InviteAccepted', 'Invite accepted'), ('GroupAdded', 'In Members group')]):
+    x = 690 + i * 214
+    parts.append(label(f'app{fld}Lbl', f'"{cap}"', x, 664, 120, 32, Size=12, VerticalAlign='VerticalAlign.Middle'))
+    parts.append(ctl(f'app{fld}', 'Classic/Toggle', {'Default': 'Coalesce(' + SEL + '.' + fld + ', false)', 'X': x + 120, 'Y': 666, 'Width': 84, 'Height': 30}))
+parts.append(button2('appInvSave', 'Save checklist', 690, 706, 200, 36,
+    'IfError(Patch(AvenueApplicants, ' + APP_REAL + ', {InviteSent: appInviteSent.Value, InviteAccepted: appInviteAccepted.Value, GroupAdded: appGroupAdded.Value, '
+    'Note: Trim(Coalesce(' + SEL + '.Note, "") & Char(10) & "Checklist: sent " & If(appInviteSent.Value, "yes", "no") & ", accepted " & If(appInviteAccepted.Value, "yes", "no") & ", group " & If(appGroupAdded.Value, "yes", "no") & ' + APP_WHO + ')}); Notify("Checklist saved.", NotificationType.Success), Notify("Could not save.", NotificationType.Error))',
+    Visible=APP_EDITABLE + ' && ' + CANMEM))
+_VIS = None
+
+# ----- New application made by staff (Source "Staff", no payment link; starts at Invite needed) -----
+parts.append(panel('appNewPanel', 16, 750, 656, 200))
+parts.append(head('appNewHead', '"New application (made by staff)"', 32, 760, 600, 14))
+parts.append(ctl('appNewBiz', 'Classic/TextInput', {'Default': '""', 'HintText': '"Business name"', 'X': 32, 'Y': 792, 'Width': 300, 'Height': 36}))
+parts.append(ctl('appNewContact', 'Classic/TextInput', {'Default': '""', 'HintText': '"Contact name"', 'X': 342, 'Y': 792, 'Width': 314, 'Height': 36}))
+parts.append(ctl('appNewEmail', 'Classic/TextInput', {'Default': '""', 'HintText': '"Sign-in e-mail"', 'X': 32, 'Y': 836, 'Width': 300, 'Height': 36}))
+parts.append(ctl('appNewPhone', 'Classic/TextInput', {'Default': '""', 'HintText': '"Phone (optional)"', 'X': 342, 'Y': 836, 'Width': 314, 'Height': 36}))
+parts.append(ctl('appNewPlan', 'Classic/DropDown', {'Items': PLAN_ITEMS, 'AllowEmptySelection': 'true', 'Default': '""', 'X': 32, 'Y': 880, 'Width': 240, 'Height': 36}))
+parts.append(ctl('appNewDay', 'Classic/TextInput', {'Default': '""', 'HintText': '"Day 1-15"', 'Format': 'TextFormat.Number', 'X': 282, 'Y': 880, 'Width': 100, 'Height': 36}))
+parts.append(ctl('appNewTeam', 'Classic/TextInput', {'Default': '"1"', 'HintText': '"Team"', 'Format': 'TextFormat.Number', 'X': 392, 'Y': 880, 'Width': 80, 'Height': 36}))
+APP_NEW_OK = '!IsBlank(Trim(appNewBiz.Text)) && !IsBlank(Trim(appNewContact.Text)) && IsMatch(Trim(appNewEmail.Text), Match.Email) && !IsBlank(appNewPlan.Selected.Value) && ' + DAY_OK('appNewDay') + ' && ' + TEAM_OK('appNewTeam')
+parts.append(button('appNewAdd', 'Create application', 482, 880, 174, 36,
+    'If(!IsBlank(LookUp(AvenueMembers, MemberId = Lower(Trim(appNewEmail.Text)))), Notify("This e-mail already has a member record: edit it in Member admin.", NotificationType.Warning), '
+    'IfError(Patch(AvenueApplicants, Defaults(AvenueApplicants), {Title: Left(Trim(appNewBiz.Text), 255), FacilityId: ' + FAC + ', ApplicantId: "app-staff-" & Text(GUID()), Email: Lower(Trim(appNewEmail.Text)), BusinessName: Trim(appNewBiz.Text), ContactName: Trim(appNewContact.Text), Phone: Trim(appNewPhone.Text), '
+    'PlanId: appNewPlan.Selected.Value, CollectionDay: If(IsBlank(Trim(appNewDay.Text)), Blank(), Value(appNewDay.Text)), TeamSize: If(IsBlank(Trim(appNewTeam.Text)), 1, Value(appNewTeam.Text)), Stage: {Value: "InviteNeeded"}, Source: {Value: "Staff"}, '
+    'InviteSent: false, InviteAccepted: false, GroupAdded: false, Note: "Created by staff" & ' + APP_WHO + ' & ". No payment link was sent; payment is arranged outside Avenue until STR-06."}); '
+    'Reset(appNewBiz); Reset(appNewContact); Reset(appNewEmail); Reset(appNewPhone); Reset(appNewPlan); Reset(appNewDay); Reset(appNewTeam); Notify("Application created at Invite needed.", NotificationType.Success), Notify("Could not create the application.", NotificationType.Error)))',
+    DisplayMode='If(' + APP_NEW_OK + ', DisplayMode.Edit, DisplayMode.Disabled)', Visible=CANMEM))
+parts.append(hint('appNewHelp', '"Plan, contact, e-mail and day are required. [PROPOSED] staff-made applications skip payment (Stripe stays in test mode, STR-06)."', 32, 920, 624, 24, Size=10))
+
+# ----- Onboarding pipeline: every open application by stage (Applied -> Paid/Skipped -> Invited -> Documents -> Approved -> Active) -----
+# Stage rules: Applied = payment pending (not expired); Paid/Skipped = paid or test-mode skip, invite not sent; Invited = invite sent, not yet
+# accepted and in the Members group (portal applicants are already signed in, so they skip this); Documents = onboarding, N of M documents;
+# Approved = application Active but the member row is not Active yet; Active = member row Active. Rejected and expired are left out.
+INV_DONE = '(Source.Value = "Portal" || (InviteAccepted = true && GroupAdded = true))'
+PIPE = ('AddColumns(Filter(AvenueApplicants, FacilityId = ' + FAC + '), PipeDocs, With({em: Lower(Email)}, CountRows(Filter(Filter(AvenueRequiredDocTypes, Active = true) As r, '
+        '!IsBlank(LookUp(AvenueMemberDocuments, MemberId = em && DocType.Value = r.DocType.Value && IsBlank(SupersededBy) && DocStatus.Value <> "Expired"))))), '
+        'PipeStage, With({st: Stage.Value, em: Lower(Email)}, If(st = "PaymentPending" && (IsBlank(ExpiresAt) || ExpiresAt > Now()), "Applied", '
+        'st = "Paid" || (st = "InviteNeeded" && InviteSent <> true), "Paid", st = "InviteNeeded" || (st = "Onboarding" && !' + INV_DONE + '), "Invited", '
+        'st = "Onboarding", "Documents", st = "Active", If(LookUp(AvenueMembers, MemberId = em).Status.Value = "Active", "Active", "Approved"), "Closed")))')
+parts.append(head('appPipeHead', '"Onboarding pipeline"', 24, 970, 800, 18))
+parts.append(hint('appPipeHelp', '"Every open application by stage. Select it in the list above to act on it. Documents counts only the required types (Setup)."', 24, 1000, 1300, 22))
+for i, (key, cap) in enumerate([('Applied', 'Applied'), ('Paid', 'Paid / skipped'), ('Invited', 'Invited'), ('Documents', 'Documents'), ('Approved', 'Approved'), ('Active', 'Active')]):
+    x = 20 + i * 222
+    parts.append(panel(f'appPipe{key}Panel', x, 1030, 214, 340))
+    parts.append(label(f'appPipe{key}Cap', f'"{cap} (" & CountRows(appPipe{key}Gal.AllItems) & ")"', x + 12, 1038, 190, 26, Size=12, FontWeight='FontWeight.Bold', Color=OLIVE))
+    parts.append(gallery(f'appPipe{key}Gal', f'Filter({PIPE}, PipeStage = "{key}")', x + 4, 1068, 206, 296, 52, [
+        child(f'appPipe{key}Name', 'Coalesce(ThisItem.BusinessName, ThisItem.Email)', 6, 2, 190, 24, Size=11, FontWeight='FontWeight.Semibold'),
+        child(f'appPipe{key}Meta', 'Coalesce(ThisItem.Source.Value, "-") & " · docs " & ThisItem.PipeDocs & " of " & CountRows(Filter(AvenueRequiredDocTypes, Active = true))', 6, 26, 190, 20, Size=9, Color=SUBTLE)]))
 write('applicants.pa.yaml', parts)
 _DY = 0
 
@@ -1544,6 +1799,137 @@ parts.append(gallery('rptH2Gal', 'With({p: ' + PREV_EPERIOD + '}, SortByColumns(
     child('rptH2Member', 'ThisItem.MemberId', 8, 4, 440, 24),
     child('rptH2Total', 'Text(Round(ThisItem.Total, 1)) & " h"', 460, 4, 160, 24, Align='Align.Right')]))
 write('reports.pa.yaml', parts)
+
+
+# ---------- Member admin (Screen23): member list left; Profile | Hours ledger | Documents | Team for the selected member right ----------
+# New screen so the frozen Members/Compliance/Payments screens stay byte-identical. Members are never deleted: Deactivate (same logic as Screen8).
+# Capability toggles (CAN) only hide buttons; SharePoint permissions and the flows are the real boundary (Q-15).
+parts = nav('ma', 'Screen12', 'Member admin')
+_DY = cy('Screen23') - 60
+MA_SEL = 'maGal.Selected'
+MA_REAL = 'LookUp(AvenueMembers, MemberId = ' + MA_SEL + '.MemberId)'
+MA_WHO = '" (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ")"'
+CANM, CAND = CAN('ManageMembers'), CAN('ManageDocuments')
+parts.append(button('maBack', 'Back to More', 20, 60, 140, 34, 'Navigate(Screen12)'))
+parts.append(head('maHead', '"Member admin"', 180, 60, 400, 20))
+parts.append(button2('maRefresh', 'Refresh', 1190, 60, 140, 34, 'Refresh(AvenueMembers); Refresh(AvenueHoursLedger); Refresh(AvenueMemberDocuments); Refresh(AvenueDocumentSubmissions)'))
+# Search: text with "@" searches the sign-in e-mail, otherwise the start of the business name (StartsWith is delegable; no OR inside Filter).
+parts.append(ctl('maSearch', 'Classic/TextInput', {'Default': '""', 'HintText': '"Search: business name start, or e-mail"', 'X': 20, 'Y': 104, 'Width': 640, 'Height': 36}))
+MA_ROWS = ('With({s: Trim(maSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueMembers, FacilityId = ' + FAC + '), IsMatch(s, "@", MatchOptions.Contains), '
+           'Filter(AvenueMembers, FacilityId = ' + FAC + ', StartsWith(MemberId, Lower(s))), Filter(AvenueMembers, FacilityId = ' + FAC + ', StartsWith(BusinessName, s))), "BusinessName", SortOrder.Ascending))')
+parts.append(gallery('maGal', MA_ROWS, 20, 150, 640, 500, 60, [
+    child('maItemTitle', 'Coalesce(ThisItem.BusinessName, "(no business name)") & " · " & ThisItem.MemberId', 8, 4, 600, 26, FontWeight='FontWeight.Semibold'),
+    child('maItemMeta', 'ThisItem.Status.Value & " · plan " & Coalesce(ThisItem.PlanId, "not set") & If(IsBlank(ThisItem.CollectionDay), "", " · day " & ThisItem.CollectionDay)', 8, 32, 600, 22, Size=12,
+          Color='If(ThisItem.Status.Value = "Inactive", ' + BAD + ', ' + SUBTLE + ')')]))
+# New member: starts at Onboarding (cannot book until made Active here or approved in Applicants). Site access is a SharePoint admin step.
+parts.append(head('maNewHead', '"Add a member (starts as Onboarding)"', 20, 664, 640, 14))
+parts.append(ctl('maNewBiz', 'Classic/TextInput', {'Default': '""', 'HintText': '"Business name"', 'X': 20, 'Y': 694, 'Width': 300, 'Height': 36}))
+parts.append(ctl('maNewEmail', 'Classic/TextInput', {'Default': '""', 'HintText': '"Member sign-in e-mail"', 'X': 330, 'Y': 694, 'Width': 330, 'Height': 36}))
+parts.append(button('maAdd', 'Add member', 20, 740, 180, 38,
+    'If(!IsBlank(LookUp(AvenueMembers, MemberId = Lower(Trim(maNewEmail.Text)))), Notify("This e-mail is already a member.", NotificationType.Warning), IfError(Patch(AvenueMembers, Defaults(AvenueMembers), {Title: Left(Trim(maNewBiz.Text), 255), FacilityId: ' + FAC + ', '
+    'MemberId: Lower(Trim(maNewEmail.Text)), BusinessName: Trim(maNewBiz.Text), Status: {Value: "Onboarding"}, ChangeReason: "Added by staff" & ' + MA_WHO + '}); Reset(maNewBiz); Reset(maNewEmail); '
+    'Notify("Member added as Onboarding. Set the plan and day, then make them Active when ready. A SharePoint admin grants site access.", NotificationType.Success), Notify("Could not add the member.", NotificationType.Error)))',
+    DisplayMode='If(!IsBlank(Trim(maNewBiz.Text)) && IsMatch(Trim(maNewEmail.Text), Match.Email), DisplayMode.Edit, DisplayMode.Disabled)', Visible=CANM))
+
+# Tabs for the selected member
+TABS = [('profile', 'Profile'), ('ledger', 'Hours ledger'), ('docs', 'Documents'), ('team', 'Team')]
+MV = {k: f'Coalesce(varMaTab, "profile") = "{k}"' for k, _ in TABS}
+for i, (k, cap) in enumerate(TABS):
+    parts.append(button(f'maTab{k.capitalize()}', cap, 690 + i * 162, 104, 154, 36, f'Set(varMaTab, "{k}")', Fill=f'If({MV[k]}, {OLIVE}, {SURFACE})', Color=f'If({MV[k]}, {CREAM}, {OLIVE})',
+                        BorderColor=OLIVE, BorderThickness=1, HoverFill=f'If({MV[k]}, {OLIVE}, {CREAM})', HoverColor=f'If({MV[k]}, {CREAM}, {OLIVE})', PressedFill=INK2, Size=12))
+parts.append(label('maSelHead', 'If(IsBlank(' + MA_SEL + '), "Select a member on the left", ' + MA_SEL + '.BusinessName & " · " & ' + MA_SEL + '.Status.Value)', 690, 150, 640, 30, FontWeight='FontWeight.Semibold'))
+
+# ----- Profile -----
+_VIS = MV['profile']
+parts.append(label('maInfo', 'If(IsBlank(' + MA_SEL + '), "", "Sign-in " & ' + MA_SEL + '.MemberId & Char(10) & "Pays by " & Coalesce(' + MA_SEL + '.PayMethod.Value, "-") & " · payment status " & Coalesce(' + MA_SEL + '.PaymentStatus.Value, "-") & Char(10) & '
+                   '"Stripe customer " & Coalesce(' + MA_SEL + '.StripeCustomerId, "-") & " · subscription " & Coalesce(' + MA_SEL + '.SubscriptionId, "-") & " (read only: Stripe owns these)")', 690, 184, 640, 64, Size=11, Color=SUBTLE))
+parts.append(label('maBizLbl', '"Business name"', 690, 254, 300, 20, Size=11, FontWeight='FontWeight.Bold', Color=SUBTLE))
+parts.append(ctl('maBiz', 'Classic/TextInput', {'Default': 'Coalesce(' + MA_SEL + '.BusinessName, "")', 'X': 690, 'Y': 276, 'Width': 640, 'Height': 36}))
+parts.append(label('maPlanLbl', '"Plan (active plans; empty keeps the current one)"', 690, 320, 300, 20, Size=11, FontWeight='FontWeight.Bold', Color=SUBTLE))
+parts.append(ctl('maPlan', 'Classic/DropDown', {'Items': 'ForAll(SortByColumns(Filter(AvenuePlans, FacilityId = ' + FAC + ', Active = true), "PlanId", SortOrder.Ascending), {Value: PlanId})', 'Default': 'Coalesce(' + MA_SEL + '.PlanId, "")',
+                                                 'AllowEmptySelection': 'true', 'X': 690, 'Y': 342, 'Width': 300, 'Height': 36}))
+parts.append(ctl('maDay', 'Classic/TextInput', {'Default': 'If(IsBlank(' + MA_SEL + '.CollectionDay), "", Text(' + MA_SEL + '.CollectionDay))', 'HintText': '"Day 1-15"', 'Format': 'TextFormat.Number', 'X': 1000, 'Y': 342, 'Width': 120, 'Height': 36}))
+parts.append(ctl('maStatus', 'Classic/DropDown', {'Items': 'If(' + MA_SEL + '.Status.Value = "Inactive", ["Inactive", "Invited", "Paid", "Onboarding", "Active"], ["Invited", "Paid", "Onboarding", "Active"])',
+                                                   'Default': 'Coalesce(' + MA_SEL + '.Status.Value, "Onboarding")', 'X': 1130, 'Y': 342, 'Width': 200, 'Height': 36}))
+parts.append(ctl('maReason', 'Classic/TextInput', {'Default': '""', 'HintText': '"Reason (required for any status change and to deactivate)"', 'X': 690, 'Y': 390, 'Width': 640, 'Height': 36}))
+MA_CHANGED = 'maStatus.Selected.Value <> ' + MA_SEL + '.Status.Value'
+MA_DAY_OK = '(IsBlank(Trim(maDay.Text)) || (Value(maDay.Text) >= 1 && Value(maDay.Text) <= 15 && Value(maDay.Text) = RoundDown(Value(maDay.Text), 0)))'
+parts.append(button('maSave', 'Save', 690, 438, 160, 40,
+    'If(!' + MA_DAY_OK + ', Notify("Collection day must be a whole number from 1 to 15.", NotificationType.Warning), IfError(Patch(AvenueMembers, ' + MA_REAL + ', {Title: Left(Trim(maBiz.Text), 255), BusinessName: Trim(maBiz.Text), '
+    'PlanId: Coalesce(maPlan.Selected.Value, ' + MA_SEL + '.PlanId), CollectionDay: If(IsBlank(Trim(maDay.Text)), Blank(), Value(maDay.Text)), Status: {Value: maStatus.Selected.Value}, '
+    'ChangeReason: If(IsBlank(Trim(maReason.Text)), ' + MA_SEL + '.ChangeReason, Trim(maReason.Text) & ' + MA_WHO + ')}); Reset(maReason); Notify("Member saved. Their membership card updates within a minute.", NotificationType.Success), Notify("Could not save the member.", NotificationType.Error)))',
+    DisplayMode='If(IsBlank(' + MA_SEL + ') || IsBlank(Trim(maBiz.Text)) || (' + MA_CHANGED + ' && IsBlank(Trim(maReason.Text))), DisplayMode.Disabled, DisplayMode.Edit)', Visible=MV['profile'] + ' && ' + CANM))
+parts.append(button('maDeactivate', 'Deactivate and cancel future bookings', 860, 438, 360, 40, DEACT('maGal.Selected', 'maReason'),
+    DisplayMode='If(IsBlank(' + MA_SEL + ') || ' + MA_SEL + '.Status.Value = "Inactive" || IsBlank(Trim(maReason.Text)), DisplayMode.Disabled, DisplayMode.Edit)', Fill=BAD, Color=SURFACE, Visible=MV['profile'] + ' && ' + CANM))
+parts.append(hint('maHelp', '"Members are never deleted. Deactivate keeps all history and ends the Stripe subscription at the end of the paid period; removing site access is a SharePoint admin step. Plan changes here do not change Stripe (STR-06, Q-R2)."', 690, 488, 640, 48))
+
+# DEMO ONLY - REMOVE BEFORE GO-LIVE (developer decision 23 Nov 2026, docs/DECISIONS_AND_OPEN_QUESTIONS.md): wipes one member's rows so a demo member can start
+# again from Join. Typed e-mail must match the selected member. Rows are deleted by the Power Apps connector (permanent: NOT in the recycle bin; verified 24 Nov 2026). It does not delete the Entra guest or the site user.
+parts.append(head('maWipeHead', '"Demo reset (temporary, removed before go-live)"', 690, 556, 640, 14, Visible=MV['profile'] + ' && ' + CANM))
+parts.append(ctl('maWipeConfirm', 'Classic/TextInput', {'Default': '""', 'HintText': '"Type the member\'s e-mail to confirm"', 'X': 690, 'Y': 584, 'Width': 440, 'Height': 36, 'Visible': MV['profile'] + ' && ' + CANM}))
+_WK = 'Lower(maGal.Selected.MemberId)'
+parts.append(button('maWipe', 'Delete this member and all their data', 1140, 584, 190, 36,
+    'With({k: ' + _WK + '}, IfError(RemoveIf(AvenueBookings, MemberId = k); RemoveIf(AvenueHoursLedger, MemberId = k); RemoveIf(AvenueMemberDocuments, MemberId = k); RemoveIf(AvenueCheckIns, MemberId = k); '
+    'RemoveIf(AvenueInvoices, MemberId = k); RemoveIf(AvenueSupportCases, MemberId = k); RemoveIf(AvenueEventCases, MemberId = k); RemoveIf(AvenueStorageCases, MemberId = k); RemoveIf(AvenueComplianceCases, MemberId = k); '
+    'RemoveIf(AvenueApplicants, Email = k); RemoveIf(AvenueBookingRequests, Lower(Author.Email) = k); RemoveIf(AvenueSupportMessages, Lower(Author.Email) = k); '
+    'RemoveIf(AvenueDocumentSubmissions, Lower(Author.Email) = k || Lower(OnBehalfOf) = k); RemoveIf(AvenueMembers, MemberId = k); Reset(maWipeConfirm); Refresh(AvenueMembers); '
+    'Notify("Member and data deleted for good (the Power Apps delete skips the recycle bin). Remove the Entra guest separately if you no longer need it.", NotificationType.Success), '
+    'Notify("Some rows could not be removed (a list may not be connected or you lack permission). Check and press Refresh.", NotificationType.Error)))',
+    DisplayMode='If(!IsBlank(' + MA_SEL + ') && Lower(Trim(maWipeConfirm.Text)) = ' + _WK + ', DisplayMode.Edit, DisplayMode.Disabled)', Fill=BAD, Color=SURFACE, Visible=MV['profile'] + ' && ' + CANM))
+
+# ----- Hours ledger: read only; a wrong row is corrected by a counter-adjustment, never edited or deleted -----
+_VIS = MV['ledger']
+parts.append(label('maLgSum', 'If(IsBlank(' + MA_SEL + '), "", With({p: ' + EPERIOD + '}, "This month (" & p & "): " & Text(Coalesce(Sum(Filter(AvenueHoursLedger, MemberId = ' + MA_SEL + '.MemberId, Period = p), Hours), 0)) & " h used (ledger)"))', 690, 184, 640, 28, Size=12, FontWeight='FontWeight.Bold', Color=OLIVE))
+parts.append(gallery('maLgGal', 'If(IsBlank(' + MA_SEL + '), Blank(), SortByColumns(Filter(AvenueHoursLedger, MemberId = ' + MA_SEL + '.MemberId), "Created", SortOrder.Descending))', 690, 216, 640, 300, 52, [
+    child('maLgLine', 'ThisItem.Period & " · " & Coalesce(ThisItem.Reason.Value, "-") & " · " & Text(ThisItem.Hours) & " h" & If(IsBlank(ThisItem.BookingId), "", " · " & ThisItem.BookingId)', 8, 2, 600, 24, Size=12),
+    child('maLgNote', 'Coalesce(ThisItem.Note, "") & " · " & ThisItem.EntryId', 8, 26, 600, 22, Size=10, Color=SUBTLE)]))
+parts.append(ctl('maLgWhy', 'Classic/TextInput', {'Default': '""', 'HintText': '"Reason for the counter-adjustment (required)"', 'X': 690, 'Y': 526, 'Width': 440, 'Height': 36}))
+parts.append(button('maLgReverse', 'Counter-adjust selected', 1140, 526, 190, 36,
+    'With({r: maLgGal.Selected, id: "adj-" & Text(GUID())}, IfError(Patch(AvenueHoursLedger, Defaults(AvenueHoursLedger), {Title: "Adjustment", FacilityId: ' + FAC + ', EntryId: id, ChargeKey: id, MemberId: r.MemberId, BookingId: "", Period: r.Period, Hours: -r.Hours, '
+    'Reason: {Value: "Adjustment"}, Note: "Reverses " & r.EntryId & ": " & Trim(maLgWhy.Text) & " (by " & User().Email & ")"}); Reset(maLgWhy); Notify("Counter-adjustment recorded in the same month.", NotificationType.Success), Notify("Could not record it.", NotificationType.Error)))',
+    DisplayMode='If(IsBlank(maLgGal.Selected) || IsBlank(Trim(maLgWhy.Text)) || Coalesce(maLgGal.Selected.Hours, 0) = 0, DisplayMode.Disabled, DisplayMode.Edit)', Visible=MV['ledger'] + ' && ' + CANM))
+parts.append(hint('maLgHelp', '"Select a row, give a reason and press Counter-adjust: a new Adjustment row with the opposite hours is added to the same month. Rows are never edited or deleted. Other adjustments: Setup > Plans, documents, hours."', 690, 570, 640, 40))
+
+# ----- Documents: verify / unverify registered documents; upload on the member's behalf -----
+_VIS = MV['docs']
+parts.append(gallery('maDocGal', 'If(IsBlank(' + MA_SEL + '), Blank(), SortByColumns(Filter(AvenueMemberDocuments, MemberId = ' + MA_SEL + '.MemberId), "ExpiryDate", SortOrder.Descending))', 690, 184, 640, 220, 56, [
+    child('maDocLine', 'ThisItem.DocType.Value & " · " & Text(ThisItem.IssueDate, "d mmm yyyy") & " – " & Text(ThisItem.ExpiryDate, "d mmm yyyy")', 8, 2, 500, 24, Size=12, FontWeight='FontWeight.Semibold'),
+    child('maDocMeta', 'Coalesce(ThisItem.DocStatus.Value, "-") & " · " & If(ThisItem.Verified, "verified", "not verified") & If(IsBlank(ThisItem.SupersededBy), "", " · superseded") & " · by " & Coalesce(ThisItem.UploadedBy, "-")', 8, 28, 500, 22, Size=10, Color=SUBTLE),
+    ('maDocVerify', 'Classic/Button', {'Text': 'If(ThisItem.Verified, "Unverify", "Verify")', 'X': 516, 'Y': 10, 'Width': 104, 'Height': 34, 'Size': 11, **_RAD, 'Visible': CAND,
+        'OnSelect': 'IfError(Patch(AvenueMemberDocuments, LookUp(AvenueMemberDocuments, ID = ThisItem.ID), {Verified: !ThisItem.Verified}); Notify(If(ThisItem.Verified, "Marked not verified.", "Verified."), NotificationType.Success), Notify("Could not save.", NotificationType.Error))'})]))
+# Upload on behalf, the same three steps as the portal: 1) create the submission with Outcome "Uploading" (the document flow ignores it),
+# 2) attach the file(s) through the edit form, 3) clear Outcome in OnSuccess, which starts the flow with the file present.
+# The flow accepts OnBehalfOf only from staff (IsStaff) and records the member from it. Attachments: images and PDF, at most 5 x 10 MB (set on the card).
+parts.append(head('maUpHead', '"Upload a document for this member"', 690, 414, 640, 14))
+parts.append(ctl('maDocType', 'Classic/DropDown', {'Items': DOC_TYPES, 'X': 690, 'Y': 442, 'Width': 250, 'Height': 36}))
+parts.append(ctl('maIssue', 'Classic/DatePicker', {'DefaultDate': 'Blank()', 'InputTextPlaceholder': '"Issue date"', 'X': 950, 'Y': 442, 'Width': 180, 'Height': 36}))
+parts.append(ctl('maExpiry', 'Classic/DatePicker', {'DefaultDate': 'Blank()', 'InputTextPlaceholder': '"Expiry date"', 'X': 1140, 'Y': 442, 'Width': 190, 'Height': 36}))
+MA_DOC_OK = '!IsBlank(' + MA_SEL + ') && !IsBlank(maDocType.Selected.Value) && !IsBlank(maExpiry.SelectedDate) && (IsBlank(maIssue.SelectedDate) || maExpiry.SelectedDate > maIssue.SelectedDate)'
+parts.append(button('maDocStart', '1. Start upload', 690, 488, 200, 38,
+    'With({sid: "staff-doc-" & Text(GUID())}, IfError(Set(varMaDoc, Patch(AvenueDocumentSubmissions, Defaults(AvenueDocumentSubmissions), {Title: sid, FacilityId: ' + FAC + ', SubmissionId: sid, DocType: {Value: maDocType.Selected.Value}, '
+    'IssueDate: maIssue.SelectedDate, ExpiryDate: maExpiry.SelectedDate, OnBehalfOf: ' + MA_SEL + '.MemberId, Outcome: "Uploading"})); EditForm(maDocForm); Notify("Now attach the file(s) below and press 2. Upload and send.", NotificationType.Information), '
+    'Notify("Could not start the upload.", NotificationType.Error)))',
+    DisplayMode='If(' + MA_DOC_OK + ' && IsBlank(varMaDoc), DisplayMode.Edit, DisplayMode.Disabled)', Visible=MV['docs'] + ' && ' + CAND))
+# maDocForm is NOT generated: Studio rejects pasted Form@2.4.4 (PA1011 'Layout' missing). Insert an Edit form named maDocForm by hand (docs/STAFF_CRUD_GUIDE.md step 6) with these properties:
+#   parts.append(ctl('maDocForm', 'Form@2.4.4', {'DataSource': 'AvenueDocumentSubmissions', 'Item': 'varMaDoc', 'DefaultMode': 'FormMode.Edit', 'X': 690, 'Y': 534, 'Width': 640, 'Height': 130,
+#       'OnSuccess': 'IfError(Patch(AvenueDocumentSubmissions, LookUp(AvenueDocumentSubmissions, SubmissionId = varMaDoc.SubmissionId), {Outcome: Blank()}); Set(varMaLastDoc, varMaDoc.SubmissionId); Set(varMaDoc, Blank()); Reset(maIssue); Reset(maExpiry); '
+#                    'Notify("Sent. The document flow registers it for the member (not verified yet).", NotificationType.Success), Notify("The file is attached but the submission was not released: press 2. Upload and send again.", NotificationType.Error))',
+#       'OnFailure': 'Notify("Could not attach the file. Check the type (image or PDF) and size (10 MB each, 5 at most).", NotificationType.Error)',
+#       'Visible': MV['docs'] + ' && !IsBlank(varMaDoc)'}))
+parts.append(button('maDocSend', '2. Upload and send', 690, 672, 200, 38, 'SubmitForm(maDocForm)', Visible=MV['docs'] + ' && !IsBlank(varMaDoc)'))
+parts.append(button2('maDocCancel', 'Cancel upload', 900, 672, 160, 38,
+    'IfError(Patch(AvenueDocumentSubmissions, LookUp(AvenueDocumentSubmissions, SubmissionId = varMaDoc.SubmissionId), {Outcome: "Cancelled by staff"}); Set(varMaDoc, Blank()); ResetForm(maDocForm), Notify("Could not cancel.", NotificationType.Error))',
+    Visible=MV['docs'] + ' && !IsBlank(varMaDoc)'))
+parts.append(label('maDocOut', 'If(IsBlank(varMaLastDoc), "", "Last upload: " & Coalesce(LookUp(AvenueDocumentSubmissions, SubmissionId = varMaLastDoc).Outcome, "waiting for the document flow... (Refresh)"))', 690, 716, 640, 40, Size=11, Color=SUBTLE))
+
+# ----- Team: read only. The roster is the member's own-items list; UNKNOWN whether staff accounts can read those items. -----
+_VIS = MV['team']
+parts.append(gallery('maTeamGal', 'If(IsBlank(' + MA_SEL + '), Blank(), Filter(AvenueTeamMembers, Lower(Author.Email) = Lower(' + MA_SEL + '.MemberId)))', 690, 184, 640, 360, 44, [
+    child('maTeamLine', 'ThisItem.PersonName & " · " & Coalesce(ThisItem.Role.Value, "-") & If(ThisItem.Active = false, " · inactive", "")', 8, 6, 600, 30, Size=12)]))
+parts.append(hint('maTeamNone', '"No team rows visible. Either the member has not added a team, or staff accounts cannot read members\' own-items lists (UNKNOWN until tested). Read only."', 690, 554, 640, 40,
+                  Visible=MV['team'] + ' && CountRows(maTeamGal.AllItems) = 0'))
+_DY, _VIS = 0, None
+write('memberadmin.pa.yaml', parts)
 _DY = 0
 
 print('ok')

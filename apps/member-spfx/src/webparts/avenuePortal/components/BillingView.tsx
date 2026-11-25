@@ -1,25 +1,29 @@
 import * as React from 'react';
-import { DefaultButton, PrimaryButton, Spinner } from '@fluentui/react';
 import styles from './AvenuePortal.module.scss';
 import {
   formatCents,
   balanceDueCents,
+  invoiceChip,
   isOverdue,
   safeLink,
   sortInvoices,
   STRIPE_HOSTS,
   toInvoiceRow,
   IInvoice,
-  IInvoiceRow
+  InvoiceChip
 } from '../../../avenue/billing';
-import { dueInfo, monthlyCharge, overageCents } from '../../../avenue/payments';
+import { dueInfo, paymentEstimate } from '../../../avenue/payments';
 import { hoursThisMonth } from '../../../avenue/booking';
-import type { IMyMembership, IMyRequest } from '../../../avenue/contracts';
-import { hoursSummary } from '../../../avenue/home';
+import { localDay } from '../../../avenue/calendar';
+import type { IMyMembership, IMyRequest, IPlan } from '../../../avenue/contracts';
+import { extraHourLines, memberPlan, usageState } from '../../../avenue/plans';
 import { type AvenueReadSource, newSubmissionId } from '../../../avenue/readSource';
 import { useCountUp, useReducedMotion } from './motion';
+import { Sheet } from './Sheet';
 import s from './Site.module.scss';
-import { Empty, ErrorBar, formatDate, ordinal, Section, StatusBadge, useLoad } from './ui';
+import rx from './Ref.module.scss';
+import { ModuleRow } from './RefUi';
+import { Empty, formatDate, LoadError, Section, useLoad } from './ui';
 
 export interface IBillingViewProps {
   isDemo: boolean;
@@ -52,17 +56,23 @@ function Balance(props: { cents: number; openCount: number }): React.ReactElemen
   );
 }
 
+const CHIP_CLASS: Record<InvoiceChip, string> = { 'Paid': s.biPaid, 'Open': s.biOpen, 'Past due': s.biLate, 'Void': s.biVoid };
+const Chip = (p: { chip: InvoiceChip }): React.ReactElement => <span className={`${s.biChip} ${CHIP_CLASS[p.chip]}`}>{p.chip}</span>;
+const period = (inv: IInvoice): string => (inv.periodStart ? `${formatDate(inv.periodStart)}${inv.periodEnd && inv.periodEnd !== inv.periodStart ? ` – ${formatDate(inv.periodEnd)}` : ''}` : 'Period not shown');
+
+interface IHoursData { requests: IMyRequest[]; membership?: IMyMembership; plans: IPlan[] }
+
 export default function BillingView(props: IBillingViewProps): React.ReactElement {
   const { isDemo, source, userEmail, timeZone } = props;
   const openUrl = props.openUrl || ((url: string) => { window.open(url, '_blank', 'noopener,noreferrer'); });
-  const [expanded, setExpanded] = React.useState<Record<string, boolean>>({});
+  const [detail, setDetail] = React.useState<IInvoice | undefined>();
 
   const billing = useLoad<IInvoice[]>(() => source.listMyInvoices(userEmail), [source, userEmail]);
   const [portalBusy, setPortalBusy] = React.useState<boolean>(false);
   const [portalNote, setPortalNote] = React.useState<string | undefined>();
   const managePayment = (): void => {
     if (portalBusy) { return; }
-    if (props.mockPayments) { setPortalNote('Payments are switched off during the preview. Nothing is charged.'); return; }
+    if (props.mockPayments) { setPortalNote('Payments are switched off in test mode. Nothing is charged.'); return; }
     const id: string = newSubmissionId('pay');
     const pollMs: number = props.pollMs ?? 2000;
     let tries: number = 0;
@@ -77,173 +87,140 @@ export default function BillingView(props: IBillingViewProps): React.ReactElemen
         if (tries < 30) { window.setTimeout(poll, pollMs); } else { setPortalBusy(false); setPortalNote('Still preparing the page. Try again in a minute.'); }
       }).catch(() => { if (tries < 30) { window.setTimeout(poll, pollMs); } else { setPortalBusy(false); } });
     };
-    source.submitHostRequest('PaymentPortal', {}, id).then(() => { window.setTimeout(poll, pollMs); }).catch((e: Error) => { setPortalBusy(false); setPortalNote(e.message); });
+    source.submitHostRequest('PaymentPortal', {}, id).then(() => { window.setTimeout(poll, pollMs); }).catch(() => { setPortalBusy(false); setPortalNote('The payment page could not be opened. Try again in a minute.'); });
   };
 
   // Hours are known even while payments are not connected: the estimate comes from the member's approved bookings and plan.
-  const hoursData = useLoad<{ requests: IMyRequest[]; membership?: IMyMembership }>(async () => {
-    const [requests, membership] = await Promise.all([source.listMyRequests(), source.getMyMembership(userEmail).catch(() => undefined)]);
-    return { requests, membership };
+  const hoursData = useLoad<IHoursData>(async () => {
+    const [requests, membership, plans] = await Promise.all([
+      source.listMyRequests(),
+      source.getMyMembership(userEmail).catch(() => undefined),
+      source.listPlans().catch((): IPlan[] => [])
+    ]);
+    return { requests, membership, plans };
   }, [source, userEmail]);
-  const hours = hoursData.data ? hoursSummary(hoursThisMonth(hoursData.data.requests, timeZone, new Date()), hoursData.data.membership?.monthlyHours) : undefined;
-  const collection: number | undefined = hoursData.data?.membership?.collectionDay;
 
-  const toggleExpand = (invoiceId: string): void => {
-    setExpanded(prev => ({ ...prev, [invoiceId]: !prev[invoiceId] }));
-  };
-
-  const today: string = new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  const now: Date = new Date();
+  const today: string = localDay(now, timeZone);
   const ms: IMyMembership | undefined = hoursData.data?.membership;
-  const charge = monthlyCharge(ms?.planName || ms?.planId, ms?.payMethod);
-  const due = collection !== undefined ? dueInfo(collection, today) : undefined;
-  const extra: number | undefined = hours && hours.allowance !== undefined ? overageCents(hours.over, ms?.extraHourRate, ms?.payMethod) : undefined;
-  const isNotConnected: boolean = !!billing.error;
+  const plan: IPlan | undefined = hoursData.data ? memberPlan(ms, hoursData.data.plans) : undefined;
+  const used: number | undefined = hoursData.data ? hoursThisMonth(hoursData.data.requests, timeZone, now) : undefined;
+  const usage = used !== undefined ? usageState(used, plan?.monthlyHours, plan?.extraHourRate) : undefined;
+  const estimate = plan && plan.priceCents !== undefined && usage ? paymentEstimate(plan.priceCents, plan.cardPriceCents, usage.overHours, plan.extraHourRate, ms?.payMethod) : undefined;
+  const extras = hoursData.data && plan ? extraHourLines(hoursData.data.requests, plan.monthlyHours, plan.extraHourRate, timeZone, now) : [];
+  const due = ms?.collectionDay !== undefined ? dueInfo(ms.collectionDay, today) : undefined;
+  const openInvoices: IInvoice[] = (billing.data || []).filter(i => i.status === 'open');
+  const card: boolean = ms?.payMethod !== 'Bank';
+  const pay = (inv: IInvoice): string | undefined => (inv.status === 'open' ? safeLink(inv.hostedUrl, STRIPE_HOSTS.pay) : undefined);
+  const receipt = (inv: IInvoice): string | undefined => (inv.status === 'paid' || inv.status === 'open' ? safeLink(inv.pdfUrl, STRIPE_HOSTS.receipt) : undefined);
 
   return (
     <div className={styles.stack}>
       {ms && isOverdue(ms.paymentStatus) && (
         <div className={s.blOverdue} role="alert"><strong>Payment overdue.</strong> Bookings are paused until the payment is made. Pay the open invoice below or update your payment method.</div>
       )}
-      <section aria-label="Hours this month">
-        <h2 className={styles.sectionLabel}>This month</h2>
-        <div className={styles.summaryRow}>
-          <div className={styles.summaryButton}>
-            <span className={styles.summaryKey}>Hours</span>
-            {!hours && <Spinner />}
-            {hours && hours.allowance !== undefined && (
-              <>
-                <span className={styles.summaryValue}>{hours.over > 0 ? `${hours.over} h over your plan` : `${hours.left} h left`}</span>
-                <span className={styles.meter} aria-hidden="true"><span className={`${styles.meterFill} ${hours.over > 0 ? styles.meterOver : ''}`} style={{ width: `${Math.round(hours.fraction * 100)}%` }} /></span>
-                <span className={styles.summaryNote}>{hours.used} of {hours.allowance} h used. Hours do not roll over.</span>
-              </>
-            )}
-            {hours && hours.allowance === undefined && (
-              <>
-                <span className={styles.summaryValue}>{hours.used} h booked</span>
-                <span className={styles.summaryNote}>Your plan hours appear once Flavors sets up plans.</span>
-              </>
-            )}
-          </div>
-          <div className={styles.summaryButton}>
-            <span className={styles.summaryKey}>Extra hours</span>
-            <span className={styles.summaryValue}>{hours && hours.allowance !== undefined ? `${hours.over} h` : 'Not known yet'}</span>
-            <span className={styles.summaryNote}>An estimate from your approved bookings. Extra hours are billed with your next payment{collection !== undefined ? `, collected on the ${ordinal(collection)}` : ''}. Nothing is charged when you book.</span>
-          </div>
-        </div>
-      </section>
 
       <Section title="Next payment" description={isDemo ? 'Demo: nothing is charged.' : 'Collected automatically by Stripe (test mode until Flavors approves live payments).'}>
-        {!charge && <Empty>Your plan price appears here once Flavors confirms your plan.</Empty>}
-        {charge && (
-          <div className={styles.summaryCard}>
-            <div className={styles.summaryTile}>
-              <span className={styles.summaryLabel}>{ms?.planName} monthly</span>
-              <span className={styles.summaryValue}>{formatCents(charge.totalCents)}</span>
-              <span className={styles.summaryMeta}>{charge.feeIncluded ? 'Card fee already included in your price.' : charge.feeCents === 0 ? 'Bank payment: no processing fee.' : `${formatCents(charge.planCents)} plan + ${formatCents(charge.feeCents)} card fee (3%)`}</span>
+        <LoadError error={hoursData.error} what="your plan and hours" onRetry={hoursData.reload} />
+        {!hoursData.data && !hoursData.error && <div className={rx['ref-skeleton']} role="status" aria-label="Loading your plan" />}
+        {hoursData.data && !estimate && <Empty>Your plan price appears here once Flavors confirms your plan.</Empty>}
+        {estimate && plan && (
+          <div className={s.biNext}>
+            <div className={s.biTotal}>
+              <span>Estimate</span>
+              <strong>{formatCents(estimate.totalCents)}</strong>
+              <span>{due ? `Collected on ${formatDate(due.dueYmd)}${due.daysLeft === 0 ? ' (today)' : ` (in ${due.daysLeft} days)`}` : 'Collection day not set yet'}</span>
             </div>
-            {due && (
-              <div className={styles.summaryTile}>
-                <span className={styles.summaryLabel}>Due</span>
-                <span className={styles.summaryValue}>{formatDate(due.dueYmd)}</span>
-                <span className={styles.summaryMeta}>{due.daysLeft === 0 ? 'Due today. ' : `In ${due.daysLeft} days. `}{due.graceYmd ? `Pay by ${formatDate(due.graceYmd)} at the latest. ` : ''}A {formatCents(due.lateFeeCents)} late fee applies after the due date.</span>
-              </div>
-            )}
-            {extra !== undefined && extra > 0 && (
-              <div className={styles.summaryTile}>
-                <span className={styles.summaryLabel}>Extra hours so far</span>
-                <span className={styles.summaryValue}>{formatCents(extra)}</span>
-                <span className={styles.summaryMeta}>Estimate, billed with your next payment. Nothing is charged when you book.</span>
-              </div>
-            )}
+            <dl className={s.biBreak}>
+              <div><dt>{`${plan.name} monthly`}</dt><dd>{formatCents(estimate.planCents)}</dd></div>
+              {estimate.extraCents > 0 && usage && <div><dt>{`Extra hours (${usage.overHours} h × ${formatCents(Math.round((plan.extraHourRate || 0) * 100))})`}</dt><dd>{formatCents(estimate.extraCents)}</dd></div>}
+              {estimate.feeCents > 0 && <div><dt>Card fee (3%)</dt><dd>{formatCents(estimate.feeCents)}</dd></div>}
+            </dl>
+            <p className={s.mbNote}>
+              {!card ? 'Bank payment: no processing fee. ' : estimate.feeIncluded ? 'Card fee already included in your plan price. ' : ''}
+              Estimate until the invoice is issued.{due ? ` A ${formatCents(due.lateFeeCents)} late fee applies after the due date.` : ''}
+            </p>
           </div>
         )}
-        <p className={styles.muted}>Pay by bank account (ACH, no fee) or card, Apple Pay or Google Pay (3% fee).</p>
+      </Section>
+
+      <Section title="Charges this month" description="An estimate from your plan and approved bookings. The final amounts are on your invoice.">
+        {hoursData.data && !estimate && <Empty>Charges appear once Flavors confirms your plan.</Empty>}
+        {plan && estimate && (
+          <ul className={s.biLines}>
+            <li><span>{`${plan.name} · ${plan.monthlyHours ?? '–'} h included`}</span><span>{formatCents(estimate.planCents)}</span></li>
+            {extras.map(x => (
+              <li key={x.ymd}><span>{`Extra hours · ${formatDate(x.ymd)} · ${x.hours} h`}</span><span>{formatCents(x.cents)}</span></li>
+            ))}
+            {extras.length === 0 && <li className={s.biQuiet}><span>No extra hours so far this month</span><span>{formatCents(0)}</span></li>}
+            {openInvoices.map(inv => (
+              <li key={inv.invoiceId}><span>{`Open invoice ${inv.number || toInvoiceRow(inv).title}`}</span><span>{formatCents(Math.max(0, inv.amountDueCents - inv.amountPaidCents))}</span></li>
+            ))}
+          </ul>
+        )}
+      </Section>
+
+      <Section title="Invoices" description="Your invoices and payment history. Select one for its details.">
+        {billing.error && (
+          <div className={styles.notConnected}>
+            <strong>Invoices are not available right now.</strong>
+            <span>Your estimate above is the guide. Check your connection and try again; if it keeps happening, tell the Flavors team.</span>
+            <button type="button" className={s.btn} onClick={billing.reload}>Try again</button>
+          </div>
+        )}
+        {billing.loading && !billing.data && !billing.error && <div className={rx['ref-skeleton']} role="status" aria-label="Loading billing" />}
+        {billing.data && (
+          <>
+            <Balance cents={balanceDueCents(billing.data)} openCount={openInvoices.length} />
+            {billing.data.length === 0 ? (
+              <Empty>No invoices yet. Payments are in test mode, so Flavors has not issued any invoices through Avenue. Your estimate above is the guide.</Empty>
+            ) : (
+              <ul className={`${s.biList} ${rx['module-booking-list']}`}>
+                {sortInvoices(billing.data).map(inv => {
+                  const ch: InvoiceChip = invoiceChip(inv, today);
+                  return (
+                    <li key={inv.invoiceId} className={rx['module-row-pair']}>
+                      <ModuleRow onClick={() => setDetail(inv)} title={`Invoice ${inv.number || inv.invoiceId}`} sub={period(inv)} time={formatCents(inv.amountDueCents)} status={ch} statusTone={ch === 'Paid' ? 'ok' : ch === 'Past due' ? 'bad' : 'wait'} />
+                      {pay(inv) && <button type="button" className={rx['primary-button']} onClick={() => openUrl(pay(inv) as string)}>Pay</button>}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </>
+        )}
+      </Section>
+
+      <Section title="Payment method" description="Pay by bank account (ACH, no fee) or card, Apple Pay or Google Pay (3% fee).">
+        <p className={s.mbNote}>{ms?.payMethod === 'Bank' ? 'Bank account (ACH).' : ms?.payMethod === 'Card' ? 'Card or other electronic payment (3% fee).' : 'Not set yet.'}</p>
+        {props.mockPayments && <p className={s.mbNote}>Payments are switched off in test mode. Nothing is charged.</p>}
         {!isDemo && (
           <div className={s.blActions}>
-            <DefaultButton text={portalBusy ? 'Opening Stripe…' : 'Manage payment method'} disabled={portalBusy} onClick={managePayment} />
+            <button type="button" className={s.btn} disabled={portalBusy} onClick={managePayment}>{portalBusy ? 'Opening Stripe…' : 'Manage payment method'}</button>
             {portalNote && <span className={styles.muted} role="status">{portalNote}</span>}
           </div>
         )}
       </Section>
 
-      <Section
-        title="Invoices"
-        description="Your invoices and payment history."
-      >
-        {isNotConnected && (
-          <div className={styles.notConnected}>
-            <strong>Invoices are not available right now.</strong>
-            <span>Your invoices and payment history appear here once Stripe has sent your first invoice. Until then, your hours above are the guide.</span>
-            <ErrorBar error={billing.error} />
+      {detail && (
+        <Sheet title={`Invoice ${detail.number || detail.invoiceId}`} onClose={() => setDetail(undefined)}>
+          <div className={s.biDetailHead}><strong>{formatCents(detail.amountDueCents)}</strong><Chip chip={invoiceChip(detail, today)} /></div>
+          <dl className={s.biBreak}>
+            <div><dt>Period</dt><dd>{period(detail)}</dd></div>
+            {detail.dueDate && <div><dt>Due</dt><dd>{formatDate(detail.dueDate)}</dd></div>}
+            <div><dt>Paid</dt><dd>{formatCents(detail.amountPaidCents)}</dd></div>
+          </dl>
+          {detail.lines.length > 0 ? (
+            <ul className={s.biLines}>
+              {detail.lines.map((l, i) => <li key={i}><span>{l.description}</span><span>{formatCents(l.amountCents)}</span></li>)}
+            </ul>
+          ) : <p className={s.mbNote}>Line items are on the Stripe invoice.</p>}
+          <div className={s.row}>
+            {pay(detail) && <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={() => openUrl(pay(detail) as string)}>Pay invoice</button>}
+            {receipt(detail) && <button type="button" className={s.btn} onClick={() => openUrl(receipt(detail) as string)}>{detail.status === 'paid' ? 'Receipt' : 'Invoice PDF'}</button>}
           </div>
-        )}
-
-        {billing.loading && !billing.data && !billing.error && (
-          <Spinner label="Loading billing" />
-        )}
-
-        {billing.data && (
-          <>
-            <Balance cents={balanceDueCents(billing.data)} openCount={billing.data.filter(i => i.status === 'open').length} />
-
-            {billing.data.length === 0 ? (
-              <Empty>No invoices.</Empty>
-            ) : (
-              <div className={styles.stack}>
-                {sortInvoices(billing.data).map(inv => {
-                  const row: IInvoiceRow = toInvoiceRow(inv);
-                  const isExp: boolean = !!expanded[inv.invoiceId];
-                  return (
-                    <article key={inv.invoiceId} className={styles.invoiceCard}>
-                      <div className={styles.invoiceHeader}>
-                        <div className={styles.invoiceMain}>
-                          <h3 className={styles.invoiceTitle}>{row.title}</h3>
-                          <div className={styles.invoiceMeta}>
-                            <span>Invoice {inv.number || row.invoiceId}</span>
-                            {row.dueText && <span> · Due {row.dueText}</span>}
-                          </div>
-                          {row.estimateNote && (
-                            <div className={styles.estimateCallout}>{row.estimateNote}</div>
-                          )}
-                        </div>
-                        <div className={styles.invoiceRight}>
-                          <span className={styles.invoiceAmount}>{row.amountText}</span>
-                          <StatusBadge label={row.statusLabel} />
-                          {inv.status === 'open' && safeLink(inv.hostedUrl, STRIPE_HOSTS.pay) && (
-                            <PrimaryButton text="Pay" onClick={() => openUrl(safeLink(inv.hostedUrl, STRIPE_HOSTS.pay) as string)} className={styles.smallButton} />
-                          )}
-                          {(inv.status === 'paid' || inv.status === 'open') && safeLink(inv.pdfUrl, STRIPE_HOSTS.receipt) && (
-                            <DefaultButton text={inv.status === 'paid' ? 'Receipt' : 'PDF'} onClick={() => openUrl(safeLink(inv.pdfUrl, STRIPE_HOSTS.receipt) as string)} className={styles.smallButton} />
-                          )}
-                          {inv.lines.length > 0 && (
-                            <DefaultButton
-                              text={isExp ? 'Hide lines' : 'View lines'}
-                              onClick={() => toggleExpand(inv.invoiceId)}
-                              className={styles.smallButton}
-                            />
-                          )}
-                        </div>
-                      </div>
-
-                      {isExp && inv.lines.length > 0 && (
-                        <div className={`${styles.invoiceLines} ${s.blLines}`}>
-                          <div className={styles.linesHeader}>Line items</div>
-                          {inv.lines.map((line, idx) => (
-                            <div key={idx} className={styles.invoiceLine}>
-                              <span>{line.description}</span>
-                              <span className={styles.lineAmount}>{formatCents(line.amountCents)}</span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </article>
-                  );
-                })}
-              </div>
-            )}
-          </>
-        )}
-      </Section>
+        </Sheet>
+      )}
     </div>
   );
 }

@@ -37,6 +37,8 @@ for (const l of defs.lists.filter(x => x.access === 'intake')) {
   assert.ok(!l.fields.some(f => f.unique), `${l.title}: SharePoint refuses unique fields on own-items-only lists; de-duplicate in the processing flow`);
   assert.ok(!l.fields.some(f => f.name === 'MemberId'), `${l.title}: member identity must come from the item author, not a supplied field`);
 }
+// Member-visible mirrors are private at list level; the member gets item-level read from a flow (fail closed).
+for (const l of defs.lists.filter(x => /^AvenueMy[A-Z]/.test(x.title))) assert.equal(l.access, 'private', `${l.title}: mirror lists must be private`);
 // Plan: every list gets inheritance broken before any role is granted.
 const steps = plan(web);
 for (const l of defs.lists) {

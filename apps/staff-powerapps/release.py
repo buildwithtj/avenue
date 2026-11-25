@@ -5,10 +5,10 @@ MODULES = set(json.load(open(_REL))['modules']) if os.path.exists(_REL) else Non
 def on(m): return m is None or MODULES is None or m in MODULES
 SCREEN_MODULE = {'Requests': 'booking', 'Approved': 'booking', 'Schedule': 'booking', 'Book': 'booking', 'Setup': 'booking', 'Members': 'documents', 'Compliance': 'documents', 'Check-ins': 'checkin',
                  'Checklist': 'checkin', 'Notices': 'notices', 'Settings': 'billing', 'Insights': 'booking'}
-HUB_MODULE = {'Screen11': 'booking', 'Screen13': 'payments', 'Screen14': 'sensors', 'Screen15': 'support', 'Screen16': 'applicants', 'Screen17': 'permissions', 'Screen18': 'reports', 'Screen21': 'events', 'Screen22': 'storage'}
+HUB_MODULE = {'Screen11': 'booking', 'Screen13': 'payments', 'Screen14': 'sensors', 'Screen15': 'support', 'Screen16': 'applicants', 'Screen17': 'permissions', 'Screen18': 'reports', 'Screen21': 'events', 'Screen22': 'storage', 'Screen23': 'documents'}
 FILE_MODULE = {'book': 'booking', 'requests': 'booking', 'approved': 'booking', 'approved-extensions': 'booking', 'schedule': 'booking', 'compliance': 'documents', 'members': 'documents', 'checkins': 'checkin',
                'checklist': 'checkin', 'notices': 'notices', 'settings': 'billing', 'setup': 'booking', 'reports': 'reports', 'insights': 'booking', 'payments': 'payments', 'sensors': 'sensors',
-               'support': 'support', 'applicants': 'applicants', 'permissions': 'permissions', 'events': 'events', 'storage': 'storage'}
+               'support': 'support', 'applicants': 'applicants', 'permissions': 'permissions', 'events': 'events', 'storage': 'storage', 'memberadmin': 'documents'}
 HUB_ON = any(on(m) for m in HUB_MODULE.values())
 
 SCREEN_ID = {'Dashboard': 'Screen3', 'Requests': 'Screen1', 'Approved': 'Screen2', 'Schedule': 'Screen19', 'Book': 'Screen9', 'Members': 'Screen8', 'Compliance': 'Screen4',

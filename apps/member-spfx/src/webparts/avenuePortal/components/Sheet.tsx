@@ -12,8 +12,10 @@ const FOCUSABLE: string = 'a[href],button:not([disabled]),input:not([disabled]),
  * Drawer on desktop (right), slide-up sheet on phones, or a centred dialog. Rendered in document.body so no page transform
  * can break position:fixed. Escape and the scrim close it; focus moves in and returns to what opened it; Tab stays inside.
  */
-export function Sheet(props: { title: string; onClose: () => void; children: React.ReactNode; side?: SheetSide; footer?: React.ReactNode }): React.ReactElement {
-  const reduced: boolean = useReducedMotion();
+export function Sheet(props: { title: string; onClose: () => void; children: React.ReactNode; side?: SheetSide; footer?: React.ReactNode; motion?: 'css' | 'external'; /** Phone: a bottom sheet about 60% of the screen high, not full screen. */ peek?: boolean }): React.ReactElement {
+  // 'external': the caller animates the sheet (GSAP, gsapMotion.ts), so no CSS entry/exit and closing is immediate.
+  const userReduced: boolean = useReducedMotion();
+  const reduced: boolean = userReduced || props.motion === 'external';
   const size = useSize();
   const panel: React.RefObject<HTMLDivElement> = React.useRef<HTMLDivElement>(null);
   // Closing plays the exit animation first (200 ms), then tells the parent; with reduced motion it closes at once.
@@ -41,9 +43,9 @@ export function Sheet(props: { title: string; onClose: () => void; children: Rea
     document.addEventListener('keydown', key);
     return () => { document.removeEventListener('keydown', key); if (opener && (opener as HTMLElement).focus) { (opener as HTMLElement).focus(); } };
   }, [onClose]);
-  const variant: string = props.side === 'center' ? s.sheetCenter : size === 'phone' ? s.sheetBottom : s.sheetRight;
+  const variant: string = props.side === 'center' ? s.sheetCenter : size === 'phone' ? `${s.sheetBottom} ${props.peek ? s.sheetPeek : ''}` : s.sheetRight;
   return ReactDOM.createPortal(
-    <div className={`${root.avenuePortal} ${s.artScope}`} data-motion={reduced ? 'reduce' : 'full'} data-size={size}>
+    <div className={`${root.avenuePortal} ${s.artScope}`} data-motion={userReduced ? 'reduce' : 'full'} data-size={size}>
       <div className={`${s.scrim} ${anim(reduced, closing ? s.scrimOut : s.scrimIn)}`} onClick={onClose} data-testid="sheet-scrim" />
       <div ref={panel} tabIndex={-1} role="dialog" aria-modal="true" aria-label={props.title} className={`${s.sheet} ${variant} ${anim(reduced, closing ? s.sheetOut : s.sheetIn)}`}>
         <div className={s.sheetHead}>

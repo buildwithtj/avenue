@@ -105,10 +105,18 @@ describe('top bar and shell', () => {
     await flush();
     expect(host.textContent).not.toContain('Become a member');
   });
-  it('has the five links, moves the active state with navigation, and shows initials', async () => {
+  it('sidebar (wide layout) lists the member and account pages with the active page marked', async () => {
     await mountPortal(false);
-    const nav = document.querySelector('nav[aria-label="Avenue sections"]') as HTMLElement;
-    expect(Array.from(nav.querySelectorAll('button')).map(b => (b.textContent || '').trim())).toEqual(['Home', 'Book', 'My bookings', 'Schedule', 'Notices']);
+    const side = document.querySelector('nav[aria-label="Avenue menu"]') as HTMLElement;
+    const labels: string[] = Array.from(side.querySelectorAll('button')).map(b => (b.textContent || '').trim());
+    expect(labels.slice(0, 4)).toEqual(['Home', 'Book', 'My bookings', 'Schedule']);
+    expect(side.querySelector('[aria-current="page"]')?.textContent).toContain('Home');
+    expect(document.body.textContent).toContain('Need a hand?');
+  });
+  it('moves the active state with navigation and shows initials (sidebar, wide layout)', async () => {
+    await mountPortal(false);
+    const nav = document.querySelector('nav[aria-label="Avenue menu"]') as HTMLElement;
+    expect(Array.from(nav.querySelectorAll('button')).map(b => (b.textContent || '').trim()).slice(0, 4)).toEqual(['Home', 'Book', 'My bookings', 'Schedule']);
     const current = (): string => (nav.querySelector('[aria-current="page"]')?.textContent || '').trim();
     expect(current()).toBe('Home');
     await click(button(/^Book$/, nav));
@@ -116,12 +124,12 @@ describe('top bar and shell', () => {
     expect(document.querySelector('[aria-label="Book kitchen time"]')).not.toBeNull();
     await click(button(/^Schedule$/, nav));
     expect(current()).toBe('Schedule');
-    expect(document.querySelector('.' + s.userChip)?.textContent).toContain('AC');
+    expect(document.querySelector('button[aria-label$="account menu"]')?.textContent).toContain('AC');
   });
   it('works with and without full screen: the menu toggles the page chrome', async () => {
     await mountPortal(true);
     expect(document.body.classList.contains(IMMERSIVE_CLASS)).toBe(true);
-    await click(document.querySelector('.' + s.userChip));
+    await click(document.querySelector('button[aria-label$="account menu"]'));
     await act(async () => { await new Promise(resolve => setTimeout(resolve, 30)); });
     const full = (): HTMLElement => Array.prototype.slice.call(document.querySelectorAll('[role="switch"]')).filter((b: HTMLElement) => /Full screen/.test(b.textContent || ''))[0] as HTMLElement;
     expect(full().getAttribute('aria-checked')).toBe('true');
@@ -310,11 +318,11 @@ describe('notices', () => {
     await flush();
     const titles = (): string[] => Array.from(document.querySelectorAll('[data-notice] strong')).map(h => h.textContent || '');
     expect(titles()).toEqual(['Old pinned', 'Newest general', 'Urgent one']);
-    expect(Array.from(document.querySelectorAll('h2')).map(h => h.textContent)[0]).toBe('Pinned');
+    expect(Array.from(document.querySelectorAll('h3')).map(h => h.textContent)[0]).toBe('Pinned');
     expect(document.querySelectorAll('[data-testid="unread-dot"]').length).toBe(3);
     await click(button(/^Urgent/));
     expect(titles()).toEqual(['Urgent one']);
-    await click(button(/^All/));
+    await click(button(/^All\d/)); // P3: the "All" tab (no count) now sits before the "All" filter chip
     await act(async () => { (document.querySelector('[data-notice="2"] button') as HTMLButtonElement).click(); });
     const dialog = document.querySelector('[role="dialog"]') as HTMLElement;
     expect(dialog.getAttribute('aria-label')).toBe('Old pinned');

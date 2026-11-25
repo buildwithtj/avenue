@@ -186,6 +186,8 @@ export interface IMyCheckIn {
   outcome?: string;
   /** Wellness only: whose answers these are. */
   personName?: string;
+  /** When it was sent (item Created), for a label when the booking itself is not readable. */
+  createdUtc?: string;
 }
 
 /** Document types named in the scope (permit, licence, insurance, certification). */
@@ -202,6 +204,11 @@ export interface IMyDocumentSubmission {
   issueDate: string;
   expiryDate: string;
   outcome?: string;
+  /** [PROPOSED] Set only for rows from the member-visible mirror AvenueMyDocuments (staff-verified record, incl. staff uploads). */
+  fromRecord?: boolean;
+  verified?: boolean;
+  /** Record status from the mirror (e.g. Current, Superseded, Rejected). Display only. */
+  recordStatus?: string;
 }
 
 export interface INotice {
@@ -252,11 +259,16 @@ export interface IMySupportMessage {
   messageId: string;
   /** Equals the messageId of the first message of the conversation. */
   threadId: string;
-  category: SupportCategory;
+  /** Any non-empty text: categories are staff-managed (AvenueSupportCategories), so a retired one must still show. */
+  category: string;
   subject: string;
   body: string;
   outcome?: string;
   reply?: string;
+  /** Files on the item (AttachmentFiles), when there are any. */
+  attachments?: { name: string; url: string }[];
+  /** When the member sent it (SharePoint Created, ISO). Display only: day separators and times in the chat. */
+  created?: string;
 }
 
 /** Private event request (dining room). */

@@ -48,3 +48,7 @@ Open this to find the **one** document you need. Start from [../CLAUDE.md](../CL
 | Unbuilt modules plan (onboarding, payments, check-in, events, sensors) | [MODULES_PLAN.md](MODULES_PLAN.md) |
 | Remaining modules build contract and doubts (not deployed) | [REMAINING_MODULES_CONTRACT.md](REMAINING_MODULES_CONTRACT.md), [BUILD_DOUBTS.md](BUILD_DOUBTS.md) |
 | Member portal UI, motion, fonts, responsive plan | `docs/MEMBER_PORTAL_AUDIT_AND_UI_PLAN.md` |
+| End-to-end testing (everything live, 2.17.0.0) | `docs/END_TO_END_TEST_GUIDE.md` |
+| Redesign + staff CRUD plan (review meeting 23 Nov) | `docs/REDESIGN_AND_ADMIN_CRUD_PLAN.md` |
+| Staff CRUD guide + manual deploy steps (P7/P8, built locally 23 Nov) | `docs/STAFF_CRUD_GUIDE.md`, doubts `docs/doubts/P7-staff-schema.md` |
+| Every API call the member portal makes | `docs/API_CALLS.md` |

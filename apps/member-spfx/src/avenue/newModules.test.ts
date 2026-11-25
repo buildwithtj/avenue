@@ -16,7 +16,9 @@ describe('support reads and writes', () => {
       { Id: 3, MessageId: 'm3', ThreadId: 'm3', Category: 'Nonsense', Subject: 'S' }, { Id: 4, ThreadId: 'x', Category: 'Billing', Subject: 'S' }
     ];
     const out = await src(rows, urls, undefined, 42).listMySupportMessages();
-    expect(out).toEqual([{ id: 2, messageId: 'm2', threadId: 'm1', category: 'Billing', subject: 'S', body: 'B', outcome: 'Received', reply: 'Hi' }]);
+    // P6: an unknown (e.g. retired) category is kept now; only rows without an id, subject or category are dropped.
+    expect(out).toEqual([{ id: 2, messageId: 'm2', threadId: 'm1', category: 'Billing', subject: 'S', body: 'B', outcome: 'Received', reply: 'Hi' },
+      { id: 3, messageId: 'm3', threadId: 'm3', category: 'Nonsense', subject: 'S', body: '', outcome: undefined, reply: undefined }]);
     expect(decodeURIComponent(urls[0])).toContain('AuthorId eq 42');
     expect(urls[0]).toContain('AvenueSupportMessages');
   });

@@ -1,5 +1,6 @@
 // Runner. Paste schema/testkit.browser.js FIRST (defines window.AV), set window.__seed = <output of node schema/seed.print.mjs>,
 // then paste this file on a signed-in tab of the Avenue site (site owner). seedRun() upserts by Title (re-running updates its own rows);
+// Support topics (buildSupportTopics) are real config upserted by their Title and are never removed here.
 // seedCleanup() recycles exactly the rows whose Title starts with "demo-", one explicit id at a time, never a bulk delete.
 window.seedRun = async () => {
   const out = [];

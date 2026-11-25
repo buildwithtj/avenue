@@ -30,6 +30,12 @@ There is **no separate development, test and production split**. Tests run on th
 
 No CI exists and the folder is **not a git repository**.
 
+## Staging member portal (separate package beside the live one)
+The client reviews changes on a STAGING portal; the live portal is never edited for review. One source tree builds both (developer decision 24 Nov 2026).
+- **Live:** `cd apps/member-spfx && npm run build` gives `sharepoint/solution/member-spfx.sppkg` (solution "Avenue member portal", id `6a7c7ab4-da56-4cca-b6eb-8f52994dbe6f`, web part id `b292e3a9-7ad0-45e8-a4a3-20c131737313`). Unchanged.
+- **Staging:** `cd apps/member-spfx && npm run build:staging` (runs `scripts/build-staging.mjs`) gives `sharepoint/solution/member-spfx-staging.sppkg`: solution "Avenue member portal (staging)", id `d5270044-328c-4f85-a99d-5e985562c6a9`, feature id `3536ace4-8cb5-41b7-b17b-a190ea119886`, web part "Avenue Portal (Staging)" id `b7cbec8a-2b76-4c3d-82ce-a8a3448b8e4f`, alias `AvenuePortalStagingWebPart`, version 1.0.0.0. The script rewrites `config/package-solution.json` and the web part manifest only for the build and restores both afterwards (also on failure), so the two packages never collide in the tenant app catalog.
+- Never build while `npm start` runs. Neither command uploads or deploys anything. Staging upload: same catalog steps as live, with the staging file; add the staging app only to the staging site.
+
 ## Release procedure (manual, current)
 
 1. **Schema:** edit `schema/lists.v2.json`, run `node schema/check.mjs`, then apply to the site with `schema/reconcile.browser.js` (dry run first; additive; read back with a second dry run). `schema/provision.mjs` (m365 CLI) has never been run against the tenant.

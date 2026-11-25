@@ -65,3 +65,19 @@ export function dueInfo(dueDay: number, todayYmd: string): IDueInfo {
 export function eventDepositRefundCents(daysBeforeEvent: number, depositCents: number = 50000): number {
   return daysBeforeEvent >= 30 ? depositCents : 0;
 }
+
+export interface IPaymentEstimate { planCents: number; extraCents: number; feeCents: number; totalCents: number; feeIncluded: boolean }
+
+/**
+ * Next payment estimate (sheet "Plans & Rates"): plan price + extra hours × the plan's rate + 3% on electronic/card payments.
+ * Bank (ACH) pays no fee (Q-M1 default); an unknown method shows the card price, like monthlyCharge. A plan whose card price
+ * equals its price (legacy) already includes the fee on the plan; extra hours still carry it, as overageCents does.
+ * An estimate only: no billing cut-off or proration is applied (none is agreed).
+ */
+export function paymentEstimate(priceCents: number, cardPriceCents: number | undefined, overHours: number, ratePerHour: number | undefined, payMethod?: 'Bank' | 'Card'): IPaymentEstimate {
+  const card: boolean = payMethod !== 'Bank';
+  const extraCents: number = overHours > 0 && ratePerHour !== undefined ? Math.round(overHours * ratePerHour * 100) : 0;
+  const planFee: number = card ? Math.max(0, (cardPriceCents ?? Math.round(priceCents * (1 + CARD_FEE_RATE))) - priceCents) : 0;
+  const feeCents: number = planFee + (card ? Math.round(extraCents * CARD_FEE_RATE) : 0);
+  return { planCents: priceCents, extraCents, feeCents, totalCents: priceCents + extraCents + feeCents, feeIncluded: cardPriceCents === priceCents };
+}

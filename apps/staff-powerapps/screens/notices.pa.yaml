@@ -268,7 +268,8 @@
         - nNewHead:
             Control: Label
             Properties:
-              Text: ="Write a notice"
+              Text: |-
+                =If(IsBlank(varNEdit), "Write a notice", "Editing draft: " & varNEdit.Title)
               X: =44
               Y: =12
               Width: =560
@@ -289,7 +290,7 @@
         - nNoticeTitle:
             Control: Classic/TextInput
             Properties:
-              Default: =""
+              Default: =If(IsBlank(varNEdit), "", varNEdit.Title)
               HintText: ="Title"
               X: =44
               Y: =96
@@ -303,7 +304,7 @@
         - nBody:
             Control: Classic/TextInput
             Properties:
-              Default: =""
+              Default: =If(IsBlank(varNEdit), "", varNEdit.Body)
               HintText: ="Notice text"
               Mode: =TextMode.MultiLine
               X: =44
@@ -329,7 +330,7 @@
             Control: Classic/DropDown
             Properties:
               Items: =["General", "Maintenance", "Schedule", "Urgent"]
-              Default: ="General"
+              Default: =If(IsBlank(varNEdit), "General", Coalesce(varNEdit.Category.Value, "General"))
               X: =44
               Y: =386
               Width: =190
@@ -352,7 +353,7 @@
         - nPinned:
             Control: Classic/Toggle
             Properties:
-              Default: =false
+              Default: =If(IsBlank(varNEdit), false, Coalesce(varNEdit.Pinned, false))
               X: =260
               Y: =388
               Width: =90
@@ -360,7 +361,7 @@
         - nExpLbl:
             Control: Label
             Properties:
-              Text: ="Hide after (optional)"
+              Text: ="Hide after (hours)"
               X: =380
               Y: =360
               Width: =200
@@ -368,47 +369,30 @@
               Color: =RGBA(91,99,112,1)
               Size: =12
               FontWeight: =FontWeight.Bold
-        - nExpires:
-            Control: Classic/DatePicker
+        - nExpHours:
+            Control: Classic/TextInput
             Properties:
-              DefaultDate: =Blank()
-              IsEditable: =false
-              InputTextPlaceholder: ="No end date"
+              Default: =If(IsBlank(varNEdit), "24", If(IsBlank(varNEdit.ExpiresAt), "", Text(Max(1, DateDiff(varNEdit.Modified, varNEdit.ExpiresAt, TimeUnit.Hours)))))
+              HintText: ="Empty = keep"
+              Format: =TextFormat.Number
               X: =380
               Y: =386
-              Width: =190
+              Width: =120
               Height: =36
               BorderColor: =RGBA(225,228,233,1)
               BorderThickness: =1
               Color: =RGBA(31,31,31,1)
               Fill: =RGBA(255,255,255,1)
-        - nExpClear:
-            Control: Classic/Button
+        - nExpHelp:
+            Control: Label
             Properties:
-              Text: ="Clear"
-              X: =578
-              Y: =386
-              Width: =66
-              Height: =36
-              OnSelect: =Reset(nExpires)
-              Fill: =RGBA(255,255,255,1)
-              Color: =RGBA(15,76,92,1)
-              HoverFill: =RGBA(244,245,247,1)
-              HoverColor: =RGBA(15,76,92,1)
-              PressedFill: =RGBA(229,231,235,1)
-              DisabledFill: =RGBA(225,228,233,1)
-              DisabledColor: =RGBA(91,99,112,1)
-              BorderThickness: =1
-              Size: =10
-              FontWeight: =FontWeight.Semibold
-              RadiusTopLeft: =8
-              RadiusTopRight: =8
-              RadiusBottomLeft: =8
-              RadiusBottomRight: =8
-              BorderColor: =RGBA(15,76,92,1)
-              HoverBorderColor: =RGBA(15,76,92,1)
-              PressedBorderColor: =RGBA(15,76,92,1)
-              DisabledBorderColor: =RGBA(225,228,233,1)
+              Text: ="24 h by default [PROPOSED, Q-R1]; empty keeps it until withdrawn. Expired notices are hidden, not deleted."
+              X: =508
+              Y: =382
+              Width: =140
+              Height: =48
+              Color: =RGBA(91,99,112,1)
+              Size: =9
         - nPublish:
             Control: Classic/Button
             Properties:
@@ -418,7 +402,7 @@
               Width: =200
               Height: =44
               OnSelect: |-
-                =If(!(!IsBlank(Trim(nNoticeTitle.Text)) && !IsBlank(Trim(nBody.Text)) && (IsBlank(nExpires.SelectedDate) || nExpires.SelectedDate >= Today())), Notify("Enter a title and the notice text (an expiry date cannot be in the past).", NotificationType.Warning), IfError(Patch(AvenueNotices, Defaults(AvenueNotices), {Title: Left(Trim(nNoticeTitle.Text), 255), Body: nBody.Text, FacilityId: "flavors-hyattsville", PublishedAt: Now(), Active: true, Category: {Value: nCategory.Selected.Value}, Pinned: nPinned.Value, ExpiresAt: If(IsBlank(nExpires.SelectedDate), Blank(), DateAdd(DateAdd(nExpires.SelectedDate, 1, TimeUnit.Days), -1, TimeUnit.Minutes))}); Reset(nNoticeTitle); Reset(nBody); Reset(nCategory); Reset(nPinned); Reset(nExpires); Notify("Notice published.", NotificationType.Success), Notify("Could not publish the notice.", NotificationType.Error)))
+                =If(!(!IsBlank(Trim(nNoticeTitle.Text)) && !IsBlank(Trim(nBody.Text)) && (IsBlank(Trim(nExpHours.Text)) || (IsNumeric(nExpHours.Text) && Value(nExpHours.Text) > 0))), Notify("Enter a title and the notice text; hide-after must be empty or a number of hours above 0.", NotificationType.Warning), IfError(Patch(AvenueNotices, Defaults(AvenueNotices), {Title: Left(Trim(nNoticeTitle.Text), 255), Body: nBody.Text, FacilityId: "flavors-hyattsville", PublishedAt: Now(), Active: true, Category: {Value: nCategory.Selected.Value}, Pinned: nPinned.Value, ExpiresAt: If(IsBlank(Trim(nExpHours.Text)), Blank(), DateAdd(Now(), Value(nExpHours.Text), TimeUnit.Hours))}); If(!IsBlank(varNEdit), Remove(AvenueNoticeDrafts, LookUp(AvenueNoticeDrafts, ID = varNEdit.ID))); Set(varNEdit, Blank()); Reset(nNoticeTitle); Reset(nBody); Reset(nCategory); Reset(nPinned); Reset(nExpHours); Notify("Notice published.", NotificationType.Success), Notify("Could not publish the notice.", NotificationType.Error)))
               Fill: =RGBA(201,162,77,1)
               Color: =RGBA(31,31,31,1)
               HoverFill: =RGBA(179,141,60,1)
@@ -433,6 +417,7 @@
               RadiusTopRight: =8
               RadiusBottomLeft: =8
               RadiusBottomRight: =8
+              Visible: =(Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).PostNotices, true))
         - nDraft:
             Control: Classic/Button
             Properties:
@@ -442,7 +427,7 @@
               Width: =200
               Height: =44
               OnSelect: |-
-                =If(!(!IsBlank(Trim(nNoticeTitle.Text)) && !IsBlank(Trim(nBody.Text)) && (IsBlank(nExpires.SelectedDate) || nExpires.SelectedDate >= Today())), Notify("Enter a title and the notice text (an expiry date cannot be in the past).", NotificationType.Warning), IfError(Patch(AvenueNoticeDrafts, Defaults(AvenueNoticeDrafts), {Title: Left(Trim(nNoticeTitle.Text), 255), Body: nBody.Text, FacilityId: "flavors-hyattsville", State: {Value: "Draft"}, Category: {Value: nCategory.Selected.Value}, Pinned: nPinned.Value, ExpiresAt: If(IsBlank(nExpires.SelectedDate), Blank(), DateAdd(DateAdd(nExpires.SelectedDate, 1, TimeUnit.Days), -1, TimeUnit.Minutes))}); Reset(nNoticeTitle); Reset(nBody); Reset(nCategory); Reset(nPinned); Reset(nExpires); Notify("Draft saved. Members cannot see it.", NotificationType.Success), Notify("Could not save the draft.", NotificationType.Error)))
+                =If(!(!IsBlank(Trim(nNoticeTitle.Text)) && !IsBlank(Trim(nBody.Text)) && (IsBlank(Trim(nExpHours.Text)) || (IsNumeric(nExpHours.Text) && Value(nExpHours.Text) > 0))), Notify("Enter a title and the notice text; hide-after must be empty or a number of hours above 0.", NotificationType.Warning), IfError(Patch(AvenueNoticeDrafts, If(IsBlank(varNEdit), Defaults(AvenueNoticeDrafts), LookUp(AvenueNoticeDrafts, ID = varNEdit.ID)), {Title: Left(Trim(nNoticeTitle.Text), 255), Body: nBody.Text, FacilityId: "flavors-hyattsville", State: {Value: "Draft"}, Category: {Value: nCategory.Selected.Value}, Pinned: nPinned.Value, ExpiresAt: If(IsBlank(Trim(nExpHours.Text)), Blank(), DateAdd(Now(), Value(nExpHours.Text), TimeUnit.Hours))}); Set(varNEdit, Blank()); Reset(nNoticeTitle); Reset(nBody); Reset(nCategory); Reset(nPinned); Reset(nExpHours); Notify("Draft saved. Members cannot see it.", NotificationType.Success), Notify("Could not save the draft.", NotificationType.Error)))
               Fill: =RGBA(255,255,255,1)
               Color: =RGBA(15,76,92,1)
               HoverFill: =RGBA(244,245,247,1)
@@ -461,6 +446,46 @@
               HoverBorderColor: =RGBA(15,76,92,1)
               PressedBorderColor: =RGBA(15,76,92,1)
               DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =(Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).PostNotices, true))
+        - nEditCancel:
+            Control: Classic/Button
+            Properties:
+              Text: ="Stop editing"
+              X: =468
+              Y: =452
+              Width: =176
+              Height: =44
+              OnSelect: =Set(varNEdit, Blank()); Reset(nNoticeTitle); Reset(nBody); Reset(nCategory); Reset(nPinned); Reset(nExpHours)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =!IsBlank(varNEdit)
+        - nEditHelp:
+            Control: Label
+            Properties:
+              Text: ="Stop editing keeps the draft as it was last saved."
+              X: =44
+              Y: =504
+              Width: =600
+              Height: =24
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =!IsBlank(varNEdit)
         - nPanelList:
             Control: Classic/Button
             Properties:
@@ -511,7 +536,7 @@
                     Text: =ThisItem.Title
                     X: =8
                     Y: =6
-                    Width: =480
+                    Width: =400
                     Height: =28
                     Color: =RGBA(31,31,31,1)
                     FontWeight: =FontWeight.Bold
@@ -519,13 +544,34 @@
               - nItemMeta:
                   Control: Label
                   Properties:
-                    Text: =If(ThisItem.Pinned = true, "PINNED · ", "") & Coalesce(ThisItem.Category.Value, "General") & " · " & Text(ThisItem.PublishedAt, "d mmm yyyy, h:mm AM/PM") & If(IsBlank(ThisItem.ExpiresAt), "", If(ThisItem.ExpiresAt < Now(), " · EXPIRED (hidden from members)", " · hides " & Text(ThisItem.ExpiresAt, "d mmm")))
+                    Text: =If(ThisItem.Pinned = true, "PINNED · ", "") & Coalesce(ThisItem.Category.Value, "General") & " · " & Text(ThisItem.PublishedAt, "d mmm yyyy, h:mm AM/PM") & If(IsBlank(ThisItem.ExpiresAt), "", If(ThisItem.ExpiresAt < Now(), " · EXPIRED (hidden from members)", " · hides " & Text(ThisItem.ExpiresAt, "d mmm, h:mm AM/PM")))
                     X: =8
                     Y: =36
-                    Width: =480
+                    Width: =400
                     Height: =34
                     Color: =RGBA(91,99,112,1)
                     Size: =10
+              - nEdit:
+                  Control: Classic/Button
+                  Properties:
+                    Text: ="Edit"
+                    X: =420
+                    Y: =20
+                    Width: =80
+                    Height: =34
+                    Size: =12
+                    FontWeight: =FontWeight.Semibold
+                    RadiusTopLeft: =8
+                    RadiusTopRight: =8
+                    RadiusBottomLeft: =8
+                    RadiusBottomRight: =8
+                    Fill: =RGBA(255,255,255,1)
+                    Color: =RGBA(15,76,92,1)
+                    BorderColor: =RGBA(15,76,92,1)
+                    BorderThickness: =1
+                    Visible: =(Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).PostNotices, true))
+                    OnSelect: |-
+                      =IfError(Patch(AvenueNoticeDrafts, Defaults(AvenueNoticeDrafts), {Title: ThisItem.Title, Body: ThisItem.Body, FacilityId: ThisItem.FacilityId, State: {Value: "Withdrawn"}, Category: ThisItem.Category, Pinned: ThisItem.Pinned, ExpiresAt: ThisItem.ExpiresAt, PublishedAt: ThisItem.PublishedAt, WithdrawnAt: Now(), WithdrawnBy: User().Email}); Set(varNEdit, Patch(AvenueNoticeDrafts, Defaults(AvenueNoticeDrafts), {Title: ThisItem.Title, Body: ThisItem.Body, FacilityId: ThisItem.FacilityId, State: {Value: "Draft"}, Category: ThisItem.Category, Pinned: ThisItem.Pinned, ExpiresAt: ThisItem.ExpiresAt})); Remove(AvenueNotices, ThisItem); Notify("Withdrawn for editing (members no longer see it). Change it on the left and press Publish.", NotificationType.Information), Notify("Could not open the notice for editing.", NotificationType.Error))
               - nWithdraw:
                   Control: Classic/Button
                   Properties:
@@ -540,6 +586,7 @@
                     RadiusTopRight: =8
                     RadiusBottomLeft: =8
                     RadiusBottomRight: =8
+                    Visible: =(Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).PostNotices, true))
                     OnSelect: |-
                       =IfError(Patch(AvenueNoticeDrafts, Defaults(AvenueNoticeDrafts), {Title: ThisItem.Title, Body: ThisItem.Body, FacilityId: ThisItem.FacilityId, State: {Value: "Withdrawn"}, Category: ThisItem.Category, Pinned: ThisItem.Pinned, ExpiresAt: ThisItem.ExpiresAt, PublishedAt: ThisItem.PublishedAt, WithdrawnAt: Now(), WithdrawnBy: User().Email}); Remove(AvenueNotices, ThisItem); Notify("Notice withdrawn. Members can no longer read it.", NotificationType.Information), Notify("Could not withdraw the notice.", NotificationType.Error))
                     Fill: =RGBA(255,255,255,1)
@@ -609,7 +656,7 @@
                     Text: =ThisItem.Title
                     X: =8
                     Y: =6
-                    Width: =430
+                    Width: =350
                     Height: =28
                     Color: =RGBA(31,31,31,1)
                     FontWeight: =FontWeight.Bold
@@ -617,13 +664,33 @@
               - nDrMeta:
                   Control: Label
                   Properties:
-                    Text: =Coalesce(ThisItem.Category.Value, "General") & If(ThisItem.Pinned = true, " · pinned", "") & " · " & ThisItem.State.Value & If(ThisItem.State.Value = "Withdrawn", " · by " & ThisItem.WithdrawnBy & " " & Text(ThisItem.WithdrawnAt, "d mmm, h:mm AM/PM"), " · saved " & Text(ThisItem.Created, "d mmm, h:mm AM/PM"))
+                    Text: =Coalesce(ThisItem.Category.Value, "General") & If(ThisItem.Pinned = true, " · pinned", "") & " · " & ThisItem.State.Value & If(ThisItem.State.Value = "Withdrawn", " · by " & ThisItem.WithdrawnBy & " " & Text(ThisItem.WithdrawnAt, "d mmm, h:mm AM/PM"), " · saved " & Text(ThisItem.Modified, "d mmm, h:mm AM/PM"))
                     X: =8
                     Y: =36
-                    Width: =430
+                    Width: =350
                     Height: =34
                     Color: =RGBA(91,99,112,1)
                     Size: =10
+              - nDrEdit:
+                  Control: Classic/Button
+                  Properties:
+                    Text: ="Edit"
+                    X: =368
+                    Y: =20
+                    Width: =72
+                    Height: =34
+                    Size: =12
+                    FontWeight: =FontWeight.Semibold
+                    RadiusTopLeft: =8
+                    RadiusTopRight: =8
+                    RadiusBottomLeft: =8
+                    RadiusBottomRight: =8
+                    Fill: =RGBA(255,255,255,1)
+                    Color: =RGBA(15,76,92,1)
+                    BorderColor: =RGBA(15,76,92,1)
+                    BorderThickness: =1
+                    Visible: =ThisItem.State.Value = "Draft" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).PostNotices, true))
+                    OnSelect: =Set(varNEdit, ThisItem)
               - nDrPublish:
                   Control: Classic/Button
                   Properties:
@@ -642,8 +709,9 @@
                     RadiusTopRight: =8
                     RadiusBottomLeft: =8
                     RadiusBottomRight: =8
+                    Visible: =(Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).PostNotices, true))
                     OnSelect: |-
-                      =If(!IsBlank(ThisItem.ExpiresAt) && ThisItem.ExpiresAt < Now(), Notify("Its hide-after date has passed, so members would never see it. Write it again with a new date.", NotificationType.Warning), IfError(Patch(AvenueNotices, Defaults(AvenueNotices), {Title: ThisItem.Title, Body: ThisItem.Body, FacilityId: ThisItem.FacilityId, Category: ThisItem.Category, Pinned: ThisItem.Pinned, ExpiresAt: ThisItem.ExpiresAt, PublishedAt: Now(), Active: true}); Remove(AvenueNoticeDrafts, ThisItem); Notify("Notice published.", NotificationType.Success), Notify("Could not publish the notice.", NotificationType.Error)))
+                      =If(!IsBlank(ThisItem.ExpiresAt) && DateDiff(ThisItem.Modified, ThisItem.ExpiresAt, TimeUnit.Minutes) <= 0, Notify("Its hide-after time had already passed when it was saved. Edit it and set new hours.", NotificationType.Warning), IfError(Patch(AvenueNotices, Defaults(AvenueNotices), {Title: ThisItem.Title, Body: ThisItem.Body, FacilityId: ThisItem.FacilityId, Category: ThisItem.Category, Pinned: ThisItem.Pinned, ExpiresAt: If(IsBlank(ThisItem.ExpiresAt), Blank(), DateAdd(Now(), DateDiff(ThisItem.Modified, ThisItem.ExpiresAt, TimeUnit.Minutes), TimeUnit.Minutes)), PublishedAt: Now(), Active: true}); Remove(AvenueNoticeDrafts, ThisItem); Notify("Notice published.", NotificationType.Success), Notify("Could not publish the notice.", NotificationType.Error)))
               - nDrDelete:
                   Control: Classic/Button
                   Properties:
@@ -658,6 +726,7 @@
                     RadiusTopRight: =8
                     RadiusBottomLeft: =8
                     RadiusBottomRight: =8
+                    Visible: =(Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).PostNotices, true))
                     OnSelect: =If(ThisItem.State.Value = "Draft", IfError(Remove(AvenueNoticeDrafts, ThisItem); Notify("Draft deleted.", NotificationType.Information), Notify("Could not delete the draft.", NotificationType.Error)), Notify("Withdrawn notices are kept as a record.", NotificationType.Warning))
                     Fill: =RGBA(255,255,255,1)
                     Color: =RGBA(155,44,44,1)
