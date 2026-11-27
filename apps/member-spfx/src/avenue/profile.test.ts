@@ -43,7 +43,7 @@ describe('profile model', () => {
   it('documents row counts required documents on file; expired ones do not count', () => {
     const m = profileModel(base({ required: ['County food permit', 'Liability insurance'], documents: [doc('County food permit', '2027-09-30'), doc('Liability insurance', '2026-01-01')] }));
     const r = m.account.filter(x => x.key === 'documents')[0];
-    expect(r.detail).toBe('1 of 2 required on file');
+    expect(r.detail).toBe('1 of 2 current');
     expect(r.tone).toBe('warn');
   });
   it('getting started appears until onboarding is complete, then disappears', () => {

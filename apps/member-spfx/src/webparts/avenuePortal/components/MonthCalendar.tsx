@@ -42,7 +42,7 @@ export default function MonthCalendar(props: IMonthCalendarProps): React.ReactEl
       <ul className={s.mcList}>
         {picked.entries.map(e => (
           <li key={e.bookingId}>
-            <b>{localTime(e.startUtc, tz)} – {localTime(e.endUtc, tz)}</b>
+            <b>{localTime(e.startUtc, tz)} - {localTime(e.endUtc, tz)}</b>
             <strong>{e.memberName}</strong>
             <span>{equipmentChips(e.space || '', e.equipmentIds, resources).join(', ') || 'Booking'}</span>
           </li>
@@ -56,13 +56,12 @@ export default function MonthCalendar(props: IMonthCalendarProps): React.ReactEl
         <h2>{fmt(month, { month: 'long', year: 'numeric' })}</h2>
         <div className={s.row}>
           <button type="button" className={s.iconBtn} aria-label="Previous month" onClick={() => shift(-1)}>‹</button>
-          <button type="button" className={s.btn} onClick={() => { setMonth(`${today.slice(0, 7)}-01`); setSel(today); }}>Today</button>
+          <button type="button" className={`${s.btn} ${s.btnTonal}`} onClick={() => { setMonth(`${today.slice(0, 7)}-01`); setSel(today); }}>Today</button>
           <button type="button" className={s.iconBtn} aria-label="Next month" onClick={() => shift(1)}>›</button>
-          {props.onBook && <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={props.onBook}>Book equipment</button>}
+          {props.onBook && <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={props.onBook}>Book</button>}
         </div>
       </div>
       {cal.failed && <div className={s.errorPanel} role="alert"><strong>We could not load the calendar.</strong><button type="button" className={s.btn} onClick={cal.reload}>Try again</button></div>}
-      {stacked && <p className={s.mcHint}>Tap a day with bookings to see who has what.</p>}
       <div className={s.mcLayout}>
         <div className={s.mcGrid} role="grid" aria-label="Shared facility calendar" aria-busy={!cal.ready}>
           {WEEK.map(w => <div key={w} className={s.mcDow} role="columnheader">{w}</div>)}

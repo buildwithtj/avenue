@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RefIcon } from './RefUi';
+import { RefIcon, shortSite } from './RefUi';
 import s from './Site.module.scss';
 import { DINING_KEY, buildBusyMap, cookingUnits, dayTimeline, type IDayTimeline, type ITimelineSegment } from '../../../avenue/availability';
 import { addDays, groupByDay, localDay, localTime } from '../../../avenue/calendar';
@@ -65,7 +65,7 @@ export default function CalendarView(props: ICalendarViewProps): React.ReactElem
   const peak: number = Math.max(0, ...levels);
   let pa: number = levels.indexOf(peak); let pb: number = pa;
   while (pb + 1 < levels.length && levels[pb + 1] === peak) { pb += 1; }
-  const busiest: string = peak === 0 ? 'Quiet day' : `${timeOf(pa * 30)} – ${timeOf((pb + 1) * 30)}`;
+  const busiest: string = peak === 0 ? 'None' : `${timeOf(pa * 30)} - ${timeOf((pb + 1) * 30)}`;
   const heat = React.useMemo(() => weekHeat(units, busy, day, 7, tz), [units, busy, day, tz]);
 
   return (
@@ -73,9 +73,9 @@ export default function CalendarView(props: ICalendarViewProps): React.ReactElem
       <div className={s.pageHead}>
         <div className={`${s.container} ${s.headRow}`}>
           <div>
-            <p className={s.pgEyebrow}>{props.facility.title}</p>
+            <p className={s.pgEyebrow}>{shortSite(props.facility.title)}</p>
             <h1 className={s.pageTitle}>{view === 'month' ? 'Kitchen schedule' : view === 'week' ? 'The week at a glance' : facilityDayLabel(day, today)}<span className={s.rDot} aria-hidden="true">.</span></h1>
-            {view !== 'month' && <p className={s.scSub}>{view === 'week' ? `${range(day)} – ${range(addDays(day, 6))}` : long(day)}</p>}
+            {view !== 'month' && <p className={s.scSub}>{view === 'week' ? `${range(day)} - ${range(addDays(day, 6))}` : long(day)}</p>}
             <dl className={s.factRow}>
               <div><dt>{day === today ? 'Free now' : 'Free all day'}</dt><dd>{cal.ready ? `${cookingFree} of ${cookingAll}` : '…'}</dd></div>
               <div><dt>{day === today ? 'Bookings today' : `Bookings ${short(day)}`}</dt><dd>{cal.ready ? dayCount : '…'}</dd></div>
@@ -87,9 +87,8 @@ export default function CalendarView(props: ICalendarViewProps): React.ReactElem
               <button type="button" aria-pressed={view === 'month'} onClick={() => setView('month')}><RefIcon name="calendar-days" /><span>Calendar</span></button>
               <button type="button" aria-pressed={view === 'cards'} onClick={() => setView('cards')}><RefIcon name="cooking-pot" /><span>Equipment</span></button>
               <button type="button" aria-pressed={view === 'day'} onClick={() => setView('day')}><RefIcon name="clock-3" /><span>Timeline</span></button>
-              <button type="button" aria-pressed={view === 'week'} onClick={() => setView('week')}><RefIcon name="activity" /><span>Week view</span></button>
+              <button type="button" aria-pressed={view === 'week'} onClick={() => setView('week')}><RefIcon name="activity" /><span>Week</span></button>
             </div>
-            {props.onBook && <button type="button" className={`${s.btn} ${s.btnCitrus} ${s.bookPill}`} onClick={() => props.onBook && props.onBook()}><RefIcon name="plus" size={16} />Book</button>}
           </div>
         </div>
       </div>
@@ -117,7 +116,7 @@ export default function CalendarView(props: ICalendarViewProps): React.ReactElem
                 <section key={bucket.day} className={s.weekDay} aria-label={bucket.day}>
                   <div className={s.weekDayHead}><strong>{short(bucket.day)}</strong><button type="button" className={s.linkBtn} onClick={() => { setDay(bucket.day); setView('day'); }}>View day<span className={s.srOnly}> {bucket.day}</span></button></div>
                   {bucket.entries.length === 0 ? <p className={s.muted}>No approved bookings</p> : <ul>{bucket.entries.map(e => (
-                    <li key={e.bookingId}><strong>{localTime(e.startUtc, tz)} – {localTime(e.endUtc, tz)}</strong><span>{e.memberName}, {e.space || "Booking"}</span></li>
+                    <li key={e.bookingId}><strong>{localTime(e.startUtc, tz)} - {localTime(e.endUtc, tz)}</strong><span>{e.memberName}, {e.space || "Booking"}</span></li>
                   ))}</ul>}
                 </section>
               ))}
@@ -160,11 +159,11 @@ export default function CalendarView(props: ICalendarViewProps): React.ReactElem
             {size !== 'phone' && <Board timeline={timeline} tz={tz} lanes={lanes} nowMs={Date.now()} step={30} label="Schedule board" />}
             {size === 'phone' && (
               <div className={s.agendaByUnit} data-testid="schedule-list">
-                {wf.length > 0 && <div className={s.wfBanner} role="status"><strong>The whole building is booked</strong><ul>{wf.map((sg, i) => <li key={i}>{timeOf(sg.startMin)} – {timeOf(sg.endMin)}</li>)}</ul></div>}
+                {wf.length > 0 && <div className={s.wfBanner} role="status"><strong>The whole building is booked</strong><ul>{wf.map((sg, i) => <li key={i}>{timeOf(sg.startMin)} - {timeOf(sg.endMin)}</li>)}</ul></div>}
                 {inUse.map(r => (
                   <article key={r.unitId} className={s.unitAgenda} data-unit={r.unitId}>
                     <h3>{r.title}</h3>
-                    <ul>{r.segments.filter(sg => !isWf(sg)).map((sg, i) => <li key={i}><strong>{timeOf(sg.startMin)} – {timeOf(sg.endMin)}</strong><span>{sg.label || 'Booked'}</span></li>)}</ul>
+                    <ul>{r.segments.filter(sg => !isWf(sg)).map((sg, i) => <li key={i}><strong>{timeOf(sg.startMin)} - {timeOf(sg.endMin)}</strong><span>{sg.label || 'Booked'}</span></li>)}</ul>
                   </article>
                 ))}
                 <div className={s.dayStat} role="status"><i aria-hidden="true" /><b>{idle.length === timeline.rows.length ? `All ${timeline.rows.length}` : `${idle.length} of ${timeline.rows.length}`}</b><span>units free {day === today ? 'today' : 'all day'}</span></div>
@@ -180,7 +179,7 @@ export default function CalendarView(props: ICalendarViewProps): React.ReactElem
                             <button type="button" className={s.grpRow} onClick={() => props.onBook && props.onBook(u.resourceId)} disabled={!props.onBook}>
                               <EquipmentArt unit={u} size="xs" />
                               <span className={s.grpName}>{u.title}</span>
-                              <em className={segs.length === 0 ? s.pillOk : segs.length === 1 ? s.pillBad : s.pillWait}>{segs.length === 0 ? 'Free' : segs.length === 1 ? `Busy ${timeOf(segs[0].startMin)}–${timeOf(segs[0].endMin)}` : 'Partly free'}</em>
+                              <em className={segs.length === 0 ? s.pillOk : segs.length === 1 ? s.pillBad : s.pillWait}>{segs.length === 0 ? 'Free' : segs.length === 1 ? `Busy ${timeOf(segs[0].startMin)} - ${timeOf(segs[0].endMin)}` : 'Partly free'}</em>
                               <span className={s.grpBar} aria-hidden="true">{segs.map((sg, i) => <i key={i} style={{ left: `${(sg.startMin / timeline.totalMinutes) * 100}%`, width: `${((sg.endMin - sg.startMin) / timeline.totalMinutes) * 100}%` }} />)}</span>
                             </button>
                           </li>

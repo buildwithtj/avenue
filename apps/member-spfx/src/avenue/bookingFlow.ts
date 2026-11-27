@@ -75,13 +75,13 @@ export interface ISentOutcome {
  */
 export function sentOutcome(request: IMyRequest | undefined): ISentOutcome {
   if (!request || !request.status) {
-    return { state: 'checking', title: 'Request sent. Avenue is checking it.', detail: 'This usually takes under a minute.', final: false };
+    return { state: 'checking', title: 'Request sent. Avenue is checking it.', detail: 'The status updates here.', final: false };
   }
   switch (request.status) {
     case 'Approved':
       return { state: 'approved', title: 'Approved. Your booking is confirmed.', detail: request.note || 'It is on the facility calendar.', final: true };
     case 'Pending':
-      return { state: 'waiting', title: 'Sent to Flavors for a decision.', detail: request.note || 'Flavors reviews every request that needs a decision. The result appears in Bookings.', final: true };
+      return { state: 'waiting', title: 'Sent to Flavors for a decision.', detail: request.note || 'Flavors reviews every request that needs a decision. The result appears in My bookings.', final: true };
     case 'Declined':
       return { state: 'declined', title: 'This request was not accepted.', detail: request.note || 'No reason was given.', final: true };
     case 'Cancelled':

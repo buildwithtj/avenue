@@ -21,6 +21,12 @@ const TICK_MS: number = 330;
  * One question at a time. Answering draws a tick, the card slides out and the next one slides in; a final review step lists
  * every answer (tap one to change it) before sending. Reduced motion: no waiting, no movement. Answers live in the parent.
  */
+/** Sample questions (client wording still open, Q-10) keep their marker as a small chip, not as literal text. */
+function questionText(text: string): React.ReactNode {
+  const m: RegExpMatchArray | null = /^\s*Sample:\s*/i.exec(text);
+  return m ? <><span className={rx['cl-sample']}>Sample</span>{text.slice(m[0].length)}</> : text;
+}
+
 export default function ChecklistStepper(props: IChecklistStepperProps): React.ReactElement {
   const { questions, answers, onAnswer } = props;
   const total: number = questions.length;
@@ -79,7 +85,7 @@ export default function ChecklistStepper(props: IChecklistStepperProps): React.R
 
       {!review && q && (
         <div key={q.id} className={`${rx['cl-card']} ${still ? '' : dir === 1 ? rx['from-right'] : rx['from-left']} ${phase === 'out' ? rx['is-out'] : ''}`} role="group" aria-labelledby={`q-${q.id}`}>
-          <div id={`q-${q.id}`} className={rx['cl-q']}>{q.text}</div>
+          <div id={`q-${q.id}`} className={rx['cl-q']}>{questionText(q.text)}</div>
           <div className={rx['cl-choices']} role="radiogroup" aria-labelledby={`q-${q.id}`}>
             {(['Yes', 'No'] as Answer[]).map(a => {
               const on: boolean = answers[q.id] === a;
@@ -118,8 +124,8 @@ export default function ChecklistStepper(props: IChecklistStepperProps): React.R
             {questions.map((x, i) => (
               <li key={x.id} style={{ ['--i' as string]: i } as React.CSSProperties}>
                 <button type="button" onClick={() => go(i, -1)} aria-label={`Change answer to question ${i + 1}`}>
-                  <span className={`${rx['cl-pill']} ${answers[x.id] === 'No' ? rx['is-no'] : rx['is-yes']}`}>{answers[x.id] || '–'}</span>
-                  <span>{x.text}</span>
+                  <span className={`${rx['cl-pill']} ${answers[x.id] === 'No' ? rx['is-no'] : rx['is-yes']}`}>{answers[x.id] || '-'}</span>
+                  <span>{questionText(x.text)}</span>
                 </button>
               </li>
             ))}

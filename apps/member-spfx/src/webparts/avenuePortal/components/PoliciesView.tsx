@@ -2,7 +2,7 @@ import * as React from 'react';
 import s from './Site.module.scss';
 import type { IFacility, IPlan } from '../../../avenue/contracts';
 import type { AvenueReadSource } from '../../../avenue/readSource';
-import { formatCents } from '../../../avenue/billing';
+import { formatPrice } from '../../../avenue/billing';
 import { DEPOSIT_CENTS, EXTRA_HOUR_CENTS, PACKAGES } from '../../../avenue/events';
 import { OFFERS } from '../../../avenue/storage';
 import { tabOn } from '../../../avenue/release';
@@ -45,7 +45,7 @@ export default function PoliciesView(props: IPoliciesViewProps): React.ReactElem
         {POLICY_SECTIONS.map(x => <button key={x.id} type="button" onClick={() => jump(x.id)}>{x.title}</button>)}
       </nav>
       <div className={s.polBody}>
-        <ModuleCard id="policy-booking" eyebrow="POLICIES" title="Booking">
+        <ModuleCard id="policy-booking" title="Booking">
           <ul>
             <li>The kitchen is open 24 hours. Members have their own door code.</li>
             <li>Book equipment by the hour, in whole or half hours, for at least one hour. Every request waits for Flavors to confirm it.</li>
@@ -55,13 +55,13 @@ export default function PoliciesView(props: IPoliciesViewProps): React.ReactElem
           </ul>
           {tabOn('book') && <button type="button" className={rx['primary-button']} onClick={() => props.onNavigate('book')}>Book kitchen time</button>}
         </ModuleCard>
-        <ModuleCard id="policy-cancelling" eyebrow="POLICIES" title="Cancelling">
+        <ModuleCard id="policy-cancelling" title="Cancelling">
           <ul>
             <li>Cancel 24 hours or more before the start and your hours come back.</li>
             <li>Closer than 24 hours, ask Flavors from My bookings. Flavors decides.</li>
           </ul>
         </ModuleCard>
-        <ModuleCard id="policy-payments" eyebrow="POLICIES" title="Plans and payments">
+        <ModuleCard id="policy-payments" title="Plans and payments">
           <ul>
             <li>Your plan is collected once a month on your collection day.</li>
             <li>3% is added to payments made electronically by card.</li>
@@ -71,13 +71,13 @@ export default function PoliciesView(props: IPoliciesViewProps): React.ReactElem
             <div className={s.polTable} role="region" aria-label="Plans" tabIndex={0}>
               <table>
                 <thead><tr><th scope="col">Plan</th><th scope="col">Per month</th><th scope="col">Hours</th><th scope="col">Extra hour</th></tr></thead>
-                <tbody>{open.map(p => <tr key={p.planId}><th scope="row">{p.name}</th><td>{formatCents(p.priceCents as number)}</td><td>{p.monthlyHours === undefined ? '–' : `${p.monthlyHours} h`}</td><td>{p.extraHourRate === undefined ? '–' : `$${p.extraHourRate}`}</td></tr>)}</tbody>
+                <tbody>{open.map(p => <tr key={p.planId}><th scope="row">{p.name}</th><td>{formatPrice(p.priceCents as number)}</td><td>{p.monthlyHours === undefined ? '-' : `${p.monthlyHours} h`}</td><td>{p.extraHourRate === undefined ? '-' : formatPrice(Math.round(p.extraHourRate * 100))}</td></tr>)}</tbody>
               </table>
             </div>
           )}
           {tabOn('membership') && <button type="button" className={rx['secondary-button']} onClick={() => props.onNavigate('membership')}>See my plan</button>}
         </ModuleCard>
-        <ModuleCard id="policy-documents" eyebrow="POLICIES" title="Documents">
+        <ModuleCard id="policy-documents" title="Documents">
           <ul>
             <li>Keep these current: county food service permit, Maryland good standing, liability insurance, workers’ compensation (or waiver), food safety manager certificate, food manager’s card, and a food handler or manager card for each team member.</li>
             <li>Avenue reminds you 30, 15 and 10 days before a document expires.</li>
@@ -85,11 +85,15 @@ export default function PoliciesView(props: IPoliciesViewProps): React.ReactElem
           </ul>
           {tabOn('documents') && <button type="button" className={rx['secondary-button']} onClick={() => props.onNavigate('documents')}>Open my documents</button>}
         </ModuleCard>
-        <ModuleCard id="policy-events" eyebrow="POLICIES" title="Events and storage">
-          <p>Private events use the dining room. Member packages: {Object.keys(PACKAGES).map(k => `${k} ${PACKAGES[k as keyof typeof PACKAGES].hours} h ${formatCents(PACKAGES[k as keyof typeof PACKAGES].priceCents)}`).join(' · ')}. Extra hours {formatCents(EXTRA_HOUR_CENTS)} each. A refundable deposit of {formatCents(DEPOSIT_CENTS)} applies to every event; the balance is due 30 days before the event.</p>
-          <p>Storage on request: {OFFERS.filter(o => o.cents !== undefined).map(o => `${o.label} ${formatCents(o.cents as number)} per ${o.per}`).join(' · ')}. Flavors confirms the price before billing.</p>
+        <ModuleCard id="policy-events" title="Events and storage">
+          <p>Private events use the dining room. Member packages:</p>
+          <ul>{Object.keys(PACKAGES).map(k => <li key={k}>{`${k}: ${PACKAGES[k as keyof typeof PACKAGES].hours} h, ${formatPrice(PACKAGES[k as keyof typeof PACKAGES].priceCents)}`}</li>)}</ul>
+          <p>Extra hours {formatPrice(EXTRA_HOUR_CENTS)} each. A refundable deposit of {formatPrice(DEPOSIT_CENTS)} applies to every event; the balance is due 30 days before the event.</p>
+          <p>Storage on request:</p>
+          <ul>{OFFERS.filter(o => o.cents !== undefined).map(o => <li key={o.label}>{`${o.label}: ${formatPrice(o.cents as number)} per ${o.per}`}</li>)}</ul>
+          <p>Flavors confirms the price before billing.</p>
         </ModuleCard>
-        <ModuleCard id="policy-terms" eyebrow="POLICIES" title="Terms and privacy">
+        <ModuleCard id="policy-terms" title="Terms and privacy">
           <p>Flavors will publish its membership terms and privacy notice here. Until then, ask Flavors for a copy.</p>
           {tabOn('support') && <button type="button" className={rx['secondary-button']} onClick={() => props.onNavigate('support')}>Message Flavors</button>}
         </ModuleCard>

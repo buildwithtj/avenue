@@ -1,0 +1,3976 @@
+- daBg:
+    Control: Image
+    Properties:
+      Image: ="data:image/svg+xml;utf8," & EncodeUrl("<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='1000' viewBox='0 0 1600 1000' preserveAspectRatio='none'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#E3ECEF'/><stop offset='1' stop-color='#F6F7F9'/></linearGradient><filter id='b' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='90'/></filter></defs><rect width='1600' height='1000' fill='url(#g)'/><circle cx='240' cy='200' r='270' fill='#0F4C5C' fill-opacity='0.26' filter='url(#b)'/><circle cx='1400' cy='240' r='230' fill='#C9A24D' fill-opacity='0.30' filter='url(#b)'/><circle cx='880' cy='920' r='310' fill='#0F4C5C' fill-opacity='0.15' filter='url(#b)'/></svg>")
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =App.Height
+      ImagePosition: =ImagePosition.Fill
+- daBar:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =0
+      Width: =App.Width
+      Height: =48
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(11,58,71,0.93)
+- daBarEdge:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =0
+      Y: =47
+      Width: =App.Width
+      Height: =1
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(255,255,255,0.14)
+- daDot:
+    Control: Label
+    Properties:
+      Text: ="◆"
+      X: =20
+      Y: =0
+      Width: =20
+      Height: =48
+      Color: =RGBA(201,162,77,1)
+      Size: =14
+      VerticalAlign: =VerticalAlign.Middle
+- daBrand:
+    Control: Label
+    Properties:
+      Text: ="Avenue · Flavors"
+      X: =40
+      Y: =0
+      Width: =200
+      Height: =48
+      Color: =RGBA(244,245,247,1)
+      Size: =16
+      FontWeight: =FontWeight.Bold
+      VerticalAlign: =VerticalAlign.Middle
+- daTitle:
+    Control: Label
+    Properties:
+      Text: ="Data admin"
+      X: =232
+      Y: =0
+      Width: =380
+      Height: =48
+      Color: =RGBA(255,255,255,0.62)
+      Size: =13
+      VerticalAlign: =VerticalAlign.Middle
+- daNavDashboard:
+    Control: Classic/Button
+    Properties:
+      Text: ="Dashboard"
+      X: =App.Width - 668
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen3)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- daNavBookings:
+    Control: Classic/Button
+    Properties:
+      Text: ="Bookings"
+      X: =App.Width - 560
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen1)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- daNavMembers:
+    Control: Classic/Button
+    Properties:
+      Text: ="Members"
+      X: =App.Width - 452
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen8)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- daNavNotices:
+    Control: Classic/Button
+    Properties:
+      Text: ="Notices"
+      X: =App.Width - 344
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen6)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- daNavSetup:
+    Control: Classic/Button
+    Properties:
+      Text: ="Setup"
+      X: =App.Width - 236
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen11)
+      Fill: =RGBA(0,0,0,0)
+      Color: =RGBA(255,255,255,0.72)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Normal
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- daNavMore:
+    Control: Classic/Button
+    Properties:
+      Text: ="More"
+      X: =App.Width - 128
+      Y: =8
+      Width: =104
+      Height: =32
+      OnSelect: =Navigate(Screen12)
+      Fill: =RGBA(255,255,255,0.20)
+      Color: =RGBA(255,255,255,1)
+      HoverFill: =RGBA(255,255,255,0.14)
+      HoverColor: =RGBA(255,255,255,1)
+      PressedFill: =RGBA(255,255,255,0.26)
+      DisabledFill: =RGBA(225,228,233,1)
+      DisabledColor: =RGBA(91,99,112,1)
+      BorderThickness: =0
+      Size: =12
+      FontWeight: =FontWeight.Bold
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- daNavLine:
+    Control: Label
+    Properties:
+      Text: =""
+      X: =App.Width - 98
+      Y: =43
+      Width: =44
+      Height: =3
+      Color: =RGBA(31,31,31,1)
+      Fill: =RGBA(201,162,77,1)
+- tm_dataadmin:
+    Control: Timer
+    Properties:
+      Duration: =420
+      AutoStart: =true
+      Repeat: =false
+      Visible: =false
+      X: =0
+      Y: =0
+      Width: =10
+      Height: =10
+- sc_dataadmin:
+    Control: GroupContainer@1.3.0
+    Variant: AutoLayout
+    Properties:
+      X: =0
+      Y: =64
+      Width: =App.Width
+      Height: =App.Height - 64
+      Fill: =RGBA(0, 0, 0, 0)
+      PaddingTop: =Round((1 - Min(1, tm_dataadmin.Value / 420)) * 22, 0)
+      LayoutAlignItems: =LayoutAlignItems.Center
+      LayoutDirection: =LayoutDirection.Vertical
+      LayoutOverflowY: =LayoutOverflow.Scroll
+      DropShadow: =DropShadow.None
+    Children:
+    - pg_dataadmin:
+        Control: GroupContainer@1.3.0
+        Variant: ManualLayout
+        Properties:
+          Height: =704
+          Width: =1366
+          AlignInContainer: =AlignInContainer.Center
+          FillPortions: =0
+          Fill: =RGBA(0, 0, 0, 0)
+          DropShadow: =DropShadow.None
+        Children:
+        - daBack:
+            Control: Classic/Button
+            Properties:
+              Text: ="Back to More"
+              X: =20
+              Y: =0
+              Width: =140
+              Height: =34
+              OnSelect: =Navigate(Screen12)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+        - daHead:
+            Control: Label
+            Properties:
+              Text: ="Data admin · every workflow list"
+              X: =180
+              Y: =0
+              Width: =600
+              Height: =34
+              Color: =RGBA(15,76,92,1)
+              Size: =20
+              FontWeight: =FontWeight.Bold
+        - daSet:
+            Control: Classic/DropDown
+            Properties:
+              Items: =["Applicants", "Members", "Plans", "Equipment", "Dining tables", "Required documents", "Checklist questions", "Support topics", "Sensors", "Bookings", "Booking requests", "Hours ledger", "Check-ins", "Invoices", "Member documents", "Document submissions", "Compliance cases", "Compliance overrides", "Support cases", "Event cases", "Storage cases", "Notices", "Staff access", "Calendar (read only)", "Host requests (read only)"]
+              Default: ="Applicants"
+              X: =20
+              Y: =44
+              Width: =300
+              Height: =36
+              OnChange: =Set(varDaNew, false); Reset(daConfirm); Reset(daSearch)
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - daSearch:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: |-
+                ="Search: start of the id / title"
+              X: =330
+              Y: =44
+              Width: =330
+              Height: =36
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)
+        - daGalApplicants:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueApplicants, FacilityId = "flavors-hyattsville"), Filter(AvenueApplicants, FacilityId = "flavors-hyattsville", StartsWith(ApplicantId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Applicants"
+            Children:
+              - daGalApplicantsKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.ApplicantId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalApplicantsMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.BusinessName, "-") & " · " & ThisItem.Stage.Value & " · " & Coalesce(ThisItem.Email, "")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalApplicantsSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daFormApplicants:
+            Control: Form@2.4.4
+            Layout: Vertical
+            Properties:
+              DataSource: =AvenueApplicants
+              Item: =daGalApplicants.Selected
+              DefaultMode: =If(varDaNew, FormMode.New, FormMode.Edit)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =380
+              OnSuccess: |-
+                =If(IsBlank(Self.LastSubmit.FacilityId), Patch(AvenueApplicants, LookUp(AvenueApplicants, ID = Self.LastSubmit.ID), {FacilityId: "flavors-hyattsville"})); Set(varDaNew, false); Refresh(AvenueApplicants); Notify("Saved.", NotificationType.Success)
+              OnFailure: |-
+                =Notify("Not saved: check the required fields.", NotificationType.Error)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Applicants"
+        - daNewApplicants:
+            Control: Classic/Button
+            Properties:
+              Text: ="New"
+              X: =690
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, true); NewForm(daFormApplicants)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Applicants" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+        - daSaveApplicants:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save"
+              X: =820
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =SubmitForm(daFormApplicants)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Applicants" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+              DisplayMode: =If(varDaNew || !IsBlank(daGalApplicants.Selected), DisplayMode.Edit, DisplayMode.Disabled)
+        - daCancelApplicants:
+            Control: Classic/Button
+            Properties:
+              Text: ="Cancel"
+              X: =950
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, false); ResetForm(daFormApplicants)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Applicants"
+        - daDelApplicants:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueApplicants, LookUp(AvenueApplicants, ID = daGalApplicants.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Applicants" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+              DisplayMode: =If(!IsBlank(daGalApplicants.Selected) && !varDaNew && (StartsWith(Lower(Coalesce(daGalApplicants.Selected.ApplicantId, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalApplicants.Selected.ApplicantId, "")), "demo-") || StartsWith(Lower(Coalesce(daGalApplicants.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalApplicants.Selected.Title, "")), "demo-")) && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleApplicants:
+            Control: Label
+            Properties:
+              Text: ="Only gaptest- / demo- rows can be deleted; real rows are cancelled or archived on their own screen."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Applicants"
+        - daGalMembers:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueMembers, FacilityId = "flavors-hyattsville"), Filter(AvenueMembers, FacilityId = "flavors-hyattsville", StartsWith(MemberId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Members"
+            Children:
+              - daGalMembersKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.MemberId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalMembersMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.BusinessName, "-") & " · " & ThisItem.Status.Value & " · plan " & Coalesce(ThisItem.PlanId, "-")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalMembersSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daInfoMembers:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(daGalMembers.Selected), "Select a row", Coalesce(daGalMembers.Selected.MemberId, daGalMembers.Selected.Title) & Char(10) & With({r: daGalMembers.Selected}, "Created " & Text(r.Created, "d mmm yyyy h:mm AM/PM") & " · modified " & Text(r.Modified, "d mmm yyyy h:mm AM/PM")))
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =60
+              Color: =RGBA(31,31,31,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Members"
+        - daWhereMembers:
+            Control: Label
+            Properties:
+              Text: ="Edit and deactivate members on Member admin; members are never deleted."
+              X: =690
+              Y: =156
+              Width: =640
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Members"
+        - daOpenMembers:
+            Control: Classic/Button
+            Properties:
+              Text: ="Open Member admin"
+              X: =690
+              Y: =200
+              Width: =200
+              Height: =38
+              OnSelect: =Navigate(Screen23)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Members"
+        - daGalPlans:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenuePlans, FacilityId = "flavors-hyattsville"), Filter(AvenuePlans, FacilityId = "flavors-hyattsville", StartsWith(PlanId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Plans"
+            Children:
+              - daGalPlansKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.PlanId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalPlansMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Text(Coalesce(ThisItem.MonthlyHours, 0)) & " h · $" & Text(Coalesce(ThisItem.PriceCents, 0) / 100, "0.00") & If(ThisItem.Active, "", " · inactive")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalPlansSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daFormPlans:
+            Control: Form@2.4.4
+            Layout: Vertical
+            Properties:
+              DataSource: =AvenuePlans
+              Item: =daGalPlans.Selected
+              DefaultMode: =If(varDaNew, FormMode.New, FormMode.Edit)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =380
+              OnSuccess: |-
+                =If(IsBlank(Self.LastSubmit.FacilityId), Patch(AvenuePlans, LookUp(AvenuePlans, ID = Self.LastSubmit.ID), {FacilityId: "flavors-hyattsville"})); Set(varDaNew, false); Refresh(AvenuePlans); Notify("Saved.", NotificationType.Success)
+              OnFailure: |-
+                =Notify("Not saved: check the required fields.", NotificationType.Error)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Plans"
+        - daNewPlans:
+            Control: Classic/Button
+            Properties:
+              Text: ="New"
+              X: =690
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, true); NewForm(daFormPlans)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Plans" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+        - daSavePlans:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save"
+              X: =820
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =SubmitForm(daFormPlans)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Plans" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+              DisplayMode: =If(varDaNew || !IsBlank(daGalPlans.Selected), DisplayMode.Edit, DisplayMode.Disabled)
+        - daCancelPlans:
+            Control: Classic/Button
+            Properties:
+              Text: ="Cancel"
+              X: =950
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, false); ResetForm(daFormPlans)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Plans"
+        - daActPlans:
+            Control: Classic/Button
+            Properties:
+              Text: =If(daGalPlans.Selected.Active, "Deactivate", "Reactivate")
+              X: =1080
+              Y: =480
+              Width: =150
+              Height: =38
+              OnSelect: |-
+                =IfError(Patch(AvenuePlans, LookUp(AvenuePlans, ID = daGalPlans.Selected.ID), {Active: !daGalPlans.Selected.Active}); Notify(If(daGalPlans.Selected.Active, "Deactivated.", "Reactivated."), NotificationType.Success), Notify("Could not change Active.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Plans" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+              DisplayMode: =If(IsBlank(daGalPlans.Selected) || varDaNew, DisplayMode.Disabled, DisplayMode.Edit)
+        - daDelPlans:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenuePlans, LookUp(AvenuePlans, ID = daGalPlans.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Plans" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+              DisplayMode: =If(!IsBlank(daGalPlans.Selected) && !varDaNew && true && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRulePlans:
+            Control: Label
+            Properties:
+              Text: ="Deletes this one row. Prefer Deactivate if it was ever used."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Plans"
+        - daGalEquipment:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueEquipment, FacilityId = "flavors-hyattsville"), Filter(AvenueEquipment, FacilityId = "flavors-hyattsville", StartsWith(EquipmentId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Equipment"
+            Children:
+              - daGalEquipmentKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.EquipmentId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalEquipmentMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Title, "-") & " · " & ThisItem.Category.Value & If(ThisItem.Active, "", " · inactive")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalEquipmentSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daFormEquipment:
+            Control: Form@2.4.4
+            Layout: Vertical
+            Properties:
+              DataSource: =AvenueEquipment
+              Item: =daGalEquipment.Selected
+              DefaultMode: =If(varDaNew, FormMode.New, FormMode.Edit)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =380
+              OnSuccess: |-
+                =If(IsBlank(Self.LastSubmit.FacilityId), Patch(AvenueEquipment, LookUp(AvenueEquipment, ID = Self.LastSubmit.ID), {FacilityId: "flavors-hyattsville"})); Set(varDaNew, false); Refresh(AvenueEquipment); Notify("Saved.", NotificationType.Success)
+              OnFailure: |-
+                =Notify("Not saved: check the required fields.", NotificationType.Error)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Equipment"
+        - daNewEquipment:
+            Control: Classic/Button
+            Properties:
+              Text: ="New"
+              X: =690
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, true); NewForm(daFormEquipment)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Equipment" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageEquipment, true))
+        - daSaveEquipment:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save"
+              X: =820
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =SubmitForm(daFormEquipment)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Equipment" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageEquipment, true))
+              DisplayMode: =If(varDaNew || !IsBlank(daGalEquipment.Selected), DisplayMode.Edit, DisplayMode.Disabled)
+        - daCancelEquipment:
+            Control: Classic/Button
+            Properties:
+              Text: ="Cancel"
+              X: =950
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, false); ResetForm(daFormEquipment)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Equipment"
+        - daActEquipment:
+            Control: Classic/Button
+            Properties:
+              Text: =If(daGalEquipment.Selected.Active, "Deactivate", "Reactivate")
+              X: =1080
+              Y: =480
+              Width: =150
+              Height: =38
+              OnSelect: |-
+                =IfError(Patch(AvenueEquipment, LookUp(AvenueEquipment, ID = daGalEquipment.Selected.ID), {Active: !daGalEquipment.Selected.Active}); Notify(If(daGalEquipment.Selected.Active, "Deactivated.", "Reactivated."), NotificationType.Success), Notify("Could not change Active.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Equipment" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageEquipment, true))
+              DisplayMode: =If(IsBlank(daGalEquipment.Selected) || varDaNew, DisplayMode.Disabled, DisplayMode.Edit)
+        - daDelEquipment:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueEquipment, LookUp(AvenueEquipment, ID = daGalEquipment.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Equipment" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageEquipment, true))
+              DisplayMode: =If(!IsBlank(daGalEquipment.Selected) && !varDaNew && true && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleEquipment:
+            Control: Label
+            Properties:
+              Text: ="Deletes this one row. Prefer Deactivate if it was ever used."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Equipment"
+        - daGalDiningtables:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueDiningTables, FacilityId = "flavors-hyattsville"), Filter(AvenueDiningTables, FacilityId = "flavors-hyattsville", StartsWith(TableId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Dining tables"
+            Children:
+              - daGalDiningtablesKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.TableId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalDiningtablesMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Text(Coalesce(ThisItem.Seats, 0)) & " seats" & If(ThisItem.Active, "", " · inactive")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalDiningtablesSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daFormDiningtables:
+            Control: Form@2.4.4
+            Layout: Vertical
+            Properties:
+              DataSource: =AvenueDiningTables
+              Item: =daGalDiningtables.Selected
+              DefaultMode: =If(varDaNew, FormMode.New, FormMode.Edit)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =380
+              OnSuccess: |-
+                =If(IsBlank(Self.LastSubmit.FacilityId), Patch(AvenueDiningTables, LookUp(AvenueDiningTables, ID = Self.LastSubmit.ID), {FacilityId: "flavors-hyattsville"})); Set(varDaNew, false); Refresh(AvenueDiningTables); Notify("Saved.", NotificationType.Success)
+              OnFailure: |-
+                =Notify("Not saved: check the required fields.", NotificationType.Error)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Dining tables"
+        - daNewDiningtables:
+            Control: Classic/Button
+            Properties:
+              Text: ="New"
+              X: =690
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, true); NewForm(daFormDiningtables)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Dining tables" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageEquipment, true))
+        - daSaveDiningtables:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save"
+              X: =820
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =SubmitForm(daFormDiningtables)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Dining tables" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageEquipment, true))
+              DisplayMode: =If(varDaNew || !IsBlank(daGalDiningtables.Selected), DisplayMode.Edit, DisplayMode.Disabled)
+        - daCancelDiningtables:
+            Control: Classic/Button
+            Properties:
+              Text: ="Cancel"
+              X: =950
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, false); ResetForm(daFormDiningtables)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Dining tables"
+        - daActDiningtables:
+            Control: Classic/Button
+            Properties:
+              Text: =If(daGalDiningtables.Selected.Active, "Deactivate", "Reactivate")
+              X: =1080
+              Y: =480
+              Width: =150
+              Height: =38
+              OnSelect: |-
+                =IfError(Patch(AvenueDiningTables, LookUp(AvenueDiningTables, ID = daGalDiningtables.Selected.ID), {Active: !daGalDiningtables.Selected.Active}); Notify(If(daGalDiningtables.Selected.Active, "Deactivated.", "Reactivated."), NotificationType.Success), Notify("Could not change Active.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Dining tables" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageEquipment, true))
+              DisplayMode: =If(IsBlank(daGalDiningtables.Selected) || varDaNew, DisplayMode.Disabled, DisplayMode.Edit)
+        - daDelDiningtables:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueDiningTables, LookUp(AvenueDiningTables, ID = daGalDiningtables.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Dining tables" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageEquipment, true))
+              DisplayMode: =If(!IsBlank(daGalDiningtables.Selected) && !varDaNew && true && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleDiningtables:
+            Control: Label
+            Properties:
+              Text: ="Deletes this one row. Prefer Deactivate if it was ever used."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Dining tables"
+        - daGalRequireddocuments:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueRequiredDocTypes, FacilityId = "flavors-hyattsville"), Filter(AvenueRequiredDocTypes, FacilityId = "flavors-hyattsville", StartsWith(Title, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Required documents"
+            Children:
+              - daGalRequireddocumentsKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Title, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalRequireddocumentsMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.DocType.Value & If(ThisItem.Active, "", " · inactive")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalRequireddocumentsSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daFormRequireddocuments:
+            Control: Form@2.4.4
+            Layout: Vertical
+            Properties:
+              DataSource: =AvenueRequiredDocTypes
+              Item: =daGalRequireddocuments.Selected
+              DefaultMode: =If(varDaNew, FormMode.New, FormMode.Edit)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =380
+              OnSuccess: |-
+                =If(IsBlank(Self.LastSubmit.FacilityId), Patch(AvenueRequiredDocTypes, LookUp(AvenueRequiredDocTypes, ID = Self.LastSubmit.ID), {FacilityId: "flavors-hyattsville"})); Set(varDaNew, false); Refresh(AvenueRequiredDocTypes); Notify("Saved.", NotificationType.Success)
+              OnFailure: |-
+                =Notify("Not saved: check the required fields.", NotificationType.Error)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Required documents"
+        - daNewRequireddocuments:
+            Control: Classic/Button
+            Properties:
+              Text: ="New"
+              X: =690
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, true); NewForm(daFormRequireddocuments)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Required documents" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageDocuments, true))
+        - daSaveRequireddocuments:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save"
+              X: =820
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =SubmitForm(daFormRequireddocuments)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Required documents" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageDocuments, true))
+              DisplayMode: =If(varDaNew || !IsBlank(daGalRequireddocuments.Selected), DisplayMode.Edit, DisplayMode.Disabled)
+        - daCancelRequireddocuments:
+            Control: Classic/Button
+            Properties:
+              Text: ="Cancel"
+              X: =950
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, false); ResetForm(daFormRequireddocuments)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Required documents"
+        - daActRequireddocuments:
+            Control: Classic/Button
+            Properties:
+              Text: =If(daGalRequireddocuments.Selected.Active, "Deactivate", "Reactivate")
+              X: =1080
+              Y: =480
+              Width: =150
+              Height: =38
+              OnSelect: |-
+                =IfError(Patch(AvenueRequiredDocTypes, LookUp(AvenueRequiredDocTypes, ID = daGalRequireddocuments.Selected.ID), {Active: !daGalRequireddocuments.Selected.Active}); Notify(If(daGalRequireddocuments.Selected.Active, "Deactivated.", "Reactivated."), NotificationType.Success), Notify("Could not change Active.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Required documents" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageDocuments, true))
+              DisplayMode: =If(IsBlank(daGalRequireddocuments.Selected) || varDaNew, DisplayMode.Disabled, DisplayMode.Edit)
+        - daDelRequireddocuments:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueRequiredDocTypes, LookUp(AvenueRequiredDocTypes, ID = daGalRequireddocuments.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Required documents" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageDocuments, true))
+              DisplayMode: =If(!IsBlank(daGalRequireddocuments.Selected) && !varDaNew && true && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleRequireddocuments:
+            Control: Label
+            Properties:
+              Text: ="Deletes this one row. Prefer Deactivate if it was ever used."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Required documents"
+        - daGalChecklistquestions:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueChecklistQuestions, FacilityId = "flavors-hyattsville"), Filter(AvenueChecklistQuestions, FacilityId = "flavors-hyattsville", StartsWith(Title, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Checklist questions"
+            Children:
+              - daGalChecklistquestionsKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Title, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalChecklistquestionsMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Kind.Value & " · " & Text(Coalesce(ThisItem.SortOrder, 0)) & " · " & Left(Coalesce(ThisItem.Question, ""), 60)
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalChecklistquestionsSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daFormChecklistquestions:
+            Control: Form@2.4.4
+            Layout: Vertical
+            Properties:
+              DataSource: =AvenueChecklistQuestions
+              Item: =daGalChecklistquestions.Selected
+              DefaultMode: =If(varDaNew, FormMode.New, FormMode.Edit)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =380
+              OnSuccess: |-
+                =If(IsBlank(Self.LastSubmit.FacilityId), Patch(AvenueChecklistQuestions, LookUp(AvenueChecklistQuestions, ID = Self.LastSubmit.ID), {FacilityId: "flavors-hyattsville"})); Set(varDaNew, false); Refresh(AvenueChecklistQuestions); Notify("Saved.", NotificationType.Success)
+              OnFailure: |-
+                =Notify("Not saved: check the required fields.", NotificationType.Error)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Checklist questions"
+        - daNewChecklistquestions:
+            Control: Classic/Button
+            Properties:
+              Text: ="New"
+              X: =690
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, true); NewForm(daFormChecklistquestions)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Checklist questions" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageDocuments, true))
+        - daSaveChecklistquestions:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save"
+              X: =820
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =SubmitForm(daFormChecklistquestions)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Checklist questions" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageDocuments, true))
+              DisplayMode: =If(varDaNew || !IsBlank(daGalChecklistquestions.Selected), DisplayMode.Edit, DisplayMode.Disabled)
+        - daCancelChecklistquestions:
+            Control: Classic/Button
+            Properties:
+              Text: ="Cancel"
+              X: =950
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, false); ResetForm(daFormChecklistquestions)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Checklist questions"
+        - daActChecklistquestions:
+            Control: Classic/Button
+            Properties:
+              Text: =If(daGalChecklistquestions.Selected.Active, "Deactivate", "Reactivate")
+              X: =1080
+              Y: =480
+              Width: =150
+              Height: =38
+              OnSelect: |-
+                =IfError(Patch(AvenueChecklistQuestions, LookUp(AvenueChecklistQuestions, ID = daGalChecklistquestions.Selected.ID), {Active: !daGalChecklistquestions.Selected.Active}); Notify(If(daGalChecklistquestions.Selected.Active, "Deactivated.", "Reactivated."), NotificationType.Success), Notify("Could not change Active.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Checklist questions" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageDocuments, true))
+              DisplayMode: =If(IsBlank(daGalChecklistquestions.Selected) || varDaNew, DisplayMode.Disabled, DisplayMode.Edit)
+        - daDelChecklistquestions:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueChecklistQuestions, LookUp(AvenueChecklistQuestions, ID = daGalChecklistquestions.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Checklist questions" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageDocuments, true))
+              DisplayMode: =If(!IsBlank(daGalChecklistquestions.Selected) && !varDaNew && true && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleChecklistquestions:
+            Control: Label
+            Properties:
+              Text: ="Deletes this one row. Prefer Deactivate if it was ever used."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Checklist questions"
+        - daGalSupporttopics:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueSupportCategories, FacilityId = "flavors-hyattsville"), Filter(AvenueSupportCategories, FacilityId = "flavors-hyattsville", StartsWith(Title, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Support topics"
+            Children:
+              - daGalSupporttopicsKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Title, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalSupporttopicsMeta:
+                  Control: Label
+                  Properties:
+                    Text: ="Order " & Text(Coalesce(ThisItem.SortOrder, 0)) & If(ThisItem.Active, "", " · inactive")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalSupporttopicsSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daFormSupporttopics:
+            Control: Form@2.4.4
+            Layout: Vertical
+            Properties:
+              DataSource: =AvenueSupportCategories
+              Item: =daGalSupporttopics.Selected
+              DefaultMode: =If(varDaNew, FormMode.New, FormMode.Edit)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =380
+              OnSuccess: |-
+                =If(IsBlank(Self.LastSubmit.FacilityId), Patch(AvenueSupportCategories, LookUp(AvenueSupportCategories, ID = Self.LastSubmit.ID), {FacilityId: "flavors-hyattsville"})); Set(varDaNew, false); Refresh(AvenueSupportCategories); Notify("Saved.", NotificationType.Success)
+              OnFailure: |-
+                =Notify("Not saved: check the required fields.", NotificationType.Error)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Support topics"
+        - daNewSupporttopics:
+            Control: Classic/Button
+            Properties:
+              Text: ="New"
+              X: =690
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, true); NewForm(daFormSupporttopics)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Support topics" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+        - daSaveSupporttopics:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save"
+              X: =820
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =SubmitForm(daFormSupporttopics)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Support topics" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+              DisplayMode: =If(varDaNew || !IsBlank(daGalSupporttopics.Selected), DisplayMode.Edit, DisplayMode.Disabled)
+        - daCancelSupporttopics:
+            Control: Classic/Button
+            Properties:
+              Text: ="Cancel"
+              X: =950
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, false); ResetForm(daFormSupporttopics)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Support topics"
+        - daActSupporttopics:
+            Control: Classic/Button
+            Properties:
+              Text: =If(daGalSupporttopics.Selected.Active, "Deactivate", "Reactivate")
+              X: =1080
+              Y: =480
+              Width: =150
+              Height: =38
+              OnSelect: |-
+                =IfError(Patch(AvenueSupportCategories, LookUp(AvenueSupportCategories, ID = daGalSupporttopics.Selected.ID), {Active: !daGalSupporttopics.Selected.Active}); Notify(If(daGalSupporttopics.Selected.Active, "Deactivated.", "Reactivated."), NotificationType.Success), Notify("Could not change Active.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Support topics" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+              DisplayMode: =If(IsBlank(daGalSupporttopics.Selected) || varDaNew, DisplayMode.Disabled, DisplayMode.Edit)
+        - daDelSupporttopics:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueSupportCategories, LookUp(AvenueSupportCategories, ID = daGalSupporttopics.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Support topics" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+              DisplayMode: =If(!IsBlank(daGalSupporttopics.Selected) && !varDaNew && true && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleSupporttopics:
+            Control: Label
+            Properties:
+              Text: ="Deletes this one row. Prefer Deactivate if it was ever used."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Support topics"
+        - daGalSensors:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueSensors, FacilityId = "flavors-hyattsville"), Filter(AvenueSensors, FacilityId = "flavors-hyattsville", StartsWith(SensorId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Sensors"
+            Children:
+              - daGalSensorsKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.SensorId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalSensorsMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.UnitName, "-") & " · " & ThisItem.UnitType.Value & If(ThisItem.Active, "", " · inactive")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalSensorsSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daFormSensors:
+            Control: Form@2.4.4
+            Layout: Vertical
+            Properties:
+              DataSource: =AvenueSensors
+              Item: =daGalSensors.Selected
+              DefaultMode: =If(varDaNew, FormMode.New, FormMode.Edit)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =380
+              OnSuccess: |-
+                =If(IsBlank(Self.LastSubmit.FacilityId), Patch(AvenueSensors, LookUp(AvenueSensors, ID = Self.LastSubmit.ID), {FacilityId: "flavors-hyattsville"})); Set(varDaNew, false); Refresh(AvenueSensors); Notify("Saved.", NotificationType.Success)
+              OnFailure: |-
+                =Notify("Not saved: check the required fields.", NotificationType.Error)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Sensors"
+        - daNewSensors:
+            Control: Classic/Button
+            Properties:
+              Text: ="New"
+              X: =690
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, true); NewForm(daFormSensors)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Sensors" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ViewEnvironment, true))
+        - daSaveSensors:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save"
+              X: =820
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =SubmitForm(daFormSensors)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Sensors" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ViewEnvironment, true))
+              DisplayMode: =If(varDaNew || !IsBlank(daGalSensors.Selected), DisplayMode.Edit, DisplayMode.Disabled)
+        - daCancelSensors:
+            Control: Classic/Button
+            Properties:
+              Text: ="Cancel"
+              X: =950
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, false); ResetForm(daFormSensors)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Sensors"
+        - daActSensors:
+            Control: Classic/Button
+            Properties:
+              Text: =If(daGalSensors.Selected.Active, "Deactivate", "Reactivate")
+              X: =1080
+              Y: =480
+              Width: =150
+              Height: =38
+              OnSelect: |-
+                =IfError(Patch(AvenueSensors, LookUp(AvenueSensors, ID = daGalSensors.Selected.ID), {Active: !daGalSensors.Selected.Active}); Notify(If(daGalSensors.Selected.Active, "Deactivated.", "Reactivated."), NotificationType.Success), Notify("Could not change Active.", NotificationType.Error))
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Sensors" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ViewEnvironment, true))
+              DisplayMode: =If(IsBlank(daGalSensors.Selected) || varDaNew, DisplayMode.Disabled, DisplayMode.Edit)
+        - daDelSensors:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueSensors, LookUp(AvenueSensors, ID = daGalSensors.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Sensors" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ViewEnvironment, true))
+              DisplayMode: =If(!IsBlank(daGalSensors.Selected) && !varDaNew && true && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleSensors:
+            Control: Label
+            Properties:
+              Text: ="Deletes this one row. Prefer Deactivate if it was ever used."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Sensors"
+        - daGalBookings:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueBookings, FacilityId = "flavors-hyattsville"), Filter(AvenueBookings, FacilityId = "flavors-hyattsville", StartsWith(BookingId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Bookings"
+            Children:
+              - daGalBookingsKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.BookingId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalBookingsMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.MemberId & " · " & ThisItem.Status.Value & " · " & Text(ThisItem.StartUtc, "d mmm yyyy h:mm AM/PM")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalBookingsSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daInfoBookings:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(daGalBookings.Selected), "Select a row", Coalesce(daGalBookings.Selected.BookingId, daGalBookings.Selected.Title) & Char(10) & With({r: daGalBookings.Selected}, "Created " & Text(r.Created, "d mmm yyyy h:mm AM/PM") & " · modified " & Text(r.Modified, "d mmm yyyy h:mm AM/PM")))
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =60
+              Color: =RGBA(31,31,31,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Bookings"
+        - daWhereBookings:
+            Control: Label
+            Properties:
+              Text: ="Approve, decline, cancel and extend on Requests / Approved (keeps calendar and hours correct)."
+              X: =690
+              Y: =156
+              Width: =640
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Bookings"
+        - daDelBookings:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueBookings, LookUp(AvenueBookings, ID = daGalBookings.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Bookings" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ApproveBookings, true))
+              DisplayMode: =If(!IsBlank(daGalBookings.Selected) && !varDaNew && (StartsWith(Lower(Coalesce(daGalBookings.Selected.BookingId, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalBookings.Selected.BookingId, "")), "demo-") || StartsWith(Lower(Coalesce(daGalBookings.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalBookings.Selected.Title, "")), "demo-")) && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleBookings:
+            Control: Label
+            Properties:
+              Text: ="Only gaptest- / demo- rows can be deleted; real rows are cancelled or archived on their own screen."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Bookings"
+        - daGalBookingrequests:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueBookingRequests, FacilityId = "flavors-hyattsville"), Filter(AvenueBookingRequests, FacilityId = "flavors-hyattsville", StartsWith(RequestId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Booking requests"
+            Children:
+              - daGalBookingrequestsKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.RequestId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalBookingrequestsMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Outcome, "waiting for the flow") & " · " & Coalesce(ThisItem.OnBehalfOf, "")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalBookingrequestsSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daInfoBookingrequests:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(daGalBookingrequests.Selected), "Select a row", Coalesce(daGalBookingrequests.Selected.RequestId, daGalBookingrequests.Selected.Title) & Char(10) & With({r: daGalBookingrequests.Selected}, "Created " & Text(r.Created, "d mmm yyyy h:mm AM/PM") & " · modified " & Text(r.Modified, "d mmm yyyy h:mm AM/PM")))
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =60
+              Color: =RGBA(31,31,31,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Booking requests"
+        - daWhereBookingrequests:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Edit on its own screen; here: read, and delete test rows."
+              X: =690
+              Y: =156
+              Width: =640
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Booking requests"
+        - daDelBookingrequests:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueBookingRequests, LookUp(AvenueBookingRequests, ID = daGalBookingrequests.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Booking requests" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ApproveBookings, true))
+              DisplayMode: =If(!IsBlank(daGalBookingrequests.Selected) && !varDaNew && (StartsWith(Lower(Coalesce(daGalBookingrequests.Selected.RequestId, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalBookingrequests.Selected.RequestId, "")), "demo-") || StartsWith(Lower(Coalesce(daGalBookingrequests.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalBookingrequests.Selected.Title, "")), "demo-")) && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleBookingrequests:
+            Control: Label
+            Properties:
+              Text: ="Only gaptest- / demo- rows can be deleted; real rows are cancelled or archived on their own screen."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Booking requests"
+        - daGalHoursledger:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueHoursLedger, FacilityId = "flavors-hyattsville"), Filter(AvenueHoursLedger, FacilityId = "flavors-hyattsville", StartsWith(EntryId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Hours ledger"
+            Children:
+              - daGalHoursledgerKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.EntryId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalHoursledgerMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.MemberId & " · " & ThisItem.Period & " · " & Text(Coalesce(ThisItem.Hours, 0)) & " h · " & ThisItem.Reason.Value
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalHoursledgerSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daInfoHoursledger:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(daGalHoursledger.Selected), "Select a row", Coalesce(daGalHoursledger.Selected.EntryId, daGalHoursledger.Selected.Title) & Char(10) & With({r: daGalHoursledger.Selected}, "Created " & Text(r.Created, "d mmm yyyy h:mm AM/PM") & " · modified " & Text(r.Modified, "d mmm yyyy h:mm AM/PM")))
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =60
+              Color: =RGBA(31,31,31,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Hours ledger"
+        - daWhereHoursledger:
+            Control: Label
+            Properties:
+              Text: ="Real rows are corrected by a counter-adjustment on Member admin > Hours ledger."
+              X: =690
+              Y: =156
+              Width: =640
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Hours ledger"
+        - daDelHoursledger:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueHoursLedger, LookUp(AvenueHoursLedger, ID = daGalHoursledger.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Hours ledger" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+              DisplayMode: =If(!IsBlank(daGalHoursledger.Selected) && !varDaNew && (StartsWith(Lower(Coalesce(daGalHoursledger.Selected.EntryId, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalHoursledger.Selected.EntryId, "")), "demo-") || StartsWith(Lower(Coalesce(daGalHoursledger.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalHoursledger.Selected.Title, "")), "demo-")) && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleHoursledger:
+            Control: Label
+            Properties:
+              Text: ="Only gaptest- / demo- rows can be deleted; real rows are cancelled or archived on their own screen."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Hours ledger"
+        - daGalCheckins:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueCheckIns, FacilityId = "flavors-hyattsville"), Filter(AvenueCheckIns, FacilityId = "flavors-hyattsville", StartsWith(SubmissionId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Check-ins"
+            Children:
+              - daGalCheckinsKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.SubmissionId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalCheckinsMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.MemberId & " · " & ThisItem.Kind.Value & If(ThisItem.AllPassed, " · passed", " · failed")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalCheckinsSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daInfoCheckins:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(daGalCheckins.Selected), "Select a row", Coalesce(daGalCheckins.Selected.SubmissionId, daGalCheckins.Selected.Title) & Char(10) & With({r: daGalCheckins.Selected}, "Created " & Text(r.Created, "d mmm yyyy h:mm AM/PM") & " · modified " & Text(r.Modified, "d mmm yyyy h:mm AM/PM")))
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =60
+              Color: =RGBA(31,31,31,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Check-ins"
+        - daWhereCheckins:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Edit on its own screen; here: read, and delete test rows."
+              X: =690
+              Y: =156
+              Width: =640
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Check-ins"
+        - daDelCheckins:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueCheckIns, LookUp(AvenueCheckIns, ID = daGalCheckins.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Check-ins" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+              DisplayMode: =If(!IsBlank(daGalCheckins.Selected) && !varDaNew && (StartsWith(Lower(Coalesce(daGalCheckins.Selected.SubmissionId, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalCheckins.Selected.SubmissionId, "")), "demo-") || StartsWith(Lower(Coalesce(daGalCheckins.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalCheckins.Selected.Title, "")), "demo-")) && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleCheckins:
+            Control: Label
+            Properties:
+              Text: ="Only gaptest- / demo- rows can be deleted; real rows are cancelled or archived on their own screen."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Check-ins"
+        - daGalInvoices:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueInvoices, FacilityId = "flavors-hyattsville"), Filter(AvenueInvoices, FacilityId = "flavors-hyattsville", StartsWith(InvoiceId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Invoices"
+            Children:
+              - daGalInvoicesKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.InvoiceId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalInvoicesMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.MemberId & " · " & ThisItem.Status.Value & " · $" & Text(Coalesce(ThisItem.AmountDueCents, 0) / 100, "0.00")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalInvoicesSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daInfoInvoices:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(daGalInvoices.Selected), "Select a row", Coalesce(daGalInvoices.Selected.InvoiceId, daGalInvoices.Selected.Title) & Char(10) & With({r: daGalInvoices.Selected}, "Created " & Text(r.Created, "d mmm yyyy h:mm AM/PM") & " · modified " & Text(r.Modified, "d mmm yyyy h:mm AM/PM")))
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =60
+              Color: =RGBA(31,31,31,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Invoices"
+        - daWhereInvoices:
+            Control: Label
+            Properties:
+              Text: ="Invoices mirror Stripe (test mode); void or refund them in Stripe, never here."
+              X: =690
+              Y: =156
+              Width: =640
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Invoices"
+        - daDelInvoices:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueInvoices, LookUp(AvenueInvoices, ID = daGalInvoices.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Invoices" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ViewPayments, true))
+              DisplayMode: =If(!IsBlank(daGalInvoices.Selected) && !varDaNew && (StartsWith(Lower(Coalesce(daGalInvoices.Selected.InvoiceId, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalInvoices.Selected.InvoiceId, "")), "demo-") || StartsWith(Lower(Coalesce(daGalInvoices.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalInvoices.Selected.Title, "")), "demo-")) && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleInvoices:
+            Control: Label
+            Properties:
+              Text: ="Only gaptest- / demo- rows can be deleted; real rows are cancelled or archived on their own screen."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Invoices"
+        - daGalMemberdocuments:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueMemberDocuments, FacilityId = "flavors-hyattsville"), Filter(AvenueMemberDocuments, FacilityId = "flavors-hyattsville", StartsWith(Title, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Member documents"
+            Children:
+              - daGalMemberdocumentsKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Title, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalMemberdocumentsMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.MemberId & " · " & ThisItem.DocType.Value & " · expires " & Text(ThisItem.ExpiryDate, "d mmm yyyy")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalMemberdocumentsSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daFormMemberdocuments:
+            Control: Form@2.4.4
+            Layout: Vertical
+            Properties:
+              DataSource: =AvenueMemberDocuments
+              Item: =daGalMemberdocuments.Selected
+              DefaultMode: =If(varDaNew, FormMode.New, FormMode.Edit)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =380
+              OnSuccess: |-
+                =If(IsBlank(Self.LastSubmit.FacilityId), Patch(AvenueMemberDocuments, LookUp(AvenueMemberDocuments, ID = Self.LastSubmit.ID), {FacilityId: "flavors-hyattsville"})); Set(varDaNew, false); Refresh(AvenueMemberDocuments); Notify("Saved.", NotificationType.Success)
+              OnFailure: |-
+                =Notify("Not saved: check the required fields.", NotificationType.Error)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Member documents"
+        - daNewMemberdocuments:
+            Control: Classic/Button
+            Properties:
+              Text: ="New"
+              X: =690
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, true); NewForm(daFormMemberdocuments)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Member documents" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageDocuments, true))
+        - daSaveMemberdocuments:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save"
+              X: =820
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =SubmitForm(daFormMemberdocuments)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Member documents" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageDocuments, true))
+              DisplayMode: =If(varDaNew || !IsBlank(daGalMemberdocuments.Selected), DisplayMode.Edit, DisplayMode.Disabled)
+        - daCancelMemberdocuments:
+            Control: Classic/Button
+            Properties:
+              Text: ="Cancel"
+              X: =950
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, false); ResetForm(daFormMemberdocuments)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Member documents"
+        - daDelMemberdocuments:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueMemberDocuments, LookUp(AvenueMemberDocuments, ID = daGalMemberdocuments.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Member documents" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageDocuments, true))
+              DisplayMode: =If(!IsBlank(daGalMemberdocuments.Selected) && !varDaNew && (StartsWith(Lower(Coalesce(daGalMemberdocuments.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalMemberdocuments.Selected.Title, "")), "demo-") || StartsWith(Lower(Coalesce(daGalMemberdocuments.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalMemberdocuments.Selected.Title, "")), "demo-")) && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleMemberdocuments:
+            Control: Label
+            Properties:
+              Text: ="Only gaptest- / demo- rows can be deleted; real rows are cancelled or archived on their own screen."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Member documents"
+        - daGalDocumentsubmissions:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueDocumentSubmissions, FacilityId = "flavors-hyattsville"), Filter(AvenueDocumentSubmissions, FacilityId = "flavors-hyattsville", StartsWith(SubmissionId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Document submissions"
+            Children:
+              - daGalDocumentsubmissionsKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.SubmissionId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalDocumentsubmissionsMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.OnBehalfOf, "") & " · " & Coalesce(ThisItem.Outcome, "waiting for the flow")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalDocumentsubmissionsSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daInfoDocumentsubmissions:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(daGalDocumentsubmissions.Selected), "Select a row", Coalesce(daGalDocumentsubmissions.Selected.SubmissionId, daGalDocumentsubmissions.Selected.Title) & Char(10) & With({r: daGalDocumentsubmissions.Selected}, "Created " & Text(r.Created, "d mmm yyyy h:mm AM/PM") & " · modified " & Text(r.Modified, "d mmm yyyy h:mm AM/PM")))
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =60
+              Color: =RGBA(31,31,31,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Document submissions"
+        - daWhereDocumentsubmissions:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Edit on its own screen; here: read, and delete test rows."
+              X: =690
+              Y: =156
+              Width: =640
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Document submissions"
+        - daDelDocumentsubmissions:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueDocumentSubmissions, LookUp(AvenueDocumentSubmissions, ID = daGalDocumentsubmissions.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Document submissions" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageDocuments, true))
+              DisplayMode: =If(!IsBlank(daGalDocumentsubmissions.Selected) && !varDaNew && (StartsWith(Lower(Coalesce(daGalDocumentsubmissions.Selected.SubmissionId, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalDocumentsubmissions.Selected.SubmissionId, "")), "demo-") || StartsWith(Lower(Coalesce(daGalDocumentsubmissions.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalDocumentsubmissions.Selected.Title, "")), "demo-")) && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleDocumentsubmissions:
+            Control: Label
+            Properties:
+              Text: ="Only gaptest- / demo- rows can be deleted; real rows are cancelled or archived on their own screen."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Document submissions"
+        - daGalCompliancecases:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueComplianceCases, FacilityId = "flavors-hyattsville"), Filter(AvenueComplianceCases, FacilityId = "flavors-hyattsville", StartsWith(Title, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Compliance cases"
+            Children:
+              - daGalCompliancecasesKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Title, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalCompliancecasesMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.MemberId
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalCompliancecasesSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daInfoCompliancecases:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(daGalCompliancecases.Selected), "Select a row", Coalesce(daGalCompliancecases.Selected.Title, daGalCompliancecases.Selected.Title) & Char(10) & With({r: daGalCompliancecases.Selected}, "Created " & Text(r.Created, "d mmm yyyy h:mm AM/PM") & " · modified " & Text(r.Modified, "d mmm yyyy h:mm AM/PM")))
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =60
+              Color: =RGBA(31,31,31,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Compliance cases"
+        - daWhereCompliancecases:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Edit on its own screen; here: read, and delete test rows."
+              X: =690
+              Y: =156
+              Width: =640
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Compliance cases"
+        - daDelCompliancecases:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueComplianceCases, LookUp(AvenueComplianceCases, ID = daGalCompliancecases.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Compliance cases" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageDocuments, true))
+              DisplayMode: =If(!IsBlank(daGalCompliancecases.Selected) && !varDaNew && (StartsWith(Lower(Coalesce(daGalCompliancecases.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalCompliancecases.Selected.Title, "")), "demo-") || StartsWith(Lower(Coalesce(daGalCompliancecases.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalCompliancecases.Selected.Title, "")), "demo-")) && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleCompliancecases:
+            Control: Label
+            Properties:
+              Text: ="Only gaptest- / demo- rows can be deleted; real rows are cancelled or archived on their own screen."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Compliance cases"
+        - daGalComplianceoverrides:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueComplianceOverrides, FacilityId = "flavors-hyattsville"), Filter(AvenueComplianceOverrides, FacilityId = "flavors-hyattsville", StartsWith(Title, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Compliance overrides"
+            Children:
+              - daGalComplianceoverridesKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Title, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalComplianceoverridesMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.MemberId
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalComplianceoverridesSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daInfoComplianceoverrides:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(daGalComplianceoverrides.Selected), "Select a row", Coalesce(daGalComplianceoverrides.Selected.Title, daGalComplianceoverrides.Selected.Title) & Char(10) & With({r: daGalComplianceoverrides.Selected}, "Created " & Text(r.Created, "d mmm yyyy h:mm AM/PM") & " · modified " & Text(r.Modified, "d mmm yyyy h:mm AM/PM")))
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =60
+              Color: =RGBA(31,31,31,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Compliance overrides"
+        - daWhereComplianceoverrides:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Edit on its own screen; here: read, and delete test rows."
+              X: =690
+              Y: =156
+              Width: =640
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Compliance overrides"
+        - daDelComplianceoverrides:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueComplianceOverrides, LookUp(AvenueComplianceOverrides, ID = daGalComplianceoverrides.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Compliance overrides" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageDocuments, true))
+              DisplayMode: =If(!IsBlank(daGalComplianceoverrides.Selected) && !varDaNew && (StartsWith(Lower(Coalesce(daGalComplianceoverrides.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalComplianceoverrides.Selected.Title, "")), "demo-") || StartsWith(Lower(Coalesce(daGalComplianceoverrides.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalComplianceoverrides.Selected.Title, "")), "demo-")) && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleComplianceoverrides:
+            Control: Label
+            Properties:
+              Text: ="Only gaptest- / demo- rows can be deleted; real rows are cancelled or archived on their own screen."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Compliance overrides"
+        - daGalSupportcases:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville"), Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", StartsWith(CaseId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Support cases"
+            Children:
+              - daGalSupportcasesKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.CaseId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalSupportcasesMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.MemberId & " · " & ThisItem.Status.Value & " · " & Coalesce(ThisItem.Subject, "")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalSupportcasesSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daInfoSupportcases:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(daGalSupportcases.Selected), "Select a row", Coalesce(daGalSupportcases.Selected.CaseId, daGalSupportcases.Selected.Title) & Char(10) & With({r: daGalSupportcases.Selected}, "Created " & Text(r.Created, "d mmm yyyy h:mm AM/PM") & " · modified " & Text(r.Modified, "d mmm yyyy h:mm AM/PM")))
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =60
+              Color: =RGBA(31,31,31,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Support cases"
+        - daWhereSupportcases:
+            Control: Label
+            Properties:
+              Text: ="Reply, close and archive on Support."
+              X: =690
+              Y: =156
+              Width: =640
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Support cases"
+        - daDelSupportcases:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueSupportCases, LookUp(AvenueSupportCases, ID = daGalSupportcases.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Support cases" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+              DisplayMode: =If(!IsBlank(daGalSupportcases.Selected) && !varDaNew && (StartsWith(Lower(Coalesce(daGalSupportcases.Selected.CaseId, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalSupportcases.Selected.CaseId, "")), "demo-") || StartsWith(Lower(Coalesce(daGalSupportcases.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalSupportcases.Selected.Title, "")), "demo-")) && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleSupportcases:
+            Control: Label
+            Properties:
+              Text: ="Only gaptest- / demo- rows can be deleted; real rows are cancelled or archived on their own screen."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Support cases"
+        - daGalEventcases:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueEventCases, FacilityId = "flavors-hyattsville"), Filter(AvenueEventCases, FacilityId = "flavors-hyattsville", StartsWith(CaseId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Event cases"
+            Children:
+              - daGalEventcasesKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.CaseId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalEventcasesMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.MemberId & " · " & ThisItem.Status.Value & " · " & ThisItem.Package.Value
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalEventcasesSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daFormEventcases:
+            Control: Form@2.4.4
+            Layout: Vertical
+            Properties:
+              DataSource: =AvenueEventCases
+              Item: =daGalEventcases.Selected
+              DefaultMode: =If(varDaNew, FormMode.New, FormMode.Edit)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =380
+              OnSuccess: |-
+                =If(IsBlank(Self.LastSubmit.FacilityId), Patch(AvenueEventCases, LookUp(AvenueEventCases, ID = Self.LastSubmit.ID), {FacilityId: "flavors-hyattsville"})); Set(varDaNew, false); Refresh(AvenueEventCases); Notify("Saved.", NotificationType.Success)
+              OnFailure: |-
+                =Notify("Not saved: check the required fields.", NotificationType.Error)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Event cases"
+        - daNewEventcases:
+            Control: Classic/Button
+            Properties:
+              Text: ="New"
+              X: =690
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, true); NewForm(daFormEventcases)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Event cases" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+        - daSaveEventcases:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save"
+              X: =820
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =SubmitForm(daFormEventcases)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Event cases" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+              DisplayMode: =If(varDaNew || !IsBlank(daGalEventcases.Selected), DisplayMode.Edit, DisplayMode.Disabled)
+        - daCancelEventcases:
+            Control: Classic/Button
+            Properties:
+              Text: ="Cancel"
+              X: =950
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, false); ResetForm(daFormEventcases)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Event cases"
+        - daDelEventcases:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueEventCases, LookUp(AvenueEventCases, ID = daGalEventcases.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Event cases" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+              DisplayMode: =If(!IsBlank(daGalEventcases.Selected) && !varDaNew && (StartsWith(Lower(Coalesce(daGalEventcases.Selected.CaseId, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalEventcases.Selected.CaseId, "")), "demo-") || StartsWith(Lower(Coalesce(daGalEventcases.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalEventcases.Selected.Title, "")), "demo-")) && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleEventcases:
+            Control: Label
+            Properties:
+              Text: ="Only gaptest- / demo- rows can be deleted; real rows are cancelled or archived on their own screen."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Event cases"
+        - daGalStoragecases:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueStorageCases, FacilityId = "flavors-hyattsville"), Filter(AvenueStorageCases, FacilityId = "flavors-hyattsville", StartsWith(CaseId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Storage cases"
+            Children:
+              - daGalStoragecasesKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.CaseId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalStoragecasesMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.MemberId & " · " & ThisItem.Status.Value & " · " & ThisItem.Item.Value
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalStoragecasesSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daFormStoragecases:
+            Control: Form@2.4.4
+            Layout: Vertical
+            Properties:
+              DataSource: =AvenueStorageCases
+              Item: =daGalStoragecases.Selected
+              DefaultMode: =If(varDaNew, FormMode.New, FormMode.Edit)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =380
+              OnSuccess: |-
+                =If(IsBlank(Self.LastSubmit.FacilityId), Patch(AvenueStorageCases, LookUp(AvenueStorageCases, ID = Self.LastSubmit.ID), {FacilityId: "flavors-hyattsville"})); Set(varDaNew, false); Refresh(AvenueStorageCases); Notify("Saved.", NotificationType.Success)
+              OnFailure: |-
+                =Notify("Not saved: check the required fields.", NotificationType.Error)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Storage cases"
+        - daNewStoragecases:
+            Control: Classic/Button
+            Properties:
+              Text: ="New"
+              X: =690
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, true); NewForm(daFormStoragecases)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Storage cases" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+        - daSaveStoragecases:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save"
+              X: =820
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =SubmitForm(daFormStoragecases)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Storage cases" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+              DisplayMode: =If(varDaNew || !IsBlank(daGalStoragecases.Selected), DisplayMode.Edit, DisplayMode.Disabled)
+        - daCancelStoragecases:
+            Control: Classic/Button
+            Properties:
+              Text: ="Cancel"
+              X: =950
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, false); ResetForm(daFormStoragecases)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Storage cases"
+        - daDelStoragecases:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueStorageCases, LookUp(AvenueStorageCases, ID = daGalStoragecases.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Storage cases" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).ManageMembers, true))
+              DisplayMode: =If(!IsBlank(daGalStoragecases.Selected) && !varDaNew && (StartsWith(Lower(Coalesce(daGalStoragecases.Selected.CaseId, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalStoragecases.Selected.CaseId, "")), "demo-") || StartsWith(Lower(Coalesce(daGalStoragecases.Selected.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce(daGalStoragecases.Selected.Title, "")), "demo-")) && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleStoragecases:
+            Control: Label
+            Properties:
+              Text: ="Only gaptest- / demo- rows can be deleted; real rows are cancelled or archived on their own screen."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Storage cases"
+        - daGalNotices:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueNotices, FacilityId = "flavors-hyattsville"), Filter(AvenueNotices, FacilityId = "flavors-hyattsville", StartsWith(Title, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Notices"
+            Children:
+              - daGalNoticesKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Title, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalNoticesMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Text(ThisItem.Created, "d mmm yyyy")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalNoticesSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daFormNotices:
+            Control: Form@2.4.4
+            Layout: Vertical
+            Properties:
+              DataSource: =AvenueNotices
+              Item: =daGalNotices.Selected
+              DefaultMode: =If(varDaNew, FormMode.New, FormMode.Edit)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =380
+              OnSuccess: |-
+                =If(IsBlank(Self.LastSubmit.FacilityId), Patch(AvenueNotices, LookUp(AvenueNotices, ID = Self.LastSubmit.ID), {FacilityId: "flavors-hyattsville"})); Set(varDaNew, false); Refresh(AvenueNotices); Notify("Saved.", NotificationType.Success)
+              OnFailure: |-
+                =Notify("Not saved: check the required fields.", NotificationType.Error)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Notices"
+        - daNewNotices:
+            Control: Classic/Button
+            Properties:
+              Text: ="New"
+              X: =690
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, true); NewForm(daFormNotices)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Notices" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).PostNotices, true))
+        - daSaveNotices:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save"
+              X: =820
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =SubmitForm(daFormNotices)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Notices" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).PostNotices, true))
+              DisplayMode: =If(varDaNew || !IsBlank(daGalNotices.Selected), DisplayMode.Edit, DisplayMode.Disabled)
+        - daCancelNotices:
+            Control: Classic/Button
+            Properties:
+              Text: ="Cancel"
+              X: =950
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, false); ResetForm(daFormNotices)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Notices"
+        - daDelNotices:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueNotices, LookUp(AvenueNotices, ID = daGalNotices.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Notices" && (Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"] || Coalesce(LookUp(AvenueStaffCapabilities, StaffEmail = Lower(User().Email)).PostNotices, true))
+              DisplayMode: =If(!IsBlank(daGalNotices.Selected) && !varDaNew && true && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleNotices:
+            Control: Label
+            Properties:
+              Text: ="Deletes this one row. Prefer Deactivate if it was ever used."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Notices"
+        - daGalStaffaccess:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueStaffCapabilities, FacilityId = "flavors-hyattsville"), Filter(AvenueStaffCapabilities, FacilityId = "flavors-hyattsville", StartsWith(StaffEmail, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Staff access"
+            Children:
+              - daGalStaffaccessKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.StaffEmail, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalStaffaccessMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.Note, "")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalStaffaccessSep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daFormStaffaccess:
+            Control: Form@2.4.4
+            Layout: Vertical
+            Properties:
+              DataSource: =AvenueStaffCapabilities
+              Item: =daGalStaffaccess.Selected
+              DefaultMode: =If(varDaNew, FormMode.New, FormMode.Edit)
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =380
+              OnSuccess: |-
+                =If(IsBlank(Self.LastSubmit.FacilityId), Patch(AvenueStaffCapabilities, LookUp(AvenueStaffCapabilities, ID = Self.LastSubmit.ID), {FacilityId: "flavors-hyattsville"})); Set(varDaNew, false); Refresh(AvenueStaffCapabilities); Notify("Saved.", NotificationType.Success)
+              OnFailure: |-
+                =Notify("Not saved: check the required fields.", NotificationType.Error)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Staff access"
+        - daNewStaffaccess:
+            Control: Classic/Button
+            Properties:
+              Text: ="New"
+              X: =690
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, true); NewForm(daFormStaffaccess)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Staff access" && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+        - daSaveStaffaccess:
+            Control: Classic/Button
+            Properties:
+              Text: ="Save"
+              X: =820
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =SubmitForm(daFormStaffaccess)
+              Fill: =RGBA(201,162,77,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Staff access" && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+              DisplayMode: =If(varDaNew || !IsBlank(daGalStaffaccess.Selected), DisplayMode.Edit, DisplayMode.Disabled)
+        - daCancelStaffaccess:
+            Control: Classic/Button
+            Properties:
+              Text: ="Cancel"
+              X: =950
+              Y: =480
+              Width: =120
+              Height: =38
+              OnSelect: =Set(varDaNew, false); ResetForm(daFormStaffaccess)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(15,76,92,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(15,76,92,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              BorderColor: =RGBA(15,76,92,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+              PressedBorderColor: =RGBA(15,76,92,1)
+              DisabledBorderColor: =RGBA(225,228,233,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Staff access"
+        - daDelStaffaccess:
+            Control: Classic/Button
+            Properties:
+              Text: ="Delete selected"
+              X: =1150
+              Y: =540
+              Width: =180
+              Height: =38
+              OnSelect: |-
+                =If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), IfError(Remove(AvenueStaffCapabilities, LookUp(AvenueStaffCapabilities, ID = daGalStaffaccess.Selected.ID)); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))
+              Fill: =RGBA(155,44,44,1)
+              Color: =RGBA(255,255,255,1)
+              HoverFill: =RGBA(179,141,60,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(179,141,60,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =0
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =8
+              RadiusTopRight: =8
+              RadiusBottomLeft: =8
+              RadiusBottomRight: =8
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Staff access" && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
+              DisplayMode: =If(!IsBlank(daGalStaffaccess.Selected) && !varDaNew && true && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)
+        - daDelRuleStaffaccess:
+            Control: Label
+            Properties:
+              Text: ="Deletes this one row. Prefer Deactivate if it was ever used."
+              X: =690
+              Y: =586
+              Width: =640
+              Height: =22
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Staff access"
+        - daGalCalendarreadonly:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueCalendar, FacilityId = "flavors-hyattsville"), Filter(AvenueCalendar, FacilityId = "flavors-hyattsville", StartsWith(BookingId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Calendar (read only)"
+            Children:
+              - daGalCalendarreadonlyKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.BookingId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalCalendarreadonlyMeta:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.MemberDisplayName, "") & " · " & Text(ThisItem.StartUtc, "d mmm yyyy h:mm AM/PM")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalCalendarreadonlySep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daInfoCalendarreadonly:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(daGalCalendarreadonly.Selected), "Select a row", Coalesce(daGalCalendarreadonly.Selected.BookingId, daGalCalendarreadonly.Selected.Title) & Char(10) & With({r: daGalCalendarreadonly.Selected}, "Created " & Text(r.Created, "d mmm yyyy h:mm AM/PM") & " · modified " & Text(r.Modified, "d mmm yyyy h:mm AM/PM")))
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =60
+              Color: =RGBA(31,31,31,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Calendar (read only)"
+        - daWhereCalendarreadonly:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Edit on its own screen; here: read, and delete test rows."
+              X: =690
+              Y: =156
+              Width: =640
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Calendar (read only)"
+        - daGalHostrequestsreadonly:
+            Control: Gallery@2.15.0
+            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+            Properties:
+              Items: |-
+                =With({s: Trim(daSearch.Text)}, SortByColumns(If(IsBlank(s), Filter(AvenueHostRequests, FacilityId = "flavors-hyattsville"), Filter(AvenueHostRequests, FacilityId = "flavors-hyattsville", StartsWith(RequestId, s))), "ID", SortOrder.Descending))
+              X: =20
+              Y: =90
+              Width: =640
+              Height: =560
+              TemplateSize: =58
+              Fill: =RGBA(0,0,0,0)
+              BorderThickness: =0
+              TemplateFill: =If(ThisItem.IsSelected, RGBA(241,243,228,1), RGBA(0,0,0,0))
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Host requests (read only)"
+            Children:
+              - daGalHostrequestsreadonlyKey:
+                  Control: Label
+                  Properties:
+                    Text: =Coalesce(ThisItem.RequestId, ThisItem.Title, "(no id)")
+                    X: =8
+                    Y: =4
+                    Width: =600
+                    Height: =26
+                    Color: =RGBA(31,31,31,1)
+                    FontWeight: =FontWeight.Semibold
+              - daGalHostrequestsreadonlyMeta:
+                  Control: Label
+                  Properties:
+                    Text: =ThisItem.Kind.Value & " · " & Coalesce(ThisItem.Outcome, "waiting for the host")
+                    X: =8
+                    Y: =30
+                    Width: =600
+                    Height: =22
+                    Color: =RGBA(91,99,112,1)
+                    Size: =11
+              - daGalHostrequestsreadonlySep:
+                  Control: Label
+                  Properties:
+                    Text: =""
+                    X: =8
+                    Y: =57
+                    Width: =608
+                    Height: =1
+                    Fill: =RGBA(225,228,233,1)
+        - daInfoHostrequestsreadonly:
+            Control: Label
+            Properties:
+              Text: |-
+                =If(IsBlank(daGalHostrequestsreadonly.Selected), "Select a row", Coalesce(daGalHostrequestsreadonly.Selected.RequestId, daGalHostrequestsreadonly.Selected.Title) & Char(10) & With({r: daGalHostrequestsreadonly.Selected}, "Created " & Text(r.Created, "d mmm yyyy h:mm AM/PM") & " · modified " & Text(r.Modified, "d mmm yyyy h:mm AM/PM")))
+              X: =690
+              Y: =90
+              Width: =640
+              Height: =60
+              Color: =RGBA(31,31,31,1)
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Host requests (read only)"
+        - daWhereHostrequestsreadonly:
+            Control: Label
+            Properties:
+              Text: |-
+                ="Edit on its own screen; here: read, and delete test rows."
+              X: =690
+              Y: =156
+              Width: =640
+              Height: =40
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              Visible: =Coalesce(daSet.Selected.Value, "Applicants") = "Host requests (read only)"
+        - daConfirm:
+            Control: Classic/TextInput
+            Properties:
+              Default: =""
+              HintText: ="Type delete to confirm a delete"
+              X: =690
+              Y: =540
+              Width: =450
+              Height: =38
+              BorderColor: =RGBA(225,228,233,1)
+              BorderThickness: =1
+              Color: =RGBA(31,31,31,1)
+              Fill: =RGBA(255,255,255,1)

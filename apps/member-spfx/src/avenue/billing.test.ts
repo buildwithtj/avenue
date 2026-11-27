@@ -1,5 +1,6 @@
 import {
   formatCents,
+  formatPrice,
   statusLabel,
   toInvoiceRow,
   balanceDueCents,
@@ -18,13 +19,19 @@ describe('billing helpers', () => {
       expect(formatCents(1)).toBe('$0.01');
       expect(formatCents(99)).toBe('$0.99');
       expect(formatCents(100)).toBe('$1.00');
-      expect(formatCents(123456)).toBe('$1234.56');
+      expect(formatCents(123456)).toBe('$1,234.56');
     });
 
     it('formats negative amounts correctly', () => {
       expect(formatCents(-100)).toBe('-$1.00');
       expect(formatCents(-1)).toBe('-$0.01');
-      expect(formatCents(-123456)).toBe('-$1234.56');
+      expect(formatCents(-123456)).toBe('-$1,234.56');
+    });
+
+    it('formatPrice drops .00 on whole dollars and keeps cents otherwise', () => {
+      expect(formatPrice(120000)).toBe('$1,200');
+      expect(formatPrice(1250)).toBe('$12.50');
+      expect(formatPrice(0)).toBe('$0');
     });
 
     it('throws on non-integer values', () => {

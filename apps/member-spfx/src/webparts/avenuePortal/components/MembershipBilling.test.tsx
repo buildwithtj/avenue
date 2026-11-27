@@ -89,9 +89,9 @@ describe('billing (P4)', () => {
     expect(host.textContent).toContain('Card fee (3%)');
     expect(host.textContent).toContain('Estimate until the invoice is issued.');
     expect(host.textContent).toMatch(/Extra hours · .* · 2 h\$150\.00/);
-    expect(host.textContent).toContain('No invoices yet. Payments are in test mode');
+    expect(host.textContent).toContain('No invoices yet.');
     await click(/^Manage payment method$/);
-    expect(host.textContent).toContain('switched off in test mode');
+    expect(host.textContent).toContain('Test mode: no money is charged');
   });
 
   it('shows status chips as text and opens an invoice detail sheet', async () => {

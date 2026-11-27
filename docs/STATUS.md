@@ -1,6 +1,46 @@
 # Status
 
-## 25 Nov 2026 (latest) — staging 1.7.1.0 DEPLOYED (live portal still 2.19.0.0)
+
+
+
+## 27 Nov 2026 (end of day) — staging member portal 1.12.0.0 LIVE on the staging page; client live portal unchanged (2.19.0.0)
+- Staging page https://bstreethq.sharepoint.com/sites/Avenue/SitePages/Member-portal-staging.aspx loads bundle 358f450d (1.12: browser-audit fixes, liquid glass, unslop copy pass 2, support attachments hidden until flow R2). Uses the real Join path (MOCK_PAYMENTS false in the staging build only; server skips Stripe in test mode).
+- Staff staging app 'Avenue Staff Console (Staging)' (2637a8df): Data admin CRUD (Screen24) + Support/Setup re-pasted for text Category; App checker 0 errors.
+- Live flows edited and tested 27 Nov: R1 (support topic lookup, Category now Text on AvenueSupportMessages), R9 (Archived echo), R8 (re-opened echo). R2 (support attachments) NOT built.
+- Data aligned with the client sheet (docs/DATA_ALIGNMENT_27NOV.md); demo/test rows recycled by id; EntryGraceMinutes 10.
+- Tests on staging link: TDDAdmin onboarded on Emerging-80, plan-hours count 4 -> 8 of 80, December separate (member 12, bookings 99-101: test data, remove by id when done).
+
+### First items for the next session
+1. CLIENT'S LIVE staff app (05e28a9d) Support/Setup screens now error against the text Category column: re-paste the two screens there ONLY with the developer's OK.
+2. Flow R2 (support attachments), then switch SUPPORT_ATTACHMENTS_ENABLED on.
+3. Full end-to-end test pass on staging (docs/END_TO_END_TEST_GUIDE.md), unslop view audit on 1.12 at phone/tablet/desktop, one Stripe test-mode checkout.
+4. Decisions pending from the developer: equipment ids 21-23, calendar id 54, demo MemberDocuments/NoticeDrafts rows, the empty /sites/Avenue-Staging site.
+5. Client inputs pending: real checklist questions (e-mail attachments), member list (Current Members .xlsx), 9th sensor, Q10 rollover, Q13 reminder, STR-06 live Stripe approval.
+
+## 27 Nov 2026 — support/event/storage flow edits LIVE (R1, R8, R9); staging staff app Category errors fixed
+- Live flows edited as automations@ and tested with gaptest rows (all removed): R1 support category now checked against AvenueSupportCategories (AvenueSupportMessages.Category converted Choice -> Text); R9 archived support cases echo "Archived by Flavors"; R8 re-opened event/storage cases echo "Re-opened by Flavors". Details: flows/expressions.md "Live edits 27 Nov 2026".
+- R2 (support attachments) NOT built: the portal must not offer attachments on support messages until it is.
+- Staging staff app (2637a8df) only: Setup (Screen11) and Support (Screen15) re-pasted from gen.py with plain-text Category; App checker 0 errors (350 delegation warnings, 2 unused data sources); saved and published 13:17. Client app 05e28a9d untouched and still has the old Category formulas (it needs the same re-paste before its Support screen works with the Text column).
+
+## 27 Nov 2026 — member staging 1.11.0.0 built (Liquid Glass), not deployed
+- Package apps/member-spfx/sharepoint/solution/member-spfx-staging.sppkg (1.11.0.0, bundle 1f0e2b0b), 450 tests pass. Includes the 1.10 browser-audit fixes. Not yet seen in a browser. Live portal unchanged (2.19.0.0 deployed; source config 2.22.0.0).
+
+## 27 Nov 2026 — member portal staging 1.10.0.0 BUILT, not deployed: browser audit fixes (B1-B5, V1-V12, T1-T2). Not checked in a browser yet.
+
+## 27 Nov 2026 — staging 1.9.0.0 BUILT (unslop copy fixes), NOT deployed
+- Member portal copy cleaned per docs/UNSLOP_AUDIT_MEMBER_PORTAL.md (27 fixed, 3 kept). Data follow-up: demo/test titles in Notices, Plans, Members, calendar, and the Sample checklist questions. Next: deploy staging 1.9.0.0 and check it on SharePoint.
+
+## 25 Nov 2026 — staging staff app has Data admin (Screen24) published
+- Play: https://apps.powerapps.com/play/e/Default-89dd1ecc-bb2a-4038-ad76-6be84c3e0e2c/a/2637a8df-0f29-435b-b4bf-c52a98fb3baf . Plans and Equipment CRUD and the real-row delete guard tested PASS; other data sets not individually tested. 22 pre-existing checker errors on Setup/Support (Category type). Client app untouched. See CHANGELOG 25 Nov.
+
+
+## 25 Nov 2026 (latest) — staging 1.8.0.0 BUILT, not deployed
+- `apps/member-spfx/sharepoint/solution/member-spfx-staging.sppkg` 1.8.0.0 (bundle avenue-portal-web-part_01310b4971184a8420f3.js), 449 tests. Client batch 1-10 (no duplicate Book actions, New message pill, one-line facility eyebrow, no dashes, capsule date strip, flatter cards/buttons, prep card, hero contrast). Not visually verified yet (no signed-in browser available to the worker). Next: sign in the built-in browser or check staging after deploy at 360/390/412/768/1280/1440.
+
+## 25 Nov 2026 — staff app Data admin (Screen24) BUILT, not pasted
+- CRUD for every workflow list on one screen (data-set picker, search, form create/edit, Deactivate, single-row typed-confirm delete; money/audit rows deletable only when gaptest-/demo-). Paste into the staging copy only, then add form fields in Studio (13 forms). Not tested in Power Apps.
+
+## 25 Nov 2026 — staging 1.7.1.0 DEPLOYED (live portal still 2.19.0.0)
 - 1.7.1.0: Home shortcut count badge is now red with a white ring (the gold badge blended into the photo). Uploaded + deployed as TDDAdmin (AppCatalogVersion 1.7.1.0, CurrentVersionDeployed true); after unregistering the service worker the staging page loads bundle avenue-portal-web-part_e128198f0274dd0c67a3.js and the badge computes red. 449 tests.
 
 ## 25 Nov 2026 — staging 1.7.0.0 DEPLOYED

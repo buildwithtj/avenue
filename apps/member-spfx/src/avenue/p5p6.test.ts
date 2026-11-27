@@ -1,3 +1,5 @@
+jest.mock('./support', () => ({ ...jest.requireActual('./support'), SUPPORT_ATTACHMENTS_ENABLED: true }));
+
 import { AvenueReadSource, LISTS, mergeDocuments, mergeMirrorBookings, toMirrorDocument } from './readSource';
 import { requiredOrSheet, requiredRows, requiredSummary } from './compliance';
 import { sentChecklistLabel } from './checklist';
@@ -71,7 +73,7 @@ describe('check-in labels (A1)', () => {
   const h = { submissionId: 'chk-1', bookingId: 'staff-8154b356', kind: 'Entry' as const, createdUtc: '2026-11-20T15:00:00Z' };
   it('shows date, time and equipment, never the id', () => {
     const label = sentChecklistLabel(h, b, 'America/New_York');
-    expect(label).toBe('Tue Nov 24, 9:00 AM – 1:00 PM · oven-1, stove-2');
+    expect(label).toBe('Tue Nov 24, 9:00 AM - 1:00 PM · oven-1, stove-2');
     expect(sentChecklistLabel(h, { ...b, equipmentIds: [] }, 'America/New_York')).toMatch(/· Kitchen$/);
   });
   it('falls back to "Booking" and the day it was sent', () => {

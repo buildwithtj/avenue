@@ -2,7 +2,7 @@ import * as React from 'react';
 import s from './Site.module.scss';
 import type { IMyHostRequest, IPlan, PayMethod, PlanGroup } from '../../../avenue/contracts';
 import { firstPaymentPreview, type IJoinInput, joinErrors, planPriceCents, stepErrors, toJoinPayload } from '../../../avenue/join';
-import { formatCents, safeLink, STRIPE_HOSTS } from '../../../avenue/billing';
+import { formatCents, formatPrice, PAYMENTS_TEST_MODE, safeLink, STRIPE_HOSTS, TEST_MODE_NOTE } from '../../../avenue/billing';
 import { type AvenueReadSource, newSubmissionId } from '../../../avenue/readSource';
 import { formatDate, ordinal, useLoad } from './ui';
 import { useReducedMotion } from './motion';
@@ -130,7 +130,7 @@ export default function JoinView(props: IJoinViewProps): React.ReactElement {
                     <button key={p.planId} type="button" role="radio" aria-checked={on} className={`${s.jnPlan} ${on ? s.jnPlanOn : ''}`} onClick={() => set('planId', p.planId)}>
                       {on && <i className={s.jnCheck} aria-hidden="true">✓</i>}
                       <strong>{p.name}</strong>
-                      <b>{p.priceCents !== undefined ? formatCents(p.priceCents) : 'Price on request'}<small>/month</small></b>
+                      <b>{p.priceCents !== undefined ? formatPrice(p.priceCents) : 'Price on request'}<small>/month</small></b>
                       <span>{p.monthlyHours !== undefined ? `${p.monthlyHours} hours a month` : 'Hours set by Flavors'}</span>
                       {p.extraHourRate !== undefined && <span>Extra hours ${p.extraHourRate}/h</span>}
                     </button>
@@ -150,7 +150,7 @@ export default function JoinView(props: IJoinViewProps): React.ReactElement {
                 <label>Phone<input value={input.phone} maxLength={24} type="tel" autoComplete="tel" onChange={e => set('phone', e.target.value)} /></label>
                 <label>People on your team<input value={String(input.teamSize)} type="number" min={1} max={50} onChange={e => set('teamSize', Number(e.target.value))} /></label>
               </div>
-              <p className={s.cwHelp}>Your sign-in e-mail is used for your account; you do not need to type it.</p>
+              <p className={s.cwHelp}>We use your sign-in e-mail.</p>
             </>
           )}
           {step === 2 && (
@@ -176,7 +176,7 @@ export default function JoinView(props: IJoinViewProps): React.ReactElement {
                     <button key={m} type="button" role="radio" aria-checked={input.payMethod === m} className={`${s.jnPlan} ${input.payMethod === m ? s.jnPlanOn : ''}`} onClick={() => set('payMethod', m)}>
                       {input.payMethod === m && <i className={s.jnCheck} aria-hidden="true">✓</i>}
                       <strong>{m === 'Bank' ? 'Bank account (ACH)' : 'Card, Apple Pay or Google Pay'}</strong>
-                      <b>{c !== undefined ? formatCents(c) : '—'}<small>/month</small></b>
+                      <b>{c !== undefined ? formatPrice(c) : '-'}<small>/month</small></b>
                       <span>{m === 'Bank' ? 'No processing fee.' : plan && plan.cardPriceCents === plan.priceCents ? 'Fee already included.' : 'Includes a 3% card processing fee.'}</span>
                     </button>
                   );
@@ -184,7 +184,7 @@ export default function JoinView(props: IJoinViewProps): React.ReactElement {
               </div>
               {plan && (
                 <dl className={s.jnSum}>
-                  <div><dt>Plan</dt><dd>{plan.name}{plan.monthlyHours !== undefined ? ` · ${plan.monthlyHours} h/month` : ''}</dd></div>
+                  <div><dt>Plan</dt><dd>{plan.name}{plan.monthlyHours !== undefined ? ` · ${plan.monthlyHours} h a month` : ''}</dd></div>
                   <div><dt>Business</dt><dd>{input.businessName.trim()}</dd></div>
                   <div><dt>Payment day</dt><dd>{ordinal(input.collectionDay)} of each month</dd></div>
                   {input.payMethod === 'Card' && price !== undefined && plan.priceCents !== undefined && price > plan.priceCents && <div><dt>Card fee (3%)</dt><dd>{formatCents(price - plan.priceCents)} a month</dd></div>}
@@ -193,8 +193,8 @@ export default function JoinView(props: IJoinViewProps): React.ReactElement {
                 </dl>
               )}
               {props.onMockPay
-                ? <p className={s.jnNote} role="status">Payments are switched off during the preview. Nothing is charged; the button below takes you straight into Avenue.</p>
-                : <p className={s.cwHelp}>Today you pay for the days up to your first payment day; Stripe shows the exact amount before you confirm. {input.payMethod === 'Card' ? 'The 3% card fee is shown on Stripe\'s page before you pay.' : ''} Payment opens on Stripe&apos;s secure page; Avenue never sees your card or bank details.</p>}
+                ? <p className={s.jnNote} role="status">{TEST_MODE_NOTE}. The button below takes you straight into Avenue.</p>
+                : <>{PAYMENTS_TEST_MODE && <p className={s.testPill} role="note">{TEST_MODE_NOTE}</p>}<p className={s.cwHelp}>Today you pay for the days up to your first payment day; Stripe shows the exact amount before you confirm. {input.payMethod === 'Card' ? 'The 3% card fee is shown on Stripe\'s page before you pay.' : ''} Payment opens on Stripe&apos;s secure page; Avenue never sees your card or bank details.</p></>}
             </>
           )}
 

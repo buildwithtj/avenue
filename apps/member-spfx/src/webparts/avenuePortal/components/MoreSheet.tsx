@@ -18,15 +18,15 @@ interface IDest { key: TabKey; label: string; hint: string; icon: string; tone: 
 
 /** Everything that is not one of the four main tabs. Same tab keys and tabOn gating as the sidebar. */
 const DESTS: IDest[] = [
-  { key: 'checkin', label: 'Check in', hint: 'Entry, exit, wellness', icon: 'clipboard-check', tone: 'teal' },
-  { key: 'membership', label: 'Membership', hint: 'Plan and hours', icon: 'id-card', tone: 'gold' },
+  { key: 'checkin', label: 'Check in', hint: 'Entry and exit checklists, and team wellness', icon: 'clipboard-check', tone: 'teal' },
+  { key: 'membership', label: 'Membership', hint: 'Your plan and hours', icon: 'id-card', tone: 'gold' },
   { key: 'billing', label: 'Billing', hint: 'Invoices and payments', icon: 'credit-card', tone: 'sky' },
   { key: 'documents', label: 'Documents', hint: 'Permits and insurance', icon: 'file-text', tone: 'rose' },
-  { key: 'notices', label: 'Notices', hint: 'News from Flavors', icon: 'bell', tone: 'gold' },
-  { key: 'support', label: 'Messages', hint: 'Talk to Flavors', icon: 'message-square', tone: 'teal' },
-  { key: 'events', label: 'Events', hint: 'Private events', icon: 'sparkles', tone: 'slate' },
-  { key: 'storage', label: 'Storage', hint: 'Fridge and dry store', icon: 'archive', tone: 'sky' },
-  { key: 'team', label: 'My team', hint: 'People on your account', icon: 'users', tone: 'teal' },
+  { key: 'notices', label: 'Notices', hint: 'News and schedule changes', icon: 'bell', tone: 'gold' },
+  { key: 'support', label: 'Messages', hint: 'Ask a question or report a problem', icon: 'message-square', tone: 'teal' },
+  { key: 'events', label: 'Events', hint: 'Book the dining room for a private event', icon: 'sparkles', tone: 'slate' },
+  { key: 'storage', label: 'Storage', hint: 'Fridge, freezer and dry storage on request', icon: 'archive', tone: 'sky' },
+  { key: 'team', label: 'My team', hint: 'Names for the wellness check', icon: 'users', tone: 'teal' },
   { key: 'policies', label: 'Policies and help', hint: 'How things work', icon: 'shield-check', tone: 'slate' }
 ];
 

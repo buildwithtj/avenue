@@ -63,14 +63,15 @@ export default function NoticesView(props: INoticesViewProps): React.ReactElemen
       <PageHead
         eyebrow={props.facility.title}
         title="Notices"
-        lede={`News and updates from ${props.facility.title}.`}
+        lede="News and schedule changes."
         action={totalUnread.length > 0 ? <button type="button" className={r['secondary-button']} onClick={() => mark(totalUnread.map(n => n.id))}>Mark all as read ({totalUnread.length})</button> : undefined}
       />
-      <ModuleCard eyebrow={props.facility.title} title="Notices" count={`${all.length} ${shown === 'Recent' ? 'in the last 7 days' : 'total'}`}>
+      <ModuleCard title="All notices" count={`${all.length} ${shown === 'Recent' ? 'in the last 7 days' : 'total'}`}>
         <Tabs<'Recent' | 'All'> label="Show notices" value={shown} items={[{ key: 'Recent', label: 'Recent' }, { key: 'All', label: 'All' }]} onChange={setTab} />
         <div className={s.ntFilters} role="group" aria-label="Filter notices">
-          {(['All', 'Unread'] as Filter[]).concat(NOTICE_CATEGORIES).map(c => (
-            <button key={c} type="button" className={filter === c ? s.ntFilterOn : ''} aria-pressed={filter === c} onClick={() => setFilter(c)}>
+          {/* The Recent/All toggle is the only "All"; a chip filters, and tapping it again clears the filter. */}
+          {(['Unread'] as Filter[]).concat(NOTICE_CATEGORIES).map(c => (
+            <button key={c} type="button" className={filter === c ? s.ntFilterOn : ''} aria-pressed={filter === c} onClick={() => setFilter(filter === c ? 'All' : c)}>
               {c}<b>{countOf(c)}</b>
             </button>
           ))}

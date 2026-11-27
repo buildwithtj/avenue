@@ -105,7 +105,7 @@ export default function RangeSlider(props: IRangeSliderProps): React.ReactElemen
   };
   return (
     <div className={s.rs}>
-      <p className={s.rsSum}><b>{format(start)} – {format(end)}</b><span>{Math.round(((end - start) / 60) * 10) / 10} h</span></p>
+      <p className={s.rsSum}><b>{format(start)} - {format(end)}</b><span>{Math.round(((end - start) / 60) * 10) / 10} h</span></p>
       <div ref={track} className={s.rsTrack} onPointerDown={trackDown} data-dragging={drag ? '1' : undefined}>
         <span className={s.rsRail} aria-hidden="true" />
         <span ref={fill} className={s.rsFill} aria-hidden="true" style={{ ['--a' as string]: `${a}%`, ['--w' as string]: `${Math.max(0, b - a) / 100}` } as React.CSSProperties} />

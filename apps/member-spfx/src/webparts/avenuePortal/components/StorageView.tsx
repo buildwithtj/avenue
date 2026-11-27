@@ -1,7 +1,7 @@
 import * as React from 'react';
 import s from './Site.module.scss';
 import { STORAGE_ITEMS, type IMyStorageRequest, type StorageItem } from '../../../avenue/contracts';
-import { formatCents } from '../../../avenue/billing';
+import { formatCents, formatPrice } from '../../../avenue/billing';
 import { estimateCents, offerFor, OFFERS, validateStorage } from '../../../avenue/storage';
 import { type AvenueReadSource, newSubmissionId } from '../../../avenue/readSource';
 import { toast, celebrate } from './feedback';
@@ -36,13 +36,13 @@ export default function StorageView(props: IStorageViewProps): React.ReactElemen
 
   return (
     <section className={s.nm} aria-label="Storage request">
-      <ModuleCard eyebrow="STORAGE" title="Storage">
-        <p className={rx['module-lede']}>Ask for fridge, freezer or dry storage. Flavors confirms availability and the price before anything is billed.</p>
+      <ModuleCard ariaLabel="New storage request">
+        <p className={rx['module-lede']}>Flavors confirms availability and the price before anything is billed.</p>
       <form className={s.nmForm} onSubmit={submit}>
         <label>What do you need?
           <select value={item} onChange={e => setItem(e.target.value as StorageItem | '')}>
             <option value="">Choose…</option>
-            {STORAGE_ITEMS.map(i => { const o = OFFERS.filter(x => x.item === i)[0]; return <option key={i} value={i}>{o.label}{o.cents !== undefined ? ` · ${formatCents(o.cents)} ${o.per}` : ' · price on request'}</option>; })}
+            {STORAGE_ITEMS.map(i => { const o = OFFERS.filter(x => x.item === i)[0]; return <option key={i} value={i}>{o.label}{o.cents !== undefined ? ` · ${formatPrice(o.cents)} ${o.per}` : ' · price on request'}</option>; })}
           </select>
         </label>
         <label>Quantity<input type="number" inputMode="numeric" min={1} max={20} value={qty} onChange={e => setQty(e.target.value)} /></label>
@@ -56,7 +56,7 @@ export default function StorageView(props: IStorageViewProps): React.ReactElemen
         <div className={s.cwActions}><button type="submit" className={s.cwYes} disabled={busy}>{busy ? 'Sending…' : 'Send request'}</button></div>
       </form>
       </ModuleCard>
-      <ModuleCard eyebrow="HISTORY" title="Your requests">
+      <ModuleCard title="Your requests">
       <LoadError error={mine.error} what="your storage requests" onRetry={mine.reload} />
       {mine.data && mine.data.length === 0 && <Empty>No storage requests yet.</Empty>}
       <ul className={s.nmList}>

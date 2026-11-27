@@ -93,17 +93,17 @@ const SIDE: { label: string; items: { key: TabKey; label: string; icon: string }
 const CRUMB: Partial<Record<TabKey, string>> = { home: 'Overview', book: 'Book', bookings: 'My bookings', calendar: 'Schedule', notices: 'Notices', checkin: 'Check in', documents: 'Documents', billing: 'Billing', membership: 'Membership', support: 'Messages', events: 'Events', storage: 'Storage', team: 'My team', policies: 'Policies and help', join: 'Join' };
 
 /** Header for every screen without its own: eyebrow, title, one line. Same band and type size as the main pages. */
-const PAGE_HEAD: Partial<Record<TabKey, { eyebrow: string; title: string; lede: string }>> = {
-  checkin: { eyebrow: 'During your booking', title: 'Check in', lede: 'Arrive, leave, wellness.' },
-  documents: { eyebrow: 'Your account', title: 'Documents and compliance', lede: 'Permits and insurance, kept current.' },
-  billing: { eyebrow: 'Your account', title: 'Billing and payments', lede: 'Invoices and payments.' },
-  membership: { eyebrow: 'Your account', title: 'My membership', lede: 'Your plan and hours.' },
-  support: { eyebrow: 'Help', title: 'Messages with Flavors', lede: 'Ask a question or report a problem. Flavors replies here, in Avenue.' },
-  events: { eyebrow: 'Book', title: 'Event request', lede: 'Book the dining room for a private event. Flavors confirms every request.' },
-  storage: { eyebrow: 'Your account', title: 'Storage', lede: 'Fridge, freezer and dry storage on request.' },
-  team: { eyebrow: 'Your account', title: 'My team', lede: 'The people who work with you. Their names fill in the wellness check.' },
-  policies: { eyebrow: 'Help', title: 'Policies and help', lede: 'How booking, cancelling, payments and documents work at Flavors.' },
-  join: { eyebrow: 'Welcome', title: 'Join', lede: 'Choose a plan to start booking.' }
+const PAGE_HEAD: Partial<Record<TabKey, { title: string; lede: string }>> = {
+  checkin: { title: 'Check in', lede: 'Entry and exit checklists, and team wellness.' },
+  documents: { title: 'Documents', lede: 'Permits and insurance, kept current.' },
+  billing: { title: 'Billing', lede: 'Invoices and payments.' },
+  membership: { title: 'Membership', lede: 'Your plan and hours.' },
+  support: { title: 'Messages', lede: 'Ask a question or report a problem. Flavors replies here.' },
+  events: { title: 'Events', lede: 'Book the dining room for a private event.' },
+  storage: { title: 'Storage', lede: 'Fridge, freezer and dry storage on request.' },
+  team: { title: 'My team', lede: 'The people who work with you. Their names fill in the wellness check.' },
+  policies: { title: 'Policies and help', lede: 'How booking, cancelling, payments and documents work at Flavors.' },
+  join: { title: 'Join', lede: 'Choose a plan to start booking.' }
 };
 /** Account screens open from the avatar menu; while one is open the avatar shows as the current place. */
 const SIDE_ICON: Record<string, string> = { home: 'layout-dashboard', book: 'cooking-pot', bookings: 'calendar-days', calendar: 'clock-3', checkin: 'clipboard-check', membership: 'id-card', billing: 'credit-card', documents: 'file-text', notices: 'bell', support: 'message-square', events: 'sparkles', storage: 'archive', policies: 'shield-check', team: 'users' };
@@ -234,7 +234,10 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
     setTabRaw(prev => { if (prev !== t) { setDir(order(t) >= order(prev) ? 'right' : 'left'); buzz('tap'); } return t; });
     setVisited(v => (v.indexOf(t) >= 0 ? v : v.concat(t)));
   };
-  const setTab = (t: TabKey): void => { if (tabOn(t, isDemo)) { go(t); setMenu(false); if (t !== 'bookings') { setDeep(undefined); } } };
+  // Pages opened from the More sheet keep "More" lit on the phone tab bar; any other navigation clears it.
+  const [viaMore, setViaMore] = React.useState<boolean>(false);
+  const setTab = (t: TabKey): void => { if (tabOn(t, isDemo)) { go(t); setMenu(false); setViaMore(false); if (t !== 'bookings') { setDeep(undefined); } } };
+  const goFromMore = (t: TabKey): void => { setTab(t); setViaMore(true); };
   const [prefs, setPrefs] = React.useState<IFeedbackPrefs>(readPrefs);
   const setPref = (k: keyof IFeedbackPrefs, v: boolean): void => { const n: IFeedbackPrefs = { ...prefs, [k]: v }; setPrefs(n); writePrefs(n); if (v && k === 'sound') { chime('info'); } if (v && k === 'haptics') { buzz('success'); } };
   const [preMode, setPreMode] = React.useState<'equipment' | 'whole-kitchen' | 'dining' | 'private-event' | undefined>();
@@ -388,7 +391,8 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
   }, [reduced]);
   useScrollFx(rootRef, size !== 'wide', `${tab}-${fresh}-${!!portal.data}-${visited.length}`);
   const phoneKeys: TabKey[] = PHONE.filter(k => tabOn(k));
-  const phoneIndex: number = phoneKeys.indexOf(here);
+  const phoneHere: TabKey | undefined = viaMore ? undefined : here;
+  const phoneIndex: number = phoneHere === undefined ? -1 : phoneKeys.indexOf(phoneHere);
   useRevealFallback(rootRef, React.useMemo(() => revealSelector(s as unknown as Record<string, string>), []), s.rvPending, reduced, `${tab}-${fresh}-${!!portal.data}`);
   // A new section starts at its top, not at the scroll position of the last one.
   const firstTab: React.MutableRefObject<boolean> = React.useRef<boolean>(true);
@@ -413,16 +417,16 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
         <>
           {h && (
             <PageHead
-              eyebrow={`${d.facility.title} · ${h.eyebrow}`.toUpperCase()}
+              eyebrow={d.facility.title}
               title={h.title}
               lede={h.lede}
-              action={t === 'billing' && tabOn('membership') ? <button type="button" className={r['primary-button']} onClick={() => setTab('membership')}>My membership</button>
-                : t === 'membership' && tabOn('billing') ? <button type="button" className={r['primary-button']} onClick={() => setTab('billing')}>Billing and payments</button> : undefined}
+              action={t === 'billing' && tabOn('membership') ? <button type="button" className={s.crossLink} onClick={() => setTab('membership')}>My membership ›</button>
+                : t === 'membership' && tabOn('billing') ? <button type="button" className={s.crossLink} onClick={() => setTab('billing')}>Billing and payments ›</button> : undefined}
             />
           )}
         <div className={s.container}>
           <div className={`${s.legacy} ${s.pgBody}`}>
-            {t === 'checkin' && <CheckInView source={source} facility={d.facility} rosterOn={tabOn('team', isDemo)} />}
+            {t === 'checkin' && <CheckInView source={source} facility={d.facility} rosterOn={tabOn('team', isDemo)} resources={d.resources} />}
             {t === 'documents' && <DocumentsView source={source} timeZone={d.facility.timeZone} staffUpload={staffUpload} userEmail={email} />}
             {t === 'billing' && <BillingView isDemo={isDemo} source={source} userEmail={email} timeZone={d.facility.timeZone} mockPayments={MOCK_PAYMENTS} />}
             {t === 'membership' && <MembershipView source={source} userEmail={email} onNavigate={setTab} />}
@@ -486,7 +490,7 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
               {tabOn('support') && (
                 <div className={r['help-card']}>
                   <div className={r['help-icon']}><RefIcon name="circle-question-mark" size={17} /></div>
-                  <b>Need a hand?</b><p>Message Flavors and they reply here in Avenue.</p>
+                  <b>Need a hand?</b><p>Message Flavors.</p>
                   <button type="button" onClick={() => setTab('support')}>Message Flavors <RefIcon name="arrow-up-right" size={13} /></button>
                 </div>
               )}
@@ -589,7 +593,7 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
               <details className={s.footMore}>
                 <summary>More links</summary>
                 <nav aria-label="More links">
-                  {tabOn('events') && <button type="button" onClick={() => setTab('events')}>Event request</button>}
+                  {tabOn('events') && <button type="button" onClick={() => setTab('events')}>Events</button>}
                   {tabOn('storage') && <button type="button" onClick={() => setTab('storage')}>Storage</button>}
                   {tabOn('support') && <button type="button" onClick={() => setTab('support')}>Message Flavors</button>}
                   {POLICY_SECTIONS.map(x => <button key={x.id} type="button" onClick={() => { setTab('policies'); window.setTimeout(() => { const el: HTMLElement | null = document.getElementById(`policy-${x.id}`); if (el && el.scrollIntoView) { el.scrollIntoView({ block: 'start' }); } }, 60); }}>{x.title}</button>)}
@@ -602,13 +606,13 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
         </div>
 
         <ProfileDrawer open={menu} onClose={() => setMenu(false)} source={source} isDemo={isDemo} userName={userDisplayName} userEmail={email} timeZone={portal.data ? portal.data.facility.timeZone : undefined} prefs={prefs} setPref={setPref} full={full} setFull={setFull} onNavigate={setTab} profileOnly={size === 'phone'} />
-        <MoreSheet open={more} onClose={() => setMore(false)} onNavigate={setTab} isDemo={isDemo} badges={{ notices: unreadList.length, bookings: alerts.length }} />
+        <MoreSheet open={more} onClose={() => setMore(false)} onNavigate={goFromMore} isDemo={isDemo} badges={{ notices: unreadList.length, bookings: alerts.length }} />
         <Toaster />
         <Celebration />
         <nav className={s.tabbar} aria-label="Avenue sections (phone)" data-book={here === 'book' ? '1' : undefined} style={{ ['--tabs' as string]: phoneKeys.length + 1, ['--ti' as string]: phoneIndex < 0 ? phoneKeys.length : phoneIndex } as React.CSSProperties}>
           <span className={s.tabInk} aria-hidden="true" />
           {phoneKeys.map(k => { const t = PRIMARY.filter(x => x.key === k)[0]; return (
-            <button key={t.key} type="button" className={`${s.tab} ${here === t.key ? s.tabOn : ''} ${t.key === 'book' ? s.tabBook : ''}`} aria-current={here === t.key ? 'page' : undefined} onClick={() => setTab(t.key)}>
+            <button key={t.key} type="button" className={`${s.tab} ${phoneHere === t.key ? s.tabOn : ''} ${t.key === 'book' ? s.tabBook : ''}`} aria-current={phoneHere === t.key ? 'page' : undefined} onClick={() => setTab(t.key)}>
               <Icon d={TAB_ICON[t.key] || t.icon} /><span>{t.key === 'bookings' ? 'Bookings' : t.label}</span>{t.key === 'bookings' && alerts.length > 0 && <i className={s.navDot} aria-hidden="true" />}
             </button>
           ); })}

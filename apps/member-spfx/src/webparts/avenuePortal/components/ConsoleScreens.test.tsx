@@ -165,7 +165,7 @@ describe('book on the board', () => {
     await tap('grill-1', 17);
     await tap('grill-1', 17.5);                                  // 17:00 to 18:00
     const block = document.querySelector('[data-testid="block"]') as HTMLElement;
-    expect(block.textContent).toContain('5:00 PM – 6:00 PM');
+    expect(block.textContent).toContain('5:00 PM - 6:00 PM');
     expect(document.querySelector('[role="dialog"]')).toBeNull();                 // the dock is one slim row; long text is in Details
     expect((document.querySelector('aside[aria-label="Your booking"]') as HTMLElement).textContent).not.toContain('Entry from');
     await click(button(/^Details$/));
@@ -173,7 +173,7 @@ describe('book on the board', () => {
     expect(text).toContain('Entry from 4:30 PM.');
     expect(text).toContain('Clean-up until 6:30 PM, free.');
     expect(text).toContain('Flavors reviews every request');
-    await click(button(/Request this slot/));
+    await click(button(/Send request/));
     await flush();
     expect(sent.length).toBe(1);
     expect(sent[0].EquipmentIds).toBe('stove-1;grill-1;prep-1;prep-2');
@@ -189,7 +189,7 @@ describe('book on the board', () => {
     expect(slots[0].textContent).toContain('Earliest');
     await click(slots[0]);
     expect(document.querySelector('[data-testid="block"]')).not.toBeNull();
-    expect(button(/Request this slot/)).toBeDefined();
+    expect(button(/Send request/)).toBeDefined();
   });
 
   it('start and end pickers work without dragging, and a drag draws too', async () => {
@@ -198,11 +198,11 @@ describe('book on the board', () => {
     const [start, end] = Array.from(document.querySelectorAll('[aria-label="Start and end, without dragging"] select')) as HTMLSelectElement[];
     expect(end.disabled).toBe(true);
     await act(async () => { (Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value') as PropertyDescriptor).set!.call(start, '540'); start.dispatchEvent(new Event('change', { bubbles: true })); });
-    expect(document.querySelector('[data-testid="block"]')?.textContent).toContain('9:00 AM – 11:00 AM');
+    expect(document.querySelector('[data-testid="block"]')?.textContent).toContain('9:00 AM - 11:00 AM');
     const track = document.querySelector('[data-track="grill-1"]') as HTMLElement;
     const ev = (type: string, hour: number): MouseEvent => new MouseEvent(type, { bubbles: true, clientX: hour * 40 + 5 });
     await act(async () => { track.dispatchEvent(ev('pointerdown', 12)); track.dispatchEvent(ev('pointermove', 13)); track.dispatchEvent(ev('pointerup', 13)); });
-    expect(document.querySelector('[data-testid="block"]')?.textContent).toContain('12:00 PM – 1:30 PM');
+    expect(document.querySelector('[data-testid="block"]')?.textContent).toContain('12:00 PM - 1:30 PM');
   });
 });
 
@@ -274,7 +274,7 @@ describe('schedule', () => {
     await flush();
     expect(document.querySelector('[data-lane="stove-1"]')?.textContent).toContain('Sample Bakery');
     expect(document.querySelectorAll('[data-lane]').length).toBe(resources.length + 1);
-    await click(button(/^Week view$/));
+    await click(button(/^Week$/));
     await flush();
     const cell = document.querySelector('[aria-label^="Stove #1"][aria-label*="booked 8%"]');
     expect(cell).not.toBeNull();
@@ -284,7 +284,7 @@ describe('schedule', () => {
     await flush();
     await click(button(/^Timeline$/));
     await flush();
-    expect(document.querySelector('[data-testid="schedule-list"] article[data-unit="stove-1"]')?.textContent).toContain('12:00 PM – 2:00 PM');
+    expect(document.querySelector('[data-testid="schedule-list"] article[data-unit="stove-1"]')?.textContent).toContain('12:00 PM - 2:00 PM');
     expect(document.querySelector('[data-testid="board"]')).toBeNull();
   });
   it('opens a booked day in a sheet on phones, so the member does not scroll past the month grid', async () => {
@@ -322,7 +322,7 @@ describe('notices', () => {
     expect(document.querySelectorAll('[data-testid="unread-dot"]').length).toBe(3);
     await click(button(/^Urgent/));
     expect(titles()).toEqual(['Urgent one']);
-    await click(button(/^All\d/)); // P3: the "All" tab (no count) now sits before the "All" filter chip
+    await click(button(/^Urgent/)); // 1.10: tapping the active chip again clears the filter (no separate "All" chip)
     await act(async () => { (document.querySelector('[data-notice="2"] button') as HTMLButtonElement).click(); });
     const dialog = document.querySelector('[role="dialog"]') as HTMLElement;
     expect(dialog.getAttribute('aria-label')).toBe('Old pinned');

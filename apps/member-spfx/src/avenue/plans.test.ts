@@ -12,7 +12,7 @@ describe('member plans (P4)', () => {
     const std: IPlan = { planId: 'demo-plan-std', name: 'Standard', group: 'Emerging', monthlyHours: 10, priceCents: 50000, openToNew: true };
     expect(memberPlan({ planId: 'demo-plan-std' }, [std])?.name).toBe('Standard');
     expect(memberPlan({ planId: 'demo-plan-std', planName: 'Standard row' }, [])?.name).toBe('Standard row');
-    expect(memberPlan({ planId: 'demo-plan-std' }, [])?.name).toBe('demo-plan-std');
+    expect(memberPlan({ planId: 'demo-plan-std' }, [])?.name).toBe('Plan not named yet');
     expect(memberPlan({}, [std])).toBeUndefined();
   });
   it('falls back to the sheet price for a legacy plan listPlans does not return', () => {
@@ -70,7 +70,7 @@ describe('member plans (P4)', () => {
     expect(msg.category).toBe('Billing');
     expect(msg.subject).toBe('Plan change request: Emerging-10 → Emerging-20');
     expect(msg.body).toContain('Current: Emerging-10 ($800.00/month · 10 h · $75.00 per extra hour)');
-    expect(msg.body).toContain('Requested: Emerging-20 ($1400.00/month · 20 h · $65.00 per extra hour)');
+    expect(msg.body).toContain('Requested: Emerging-20 ($1,400.00/month · 20 h · $65.00 per extra hour)');
     expect(msg.body).toContain('Note: more evenings');
   });
   it('labels invoices Paid / Open / Past due / Void', () => {

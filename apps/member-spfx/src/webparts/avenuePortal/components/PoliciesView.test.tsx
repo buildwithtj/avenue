@@ -21,7 +21,7 @@ describe('Policies and help', () => {
     await act(async () => { await new Promise(resolve => setTimeout(resolve, 20)); });
     POLICY_SECTIONS.forEach(x => expect(host.querySelector(`#policy-${x.id}`)).not.toBeNull());
     const text: string = host.textContent || '';
-    expect(text).toMatch(/Emerging-10.*\$800\.00.*10 h.*\$75/);
+    expect(text).toMatch(/Emerging-10.*\$800.*10 h.*\$75/);
     expect(text).not.toMatch(/Legacy-Launch/);
     expect(text).toMatch(/30 minutes before/);
     expect(text).toMatch(/3% is added/);

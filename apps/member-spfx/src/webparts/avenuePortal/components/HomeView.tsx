@@ -1,15 +1,17 @@
 import * as React from 'react';
 import s from './Site.module.scss';
-import type { ICalendarEntry, IMyDocumentSubmission, IMyFlag, IMyMembership, IMyRequest, INotice } from '../../../avenue/contracts';
+import type { DocType, ICalendarEntry, IMyDocumentSubmission, IMyFlag, IMyMembership, IMyRequest, INotice } from '../../../avenue/contracts';
 import { groupByDay, localDay, localTime, queryWindow } from '../../../avenue/calendar';
 import { equipmentChips } from '../../../avenue/ui-helpers';
 import type { AvenueReadSource } from '../../../avenue/readSource';
 import type { IInvoice } from '../../../avenue/billing';
-import { balanceDueCents, formatCents } from '../../../avenue/billing';
+import { balanceDueCents, formatCents, formatPrice } from '../../../avenue/billing';
 import { hoursThisMonth } from '../../../avenue/booking';
 import { actionItems, facilityDayLabel, hoursSummary, isBookingBlocked, newestPerType, pickNextBooking } from '../../../avenue/home';
 import type { IActionItem, INextBooking } from '../../../avenue/home';
 import { tabOn } from '../../../avenue/release';
+import { durationText } from '../../../avenue/windows';
+import { requiredOrSheet, requiredRows, requiredSummary, type IRequiredRow } from '../../../avenue/compliance';
 import { categoryGroups, phaseView } from '../../../avenue/ui-view';
 import { buildBusyMap, dayTimeline } from '../../../avenue/availability';
 import { unitStatus } from './UnitCards';
@@ -58,19 +60,21 @@ function useNow(ms: number): number {
   return now;
 }
 
-const mins = (ms: number): string => { const m: number = Math.max(0, Math.round(ms / 60000)); const h: number = Math.floor(m / 60); return h > 0 ? `${h}h ${m % 60}m` : `${m}m`; };
+// One countdown format app-wide ("22 h 8 min"), the same as the Starts-in line.
+const mins = (ms: number): string => durationText(ms);
 
 /** The member's next or current booking: a ring (time left in the kitchen, or time to start), one line of when, the kit, two actions. */
 function Live(props: { next?: INextBooking; data: IPortalData; now: number; onNavigate: (t: TabKey) => void; onOpen: (id: string, action?: 'extend') => void }): React.ReactElement {
   const { next, data, now } = props;
   const tz: string = data.facility.timeZone;
+  const kitMax: number = useSize() === 'phone' ? 3 : 5; // one row of icons on a phone
   if (!next) {
     return (
       <div className={`${s.lp} ${s.lpEmpty}`} aria-label="Next booking">
         <div className={s.lpText}>
           <span className={s.lpLabel}>Next booking</span>
           <h2 className={s.lpHead}>Nothing booked yet</h2>
-          <p className={s.lpMeta}>Choose a day, your hours and the equipment. Flavors confirms.</p>
+          <p className={s.lpMeta}>Pick a day, your hours and the equipment.</p>
         </div>
         {tabOn('book') && <div className={s.lpAct}><button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={() => props.onNavigate('book')}>Book kitchen time</button></div>}
       </div>
@@ -93,8 +97,8 @@ function Live(props: { next?: INextBooking; data: IPortalData; now: number; onNa
       <div className={s.lpText}>
         <span className={s.lpLabel}><i aria-hidden="true" />{ph.headline.toLowerCase().indexOf(ph.label.toLowerCase()) === 0 ? (inside ? 'Now' : 'Next') : ph.label}</span>
         <h2 className={s.lpHead} data-testid="live-headline">{ph.headline}</h2>
-        <p className={s.lpMeta}>{facilityDayLabel(localDay(r.startUtc, tz), facilityToday(now, tz))}, {localTime(r.startUtc, tz)} – {localTime(r.endUtc, tz)}</p>
-        {kit.length > 0 && <ul className={s.lpKit} aria-label="Equipment">{kit.slice(0, 5).map(u => <li key={u.resourceId} title={u.title}><EquipmentArt unit={u} size="xs" /></li>)}{kit.length > 5 && <li className={s.lpMore}>+{kit.length - 5}</li>}</ul>}
+        <p className={s.lpMeta}>{facilityDayLabel(localDay(r.startUtc, tz), facilityToday(now, tz))}, {localTime(r.startUtc, tz)} - {localTime(r.endUtc, tz)}</p>
+        {kit.length > 0 && <ul className={s.lpKit} aria-label="Equipment">{kit.slice(0, kitMax).map(u => <li key={u.resourceId} title={u.title}><EquipmentArt unit={u} size="xs" /></li>)}{kit.length > kitMax && <li className={s.lpMore}>+{kit.length - kitMax}</li>}</ul>}
       </div>
       <div className={s.lpAct}>
         {ph.extend && <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={() => props.onOpen(r.requestId, 'extend')}>Extend</button>}
@@ -244,7 +248,9 @@ export default function HomeView(props: IHomeViewProps): React.ReactElement {
   const hours = hoursSummary(hoursThisMonth(d.requests, tz, new Date(now)), d.membership?.monthlyHours);
   const owed: string = d.invoices === 'not-connected' ? 'Not available' : formatCents(balanceDueCents(d.invoices));
   const recent: INotice[] = (props.notices || d.notices).slice(0, 3);
-  const docsOnFile: number = newestPerType(d.documents).size;
+  // Same computation as the Documents page, so both screens show the same figures.
+  const reqRows: IRequiredRow[] = requiredRows(requiredOrSheet(d.required as DocType[]), d.documents, todayYmd);
+  const reqN = requiredSummary(reqRows);
   const docIssues: number = items.filter(i => i.target === 'documents').length;
   const weekEnd: number = now + 7 * 86400000;
   const agenda: IMyRequest[] = d.requests.filter(r => r.status !== 'Cancelled' && r.status !== 'Declined' && Date.parse(r.endUtc) > now && Date.parse(r.startUtc) < weekEnd);
@@ -252,7 +258,8 @@ export default function HomeView(props: IHomeViewProps): React.ReactElement {
   const first: string = (props.userName || '').split(' ')[0];
 
   const goBook = (m?: 'equipment' | 'whole-kitchen' | 'dining' | 'private-event'): void => { if (props.onBook) { props.onBook(m); } else { onNavigate('book'); } };
-  const groupsFree = categoryGroups(data.resources, true).map(g => ({ g, free: g.units.filter(u => unitStatus((homeTl.rows.filter(r => r.unitId === u.resourceId)[0] || { segments: [] }).segments, homeTl, tz, now).free).length }));
+  // Same set as Schedule's count: bookable cooking units (prep tables come with every booking, so they are not counted).
+  const groupsFree = categoryGroups(data.resources).map(g => ({ g, free: g.units.filter(u => unitStatus((homeTl.rows.filter(r => r.unitId === u.resourceId)[0] || { segments: [] }).segments, homeTl, tz, now).free).length }));
 
   const hr: number = Number(new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', hour12: false }).format(new Date(now))) % 24;
   const greet: string = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
@@ -262,10 +269,10 @@ export default function HomeView(props: IHomeViewProps): React.ReactElement {
   const dateLine: string = new Intl.DateTimeFormat('en-US', { timeZone: tz, weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(now)).toUpperCase();
 
   const shortcutItems = [
-        ...(tabOn('book') ? [{ key: 'book', label: 'Book', icon: 'cooking-pot', onClick: () => goBook() }] : []),
         ...(tabOn('bookings') ? [{ key: 'bookings', label: 'My bookings', icon: 'calendar-days', onClick: () => onNavigate('bookings') }] : []),
         ...(tabOn('checkin') ? [{ key: 'checkin', label: 'Check in', icon: 'clipboard-check', onClick: () => onNavigate('checkin') }] : []),
-        ...(tabOn('documents') ? [{ key: 'documents', label: 'Documents', icon: 'file-text', onClick: () => onNavigate('documents'), badge: docIssues }] : [])
+        ...(tabOn('documents') ? [{ key: 'documents', label: 'Documents', icon: 'file-text', onClick: () => onNavigate('documents'), badge: docIssues }] : []),
+        ...(tabOn('support') ? [{ key: 'support', label: 'Messages', icon: 'message-square', onClick: () => onNavigate('support') }] : [])
       ];
   return (
     <div className={s.h4} ref={homeRef} data-cover="0">
@@ -273,7 +280,7 @@ export default function HomeView(props: IHomeViewProps): React.ReactElement {
         facility={data.facility.title}
         eyebrow={dateLine}
         title={`${greet}${first ? `, ${first}` : ''}`}
-        lede="Open 24 hours · Flavors confirms every booking."
+        lede="Open 24 hours."
         pill={next ? `${now < Date.parse(next.request.startUtc) ? 'Next booking in' : 'In the kitchen,'} ${nextTxt}${now < Date.parse(next.request.startUtc) ? '' : ' left'}` : 'Open 24 hours'}
         onBook={tabOn('book') ? () => goBook() : undefined}
       >
@@ -292,16 +299,7 @@ export default function HomeView(props: IHomeViewProps): React.ReactElement {
       <section aria-label="At a glance" className={r['home-sec']}>
         <header className={r['sec-head']}><span className={r['sec-ico']} aria-hidden="true"><RefIcon name="activity" size={16} /></span><h2>Your month</h2></header>
         <div className={r['kpi-grid']}>
-          {tabOn('bookings') && (() => {
-            const st: number = next ? Date.parse(next.request.startUtc) : 0;
-            const inside: boolean = !!next && now >= st;
-            return (
-              <Kpi label="Next booking" icon="calendar-days" value={next ? nextTxt : 'None'}
-                pill={!next ? { text: 'Nothing booked', tone: 'info' } : inside ? { text: 'In the kitchen', tone: 'ok' } : next.request.status === 'Approved' ? { text: 'Approved', tone: 'ok' } : { text: 'Waiting for Flavors', tone: 'warn' }}
-                detail={next ? `${inside ? 'Left · ends' : 'To start ·'} ${inside ? localTime(next.request.endUtc, tz) : `${facilityDayLabel(localDay(next.request.startUtc, tz), todayYmd)}, ${localTime(next.request.startUtc, tz)}`}` : 'Pick a day and your hours'}
-                action={next ? { text: 'View booking', go: () => open(next.request.requestId) } : tabOn('book') ? { text: 'Book now', go: () => goBook() } : undefined} />
-            );
-          })()}
+          {/* Next booking is shown by the hero pill and the next-booking card, so it has no KPI tile here. */}
           {d.membership && (
             <Kpi testId="hours-block" label="Plan hours" icon="clock-3" value={`${hours.used} h`}
               pill={hours.allowance === undefined ? { text: 'Plan not set up', tone: 'info' } : hours.over > 0 ? { text: `${hours.over} h over`, tone: 'bad' } : (hours.left || 0) <= hours.allowance * 0.2 ? { text: `${hours.left || 0} h left`, tone: 'warn' } : { text: 'On track', tone: 'ok' }}
@@ -309,15 +307,15 @@ export default function HomeView(props: IHomeViewProps): React.ReactElement {
               action={tabOn('membership') ? { text: 'View plan', go: () => onNavigate('membership') } : undefined} />
           )}
           {tabOn('documents') && (
-            <Kpi label="Documents" icon="file-text" value={`${docsOnFile} on file`}
-              pill={docIssues > 0 ? { text: 'Needs attention', tone: 'bad' } : docsOnFile === 0 ? { text: 'None sent yet', tone: 'warn' } : { text: 'All current', tone: 'ok' }}
-              detail={docIssues > 0 ? `${docIssues} to review` : docsOnFile === 0 ? 'Send your permits and insurance' : 'Nothing to review'}
-              action={{ text: docIssues > 0 ? 'Review docs' : 'View docs', go: () => onNavigate('documents') }} />
+            <Kpi label="Documents" icon="file-text" value={`${reqN.current} of ${reqRows.length}`}
+              pill={reqN.missing + reqN.expired > 0 ? { text: 'Needs attention', tone: 'bad' } : reqN.expiring > 0 ? { text: 'Expiring soon', tone: 'warn' } : { text: 'All current', tone: 'ok' }}
+              detail={`Current · ${reqN.missing + reqN.expired > 0 ? `${reqN.missing + reqN.expired} still to send` : reqN.expiring > 0 ? `${reqN.expiring} expiring soon` : 'nothing missing'}`}
+              action={{ text: docIssues > 0 ? 'Review documents' : 'View documents', go: () => onNavigate('documents') }} />
           )}
           {tabOn('billing') && (() => {
             const due: number = d.invoices === 'not-connected' ? 0 : balanceDueCents(d.invoices);
             return (
-              <Kpi label="Balance due" icon="credit-card" value={d.invoices === 'not-connected' ? '—' : owed}
+              <Kpi label="Balance due" icon="credit-card" value={d.invoices === 'not-connected' ? '-' : owed}
                 pill={d.invoices === 'not-connected' ? { text: 'Not available', tone: 'info' } : due > 0 ? { text: 'Payment due', tone: 'warn' } : { text: 'Paid up', tone: 'ok' }}
                 detail={isDemo && d.invoices !== 'not-connected' ? 'Demo figures' : d.membership && d.membership.collectionDay !== undefined ? `Collected on the ${ordinal(d.membership.collectionDay)}` : 'From your invoices'}
                 action={{ text: 'View billing', go: () => onNavigate('billing') }} />
@@ -337,13 +335,13 @@ export default function HomeView(props: IHomeViewProps): React.ReactElement {
             <section className={r['schedule-card']} aria-label="Coming up" data-reveal>
               <div className={r['section-header']}><div><h2>Coming up</h2><p>Your bookings in the next 7 days</p></div><button type="button" className={r['text-button']} onClick={() => onNavigate('bookings')}>All bookings</button></div>
               {agenda.length === 0 ? (
-                <div className={s.wkEmpty}><EquipmentArt hint="Stove" size="md" /><div><strong>Nothing booked in the next 7 days</strong><p>Choose a day and your hours to reserve equipment.</p></div>{tabOn('book') && <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={() => goBook()}>Book</button>}</div>
+                <div className={s.wkEmpty}><EquipmentArt hint="Stove" size="md" /><div><strong>Nothing booked in the next 7 days</strong><p>Pick a day and your hours to reserve equipment.</p></div>{tabOn('book') && <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={() => goBook()}>Book</button>}</div>
               ) : (
                 <div className={r['module-booking-list']} style={{ padding: '0 18px 18px' }}>
                   {agenda.slice(0, 4).map(rq => (
                     <article key={rq.requestId} className={r['module-row']} data-reveal>
                       <span className={`${r['tenant-avatar']} ${r.teal}`}>{localDay(rq.startUtc, tz).slice(8)}</span>
-                      <div className={r['module-row-copy']}><b>{localTime(rq.startUtc, tz)} – {localTime(rq.endUtc, tz)}</b><span className={s.kitChips}>{((ch: string[]) => ch.slice(0, 2).map(c => <i key={c}>{c}</i>).concat(ch.length > 2 ? [<i key="more">+{ch.length - 2}</i>] : []))(equipmentChips(rq.space, rq.equipmentIds || [], data.resources))}</span></div>
+                      <div className={r['module-row-copy']}><b>{localTime(rq.startUtc, tz)} - {localTime(rq.endUtc, tz)}</b><span className={s.kitChips}>{((ch: string[]) => ch.slice(0, 2).map(c => <i key={c}>{c}</i>).concat(ch.length > 2 ? [<i key="more">+{ch.length - 2}</i>] : []))(equipmentChips(rq.space, rq.equipmentIds || [], data.resources))}</span></div>
                       <span className={r['module-row-time']}>{facilityDayLabel(localDay(rq.startUtc, tz), todayYmd)}</span>
                       <span className={`${r['module-status']} ${rq.status === 'Approved' ? '' : r['is-pending']}`}>{rq.status === 'Approved' ? 'Approved' : 'Waiting'}</span>
                       <button type="button" className={r['module-action']} onClick={() => open(rq.requestId)}>Details</button>
@@ -358,7 +356,7 @@ export default function HomeView(props: IHomeViewProps): React.ReactElement {
           {d.membership && tabOn('membership') && (
             <section className={r['occupancy-card']} aria-label="My plan" data-reveal>
               <div className={`${r['section-header']} ${r.compact}`}><div><h2>My plan</h2><p>{d.membership.monthlyHours !== undefined ? `${d.membership.monthlyHours} hours a month` : 'Hours not set up yet'}</p></div><button type="button" className={r['text-button']} onClick={() => onNavigate('membership')}>Manage</button></div>
-              <div className={r['occupancy-summary']} style={{ padding: '0 18px 18px' }}><b>{d.membership.planName || 'Plan not set'}</b><span>{d.membership.extraHourRate !== undefined ? `Extra hours $${d.membership.extraHourRate} each` : 'Extra-hour rate not set'}</span></div>
+              <div className={r['occupancy-summary']} style={{ padding: '0 18px 18px' }}><b>{d.membership.planName || 'Plan not set'}</b><span>{d.membership.extraHourRate !== undefined ? `Extra hours ${formatPrice(Math.round(d.membership.extraHourRate * 100))} each` : 'Extra-hour rate not set'}</span></div>
             </section>
           )}
           {tabOn('notices') && (
@@ -399,17 +397,6 @@ export default function HomeView(props: IHomeViewProps): React.ReactElement {
         </section>
       )}
 
-      {tabOn('book') && (
-        <section className={r['module-view']} aria-label="Quick actions" style={{ marginTop: 15 }}>
-          <div className={r['module-view-heading']}><div><h2>More ways to book</h2></div></div>
-          <div className={r['module-stat-grid']}>
-            <button type="button" className={r['module-stat-card']} onClick={() => goBook('whole-kitchen')}><span className={r['kpi-icon']}><RefIcon name="cooking-pot" size={16} /></span><h3>Whole kitchen</h3><p>Book every station for a long prep day.</p></button>
-            <button type="button" className={r['module-stat-card']} onClick={() => goBook('dining')}><span className={r['kpi-icon']}><RefIcon name="utensils" size={16} /></span><h3>Dining room</h3><p>Reserve the dining room by the hour.</p></button>
-            {tabOn('events') && <button type="button" className={r['module-stat-card']} onClick={() => onNavigate('events')}><span className={r['kpi-icon']}><RefIcon name="sparkles" size={16} /></span><h3>Private event</h3><p>Request the room for a private event.</p></button>}
-            {tabOn('support') && <button type="button" className={r['module-stat-card']} onClick={() => onNavigate('support')}><span className={r['kpi-icon']}><RefIcon name="message-square" size={16} /></span><h3>Message Flavors</h3><p>Ask a question or report a problem.</p></button>}
-          </div>
-        </section>
-      )}
       </div>
     </div>
   );

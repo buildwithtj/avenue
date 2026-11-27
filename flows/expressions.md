@@ -295,7 +295,7 @@ Trigger: item modified in `AvenueStorageCases`, condition `@or(equals(triggerOut
 ## Redesign flows (specified, not built) — P7, 23 Nov 2026
 **Nothing in this section exists in Power Automate. Every expression is untested.** Same standing rules as above: run as `automations@`, trigger concurrency 1, member identity = item author (never a field), `Outcome`/`Reply` display only, generic e-mails only (COM-02), and a **bare `@expr`** for every boolean, number or date value (`@{...}` makes text). Edits to the live Support flow (R1, R2 below) start by re-reading its Code view. Lists: `schema/lists.v2.json` (AvenueSupportCategories, AvenueSupportFiles, AvenueMyDocuments, AvenueMyHours, AvenueMyBookings are [PROPOSED] and not on the site).
 
-### R1. Support message to case: category from AvenueSupportCategories (edit of the live flow 1)
+### R1. Support message to case: category from AvenueSupportCategories (edit of the live flow 1) — LIVE 27 Nov 2026, as built in "Live edits 27 Nov 2026" below (differs from this spec)
 Precondition: `Category` is Text on `AvenueSupportMessages` and `AvenueSupportCases` [PROPOSED]. The Choice -> Text conversion of a live column is UNTESTED: create a `gaptest-` copy of the list, add Choice values, convert, and confirm existing values survive before touching the real lists. Until then keep reading `Category/Value`.
 - New step before `Valid`: `Topic` = `Get items` on `AvenueSupportCategories`, Filter Query `FacilityId eq 'flavors-hyattsville' and Title eq '@{replace(trim(coalesce(triggerOutputs()?['body/Category'], '')), '''', '''''')}' and Active eq 1`, Top Count 1.
 - `Valid` (replaces the hard-coded `createArray('Booking', …)` test):
@@ -305,7 +305,7 @@ Precondition: `Category` is Text on `AvenueSupportMessages` and `AvenueSupportCa
 - `Create item` / `Update item` on the case: Category = `@{first(outputs('Topic')?['body/value'])?['Title']}` (the catalogue's spelling, not the member's).
 - Not valid: unchanged Outcome text (`Not accepted: a subject, a message (up to 4,000 characters) and a category are needed.`).
 
-### R2. Support attachments to a private library (added to the live flow 1, after the case is created or updated)
+### R2. Support attachments to a private library (added to the live flow 1, after the case is created or updated) — NOT BUILT (27 Nov 2026: left unbuilt, see below)
 Trigger change first (the P6 portal attaches files with the document trick: create with Outcome `Uploading`, attach, then clear Outcome): trigger **item created or modified**, condition `@and(not(empty(triggerOutputs()?['body/MessageId'])), empty(triggerOutputs()?['body/Outcome']))`. The flow's own Outcome write then does not re-trigger it; a text-only message (one create, no Outcome) behaves as today.
 Limits (developer decision 23 Nov; retention is Q-R3, not invented): images and PDF only, at most 5 files, 10 MB each. A message that breaks the limits is still recorded; the files are not copied and the Outcome says so.
 - `Files` = `Get attachments` (AvenueSupportMessages, Id = `@{triggerOutputs()?['body/ID']}`).
@@ -351,8 +351,34 @@ Trigger: item created or modified in `AvenueBookings`, condition `@not(empty(tri
 ### R7. Notice default expiry
 Built in the staff app (Notices: "Hide after (hours)", default 24, empty = keep): `ExpiresAt` = `DateAdd(Now(), hours, TimeUnit.Hours)` at publish. [PROPOSED, Q-R1.] **No flow deletes notices**: expired notices are hidden by the portal (`ExpiresAt` in the past) and stay in the list. If the client later wants a server-side default for notices created elsewhere, a flow on `AvenueNotices` create would set `ExpiresAt` = `@addHours(utcNow(), 24)` (bare) only when `@empty(triggerOutputs()?['body/ExpiresAt'])`; not specified further until Q-R1 is answered. Note: editing a published notice (withdraw -> edit -> publish) creates a new notice item, so the existing "Notice e-mail" flow sends its generic "new notice" e-mail again.
 
-### R8. Re-opened Events/Storage cases (edit of the live flows 4 and 6)
+### R8. Re-opened Events/Storage cases (edit of the live flows 4 and 6) — LIVE 27 Nov 2026 (see below)
 The staff app can now set a decided case back to `Requested` (Re-open). The live decision-echo flows trigger only on Approved/Declined/Invoiced, so the member's Outcome would keep the old decision. Add `Requested` to both trigger conditions, and in the Outcome expression map `Requested` -> `Re-opened by Flavors` (Reply `Flavors is reviewing your request again.`). Re-read the live Code view first.
 
-### R9. Support reply echo with Archived (edit of the live flow 2)
+### R9. Support reply echo with Archived (edit of the live flow 2) — LIVE 27 Nov 2026 (see below)
 Staff can now set Status `Archived` (and change Category). Flow 2 fires on any modification with a non-empty StaffReply and Status not Open, so archiving re-echoes the last reply (idempotent, same text). Change its Outcome expression to `@{if(equals(triggerOutputs()?['body/Status/Value'], 'Archived'), 'Archived by Flavors', if(equals(triggerOutputs()?['body/Status/Value'], 'Closed'), 'Closed by Flavors', 'Answered'))}` (the portal from P6 shows an Archived chip for any Outcome starting "Archived") and keep the optional member e-mail off. Re-read the live Code view first.
+
+## Live edits 27 Nov 2026 (R1, R8, R9 built; R2 not built)
+Edited in the Power Automate designer as `automations@` (Browser 1). Before/after JSON of every edited action was copied out of the designer ("Copy entire action") and compared. `S` = `triggerOutputs()?['body/Status/Value']`.
+
+**R9, flow 2 (Support reply to echo).** Outcome part of the update body:
+- before: `if(equals(S,'Closed'),'Closed by Flavors','Answered')`
+- after: `if(equals(S,'Archived'),'Archived by Flavors',if(equals(S,'Closed'),'Closed by Flavors','Answered'))`. Trigger and member e-mail unchanged (no e-mail step).
+- Test: case 7 StaffReply + Status Archived -> message 12 Outcome `Archived by Flavors`, Reply echoed. PASS.
+
+**R8, flows 4 and 6 (Event / Storage decision to echo).** The live flows already had a Condition after a `Send_an_HTTP_request_to_SharePoint` lookup of the request item (not the spec's trigger condition):
+- before: `@and(contains(createArray('Approved','Declined'[,'Invoiced' on Events]),S),greater(length(body('Send_an_HTTP_request_to_SharePoint')?['value']),0))`
+- after: `@and(or(contains(createArray(...same...),S),and(equals(S,'Requested'),not(empty(coalesce(triggerOutputs()?['body/DecidedBy'],''))))),greater(length(body('Send_an_HTTP_request_to_SharePoint')?['value']),0))`. A brand-new case (Requested, no DecidedBy) is not echoed; a re-opened one (Requested after a decision, DecidedBy set) is.
+- Body: Outcome now `if(equals(S,'Requested'),'Re-opened by Flavors',<previous mapping>)`, Reply `if(equals(S,'Requested'),'Flavors is reviewing your request again.',<previous mapping>)`.
+- Test: EventCases 3 / StorageCases 3 created Requested without DecidedBy -> request Outcome unchanged (guard PASS); then DecidedBy set + Requested -> EventRequests 6 and StorageRequests 5 Outcome `Re-opened by Flavors`, Reply `Flavors is reviewing your request again.` PASS. Note: the staff app's Re-open must keep `DecidedBy` filled (it does not clear it today) or the echo will not fire.
+
+**R1, flow 1 (Support message to case).**
+- Column: `AvenueSupportMessages.Category` converted Choice -> Text (REST MERGE, FieldTypeKind 2, 204; existing value `Booking` kept). `AvenueSupportCases.Category` was already Text.
+- Category read that works on both Choice and Text (used below as `CAT`): `json(if(startsWith(string(X),'{'),string(X),concat('{"Value":"',replace(string(X),'"',''),'"}')))?['Value']` with `X` = `triggerOutputs()?['body/Category']`.
+- New action `Topic` (Send an HTTP request to SharePoint, GET, header `accept: application/json;odata=nometadata`), after the existing `Send_an_HTTP_request_to_SharePoint`, Uri: `@concat('_api/web/lists/getbytitle(''AvenueSupportCategories'')/items?$select=Title&$top=1&$filter=FacilityId eq ''flavors-hyattsville'' and Active eq 1 and Title eq ''',encodeUriComponent(replace(CAT,'''','''''')),'''')`.
+- `Compose 1` (validity, runAfter Topic): before `contains(createArray('Booking','Billing','Documents','Equipment','Other'),triggerOutputs()?['body/Category/Value'])`; after `greater(length(body('Topic')?['value']),0)` (rest of the and() unchanged).
+- Case create (`Send_an_HTTP_request_to_SharePoint_1` body): before `'Category',triggerOutputs()?['body/Category/Value']`; after `'Category',first(body('Topic')?['value'])?['Title']` (the catalogue's spelling).
+- Tests: gaptest-sup-1 Booking (while still Choice) -> `Received · Flavors replies here in the portal`, case 6 Category Booking; after the conversion gaptest-sup-2 Billing -> Received, case 7; gaptest-sup-3 "Nonsense topic" -> `Not accepted: a subject, a message (up to 4,000 characters) and a category are needed.` PASS.
+
+**R2: not built.** It needs the live trigger replaced (created -> created or modified with an Outcome condition) plus about five new actions and a library copy; not reliable to do in this designer without the Flow API. Until it is built, the portal must not offer attachments on support messages: with the current "created" trigger the flow runs before files arrive, and if the portal later clears `Outcome` (the "Uploading" trick) the member is left with no outcome.
+
+**Cleanup:** recycled one id at a time (all 200): AvenueSupportMessages 11, 12, 13; AvenueSupportCases 6, 7; AvenueEventRequests 6; AvenueStorageRequests 5; AvenueEventCases 3; AvenueStorageCases 3.

@@ -167,7 +167,7 @@ export default function DocumentsView(props: IDocumentsViewProps): React.ReactEl
         const rows: IRequiredRow[] = requiredRows(requiredOrSheet(required.data), docs.data, today);
         const n = requiredSummary(rows);
         return (
-          <ModuleCard eyebrow="COMPLIANCE" title="Required documents" count={`${n.current} of ${rows.length} current`} className={s.dcReq}>
+          <ModuleCard title="Required documents" count={`${n.current} of ${rows.length} current`} className={s.dcReq}>
             <div className={rx['dc-top']}>
               <Ring pct={rows.length ? (100 * n.current) / rows.length : 0} />
               <div className={rx['dc-legend']}><b>{n.current} of {rows.length} required documents current</b><small>{n.missing + n.expired > 0 ? `${n.missing + n.expired} still to send` : 'Nothing missing'}{n.expiring > 0 ? ` · ${n.expiring} expiring soon` : ''}</small></div>
@@ -185,9 +185,9 @@ export default function DocumentsView(props: IDocumentsViewProps): React.ReactEl
           </ModuleCard>
         );
       })()}
-      <ModuleCard eyebrow="UPLOAD" title="Send a document">
+      <ModuleCard title="Send a document">
         <p className={styles.muted} style={{ margin: '0 0 14px' }}>Permits, licences, insurance and certifications. Flavors checks each one.</p>
-        {sent && <div className={rx['dc-fresh']}><MessageBar messageBarType={MessageBarType.success} onDismiss={() => setSent(false)}>Document sent. Its status appears below within a minute or two.</MessageBar></div>}
+        {sent && <div className={rx['dc-fresh']}><MessageBar messageBarType={MessageBarType.success} onDismiss={() => setSent(false)}>Document sent. Its status appears below.</MessageBar></div>}
         <form ref={formRef} onSubmit={submit} noValidate aria-label="Send a document" style={{ maxWidth: 640 }}>
           {staffUpload && (
             <label className={rx['modal-field']} htmlFor="avenue-doc-for">For member (their sign-in e-mail; leave empty for yourself)
@@ -216,7 +216,7 @@ export default function DocumentsView(props: IDocumentsViewProps): React.ReactEl
         </form>
       </ModuleCard>
 
-      <ModuleCard eyebrow="ON FILE" title="My documents" count={docs.data ? `${docs.data.length} sent` : undefined} actions={<button type="button" className={rx['secondary-button']} onClick={docs.reload}>Refresh</button>}>
+      <ModuleCard title="My documents" count={docs.data ? `${docs.data.length} sent` : undefined} actions={<button type="button" className={rx['secondary-button']} onClick={docs.reload}>Refresh</button>}>
         {staffUpload && <LoadError error={docs.error} what="your documents" onRetry={docs.reload} />}
         {docs.data && docs.data.length === 0 && <EmptyState icon="file-text" title="No documents sent yet" sub="Use the form above to send your first one." />}
         {docs.data && docs.data.length > 0 && (() => {
@@ -232,7 +232,7 @@ export default function DocumentsView(props: IDocumentsViewProps): React.ReactEl
                       : c.review === 'received' && c.submission.fromRecord ? 'On file with Flavors. Waiting for verification.'
                       : c.review === 'received' ? 'Uploaded. Waiting for Flavors to verify it.'
                       : c.review === 'not-accepted' ? (c.reviewNote || 'Not accepted. Please send it again.')
-                      : 'Being processed. This usually takes a minute or two.'}
+                      : 'Being processed.'}
                     time={`${c.dateState === 'expired' ? 'Expired' : 'Expires'} ${formatDate(c.submission.expiryDate)}`}
                     status={c.dateState === 'current' ? 'Current' : c.dateState === 'expiring' ? 'Expiring soon' : 'Expired'} statusTone={c.dateState === 'current' ? 'ok' : c.dateState === 'expiring' ? 'wait' : 'bad'}
                     extra={c.dateState === 'expired' ? <span>You cannot book until a current one is on file. Send a renewal above.</span> : undefined} />

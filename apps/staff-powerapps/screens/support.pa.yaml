@@ -458,7 +458,7 @@
             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
             Properties:
               Items: |-
-                =With({st: Coalesce(varSupStage, "All"), ct: Coalesce(supCatFilter.Selected.Value, "")}, SortByColumns(AddColumns(If(st = "All", If(ct = "", Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value <> "Archived"), Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value <> "Archived", Category.Value = ct)), If(ct = "", Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value = st), Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value = st, Category.Value = ct))), Rank, Switch(Status.Value, "Open", 0, "Answered", 1, "Closed", 2, 3)), "Rank", SortOrder.Ascending, "CreatedAt", SortOrder.Descending))
+                =With({st: Coalesce(varSupStage, "All"), ct: Coalesce(supCatFilter.Selected.Value, "")}, SortByColumns(AddColumns(If(st = "All", If(ct = "", Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value <> "Archived"), Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value <> "Archived", Category = ct)), If(ct = "", Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value = st), Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Status.Value = st, Category = ct))), Rank, Switch(Status.Value, "Open", 0, "Answered", 1, "Closed", 2, 3)), "Rank", SortOrder.Ascending, "CreatedAt", SortOrder.Descending))
               X: =20
               Y: =90
               Width: =640
@@ -481,7 +481,7 @@
               - supItemMeta:
                   Control: Label
                   Properties:
-                    Text: =Coalesce(ThisItem.Category.Value, "-") & " · " & ThisItem.MemberId
+                    Text: =Coalesce(ThisItem.Category, "-") & " · " & ThisItem.MemberId
                     X: =8
                     Y: =34
                     Width: =480
@@ -542,7 +542,7 @@
             Control: Label
             Properties:
               Text: |-
-                =If(IsBlank(supGal.Selected), "", "From " & supGal.Selected.MemberId & " · " & Coalesce(supGal.Selected.Category.Value, "-") & " · " & supGal.Selected.Status.Value & Char(10) & "Opened " & With({t: supGal.Selected.CreatedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "ddd d mmm, h:mm AM/PM"))))) & If(IsBlank(supGal.Selected.RepliedAt), "", " · last reply by " & supGal.Selected.RepliedBy & " " & With({t: supGal.Selected.RepliedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "d mmm, h:mm AM/PM")))))) & If(IsBlank(supGal.Selected.ArchivedAt), "", Char(10) & "Archived by " & supGal.Selected.ArchivedBy & " " & With({t: supGal.Selected.ArchivedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "d mmm yyyy")))))))
+                =If(IsBlank(supGal.Selected), "", "From " & supGal.Selected.MemberId & " · " & Coalesce(supGal.Selected.Category, "-") & " · " & supGal.Selected.Status.Value & Char(10) & "Opened " & With({t: supGal.Selected.CreatedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "ddd d mmm, h:mm AM/PM"))))) & If(IsBlank(supGal.Selected.RepliedAt), "", " · last reply by " & supGal.Selected.RepliedBy & " " & With({t: supGal.Selected.RepliedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "d mmm, h:mm AM/PM")))))) & If(IsBlank(supGal.Selected.ArchivedAt), "", Char(10) & "Archived by " & supGal.Selected.ArchivedBy & " " & With({t: supGal.Selected.ArchivedAt}, If(IsBlank(t), "Time unavailable", With({u: DateAdd(t, TimeZoneOffset(t), TimeUnit.Minutes)}, With({m3: Date(Year(u), 3, 1), n11: Date(Year(u), 11, 1)}, Text(DateAdd(u, -If(u >= DateAdd(DateAdd(m3, Mod(8 - Weekday(m3), 7) + 7, TimeUnit.Days), 7, TimeUnit.Hours) && u < DateAdd(DateAdd(n11, Mod(8 - Weekday(n11), 7), TimeUnit.Days), 6, TimeUnit.Hours), 4, 5), TimeUnit.Hours), "d mmm yyyy")))))))
               X: =690
               Y: =124
               Width: =640
@@ -825,7 +825,7 @@
             Properties:
               Items: |-
                 =ForAll(SortByColumns(Filter(AvenueSupportCategories, FacilityId = "flavors-hyattsville", Active = true), "SortOrder", SortOrder.Ascending), {Value: Title})
-              Default: =Coalesce(supGal.Selected.Category.Value, "")
+              Default: =Coalesce(supGal.Selected.Category, "")
               AllowEmptySelection: =true
               X: =690
               Y: =706
@@ -857,7 +857,7 @@
               Width: =210
               Height: =36
               OnSelect: |-
-                =IfError(Patch(AvenueSupportCases, LookUp(AvenueSupportCases, CaseId = supGal.Selected.CaseId), {Category: {Value: Coalesce(supCatEdit.Selected.Value, supGal.Selected.Category.Value)}, Status: {Value: supStEdit.Selected.Value}, ArchivedBy: If(supStEdit.Selected.Value = "Archived", User().Email, ""), ArchivedAt: If(supStEdit.Selected.Value = "Archived", Now(), Blank())}); Notify("Saved (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ").", NotificationType.Success), Notify("Could not save.", NotificationType.Error))
+                =IfError(Patch(AvenueSupportCases, LookUp(AvenueSupportCases, CaseId = supGal.Selected.CaseId), {Category: Coalesce(supCatEdit.Selected.Value, supGal.Selected.Category), Status: {Value: supStEdit.Selected.Value}, ArchivedBy: If(supStEdit.Selected.Value = "Archived", User().Email, ""), ArchivedAt: If(supStEdit.Selected.Value = "Archived", Now(), Blank())}); Notify("Saved (" & User().Email & ", " & Text(Now(), "d mmm yyyy h:mm AM/PM") & ").", NotificationType.Success), Notify("Could not save.", NotificationType.Error))
               Fill: =RGBA(255,255,255,1)
               Color: =RGBA(15,76,92,1)
               HoverFill: =RGBA(244,245,247,1)

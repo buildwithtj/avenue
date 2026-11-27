@@ -1,0 +1,35 @@
+// Liquid Glass: the one shared material (staging 1.11). Used only on small floating surfaces over content:
+// phone nav buttons, the Book cart capsule, the hero pill and shortcut circles, sheet headers, the scrolled top bar,
+// the segmented thumb and the date panel. Never on large scrolling areas (blur cost scales with area).
+// Fallback: no backdrop-filter support, or prefers-reduced-transparency -> the solid $solid colour, no blur.
+// The press sheen (opt-in, elements only, not <svg>) animates opacity only; nothing animates backdrop-filter.
+
+@mixin liquid-glass($fill: rgba(255, 255, 255, .26), $solid: #fff, $edge: rgba(255, 255, 255, .38), $shadow: true, $sheen: false, $imp: null) {
+  background-color: $fill $imp;
+  background-image: linear-gradient(160deg, rgba(255, 255, 255, .30) 0%, rgba(255, 255, 255, .06) 42%, rgba(255, 255, 255, 0) 60%) $imp;
+  -webkit-backdrop-filter: blur(20px) saturate(170%) $imp;
+  backdrop-filter: blur(20px) saturate(170%) $imp;
+  @if $shadow {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55), inset 0 0 0 1px $edge, 0 10px 28px rgba(8, 24, 30, .16), 0 2px 6px rgba(8, 24, 30, .10) $imp;
+  } @else {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55), inset 0 0 0 1px $edge $imp;
+  }
+  @if $sheen {
+    position: relative;
+    &::after {
+      content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      background: linear-gradient(115deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, .45) 48%, rgba(255, 255, 255, 0) 66%);
+      opacity: 0; transition: opacity .25s ease-out;
+    }
+    &:active::after { opacity: 1; transition-duration: .08s; }
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background-color: $solid $imp; background-image: none $imp;
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    background-color: $solid $imp; background-image: none $imp; -webkit-backdrop-filter: none $imp; backdrop-filter: none $imp;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    &::after { transition: none; }
+  }
+}

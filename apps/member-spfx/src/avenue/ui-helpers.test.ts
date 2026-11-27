@@ -43,7 +43,7 @@ describe('ui-helpers', () => {
   it('summarises what a booking holds', () => {
     const res = [U('s1', 'Stove #1', 'Stove'), U('p1', 'Prep 1', 'Prep table'), U('p2', 'Prep 2', 'Prep table')];
     expect(equipmentChips('Kitchen', ['s1', 'p1', 'p2'], res)).toEqual(['Whole kitchen']);
-    expect(equipmentChips('Kitchen', ['s1', 'p1', 'p2', 'x'], res.concat(U('o', 'Oven', 'Oven')))).toEqual(['Stove #1', 'x', '2 prep tables']);
+    expect(equipmentChips('Kitchen', ['s1', 'p1', 'p2', 'x'], res.concat(U('o', 'Oven', 'Oven')))).toEqual(['Stove #1', 'X', '2 prep tables']);
     expect(equipmentChips('Dining', [], res)).toEqual(['Dining room']);
     expect(equipmentChips('Whole facility', [], res)).toEqual(['Private event']);
   });
@@ -79,11 +79,11 @@ describe('notice list grouping and times (facility time zone)', () => {
     expect(noticeGroup({ pinned: false, publishedUtc: '2026-11-16T15:00:00Z' }, now, tz)).toBe('Earlier');
   });
   it('writes short relative times', () => {
-    expect(noticeWhen('2026-11-23T14:59:40Z', now, tz)).toBe('now');
-    expect(noticeWhen('2026-11-23T14:30:00Z', now, tz)).toBe('30m');
-    expect(noticeWhen('2026-11-23T11:00:00Z', now, tz)).toBe('4h');
+    expect(noticeWhen('2026-11-23T14:59:40Z', now, tz)).toBe('Just now');
+    expect(noticeWhen('2026-11-23T14:30:00Z', now, tz)).toBe('30 min ago');
+    expect(noticeWhen('2026-11-23T11:00:00Z', now, tz)).toBe('4 h ago');
     expect(noticeWhen('2026-11-20T15:00:00Z', now, tz)).toBe('Fri');
-    expect(noticeWhen('2026-11-02T15:00:00Z', now, tz)).toBe('2 Nov');
-    expect(noticeWhen('2025-11-02T15:00:00Z', now, tz)).toBe('2 Nov 2025');
+    expect(noticeWhen('2026-11-02T15:00:00Z', now, tz)).toBe('Nov 2');
+    expect(noticeWhen('2025-11-02T15:00:00Z', now, tz)).toBe('Nov 2, 2025');
   });
 });

@@ -31,6 +31,10 @@ export interface IInvoice {
  * Set to false once the client approves the demonstrated Stripe test-mode flow. */
 export const MOCK_PAYMENTS: boolean = true;
 
+/** Stripe still runs in test mode (STR-06). One short notice per payments screen; set to false at live go-live. */
+export const PAYMENTS_TEST_MODE: boolean = true;
+export const TEST_MODE_NOTE: string = 'Test mode: no money is charged';
+
 /** Stripe pages the portal may open, by purpose. Anything else is never followed (a link comes from a list a flow writes). */
 export const STRIPE_HOSTS: Record<'checkout' | 'pay' | 'receipt' | 'portal', string[]> = {
   checkout: ['checkout.stripe.com'],
@@ -70,8 +74,14 @@ export function formatCents(cents: number, currency: string = 'usd'): string {
   const abs: number = Math.abs(cents);
   const dollars: number = Math.floor(abs / 100);
   const remainder: number = abs % 100;
-  const formatted: string = `$${dollars}.${remainder < 10 ? '0' : ''}${remainder}`;
+  const formatted: string = `$${dollars.toLocaleString('en-US')}.${remainder < 10 ? '0' : ''}${remainder}`;
   return isNeg ? `-${formatted}` : formatted;
+}
+
+/** Prices shown as offers (plans, event packages, storage): "$1,200", or "$12.50" when there are cents. Invoices keep formatCents. */
+export function formatPrice(cents: number): string {
+  const full: string = formatCents(cents);
+  return cents % 100 === 0 ? full.slice(0, -3) : full;
 }
 
 /**

@@ -1,3 +1,4 @@
+@use 'glass' as *;
 // Ref.module.scss: the reference console's own stylesheet (https://culina-rust.vercel.app/), ported rule for rule from its compiled CSS
 // (the semantic classes: sidebar, nav-item, kpi-card, module-row ...). Only these changes were made: font sizes under 12px raised to 12px,
 // :hover rules wrapped in @media (hover: hover), calendar rules dropped (not used), colours kept as the reference's own variables.
@@ -897,3 +898,35 @@ $ico-sh: 0 10px 20px rgba(8, 24, 30, .28), 0 2px 4px rgba(8, 24, 30, .2), inset 
 
 /* Shortcut count badge: crisp red notification dot with a white ring, no inherited hero text shadow */
 .shortcut-dot b, .shortcuts-hero .shortcut-dot b { top: -4px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: #d93025 !important; color: #fff !important; border: 2px solid #fff; box-sizing: border-box; font-size: 12px; font-weight: 800; line-height: 16px; text-shadow: none !important; box-shadow: 0 1px 3px rgba(0, 0, 0, .3); }
+
+/* ===== 1.8 client feedback (25 Nov 2026) ===== */
+/* 3 Page eyebrow: facility name only, one line with ellipsis, muted slate-indigo, sentence case, 14 px. */
+.greeting-row .eyebrow.page-eyebrow, .eyebrow.page-eyebrow { display: block; font-family: var(--av-font); font-size: 14px; font-weight: 600; letter-spacing: .02em; text-transform: none; color: #4a5578; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+/* 4 No decorative dash lines. */
+.eyebrow-line { display: none !important; }
+
+/* 10 Hero CTAs: a strong dark scrim under the lower half where the CTAs sit, a solid gold button with dark text and a clear edge,
+   and solid dark-glass shortcut circles with white icons and labels. */
+.hero-scrim, [data-size='phone'] .hero-scrim { background: linear-gradient(180deg, rgba(5, 16, 20, .35) 0%, rgba(5, 16, 20, .1) 28%, rgba(5, 16, 20, .55) 50%, rgba(5, 16, 20, .86) 72%, rgba(5, 16, 20, .94) 100%) !important; }
+.hero-cta, [data-size='phone'] .hero-cta { background: #e2b85a !important; color: #14140f !important; border: 1.5px solid #7a5a16 !important; box-shadow: 0 1px 0 rgba(255, 255, 255, .45) inset, 0 4px 14px rgba(0, 0, 0, .45) !important; text-shadow: none !important; font-weight: 800; }
+.hero-cta .cta-plus { background: #14262e !important; color: #fff !important; }
+.shortcuts-hero .shortcut-dot { background: rgba(6, 20, 26, .78) !important; border: 1.5px solid rgba(255, 255, 255, .7) !important; color: #fff !important; }
+.shortcuts-hero .shortcut-dot svg { color: #fff; stroke: #fff; }
+.shortcuts-hero button > span:last-child { color: #fff !important; text-shadow: 0 1px 2px rgba(0, 0, 0, .95), 0 0 8px rgba(0, 0, 0, .7) !important; }
+
+/* 1.9 unslop fixes */
+.cl-sample { display: inline-block; margin-right: 8px; padding: 2px 8px; border-radius: 999px; background: #eef1f6; color: #4a5578; font-size: 12px; font-weight: 600; vertical-align: middle; }
+@media (pointer: coarse) { .cl-hint { display: none; } }
+
+/* 1.10 browser audit: Your month grid. An odd last tile spans the row (V1); status pills stay on one line (V2). */
+[data-size='phone'] .kpi-grid > :last-child:nth-child(odd), [data-size='mid'] .kpi-grid > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+.kpi-pill { white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+[data-size='phone'] .kpi-pill { padding: 3px 10px; font-size: 12px; }
+/* Coming up rows: the date badge sits inside the ticket, clear of the notch (V3) */
+[data-size='phone'] .module-row { padding-left: 22px; }
+[data-size='phone'] .module-row .tenant-avatar { margin: 0 !important; left: 0; }
+
+// ---- 1.11 Liquid Glass on the Home photo (shared material in _glass.scss). Dark glass keeps white text at AA over the
+//      darkened lower half of the photo; solid dark fallback without backdrop-filter or under reduced transparency. ----
+.hero-pill { @include liquid-glass(rgba(8, 32, 40, .5), rgba(8, 32, 40, .82), rgba(255, 255, 255, .32), false, false, !important); }
+.shortcuts-hero .shortcut-dot { @include liquid-glass(rgba(8, 32, 40, .46), rgba(8, 32, 40, .8), rgba(255, 255, 255, .4), true, false, !important); }

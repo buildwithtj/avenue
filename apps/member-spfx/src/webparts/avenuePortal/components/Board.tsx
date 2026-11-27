@@ -40,7 +40,7 @@ export interface IBoardProps {
 }
 
 const HOURS: number[] = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22];
-const hourLabel = (h: number): string => `${h % 12 === 0 ? 12 : h % 12}${h < 12 ? 'a' : 'p'}`;
+const hourLabel = (h: number): string => `${h % 12 === 0 ? 12 : h % 12} ${h < 12 ? 'AM' : 'PM'}`;
 
 /**
  * The schedule board: equipment rows grouped by category, time ruler across, "now" marker, other companies as muted bars.
@@ -146,7 +146,7 @@ export default function Board(props: IBoardProps): React.ReactElement {
                           <strong>{sg.label || 'Booked'}</strong>
                         </span>
                       ))}
-                      {onBlock && block && <span key={`${block.startMin}-${block.endMin}`} className={`${s.block} ${block.flagged ? s.blockFlag : ''} ${anim(reduced, s.blockSettle)}`} style={{ left: pct(block.startMin), width: wide(block.startMin, block.endMin) }} data-testid="block"><b>{timeOf(block.startMin)} – {timeOf(block.endMin)}</b></span>}
+                      {onBlock && block && <span key={`${block.startMin}-${block.endMin}`} className={`${s.block} ${block.flagged ? s.blockFlag : ''} ${anim(reduced, s.blockSettle)}`} style={{ left: pct(block.startMin), width: wide(block.startMin, block.endMin) }} data-testid="block"><b>{timeOf(block.startMin)} - {timeOf(block.endMin)}</b></span>}
                       {props.rejected && lane.drawable && <span key={props.rejected.key} className={`${s.block} ${s.blockRejected} ${anim(reduced, s.blockShake)}`} style={{ left: pct(props.rejected.startMin), width: wide(props.rejected.startMin, props.rejected.endMin) }} aria-hidden="true" />}
                       {drag && drag.laneId === lane.id && ghost && <span className={`${s.block} ${s.blockGhost}`} style={{ left: pct(ghost.startMin), width: wide(ghost.startMin, ghost.endMin) }} aria-hidden="true" />}
                       {pending && lane.drawable && <span className={s.pendingMark} style={{ left: pct(pending.min) }} aria-hidden="true" />}

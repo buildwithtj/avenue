@@ -55,7 +55,7 @@ describe('SupportView', () => {
     const src = { listMySupportMessages: async () => [], submitSupportMessage: async () => { throw new Error('Avenue: requests cannot be sent from this page.'); } } as never;
     await draw(<SupportView source={src} facilityId="f" />);
     await startChat(/^General/, 'Hello there');
-    expect(host.textContent).toContain('Chat assistant (coming soon)');
+    expect(host.textContent).not.toContain('coming soon');
     await set(field(/Message/), 'Some text here');
     await click(sendBtn());
     expect(host.querySelector('[role="alert"]')?.textContent).toContain('requests cannot be sent');
@@ -94,11 +94,11 @@ describe('EventsView', () => {
   const src = (sent: unknown[][], mine: object[] = []): never => ({ listMyEventRequests: async () => mine, submitEventRequest: async (...a: unknown[]) => { sent.push(a); } }) as never;
   it('shows the member prices and the deposit and balance rule once a package and date are chosen', async () => {
     await draw(<EventsView source={src([])} facilityId="f" timeZone="America/New_York" />);
-    expect(host.textContent).toContain('$950.00'); expect(host.textContent).toContain('$1850.00');
+    expect(host.textContent).toContain('$950'); expect(host.textContent).toContain('$1,850');
     await click(host.querySelector('input[value="Opulence"]')!);
     await set(field(/Event date/), '2099-06-15'); await set(field(/Guests/), '60');
     const t = host.querySelector('[aria-live="polite"]')!.textContent || '';
-    expect(t).toContain('$1200.00'); expect(t).toContain('$500.00'); expect(t).toContain('30 days before the event'); expect(t).toContain('More than 50 guests');
+    expect(t).toContain('$1,200.00'); expect(t).toContain('$500.00'); expect(t).toContain('30 days before the event'); expect(t).toContain('More than 50 guests');
   });
   it('sends the request with the chosen values', async () => {
     const sent: unknown[][] = [];
@@ -122,7 +122,7 @@ describe('StorageView', () => {
   it('prices only stated items and says price on request for the rest', async () => {
     await draw(<StorageView source={src([])} facilityId="f" />);
     const opts = Array.from(host.querySelectorAll('option')).map(o => o.textContent || '');
-    expect(opts.filter(o => /Half-door fridge/.test(o))[0]).toContain('$250.00');
+    expect(opts.filter(o => /Half-door fridge/.test(o))[0]).toContain('$250');
     expect(opts.filter(o => /Dry storage shelf, single/.test(o))[0]).toContain('price on request');
     await set(field(/What do you need/), 'Half-door freezer'); await set(field(/Quantity/), '2');
     expect(host.querySelector('[aria-live="polite"]')!.textContent).toContain('$500.00');
@@ -183,22 +183,22 @@ describe('profile drawer: new entries', () => {
   it('shows Event request, Storage, My team and Messages with Flavors in demo, with a reply dot only when a reply waits', async () => {
     await open({ ...base, listMySupportMessages: async () => [{ id: 1, threadId: 'a', messageId: 'm1', category: 'Billing', subject: 's', body: 'b', reply: 'Hi' }] });
     const t = dlg();
-    expect(t).toContain('Event request'); expect(t).toContain('Storage'); expect(t).toContain('My team'); expect(t).toContain('Messages with Flavors'); expect(t).toContain('Reply received');
-    expect(t.indexOf('Your account')).toBeLessThan(t.indexOf('Event request'));
-    expect(t.indexOf('Help')).toBeLessThan(t.indexOf('Messages with Flavors'));
+    expect(t).toContain('Events'); expect(t).toContain('Storage'); expect(t).toContain('My team'); expect(t).toContain('Messages'); expect(t).toContain('Reply received');
+    expect(t.indexOf('Your account')).toBeLessThan(t.indexOf('Book the dining room'));
+    expect(t.indexOf('Help')).toBeLessThan(t.lastIndexOf('Messages'));
   });
   it('has no dot when no reply waits, and survives a source without the new methods', async () => {
     await open({ ...base, listMySupportMessages: async () => [{ id: 1, threadId: 'a', messageId: 'm1', category: 'Billing', subject: 's', body: 'b' }] });
     expect(dlg()).not.toContain('Reply received');
     act(() => root.unmount()); root = createRoot(host);
     await open(base);
-    expect(dlg()).toContain('Messages with Flavors');
+    expect(dlg()).toContain('Messages');
   });
   it('hides an entry in a real release that does not list its module', async () => {
     await open(base, false);
     const t = dlg();
     // Follows the real release list: an entry is shown only when its module is listed in release/release.json.
     expect(t.includes('My team')).toBe((RELEASE_MODULES || []).indexOf('team') >= 0);
-    expect(t.includes('Event request')).toBe((RELEASE_MODULES || []).indexOf('events') >= 0);
+    expect(t.includes('Book the dining room')).toBe((RELEASE_MODULES || []).indexOf('events') >= 0);
   });
 });

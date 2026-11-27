@@ -60,10 +60,10 @@ ALLOWED_DATA_SOURCES = {
     "AvenueApplicants", "AvenueInvoices", "AvenueHostRequests",
     "AvenueSensors", "AvenueSensorLatest", "AvenueSensorHourly", "AvenueTempExcursions",
     "AvenueSupportCases", "AvenueEventCases", "AvenueStorageCases", "AvenueStaffCapabilities",
-    "AvenueSupportCategories", "AvenueSupportFiles", "AvenueSupportMessages", "AvenueDocumentSubmissions", "AvenueDiningTables", "AvenueTeamMembers"
+    "AvenueSupportCategories", "AvenueSupportFiles", "AvenueSupportMessages", "AvenueDocumentSubmissions", "AvenueDiningTables", "AvenueTeamMembers", "AvenueComplianceFlags"
 }
 
-ALLOWED_NAV_TARGETS = {f"Screen{i}" for i in range(1, 24)}
+ALLOWED_NAV_TARGETS = {f"Screen{i}" for i in range(1, 25)}
 SKIP_NAV_FILES = {"approved-extensions.pa.yaml"}
 
 ALLOWED_POWER_FX_FUNCTIONS = {
@@ -75,7 +75,7 @@ ALLOWED_POWER_FX_FUNCTIONS = {
     "RGBA", "Refresh", "Remove", "RemoveIf", "Reset", "Right", "Round", "RoundDown",
     "Set", "Sort", "SortByColumns", "Split", "StartsWith", "Substitute", "Switch", "Sum",
     "Table", "Text", "TimeZoneOffset", "Today", "Trim", "UpdateIf",
-    "Upper", "Find", "User", "Value", "Weekday", "With", "Year", "SubmitForm", "EditForm", "ResetForm"
+    "Upper", "Find", "User", "Value", "Weekday", "With", "Year", "SubmitForm", "EditForm", "ResetForm", "NewForm"
 }
 
 REQUIRED_SCREEN_NAMES = [
@@ -176,7 +176,7 @@ def check_screens(screens_dir):
                 errors.append(f"[{filename}] Navigate({clean_target}) points to a screen that is not in this release.")
             if clean_target not in ALLOWED_NAV_TARGETS:
                 errors.append(
-                    f"[{filename}] Invalid Navigate target '{clean_target}'. Must be Screen1..Screen23."
+                    f"[{filename}] Invalid Navigate target '{clean_target}'. Must be Screen1..Screen24."
                 )
 
         # 4. Check Avenue<Something> data sources

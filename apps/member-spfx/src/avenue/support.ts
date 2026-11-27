@@ -46,6 +46,8 @@ export function groupThreads(messages: IMySupportMessage[]): IThread[] {
 export const anyReplyWaiting = (messages: IMySupportMessage[]): boolean => groupThreads(messages).some(t => t.replyReceived);
 
 // ---- Attachments (decision 23 Nov 2026: images and PDF, up to 5 files x 10 MB; checked here and again by the flow). ----
+/** R2 (support attachments) is not built yet: false hides the attach button and sends a message as one plain create. Set true when R2 ships. */
+export const SUPPORT_ATTACHMENTS_ENABLED: boolean = false;
 export const ATTACH_EXTENSIONS: string[] = ['jpg', 'jpeg', 'png', 'heic', 'heif', 'webp', 'pdf'];
 export const ATTACH_ACCEPT: string = 'image/jpeg,image/png,image/heic,image/heif,image/webp,application/pdf,.jpg,.jpeg,.png,.heic,.heif,.webp,.pdf';
 export const MAX_ATTACHMENTS: number = 5;

@@ -13,7 +13,7 @@ import { type ICheckInInput, toCheckInItem, validateCheckIn } from './checkin';
 import { type IDocumentInput, safeFileName, toDocumentItem, validateDocument } from './documents';
 import { type IFlagInput, toFlagItem, validateFlag } from './compliance';
 import { parseOutcome } from './outcome';
-import { type ISupportInput, toSupportItem, validateAttachments, validateSupport } from './support';
+import { SUPPORT_ATTACHMENTS_ENABLED, type ISupportInput, toSupportItem, validateAttachments, validateSupport } from './support';
 import { type IEventInput, toEventItem, validateEvent } from './events';
 import { type IStorageInput, toStorageItem, validateStorage } from './storage';
 import { toTeamItem, validateTeamName } from './team';
@@ -660,7 +660,7 @@ export class AvenueReadSource {
     if (!REF_ID.test(messageId) || (threadId !== undefined && !REF_ID.test(threadId))) { throw new Error('Avenue: invalid message id.'); }
     const errors: string[] = validateSupport(input, categories).concat(validateAttachments(files));
     if (errors.length > 0) { throw new Error(errors.join(' ')); }
-    if (files.length === 0) {
+    if (!SUPPORT_ATTACHMENTS_ENABLED || files.length === 0) {
       await writer.add(LISTS.supportMessages, toSupportItem(input, messageId, threadId));
       return;
     }

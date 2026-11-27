@@ -69,7 +69,7 @@ export function actionItems(documents: IMyDocumentSubmission[], requests: IMyReq
   const have: Map<string, IMyDocumentSubmission> = newestPerType(documents);
   const neverSent: string[] = required.filter(t => !have.get(t));
   if (neverSent.length > 0) {
-    out.push({ kind: 'onboarding-docs', key: 'onboarding-docs', target: 'documents', title: `Finish setting up: ${neverSent.length} required document${neverSent.length === 1 ? '' : 's'} to send`, consequence: 'Flavors needs these on file for your membership.', howTo: `Still needed: ${neverSent.join(', ')}. The Documents page walks you through them one question at a time.` });
+    out.push({ kind: 'onboarding-docs', key: 'onboarding-docs', target: 'documents', title: `Finish setting up: ${neverSent.length} required document${neverSent.length === 1 ? '' : 's'} to send`, consequence: 'Flavors needs these on file for your membership.', howTo: `Still needed: ${neverSent.join(', ')}. Answer one question per document on the Documents page.` });
   }
   // Newest flag per document decides (same rule as compliance.hasHold; kept here so home.ts does not import compliance.ts).
   const seenFlag: Record<string, boolean> = {};
@@ -86,6 +86,9 @@ export function actionItems(documents: IMyDocumentSubmission[], requests: IMyReq
   const latest: Map<string, IMyDocumentSubmission> = newestPerType(documents);
   const soon: string = new Date(Date.parse(`${todayYmd}T12:00:00Z`) + 30 * DAY_MS).toISOString().slice(0, 10);
   latest.forEach(d => {
+    // A type Flavors no longer requires (e.g. a legacy "Licence") only matters once it has expired, because the booking check
+    // still counts expired documents; its "expires soon" note is not shown, so Home, Documents and Profile agree.
+    if (required.length > 0 && required.indexOf(d.docType) < 0 && d.expiryDate >= todayYmd) { return; }
     if (d.expiryDate < todayYmd) {
       out.push({
         kind: 'document-expired', key: `doc-${d.submissionId}`, target: 'documents',
@@ -128,7 +131,7 @@ export interface IDateParts {
   weekday: string;
   day: string;
   month: string;
-  /** "9:00 AM – 1:00 PM" in the facility's time zone. */
+  /** "9:00 AM - 1:00 PM" in the facility's time zone. */
   time: string;
 }
 
@@ -139,7 +142,7 @@ export function dateParts(startUtc: string, endUtc: string, timeZone: string): I
     weekday: f({ weekday: 'short' }, startUtc),
     day: f({ day: 'numeric' }, startUtc),
     month: f({ month: 'short' }, startUtc),
-    time: `${f({ hour: 'numeric', minute: '2-digit' }, startUtc)} – ${f({ hour: 'numeric', minute: '2-digit' }, endUtc)}`
+    time: `${f({ hour: 'numeric', minute: '2-digit' }, startUtc)} - ${f({ hour: 'numeric', minute: '2-digit' }, endUtc)}`
   };
 }
 

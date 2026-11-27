@@ -90,7 +90,7 @@ describe('My bookings strip', () => {
     expect(filled.map(b => b.getAttribute('data-status'))).toEqual(['Approved', 'Pending']);
     expect(filled[0].className).toContain(s.monthOk);
     expect(filled[1].className).toContain(s.monthWait);
-    expect(filled[0].querySelector('.' + s.monthTime)?.textContent).toMatch(/^\d{1,2}:\d{2}[ap]$/);
+    expect(filled[0].querySelector('.' + s.monthTime)?.textContent).toMatch(/^\d{1,2}(:\d{2})? [AP]M$/);
     expect(host.querySelectorAll('.' + s.monthNext).length).toBe(1);
     expect(filled[0].textContent).toContain('Next');
   });

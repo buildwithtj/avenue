@@ -2208,7 +2208,7 @@
               Width: =170
               Height: =40
               OnSelect: |-
-                =If(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Category.Value = uTpGal.Selected.Title)) > 0 && Trim(uTpTitle.Text) <> uTpGal.Selected.Title, Notify("Cases use this topic, so it cannot be renamed. Hide it and add a new topic instead.", NotificationType.Warning), IfError(Patch(AvenueSupportCategories, LookUp(AvenueSupportCategories, ID = uTpGal.Selected.ID), {Title: Left(Trim(uTpTitle.Text), 255), SortOrder: Value(uTpOrder.Text), Active: uTpActive.Value}); Notify("Topic saved.", NotificationType.Success), Notify("Could not save the topic.", NotificationType.Error)))
+                =If(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Category = uTpGal.Selected.Title)) > 0 && Trim(uTpTitle.Text) <> uTpGal.Selected.Title, Notify("Cases use this topic, so it cannot be renamed. Hide it and add a new topic instead.", NotificationType.Warning), IfError(Patch(AvenueSupportCategories, LookUp(AvenueSupportCategories, ID = uTpGal.Selected.ID), {Title: Left(Trim(uTpTitle.Text), 255), SortOrder: Value(uTpOrder.Text), Active: uTpActive.Value}); Notify("Topic saved.", NotificationType.Success), Notify("Could not save the topic.", NotificationType.Error)))
               Fill: =RGBA(201,162,77,1)
               Color: =RGBA(31,31,31,1)
               HoverFill: =RGBA(179,141,60,1)
@@ -2264,7 +2264,7 @@
               Width: =260
               Height: =40
               OnSelect: |-
-                =If(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Category.Value = uTpGal.Selected.Title)) > 0, Notify("Cases use this topic: untick Shown to members instead.", NotificationType.Warning), IfError(Remove(AvenueSupportCategories, LookUp(AvenueSupportCategories, ID = uTpGal.Selected.ID)); Notify("Topic deleted.", NotificationType.Information), Notify("Could not delete the topic.", NotificationType.Error)))
+                =If(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Category = uTpGal.Selected.Title)) > 0, Notify("Cases use this topic: untick Shown to members instead.", NotificationType.Warning), IfError(Remove(AvenueSupportCategories, LookUp(AvenueSupportCategories, ID = uTpGal.Selected.ID)); Notify("Topic deleted.", NotificationType.Information), Notify("Could not delete the topic.", NotificationType.Error)))
               Fill: =RGBA(255,255,255,1)
               Color: =RGBA(155,44,44,1)
               HoverFill: =RGBA(243,227,227,1)
@@ -2279,13 +2279,13 @@
               RadiusTopRight: =8
               RadiusBottomLeft: =8
               RadiusBottomRight: =8
-              DisplayMode: =If(!IsBlank(uTpGal.Selected) && CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Category.Value = uTpGal.Selected.Title)) = 0, DisplayMode.Edit, DisplayMode.Disabled)
+              DisplayMode: =If(!IsBlank(uTpGal.Selected) && CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Category = uTpGal.Selected.Title)) = 0, DisplayMode.Edit, DisplayMode.Disabled)
               Visible: =(Coalesce(varSetupTab, "equip") = "topics") && Lower(User().Email) in ["hyattsville@flavorsculinaryhub.com", "manage@appetitesbyrj.com"]
               BorderColor: =RGBA(155,44,44,1)
         - uTpHelp:
             Control: Label
             Properties:
-              Text: =If(IsBlank(uTpGal.Selected), "", Text(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Category.Value = uTpGal.Selected.Title))) & " support cases use this topic. ") & "A topic in use cannot be renamed or deleted (cases keep the text they were sent with); hide it instead. The support flow accepts only topics shown to members."
+              Text: =If(IsBlank(uTpGal.Selected), "", Text(CountRows(Filter(AvenueSupportCases, FacilityId = "flavors-hyattsville", Category = uTpGal.Selected.Title))) & " support cases use this topic. ") & "A topic in use cannot be renamed or deleted (cases keep the text they were sent with); hide it instead. The support flow accepts only topics shown to members."
               X: =580
               Y: =216
               Width: =740

@@ -2,12 +2,14 @@
 // Order is fixed: needs attention, at a glance, account destinations, getting started. A row is left out when its module is off or its data is unknown.
 
 import type { DocType, IMyDocumentSubmission, IMyFlag, IMyMembership, IMyRequest } from './contracts';
-import { actionItems, dateState, hoursSummary, newestPerType } from './home';
+import { actionItems, hoursSummary } from './home';
 import { hoursThisMonth } from './booking';
-import { onboarding, type IOnboarding } from './compliance';
+import { onboarding, requiredOrSheet, requiredRows, requiredSummary, type IOnboarding } from './compliance';
 import { dueInfo, monthlyCharge } from './payments';
 import { formatCents, isOverdue } from './billing';
 import type { TabKey } from '../webparts/avenuePortal/components/AvenuePortal';
+
+function ord(n: number): string { const t: number = n % 100; return `${n}${t >= 11 && t <= 13 ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] || 'th'}`; }
 
 export type Tone = 'ok' | 'warn' | 'bad' | 'muted';
 
@@ -65,31 +67,34 @@ export function profileModel(i: IProfileInput): IProfileModel {
   if (i.on('billing')) {
     const c = monthlyCharge(m && (m.planName || m.planId), m && m.payMethod);
     const d = m && m.collectionDay !== undefined ? dueInfo(m.collectionDay, i.todayYmd) : undefined;
+    // Payment day always comes from the membership record (CollectionDay), with or without a known price.
+    const dueText: string | undefined = d ? `Due ${new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', day: 'numeric', month: 'short' }).format(new Date(`${d.dueYmd}T12:00:00Z`))}` : undefined;
     glance.push(c
-      ? { key: 'payment', label: 'Next payment', value: formatCents(c.totalCents), note: d ? `Due ${new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', day: 'numeric', month: 'short' }).format(new Date(`${d.dueYmd}T12:00:00Z`))}` : 'Payment day not set' }
-      : { key: 'payment', label: 'Next payment', value: 'Not set yet', note: 'Shown once Flavors confirms your plan', tone: 'muted' });
+      ? { key: 'payment', label: 'Next payment', value: formatCents(c.totalCents), note: dueText || 'Payment day not set yet' }
+      : { key: 'payment', label: 'Next payment', value: dueText || 'Not set yet', note: dueText ? 'Amount shown once Flavors confirms your plan' : 'Payment day not set yet', tone: 'muted' });
     glance.push(i.balance === 'not-connected'
       ? { key: 'balance', label: 'Balance due', value: 'Not available', note: 'Invoices could not be loaded', tone: 'muted' }
       : { key: 'balance', label: 'Balance due', value: formatCents(i.balance), tone: i.balance > 0 ? 'warn' : 'ok' });
   }
 
   const required: DocType[] = i.required;
-  const latest = newestPerType(i.documents);
-  const have: number = required.filter(t => { const d = latest.get(t); return !!d && dateState(d.expiryDate, i.todayYmd) !== 'expired'; }).length;
-  const docsNeed: boolean = required.length > 0 && have < required.length;
+  // Same computation as the Documents page and Home.
+  const reqRows = requiredRows(requiredOrSheet(required), i.documents, i.todayYmd);
+  const reqN = requiredSummary(reqRows);
+  const docsNeed: boolean = reqN.missing + reqN.expired > 0;
   const next: string | undefined = nextBookingText(i.requests, i.now);
   const account: IProfileRow[] = [];
   const add = (tab: TabKey, row: Omit<IProfileRow, 'target'>): void => { if (i.on(tab)) { account.push({ ...row, target: tab }); } };
-  add('membership', { key: 'membership', label: 'My membership', detail: m && m.planName ? `${m.planName}${m.collectionDay !== undefined ? ` · payment day ${m.collectionDay}` : ''}` : undefined });
-  add('documents', { key: 'documents', label: 'Documents and compliance', detail: required.length > 0 ? `${have} of ${required.length} required on file` : undefined, tone: docsNeed ? 'warn' : undefined });
-  add('billing', { key: 'billing', label: 'Billing and payments', detail: m && m.collectionDay !== undefined ? `Collected on day ${m.collectionDay}` : undefined });
+  add('membership', { key: 'membership', label: 'Membership', detail: m && m.planName ? `${m.planName}${m.collectionDay !== undefined ? ` · payment day: the ${ord(m.collectionDay)}` : ''}` : undefined });
+  add('documents', { key: 'documents', label: 'Documents', detail: `${reqN.current} of ${reqRows.length} current`, tone: docsNeed ? 'warn' : undefined });
+  add('billing', { key: 'billing', label: 'Billing', detail: m && m.collectionDay !== undefined ? `Payment day: the ${ord(m.collectionDay)}` : 'Payment day not set yet' });
   add('bookings', { key: 'bookings', label: 'My bookings', detail: next ? `Next: ${next}` : undefined });
   add('checkin', { key: 'checkin', label: 'Check in' });
-  add('events', { key: 'events', label: 'Event request', detail: 'Dining room and private events' });
-  add('storage', { key: 'storage', label: 'Storage', detail: 'Fridge, freezer and dry storage' });
+  add('events', { key: 'events', label: 'Events', detail: 'Book the dining room for a private event' });
+  add('storage', { key: 'storage', label: 'Storage', detail: 'Fridge, freezer and dry storage on request' });
   add('team', { key: 'team', label: 'My team', detail: 'Names for the wellness check' });
   const help: IProfileRow[] = [];
-  if (i.on('support')) { help.push({ key: 'support', label: 'Messages with Flavors', detail: i.replyWaiting ? 'Reply received' : 'Ask a question or report a problem', tone: i.replyWaiting ? 'warn' : undefined, target: 'support' }); }
+  if (i.on('support')) { help.push({ key: 'support', label: 'Messages', detail: i.replyWaiting ? 'Reply received' : 'Ask a question or report a problem', tone: i.replyWaiting ? 'warn' : undefined, target: 'support' }); }
 
   const ob: IOnboarding | undefined = m && i.on('documents') ? onboarding(m, i.documents, required, i.todayYmd) : undefined;
   return { attention, glance, account, help, onboarding: ob && !ob.complete ? ob : undefined };

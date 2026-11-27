@@ -1,3 +1,4 @@
+@use 'glass' as *;
 // Avenue member console: website layout. Tokens come from .avenuePortal (AvenuePortal.module.scss).
 // Palette use: deep ink bands, cream canvas, citrus ONLY for the main action, lime = free, brick = taken. Text pairs checked >= 4.5:1:
 // cream #F4F5F7 on ink #0F4C5C 15:1; muted #B4BDD0 on ink 8:1; ink on citrus #C9A24D 5.2:1; ink on lime-tint, brick #5B6370 on #E8EAED 6:1.
@@ -1764,7 +1765,7 @@ $ink2d: #0B3A47;
 [data-size='phone'] .pol, [data-size='mid'] .pol { grid-template-columns: minmax(0, 1fr); gap: 16px; }
 .polToc { position: sticky; top: calc(var(--bar-h) + 16px); display: grid; gap: 4px;
   button { text-align: left; background: none; border: 0; border-left: 3px solid $line; padding: 8px 12px; font: inherit; font-weight: 600; color: $ink; cursor: pointer; min-height: 40px; } }
-[data-size='phone'] .polToc, [data-size='mid'] .polToc { position: static; display: flex; overflow-x: auto; gap: 8px; button { border: 1px solid $line; border-radius: 999px; white-space: nowrap; } }
+[data-size='phone'] .polToc, [data-size='mid'] .polToc { position: static; display: flex; overflow-x: auto; gap: 8px; padding-bottom: 4px; scrollbar-width: none; button { flex: 0 0 auto; width: auto; border: 1px solid $line; border-radius: 999px; white-space: nowrap; padding: 8px 14px; } }
 @media (hover: hover) { .polToc button:hover { border-left-color: $citrus; } }
 .polBody { display: grid; gap: 16px; min-width: 0;
   section { background: #fff; border: 1px solid $line; border-radius: 16px; padding: 24px; scroll-margin-top: calc(var(--bar-h) + 16px); }
@@ -2311,7 +2312,7 @@ button, a, [role='button'], input, select, textarea, summary { touch-action: man
 // 2) My bookings card on phones: time on top, equipment icons (wrap), names (2 lines), status chip below. One column, never wider than the card.
 [data-size='phone'] .mbTicket { grid-template-columns: minmax(0, 1fr) !important; gap: 10px !important; align-items: start; overflow: hidden; }
 [data-size='phone'] .mbTime { display: flex !important; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; align-self: auto; }
-[data-size='phone'] .mbTime b + b::before { content: '– '; font-weight: 650; }
+[data-size='phone'] .mbTime b + b::before { content: '- '; font-weight: 650; }
 [data-size='phone'] .mbTime em { margin-left: auto; }
 [data-size='phone'] .mbBody { gap: 8px; }
 [data-size='phone'] .mbKit { flex-wrap: wrap; row-gap: 6px; max-width: 100%; }
@@ -2941,3 +2942,83 @@ $fb-ink: #0f4c5c; $fb-gold: #c9a24d; $fb-edge: #c9d4d9;
 /* The scroll-linked reveal (sdIn) owns `transform` on .kbList li; switch it off in the slider so the centre scale shows. */
 .site:not([data-motion='reduce']) .kbList.kbSlider > li, .site .kbList.kbSlider > li { animation-name: none !important; animation-timeline: auto !important; }
 .kbSlider { position: relative; }
+
+/* ===== 1.8 client feedback (25 Nov 2026) ===== */
+/* 2 Messages: a labelled teal "New message" pill in the list header row; it does not float or scroll away, and it does not look like Book. */
+.msgHeadRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; .msgCount { margin: 0; min-width: 0; } }
+.msgNew { display: inline-flex; flex: none; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px 0 14px; border: 0; border-radius: 999px; background: #0f4c5c; color: #fff; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform .16s cubic-bezier(.23, 1, .32, 1), background-color .16s ease-out; }
+.msgNew:active { transform: scale(.97); }
+.msgNew:focus-visible { outline: 3px solid #c9a24d; outline-offset: 2px; }
+@media (hover: hover) { .msgNew:hover { background: #0b3b47; } }
+.site .msgList { padding-bottom: 16px; }
+
+/* 3 Page eyebrow: the facility name only, one line, muted slate-indigo, sentence case. */
+.site p.pgEyebrow { display: block; margin: 0; font-family: var(--av-font); font-size: 14px; font-weight: 600; letter-spacing: .02em; text-transform: none; color: #4a5578; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+
+/* 4 No decorative dashes before eyebrows or the hero date. */
+.site .eyebrow::before, .site .pgEyebrow::before { display: none !important; }
+
+/* 6 Booking-type cards: no shadow on the card itself; the circular icon keeps its shadow. */
+.site .modeRow .modeCard, .site .modeRow .modeCard[aria-pressed='true'], .site .modeRow .modeCard.bkModeOn { box-shadow: none !important; }
+.site .modeRow .modeCard:not([aria-pressed='true']) { border: 1px solid #dbe5e8 !important; background: #fff !important; }
+
+/* 7 / 8 Tonal button (My bookings Check in, Schedule Today): flat tonal fill, no dark halo or glow at rest; the press scale stays. */
+.site .btn.btnTonal { background: #e4eef0 !important; color: #0f4c5c !important; border: 1px solid #c9dade !important; box-shadow: none !important; text-shadow: none !important; filter: none !important; }
+.site .btn.btnTonal::after, .site .btn.btnTonal::before { display: none !important; }
+.site .btn.btnTonal:active { transform: scale(.97); }
+
+/* 9 Prep tables: same card as the equipment rows above, no dashed border; the stepper buttons match the add buttons. */
+.site .bfPrep { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #fff !important; border-radius: 26px 10px 26px 10px !important; background: linear-gradient(155deg, #fff, #f1f6f7) !important; box-shadow: inset 0 1px 0 #fff, 0 10px 22px rgba(15, 76, 92, .1) !important; }
+.site .bfPrep .bkUnitText { display: grid; gap: 2px; flex: 1; min-width: 0; strong { font-size: 16px; font-weight: 700; color: #14262e; } }
+.site .bfPrep .prepCap { font-size: 13px; color: #5b6370; }
+.site .bfPrep .stepper { display: inline-flex; align-items: center; gap: 10px; flex: none; b { min-width: 20px; text-align: center; font-size: 17px; font-variant-numeric: tabular-nums; } }
+.site .bfPrep .stepper .iconBtn { width: 36px; height: 36px; border-radius: 10px; border: 1.5px solid #0f4c5c; background: #fff; color: #0f4c5c; font-size: 18px; font-weight: 700; display: grid; place-items: center; padding: 0; }
+.site .bfPrep .stepper .iconBtn:disabled { opacity: .4; }
+.site .bfPrep .stepper .iconBtn:active:not(:disabled) { transform: scale(.94); }
+
+/* 5 My bookings date strip: rounded capsule bubbles, no shadow. Flat fill = booked/selected, ring = today, dot = has bookings. */
+.site .monthStrip li > button, [data-size='phone'] .datePanel .monthStrip li > button { border-radius: 999px !important; box-shadow: none !important; }
+.site .monthStrip li > button b, .site .monthStrip li > button:active b { box-shadow: none !important; }
+[data-size='phone'] .datePanel .monthStrip li > button { border: 1.5px solid transparent !important; background: #f1f5f6 !important; padding: 10px 0 !important; }
+[data-size='phone'] .datePanel .monthStrip li > button:disabled { background: transparent !important; }
+[data-size='phone'] .datePanel .monthStrip .monthToday { border-color: #c9a24d !important; }
+[data-size='phone'] .datePanel .monthStrip .monthNext { top: -12px; left: 50%; transform: translateX(-50%); border-radius: 999px; padding: 1px 8px; }
+
+/* 1.9 unslop: one test-mode notice per payments screen */
+.testPill { display: inline-flex; align-self: flex-start; margin: 0 0 12px; padding: 4px 12px; border-radius: 999px; background: #fff4d6; color: #6b4e00; font-size: 13px; font-weight: 600; }
+.bfRecentSt { text-transform: none; letter-spacing: 0; }
+
+/* 1.10 browser audit fixes */
+/* V5: same breathing room under the top bar on every page */
+[data-size='phone'] .site .pageHead, [data-size='phone'] .site .pgHead { padding-top: 14px !important; }
+/* V6: "How booking works" is a quiet link at the start of the row; recent bookings sit after the booking controls */
+.flowHow { justify-self: start; padding: 0 4px; }
+.bfRecent { margin: 24px 0 0 !important; padding: 16px 0 0 !important; border-bottom: 0 !important; border-top: 1px solid $line !important; }
+/* V8: cross-links between Membership and Billing are text links, not primary buttons */
+.crossLink { align-self: center; flex: none; min-height: 44px; padding: 0 4px; border: 0; background: none; color: #0f4c5c; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.crossLink:active { opacity: .7; }
+@media (hover: hover) { .crossLink:hover { text-decoration: underline; } }
+/* V9: the app's own select look (rounded field, chevron) */
+.site .nmForm select { -webkit-appearance: none; appearance: none; min-height: 48px; padding: 12px 40px 12px 14px; border: 1.5px solid #cfd8dc; border-radius: 14px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230f4c5c' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center; color: #14262e; font-weight: 600; }
+.site .nmForm select:focus-visible { outline: 3px solid #0f4c5c; outline-offset: 2px; }
+/* V11: More sheet tiles share one height per row */
+.moreGrid { grid-auto-rows: 1fr; }
+.moreGrid > li { display: flex; }
+.moreGrid .moreTile { height: 100%; }
+
+// ---- 1.11 Liquid Glass (shared material in _glass.scss). Small floating surfaces only; solid fallback without backdrop-filter
+//      or under prefers-reduced-transparency. Nothing here animates backdrop-filter. ----
+// Phone nav: the standalone round buttons (not the active teal one, not the gold Book) become clear glass over the page fade.
+[data-size='phone'] .tabbar .tab:not(.tabOn):not(.tabBook) .navIcon { @include liquid-glass(rgba(255, 255, 255, .62), #fff, rgba(255, 255, 255, .7), true, false, !important); }
+// Book cart capsule.
+[data-size='phone'] .bfBar.bk7Bar, [data-size='mid'] .bfBar.bk7Bar { @include liquid-glass(rgba(255, 255, 255, .58), #fff, rgba(255, 255, 255, .75), true, true, !important); border-color: rgba(255, 255, 255, .6) !important; }
+// Top bar once the page has scrolled (on top of the Home photo it stays clear, as before). Transition no longer includes backdrop-filter.
+[data-size='phone'] .topbar { transition: background-color .3s ease, box-shadow .3s ease; }
+.site[data-size='phone']:not([data-hero='top']) .topbar { @include liquid-glass(rgba(250, 250, 247, .6), #fafaf7, rgba(255, 255, 255, .55), false); }
+// Sheet headers: the More header sticks to the top of the sheet as a glass strip; Profile header is dark glass over the ink band.
+.moreHead { position: sticky; top: 0; z-index: 2; margin: 0 -14px; padding: 14px 18px 10px; border-radius: 32px 32px 0 0; @include liquid-glass(rgba(255, 255, 255, .55), #fff, rgba(255, 255, 255, .6), false); }
+.pdHead { @include liquid-glass(rgba(15, 76, 92, .78), #0f4c5c, rgba(255, 255, 255, .18), false); }
+// Segmented control thumb: teal glass so the track shows through slightly; the label on it stays white (AA on #0f4c5c-ish).
+.site .segmented::before { @include liquid-glass(rgba(15, 76, 92, .86), #0f4c5c, rgba(255, 255, 255, .22), true, false, !important); }
+// Date panel (Book, My bookings): light glass panel; the date bubbles inside keep their flat, shadow-free style.
+.datePanel, [data-size='phone'] .datePanel { @include liquid-glass(rgba(255, 255, 255, .6), #fff, rgba(255, 255, 255, .8), false, false, !important); }

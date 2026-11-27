@@ -41,7 +41,7 @@ describe('BookFlow (v7 Book)', () => {
   it('shows the intro strip and "How booking works" opens Policies', async () => {
     const went: string[] = [];
     await draw(<BookFlow source={source()} facility={facility()} resources={resources} tables={[]} onSent={() => undefined} userEmail="m@x" onNavigate={t => went.push(t)} />);
-    expect(host.textContent).toContain('Flavors confirms every request; nothing is charged now.');
+    expect(host.textContent).toContain('Pick a day, your hours and the equipment.');
     await click(btn(/How booking works/));
     expect(went).toEqual(['policies']);
     expect(host.textContent).not.toContain('Confirmed');
@@ -90,7 +90,7 @@ describe('BookFlow (v7 Book)', () => {
     expect(Date.parse(body.endUtc as string) - Date.parse(body.startUtc as string)).toBe(2 * 3600000);
     expect(id).toMatch(/^req-/);
     expect(catalog).toEqual({ equipmentIds: ['s1', 'p1'], totalSeats: undefined });
-    expect(document.body.textContent).toContain('Request sent — Flavors will confirm');
+    expect(document.body.textContent).toContain('Request sent. Flavors will confirm');
   });
 
   it('phone: the bottom bar shows items and hours and opens the same sheet', async () => {

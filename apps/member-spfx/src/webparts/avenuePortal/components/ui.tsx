@@ -11,11 +11,11 @@ import { localDay } from '../../../avenue/calendar';
 import rr from './Ref.module.scss';
 import { ModuleCard, EmptyArt, RefIcon } from './RefUi';
 
-/** "Wed 18 Nov, 9:00 AM – 1:00 PM" in the facility's time zone. */
+/** "Wed 18 Nov, 9:00 AM - 1:00 PM" in the facility's time zone. */
 export function formatWhen(startUtc: string, endUtc: string, timeZone: string): string {
   const day: string = new Intl.DateTimeFormat('en-US', { timeZone, weekday: 'short', day: 'numeric', month: 'short' }).format(new Date(startUtc));
   const time = (iso: string): string => new Intl.DateTimeFormat('en-US', { timeZone, hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
-  return `${day}, ${time(startUtc)} – ${time(endUtc)}`;
+  return `${day}, ${time(startUtc)} - ${time(endUtc)}`;
 }
 
 /** "18 Nov 2026" for a YYYY-MM-DD date (no time zone involved). */
@@ -79,7 +79,7 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
   public static getDerivedStateFromError(): { failed: boolean } { return { failed: true }; }
   public render(): React.ReactNode {
     return this.state.failed
-      ? <MessageBar messageBarType={MessageBarType.error}>Avenue hit a problem showing this page. Refresh the page; if it keeps happening, tell Flavors.</MessageBar>
+      ? <MessageBar messageBarType={MessageBarType.error}>This page could not load. Refresh; if it keeps happening, tell Flavors.</MessageBar>
       : this.props.children;
   }
 }

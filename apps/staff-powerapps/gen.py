@@ -1,7 +1,7 @@
-# NOTE: Category is a CHOICE on AvenueSupportCases/Messages until the R1 flow edit + Text conversion; code uses Category.Value. Switch back to Text then.
+# NOTE: Category is TEXT on AvenueSupportCases/Messages (converted 27 Nov 2026 with the R1 flow edit); support formulas use plain Category.
 # Generates the staff-app screen YAML (pasted into Power Apps Studio). Run: python3 gen.py
 # Formulas containing ": " or " #" are emitted as YAML block scalars, which Power Apps requires.
-# NOTE: Category is a CHOICE on AvenueSupportCases/Messages until the R1 flow edit + Text conversion; code uses Category.Value. Switch back to Text then.
+# NOTE: Category is TEXT on AvenueSupportCases/Messages (converted 27 Nov 2026 with the R1 flow edit); support formulas use plain Category.
 # Design system (shell, tokens, panels, chips, thumbnails) is defined once here; every screen uses these helpers.
 import re, os, json
 from release import *
@@ -50,6 +50,7 @@ def ctl(name, control, props, variant=None, children=None, indent=0):
         if _VIS and 'Visible' not in props: props['Visible'] = _VIS
     out = [f'{pad}- {name}:', f'{pad}    Control: {control}']
     if variant: out.append(f'{pad}    Variant: {variant}')
+    if control.startswith('Form@'): out.append(f'{pad}    Layout: Vertical')  # Studio paste requires it (PA1011)
     out.append(f'{pad}    Properties:')
     for k, v in props.items():
         v = str(v)
@@ -891,7 +892,7 @@ parts.append(hint('uTbHelp', '"Seat counts come from the client (Q-22: about 50 
 # ----- Tab 5: Support topics (AvenueSupportCategories). The member portal and the support flow read the Active titles. -----
 _VIS = TP_VIS
 TP_SEL = 'uTpGal.Selected'
-TP_USED = 'CountRows(Filter(AvenueSupportCases, FacilityId = ' + FAC + ', Category.Value = ' + TP_SEL + '.Title))'
+TP_USED = 'CountRows(Filter(AvenueSupportCases, FacilityId = ' + FAC + ', Category = ' + TP_SEL + '.Title))'
 parts.append(panel('uTpPanelList', 24, Y1, 520, H))
 parts.append(head('uTpHead', '"Support topics members can choose"', 44, Y1 + 12, 440, 16))
 parts.append(gallery('uTpGal', 'SortByColumns(Filter(AvenueSupportCategories, FacilityId = ' + FAC + '), "SortOrder", SortOrder.Ascending)', 32, Y1 + 48, 504, H - 64, 48, [
@@ -1151,7 +1152,8 @@ hub_cards = [
     ('Reports (Screen18)', 'Navigate(Screen18)', 'Bookings and hours per month, documents, invoices and equipment use.'),
     ('Events (Screen21)', 'Navigate(Screen21)', 'Private-event and dining requests: approve, quote and request the invoices.'),
     ('Storage (Screen22)', 'Navigate(Screen22)', 'Fridge, freezer and dry-storage requests from members.'),
-    ('Member admin (Screen23)', 'Navigate(Screen23)', 'Edit members, hours ledger, documents on a member\'s behalf, team list.')
+    ('Member admin (Screen23)', 'Navigate(Screen23)', 'Edit members, hours ledger, documents on a member\'s behalf, team list.'),
+    ('Data admin (Screen24)', 'Navigate(Screen24)', 'Read, create, edit and delete rows of every workflow list (plans, equipment, onboarding, payments...).')
 ]
 hub_cards = [c for c in hub_cards if on(HUB_MODULE[re.search(r'Screen\d+', c[1]).group()])]
 for i, (title, target, desc) in enumerate(hub_cards):
@@ -1427,17 +1429,17 @@ for i, (key, cap) in enumerate([('All', 'All'), ('Open', 'Open'), ('Answered', '
                         RadiusTopLeft=15, RadiusTopRight=15, RadiusBottomLeft=15, RadiusBottomRight=15))
 # No OR inside Filter (Studio delegation rule): one Filter per status/topic combination.
 SUP_ROWS = ('With({st: Coalesce(varSupStage, "All"), ct: Coalesce(supCatFilter.Selected.Value, "")}, SortByColumns(AddColumns('
-            'If(st = "All", If(ct = "", Filter(' + SUP_L + ', Status.Value <> "Archived"), Filter(' + SUP_L + ', Status.Value <> "Archived", Category.Value = ct)), '
-            'If(ct = "", Filter(' + SUP_L + ', Status.Value = st), Filter(' + SUP_L + ', Status.Value = st, Category.Value = ct))), '
+            'If(st = "All", If(ct = "", Filter(' + SUP_L + ', Status.Value <> "Archived"), Filter(' + SUP_L + ', Status.Value <> "Archived", Category = ct)), '
+            'If(ct = "", Filter(' + SUP_L + ', Status.Value = st), Filter(' + SUP_L + ', Status.Value = st, Category = ct))), '
             'Rank, Switch(Status.Value, "Open", 0, "Answered", 1, "Closed", 2, 3)), "Rank", SortOrder.Ascending, "CreatedAt", SortOrder.Descending))')
 parts.append(gallery('supGal', SUP_ROWS, 20, 150, 640, 580, 66, [
     child('supItemTitle', 'Coalesce(ThisItem.Subject, "(no subject)")', 8, 4, 480, 28, FontWeight='FontWeight.Semibold'),
-    child('supItemMeta', 'Coalesce(ThisItem.Category.Value, "-") & " · " & ThisItem.MemberId', 8, 34, 480, 22, Size=11, Color=SUBTLE),
+    child('supItemMeta', 'Coalesce(ThisItem.Category, "-") & " · " & ThisItem.MemberId', 8, 34, 480, 22, Size=11, Color=SUBTLE),
     status_pill('supItemPill', 'ThisItem.Status.Value', ['Open'], ['Answered'])]))
 parts.append(label('supEmpty', '"No conversations in this view yet. Members start them from Messages with Flavors in the portal."', 28, 170, 620, 40, Size=12, Color=SUBTLE,
                    Visible='CountRows(supGal.AllItems) = 0'))
 parts.append(label('supSelHead', 'If(IsBlank(' + SUP_SEL + '), "Select a conversation", ' + SUP_SEL + '.Subject)', 690, 150, 640, 30, FontWeight='FontWeight.Semibold'))
-parts.append(label('supSelInfo', 'If(IsBlank(' + SUP_SEL + '), "", "From " & ' + SUP_SEL + '.MemberId & " · " & Coalesce(' + SUP_SEL + '.Category.Value, "-") & " · " & ' + SUP_SEL + '.Status.Value & Char(10) & "Opened " & ' +
+parts.append(label('supSelInfo', 'If(IsBlank(' + SUP_SEL + '), "", "From " & ' + SUP_SEL + '.MemberId & " · " & Coalesce(' + SUP_SEL + '.Category, "-") & " · " & ' + SUP_SEL + '.Status.Value & Char(10) & "Opened " & ' +
                    f_local(SUP_SEL + '.CreatedAt', 'ddd d mmm, h:mm AM/PM') + ' & If(IsBlank(' + SUP_SEL + '.RepliedAt), "", " · last reply by " & ' + SUP_SEL + '.RepliedBy & " " & ' + f_local(SUP_SEL + '.RepliedAt', 'd mmm, h:mm AM/PM') + ') & '
                    'If(IsBlank(' + SUP_SEL + '.ArchivedAt), "", Char(10) & "Archived by " & ' + SUP_SEL + '.ArchivedBy & " " & ' + f_local(SUP_SEL + '.ArchivedAt', 'd mmm yyyy') + '))', 690, 184, 640, 58, Size=12))
 # Full thread: the member's own AvenueSupportMessages items with this ThreadId. UNKNOWN whether staff accounts can read members' own-items
@@ -1470,10 +1472,10 @@ parts.append(button2('supArchive', 'Archive', 1140, 712, 190, 38,
     'IfError(Patch(AvenueSupportCases, ' + SUP_REAL + ', {Status: {Value: "Archived"}, ArchivedBy: User().Email, ArchivedAt: Now()}); Notify("Archived: hidden from All, kept for the record. The member\'s own messages are not changed.", NotificationType.Success), Notify("Could not archive it.", NotificationType.Error))',
     DisplayMode='If(!IsBlank(' + SUP_SEL + ') && ' + SUP_SEL + '.Status.Value <> "Archived", DisplayMode.Edit, DisplayMode.Disabled)'))
 parts.append(ctl('supCatEdit', 'Classic/DropDown', {'Items': 'ForAll(SortByColumns(Filter(AvenueSupportCategories, FacilityId = ' + FAC + ', Active = true), "SortOrder", SortOrder.Ascending), {Value: Title})',
-                                                     'Default': 'Coalesce(' + SUP_SEL + '.Category.Value, "")', 'AllowEmptySelection': 'true', 'X': 690, 'Y': 766, 'Width': 240, 'Height': 36}))
+                                                     'Default': 'Coalesce(' + SUP_SEL + '.Category, "")', 'AllowEmptySelection': 'true', 'X': 690, 'Y': 766, 'Width': 240, 'Height': 36}))
 parts.append(ctl('supStEdit', 'Classic/DropDown', {'Items': '["Open", "Answered", "Closed", "Archived"]', 'Default': 'Coalesce(' + SUP_SEL + '.Status.Value, "Open")', 'X': 940, 'Y': 766, 'Width': 170, 'Height': 36}))
 parts.append(button2('supSaveMeta', 'Save topic and status', 1120, 766, 210, 36,
-    'IfError(Patch(AvenueSupportCases, ' + SUP_REAL + ', {Category: {Value: Coalesce(supCatEdit.Selected.Value, ' + SUP_SEL + '.Category.Value)}, Status: {Value: supStEdit.Selected.Value}, '
+    'IfError(Patch(AvenueSupportCases, ' + SUP_REAL + ', {Category: Coalesce(supCatEdit.Selected.Value, ' + SUP_SEL + '.Category), Status: {Value: supStEdit.Selected.Value}, '
     'ArchivedBy: If(supStEdit.Selected.Value = "Archived", User().Email, ""), ArchivedAt: If(supStEdit.Selected.Value = "Archived", Now(), Blank())}); Notify("Saved (" & ' + SUP_WHO + ' & ").", NotificationType.Success), Notify("Could not save.", NotificationType.Error))',
     DisplayMode='If(IsBlank(' + SUP_SEL + '), DisplayMode.Disabled, DisplayMode.Edit)'))
 parts.append(hint('supHelp', '"Replies are shown to the member in the portal. Nobody is promised a reply time and no contact details are published (Q-13 and Q-P1 are open). Archive hides a case from All; nothing is deleted from this screen (Q-R5)."', 690, 810, 640, 44))
@@ -1931,5 +1933,96 @@ parts.append(hint('maTeamNone', '"No team rows visible. Either the member has no
 _DY, _VIS = 0, None
 write('memberadmin.pa.yaml', parts)
 _DY = 0
+
+# ---------- Data admin (Screen24): read / create / update / delete for every workflow list (one data set at a time) ----------
+# Delete rules (CLAUDE.md, REDESIGN plan section 5): ONE selected record per action, typed "delete" confirm, never a filter delete.
+#   hard = config rows (plans, equipment, doc types, checklist, topics, tables, sensors, staff access): delete or deactivate.
+#   test = money/audit/history rows (bookings, ledger, check-ins, invoices, documents, cases...): delete ONLY gaptest-/demo- rows;
+#          real rows are cancelled/archived/counter-adjusted on their own screens. none = read only here (members: Member admin deactivates).
+# Forms: one EditForm per editable data set; its fields are added in Studio (Edit fields > Add field, select all) after pasting.
+# Capability toggles (CAN) only hide buttons; SharePoint permissions and the flows are the real boundary (Q-15).
+DA = [  # (label, list, key text field, line-2 formula, delete mode, form?, Active column?, capability)
+    ('Applicants', 'AvenueApplicants', 'ApplicantId', 'Coalesce(ThisItem.BusinessName, "-") & " · " & ThisItem.Stage.Value & " · " & Coalesce(ThisItem.Email, "")', 'test', True, False, 'ManageMembers'),
+    ('Members', 'AvenueMembers', 'MemberId', 'Coalesce(ThisItem.BusinessName, "-") & " · " & ThisItem.Status.Value & " · plan " & Coalesce(ThisItem.PlanId, "-")', 'none', False, False, 'ManageMembers'),
+    ('Plans', 'AvenuePlans', 'PlanId', 'Text(Coalesce(ThisItem.MonthlyHours, 0)) & " h · $" & Text(Coalesce(ThisItem.PriceCents, 0) / 100, "0.00") & If(ThisItem.Active, "", " · inactive")', 'hard', True, True, 'ManageMembers'),
+    ('Equipment', 'AvenueEquipment', 'EquipmentId', 'Coalesce(ThisItem.Title, "-") & " · " & ThisItem.Category.Value & If(ThisItem.Active, "", " · inactive")', 'hard', True, True, 'ManageEquipment'),
+    ('Dining tables', 'AvenueDiningTables', 'TableId', 'Text(Coalesce(ThisItem.Seats, 0)) & " seats" & If(ThisItem.Active, "", " · inactive")', 'hard', True, True, 'ManageEquipment'),
+    ('Required documents', 'AvenueRequiredDocTypes', 'Title', 'ThisItem.DocType.Value & If(ThisItem.Active, "", " · inactive")', 'hard', True, True, 'ManageDocuments'),
+    ('Checklist questions', 'AvenueChecklistQuestions', 'Title', 'ThisItem.Kind.Value & " · " & Text(Coalesce(ThisItem.SortOrder, 0)) & " · " & Left(Coalesce(ThisItem.Question, ""), 60)', 'hard', True, True, 'ManageDocuments'),
+    ('Support topics', 'AvenueSupportCategories', 'Title', '"Order " & Text(Coalesce(ThisItem.SortOrder, 0)) & If(ThisItem.Active, "", " · inactive")', 'hard', True, True, 'ManageMembers'),
+    ('Sensors', 'AvenueSensors', 'SensorId', 'Coalesce(ThisItem.UnitName, "-") & " · " & ThisItem.UnitType.Value & If(ThisItem.Active, "", " · inactive")', 'hard', True, True, 'ViewEnvironment'),
+    ('Bookings', 'AvenueBookings', 'BookingId', 'ThisItem.MemberId & " · " & ThisItem.Status.Value & " · " & Text(ThisItem.StartUtc, "d mmm yyyy h:mm AM/PM")', 'test', False, False, 'ApproveBookings'),
+    ('Booking requests', 'AvenueBookingRequests', 'RequestId', 'Coalesce(ThisItem.Outcome, "waiting for the flow") & " · " & Coalesce(ThisItem.OnBehalfOf, "")', 'test', False, False, 'ApproveBookings'),
+    ('Hours ledger', 'AvenueHoursLedger', 'EntryId', 'ThisItem.MemberId & " · " & ThisItem.Period & " · " & Text(Coalesce(ThisItem.Hours, 0)) & " h · " & ThisItem.Reason.Value', 'test', False, False, 'ManageMembers'),
+    ('Check-ins', 'AvenueCheckIns', 'SubmissionId', 'ThisItem.MemberId & " · " & ThisItem.Kind.Value & If(ThisItem.AllPassed, " · passed", " · failed")', 'test', False, False, 'ManageMembers'),
+    ('Invoices', 'AvenueInvoices', 'InvoiceId', 'ThisItem.MemberId & " · " & ThisItem.Status.Value & " · $" & Text(Coalesce(ThisItem.AmountDueCents, 0) / 100, "0.00")', 'test', False, False, 'ViewPayments'),
+    ('Member documents', 'AvenueMemberDocuments', 'Title', 'ThisItem.MemberId & " · " & ThisItem.DocType.Value & " · expires " & Text(ThisItem.ExpiryDate, "d mmm yyyy")', 'test', True, False, 'ManageDocuments'),
+    ('Document submissions', 'AvenueDocumentSubmissions', 'SubmissionId', 'Coalesce(ThisItem.OnBehalfOf, "") & " · " & Coalesce(ThisItem.Outcome, "waiting for the flow")', 'test', False, False, 'ManageDocuments'),
+    ('Compliance cases', 'AvenueComplianceCases', 'Title', 'ThisItem.MemberId', 'test', False, False, 'ManageDocuments'),
+    ('Compliance overrides', 'AvenueComplianceOverrides', 'Title', 'ThisItem.MemberId', 'test', False, False, 'ManageDocuments'),
+    ('Support cases', 'AvenueSupportCases', 'CaseId', 'ThisItem.MemberId & " · " & ThisItem.Status.Value & " · " & Coalesce(ThisItem.Subject, "")', 'test', False, False, 'ManageMembers'),
+    ('Event cases', 'AvenueEventCases', 'CaseId', 'ThisItem.MemberId & " · " & ThisItem.Status.Value & " · " & ThisItem.Package.Value', 'test', True, False, 'ManageMembers'),
+    ('Storage cases', 'AvenueStorageCases', 'CaseId', 'ThisItem.MemberId & " · " & ThisItem.Status.Value & " · " & ThisItem.Item.Value', 'test', True, False, 'ManageMembers'),
+    ('Notices', 'AvenueNotices', 'Title', 'Text(ThisItem.Created, "d mmm yyyy")', 'hard', True, False, 'PostNotices'),
+    ('Staff access', 'AvenueStaffCapabilities', 'StaffEmail', 'Coalesce(ThisItem.Note, "")', 'hard', True, False, None),
+    ('Calendar (read only)', 'AvenueCalendar', 'BookingId', 'Coalesce(ThisItem.MemberDisplayName, "") & " · " & Text(ThisItem.StartUtc, "d mmm yyyy h:mm AM/PM")', 'none', False, False, 'ApproveBookings'),
+    ('Host requests (read only)', 'AvenueHostRequests', 'RequestId', 'ThisItem.Kind.Value & " · " & Coalesce(ThisItem.Outcome, "waiting for the host")', 'none', False, False, 'ViewPayments'),
+]
+def _da_n(lbl): return re.sub('[^A-Za-z]', '', lbl)
+parts = nav('da', 'Screen24', 'Data admin')
+Y0 = cy('Screen24')
+DA_SET = 'Coalesce(daSet.Selected.Value, "Applicants")'
+DA_CAN = lambda cap: OWNER_SN_EARLY if cap is None else CAN(cap)
+parts.append(button('daBack', 'Back to More', 20, Y0, 140, 34, 'Navigate(Screen12)'))
+parts.append(head('daHead', '"Data admin · every workflow list"', 180, Y0, 600, 20))
+parts.append(ctl('daSet', 'Classic/DropDown', {'Items': '[' + ', '.join(f'"{d[0]}"' for d in DA) + ']', 'Default': '"Applicants"', 'X': 20, 'Y': Y0 + 44, 'Width': 300, 'Height': 36,
+                                                 'OnChange': 'Set(varDaNew, false); Reset(daConfirm); Reset(daSearch)'}))
+parts.append(ctl('daSearch', 'Classic/TextInput', {'Default': '""', 'HintText': '"Search: start of the id / title"', 'X': 330, 'Y': Y0 + 44, 'Width': 330, 'Height': 36}))
+for lbl, L, key, line2, mode, form, act, cap in DA:
+    n, on_ = _da_n(lbl), f'{DA_SET} = "{lbl}"'
+    gal = f'daGal{n}'
+    items = (f'With({{s: Trim(daSearch.Text)}}, SortByColumns(If(IsBlank(s), Filter({L}, FacilityId = {FAC}), '
+             f'Filter({L}, FacilityId = {FAC}, StartsWith({key}, s))), "ID", SortOrder.Descending))')
+    parts.append(gallery(gal, items, 20, Y0 + 90, 640, 560, 58, [
+        child(f'{gal}Key', f'Coalesce(ThisItem.{key}, ThisItem.Title, "(no id)")', 8, 4, 600, 26, FontWeight=SEMI),
+        child(f'{gal}Meta', line2, 8, 30, 600, 22, Size=11, Color=SUBTLE)], Visible=on_))
+    SEL = f'{gal}.Selected'
+    REAL = f'LookUp({L}, ID = {SEL}.ID)'
+    test_row = f'(StartsWith(Lower(Coalesce({SEL}.{key}, "")), "gaptest-") || StartsWith(Lower(Coalesce({SEL}.{key}, "")), "demo-") || StartsWith(Lower(Coalesce({SEL}.Title, "")), "gaptest-") || StartsWith(Lower(Coalesce({SEL}.Title, "")), "demo-"))'
+    if form:
+        f = f'daForm{n}'
+        parts.append(ctl(f, 'Form@2.4.4', {'DataSource': L, 'Item': SEL, 'DefaultMode': 'If(varDaNew, FormMode.New, FormMode.Edit)', 'X': 690, 'Y': Y0 + 90, 'Width': 640, 'Height': 380,
+            'OnSuccess': f'If(IsBlank(Self.LastSubmit.FacilityId), Patch({L}, LookUp({L}, ID = Self.LastSubmit.ID), {{FacilityId: {FAC}}})); Set(varDaNew, false); Refresh({L}); Notify("Saved.", NotificationType.Success)',
+            'OnFailure': 'Notify("Not saved: check the required fields.", NotificationType.Error)', 'Visible': on_}))
+        parts.append(button(f'daNew{n}', 'New', 690, Y0 + 480, 120, 38, f'Set(varDaNew, true); NewForm({f})', Visible=f'{on_} && {DA_CAN(cap)}'))
+        parts.append(button(f'daSave{n}', 'Save', 820, Y0 + 480, 120, 38, f'SubmitForm({f})', Visible=f'{on_} && {DA_CAN(cap)}',
+                            DisplayMode=f'If(varDaNew || !IsBlank({SEL}), DisplayMode.Edit, DisplayMode.Disabled)'))
+        parts.append(button2(f'daCancel{n}', 'Cancel', 950, Y0 + 480, 120, 38, f'Set(varDaNew, false); ResetForm({f})', Visible=on_))
+    else:
+        parts.append(label(f'daInfo{n}', f'If(IsBlank({SEL}), "Select a row", Coalesce({SEL}.{key}, {SEL}.Title) & Char(10) & With({{r: {SEL}}}, "Created " & Text(r.Created, "d mmm yyyy h:mm AM/PM") & " · modified " & Text(r.Modified, "d mmm yyyy h:mm AM/PM")))',
+                           690, Y0 + 90, 640, 60, Visible=on_))
+        parts.append(hint(f'daWhere{n}', '"' + {'Members': 'Edit and deactivate members on Member admin; members are never deleted.',
+            'Bookings': 'Approve, decline, cancel and extend on Requests / Approved (keeps calendar and hours correct).',
+            'Hours ledger': 'Real rows are corrected by a counter-adjustment on Member admin > Hours ledger.',
+            'Invoices': 'Invoices mirror Stripe (test mode); void or refund them in Stripe, never here.',
+            'Support cases': 'Reply, close and archive on Support.'}.get(lbl, 'Edit on its own screen; here: read, and delete test rows.') + '"', 690, Y0 + 156, 640, 40, Visible=on_))
+    if lbl == 'Members':
+        parts.append(button(f'daOpen{n}', 'Open Member admin', 690, Y0 + 200, 200, 38, 'Navigate(Screen23)', Visible=on_))
+    if act:
+        parts.append(button2(f'daAct{n}', 'Deactivate', 1080, Y0 + 480, 150, 38,
+            f'IfError(Patch({L}, {REAL}, {{Active: !{SEL}.Active}}); Notify(If({SEL}.Active, "Deactivated.", "Reactivated."), NotificationType.Success), Notify("Could not change Active.", NotificationType.Error))',
+            Text=f'If({SEL}.Active, "Deactivate", "Reactivate")', Visible=f'{on_} && {DA_CAN(cap)}',
+            DisplayMode=f'If(IsBlank({SEL}) || varDaNew, DisplayMode.Disabled, DisplayMode.Edit)'))
+    if mode != 'none':
+        ok_row = 'true' if mode == 'hard' else test_row
+        parts.append(button(f'daDel{n}', 'Delete selected', 1150, Y0 + 540, 180, 38,
+            f'If(Lower(Trim(daConfirm.Text)) <> "delete", Notify("Type delete to confirm.", NotificationType.Warning), '
+            f'IfError(Remove({L}, {REAL}); Reset(daConfirm); Notify("Deleted (site recycle bin).", NotificationType.Success), Notify("Could not delete: permission or the row is in use.", NotificationType.Error)))',
+            Fill=BAD, Color=SURFACE, Visible=f'{on_} && {DA_CAN(cap)}',
+            DisplayMode=f'If(!IsBlank({SEL}) && !varDaNew && {ok_row} && Lower(Trim(daConfirm.Text)) = "delete", DisplayMode.Edit, DisplayMode.Disabled)'))
+        parts.append(hint(f'daDelRule{n}', '"' + ('Deletes this one row. Prefer Deactivate if it was ever used.' if mode == 'hard'
+            else 'Only gaptest- / demo- rows can be deleted; real rows are cancelled or archived on their own screen.') + '"', 690, Y0 + 586, 640, 22, Visible=on_))
+parts.append(ctl('daConfirm', 'Classic/TextInput', {'Default': '""', 'HintText': '"Type delete to confirm a delete"', 'X': 690, 'Y': Y0 + 540, 'Width': 450, 'Height': 38}))
+write('dataadmin.pa.yaml', parts)
 
 print('ok')

@@ -89,7 +89,7 @@ describe('join wizard', () => {
     await act(async () => { root.render(<JoinView source={src} today="2026-11-21" navigate={u => went.push(u)} pollMs={5} onMockPay={() => { entered += 1; }} />); });
     await fillJoin();
     await click(/^Bank account/);
-    expect(host.textContent).toContain('Nothing is charged');
+    expect(host.textContent).toContain('no money is charged');
     await click(/Pay and continue to Avenue/);
     await wait(60);
     expect(entered).toBe(1);

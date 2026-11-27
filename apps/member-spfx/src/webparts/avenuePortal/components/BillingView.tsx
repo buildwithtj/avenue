@@ -10,7 +10,9 @@ import {
   STRIPE_HOSTS,
   toInvoiceRow,
   IInvoice,
-  InvoiceChip
+  InvoiceChip,
+  PAYMENTS_TEST_MODE,
+  TEST_MODE_NOTE
 } from '../../../avenue/billing';
 import { dueInfo, paymentEstimate } from '../../../avenue/payments';
 import { hoursThisMonth } from '../../../avenue/booking';
@@ -58,7 +60,7 @@ function Balance(props: { cents: number; openCount: number }): React.ReactElemen
 
 const CHIP_CLASS: Record<InvoiceChip, string> = { 'Paid': s.biPaid, 'Open': s.biOpen, 'Past due': s.biLate, 'Void': s.biVoid };
 const Chip = (p: { chip: InvoiceChip }): React.ReactElement => <span className={`${s.biChip} ${CHIP_CLASS[p.chip]}`}>{p.chip}</span>;
-const period = (inv: IInvoice): string => (inv.periodStart ? `${formatDate(inv.periodStart)}${inv.periodEnd && inv.periodEnd !== inv.periodStart ? ` – ${formatDate(inv.periodEnd)}` : ''}` : 'Period not shown');
+const period = (inv: IInvoice): string => (inv.periodStart ? `${formatDate(inv.periodStart)}${inv.periodEnd && inv.periodEnd !== inv.periodStart ? ` - ${formatDate(inv.periodEnd)}` : ''}` : 'Period not shown');
 
 interface IHoursData { requests: IMyRequest[]; membership?: IMyMembership; plans: IPlan[] }
 
@@ -72,7 +74,7 @@ export default function BillingView(props: IBillingViewProps): React.ReactElemen
   const [portalNote, setPortalNote] = React.useState<string | undefined>();
   const managePayment = (): void => {
     if (portalBusy) { return; }
-    if (props.mockPayments) { setPortalNote('Payments are switched off in test mode. Nothing is charged.'); return; }
+    if (props.mockPayments) { setPortalNote(`${TEST_MODE_NOTE}.`); return; }
     const id: string = newSubmissionId('pay');
     const pollMs: number = props.pollMs ?? 2000;
     let tries: number = 0;
@@ -116,20 +118,21 @@ export default function BillingView(props: IBillingViewProps): React.ReactElemen
 
   return (
     <div className={styles.stack}>
+      {PAYMENTS_TEST_MODE && !isDemo && <p className={s.testPill} role="note">{TEST_MODE_NOTE}</p>}
       {ms && isOverdue(ms.paymentStatus) && (
         <div className={s.blOverdue} role="alert"><strong>Payment overdue.</strong> Bookings are paused until the payment is made. Pay the open invoice below or update your payment method.</div>
       )}
 
-      <Section title="Next payment" description={isDemo ? 'Demo: nothing is charged.' : 'Collected automatically by Stripe (test mode until Flavors approves live payments).'}>
+      <Section title="Next payment" description={isDemo ? 'Demo: nothing is charged.' : 'Collected automatically on your payment day.'}>
         <LoadError error={hoursData.error} what="your plan and hours" onRetry={hoursData.reload} />
         {!hoursData.data && !hoursData.error && <div className={rx['ref-skeleton']} role="status" aria-label="Loading your plan" />}
-        {hoursData.data && !estimate && <Empty>Your plan price appears here once Flavors confirms your plan.</Empty>}
+        {hoursData.data && !estimate && <Empty>{due ? `Collected on ${formatDate(due.dueYmd)}. The amount appears once Flavors confirms your plan.` : 'Payment day not set yet.'}</Empty>}
         {estimate && plan && (
           <div className={s.biNext}>
             <div className={s.biTotal}>
               <span>Estimate</span>
               <strong>{formatCents(estimate.totalCents)}</strong>
-              <span>{due ? `Collected on ${formatDate(due.dueYmd)}${due.daysLeft === 0 ? ' (today)' : ` (in ${due.daysLeft} days)`}` : 'Collection day not set yet'}</span>
+              <span>{due ? `Collected on ${formatDate(due.dueYmd)}${due.daysLeft === 0 ? ' (today)' : ` (in ${due.daysLeft} days)`}` : 'Payment day not set yet'}</span>
             </div>
             <dl className={s.biBreak}>
               <div><dt>{`${plan.name} monthly`}</dt><dd>{formatCents(estimate.planCents)}</dd></div>
@@ -148,7 +151,7 @@ export default function BillingView(props: IBillingViewProps): React.ReactElemen
         {hoursData.data && !estimate && <Empty>Charges appear once Flavors confirms your plan.</Empty>}
         {plan && estimate && (
           <ul className={s.biLines}>
-            <li><span>{`${plan.name} · ${plan.monthlyHours ?? '–'} h included`}</span><span>{formatCents(estimate.planCents)}</span></li>
+            <li><span>{`${plan.name} · ${plan.monthlyHours ?? '-'} h included`}</span><span>{formatCents(estimate.planCents)}</span></li>
             {extras.map(x => (
               <li key={x.ymd}><span>{`Extra hours · ${formatDate(x.ymd)} · ${x.hours} h`}</span><span>{formatCents(x.cents)}</span></li>
             ))}
@@ -160,11 +163,10 @@ export default function BillingView(props: IBillingViewProps): React.ReactElemen
         )}
       </Section>
 
-      <Section title="Invoices" description="Your invoices and payment history. Select one for its details.">
+      <Section title="Invoices" description="Your invoices and payments.">
         {billing.error && (
           <div className={styles.notConnected}>
             <strong>Invoices are not available right now.</strong>
-            <span>Your estimate above is the guide. Check your connection and try again; if it keeps happening, tell the Flavors team.</span>
             <button type="button" className={s.btn} onClick={billing.reload}>Try again</button>
           </div>
         )}
@@ -173,7 +175,7 @@ export default function BillingView(props: IBillingViewProps): React.ReactElemen
           <>
             <Balance cents={balanceDueCents(billing.data)} openCount={openInvoices.length} />
             {billing.data.length === 0 ? (
-              <Empty>No invoices yet. Payments are in test mode, so Flavors has not issued any invoices through Avenue. Your estimate above is the guide.</Empty>
+              <Empty>No invoices yet.</Empty>
             ) : (
               <ul className={`${s.biList} ${rx['module-booking-list']}`}>
                 {sortInvoices(billing.data).map(inv => {
@@ -193,7 +195,6 @@ export default function BillingView(props: IBillingViewProps): React.ReactElemen
 
       <Section title="Payment method" description="Pay by bank account (ACH, no fee) or card, Apple Pay or Google Pay (3% fee).">
         <p className={s.mbNote}>{ms?.payMethod === 'Bank' ? 'Bank account (ACH).' : ms?.payMethod === 'Card' ? 'Card or other electronic payment (3% fee).' : 'Not set yet.'}</p>
-        {props.mockPayments && <p className={s.mbNote}>Payments are switched off in test mode. Nothing is charged.</p>}
         {!isDemo && (
           <div className={s.blActions}>
             <button type="button" className={s.btn} disabled={portalBusy} onClick={managePayment}>{portalBusy ? 'Opening Stripe…' : 'Manage payment method'}</button>

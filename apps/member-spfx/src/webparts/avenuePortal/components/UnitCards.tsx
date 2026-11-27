@@ -16,7 +16,7 @@ export function unitStatus(segs: ITimelineSegment[], tl: IDayTimeline, tz: strin
   const nowMin: number = (nowMs - Date.parse(tl.dayStartUtc)) / 60000;
   const isToday: boolean = nowMin >= 0 && nowMin < tl.totalMinutes;
   if (segs.length === 0) { return { free: true, text: 'Free all day' }; }
-  if (!isToday) { return { free: false, text: segs.length === 1 ? '1 booking' : `${segs.length} bookings`, sub: `${at(segs[0].startMin)} – ${at(segs[segs.length - 1].endMin)}` }; }
+  if (!isToday) { return { free: false, text: segs.length === 1 ? '1 booking' : `${segs.length} bookings`, sub: `${at(segs[0].startMin)} - ${at(segs[segs.length - 1].endMin)}` }; }
   const cur: ITimelineSegment | undefined = segs.filter(x => x.startMin <= nowMin && nowMin < x.endMin)[0];
   if (cur) { return { free: false, text: `In use until ${at(cur.endMin)}`, sub: cur.label || undefined }; }
   const nxt: ITimelineSegment | undefined = segs.filter(x => x.startMin > nowMin)[0];

@@ -7,7 +7,8 @@ import ChecklistStepper from './ChecklistStepper';
 import WellnessCheck from './WellnessCheck';
 import { wellnessNames } from '../../../avenue/team';
 import s from './Site.module.scss';
-import type { CheckInKind, IChecklistQuestion, IFacility, IMyCheckIn, IMyRequest } from '../../../avenue/contracts';
+import type { CheckInKind, IChecklistQuestion, IFacility, IMyCheckIn, IMyRequest, IResource } from '../../../avenue/contracts';
+import { equipmentChips } from '../../../avenue/ui-helpers';
 import { dateParts } from '../../../avenue/home';
 import { type AvenueReadSource, newSubmissionId } from '../../../avenue/readSource';
 import rx from './Ref.module.scss';
@@ -19,6 +20,8 @@ export interface ICheckInViewProps {
   facility: IFacility;
   /** The team roster module is on: prefill the wellness names from it. */
   rosterOn?: boolean;
+  /** Catalogue, so bookings show unit names, never ids. */
+  resources?: IResource[];
 }
 
 interface ICheckInData {
@@ -119,7 +122,7 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
     const r = recordState(sentItem);
     return (
       <div aria-live="polite" aria-label="Checklist result">
-        <ModuleCard eyebrow={`${activeKind} checklist`.toUpperCase()} title={r.state === 'recorded' ? 'Checklist recorded.' : r.state === 'not-recorded' ? 'Checklist not recorded.' : 'Checklist sent.'} count={r.state === 'recorded' ? 'Recorded' : r.state === 'not-recorded' ? 'Not recorded' : 'Sent'}>
+        <ModuleCard eyebrow={`${activeKind} checklist`} title={r.state === 'recorded' ? 'Checklist recorded.' : r.state === 'not-recorded' ? 'Checklist not recorded.' : 'Checklist sent.'} count={r.state === 'recorded' ? 'Recorded' : r.state === 'not-recorded' ? 'Not recorded' : 'Sent'}>
           <p className={rx['module-lede']}>{r.text}</p>
           <div className={rx['modal-footer']} style={{ borderTop: 0, justifyContent: 'flex-start', paddingTop: 0 }}>
             {activeKind === 'Entry' && data.data.questions.some(q => q.kind === 'Wellness') && (
@@ -137,7 +140,7 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
       {eligible.length === 0 ? (
         <Empty>You have no approved booking today or in the next 24 hours, so there is no checklist to complete.</Empty>
       ) : (
-        <ModuleCard eyebrow="BEFORE AND AFTER YOUR BOOKING" title="Checklist" icon="clipboard-check" focal ariaLabel="Checklist">
+        <ModuleCard title="Checklist" icon="clipboard-check" focal ariaLabel="Checklist">
           <fieldset className={styles.fieldset}>
             <legend className={styles.sectionLabel}>Which booking?</legend>
             <div className={styles.spaceCards}>
@@ -147,7 +150,7 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
                   <label key={b.requestId} className={`${styles.spaceCard} ${bookingId === b.requestId ? styles.spaceOn : ''}`}>
                     <input type="radio" name="booking" checked={bookingId === b.requestId} onChange={() => chooseBooking(b.requestId)} />
                     <strong>{p.weekday} {p.month} {p.day}, {p.time}</strong>
-                    <span className={s.kitChips}><i>{b.space}</i>{(b.equipmentIds || []).slice(0, 2).map(x => <i key={x}>{x}</i>)}{(b.equipmentIds || []).length > 2 && <i>+{(b.equipmentIds || []).length - 2}</i>}</span>
+                    <span className={s.kitChips}>{((ch: string[]) => ch.slice(0, 2).map(c => <i key={c}>{c}</i>).concat(ch.length > 2 ? [<i key="more">+{ch.length - 2}</i>] : []))(equipmentChips(b.space, b.equipmentIds, props.resources || []))}</span>
                   </label>
                 );
               })}
@@ -156,9 +159,9 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
 
           <div className={styles.segment} role="group" aria-label="Checklist type" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
             {(['Entry', 'Exit', 'Wellness'] as CheckInKind[]).map(k => (
-              <button key={k} type="button" className={`${styles.segmentBtn} ${activeKind === k ? styles.segmentOn : ''}`} aria-pressed={activeKind === k}
+              <button key={k} type="button" className={`${styles.segmentBtn} ${activeKind === k ? styles.segmentOn : ''}`} aria-pressed={activeKind === k} aria-label={k === 'Entry' ? 'Arriving: entry checklist' : k === 'Exit' ? 'Leaving: exit checklist' : 'Team wellness'}
                 onClick={() => { setKind(k); setAnswers({}); setError(undefined); }}>
-                {k === 'Entry' ? 'Arriving: entry checklist' : k === 'Exit' ? 'Leaving: exit checklist' : 'Team wellness'}
+                {k === 'Entry' ? 'Arriving' : k === 'Exit' ? 'Leaving' : 'Wellness'}
               </button>
             ))}
           </div>
@@ -184,7 +187,7 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
         </ModuleCard>
       )}
 
-      <ModuleCard eyebrow="HISTORY" title="Sent checklists" count={`${data.data.history.length}`}>
+      <ModuleCard title="Sent checklists" count={`${data.data.history.length}`}>
         {data.data.history.length === 0 ? <Empty>None yet.</Empty> : (
           <div className={rx['module-booking-list']}>
             {data.data.history.slice().reverse().slice(0, 20).map(h => {

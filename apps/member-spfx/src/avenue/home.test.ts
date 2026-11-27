@@ -76,7 +76,7 @@ describe('actionItems', () => {
 
 describe('dateParts and relativeDay use the facility time zone', () => {
   it('formats 02:00Z on the 15th as the evening of the 14th in New York', () => {
-    expect(dateParts('2026-11-15T02:00:00Z', '2026-11-15T04:30:00Z', TZ)).toEqual({ weekday: 'Sat', day: '14', month: 'Nov', time: '9:00 PM – 11:30 PM' });
+    expect(dateParts('2026-11-15T02:00:00Z', '2026-11-15T04:30:00Z', TZ)).toEqual({ weekday: 'Sat', day: '14', month: 'Nov', time: '9:00 PM - 11:30 PM' });
   });
   it('labels Today, Tomorrow and In N days by facility-local day', () => {
     expect(relativeDay('2026-11-14T23:00:00Z', NOW, TZ)).toBe('Today');

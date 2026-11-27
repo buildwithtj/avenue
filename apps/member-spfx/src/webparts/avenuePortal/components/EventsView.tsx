@@ -1,7 +1,7 @@
 import * as React from 'react';
 import s from './Site.module.scss';
 import { EVENT_PACKAGES, type EventPackage, type IMyEventRequest } from '../../../avenue/contracts';
-import { formatCents } from '../../../avenue/billing';
+import { formatCents, formatPrice } from '../../../avenue/billing';
 import { localDay } from '../../../avenue/calendar';
 import { DINING_SEATS, EXTRA_HOUR_CENTS, DEPOSIT_CENTS, PACKAGES, eventQuote, validateEvent } from '../../../avenue/events';
 import { type AvenueReadSource, newSubmissionId } from '../../../avenue/readSource';
@@ -43,15 +43,15 @@ export default function EventsView(props: IEventsViewProps): React.ReactElement 
 
   return (
     <section className={s.nm} aria-label="Event request">
-      <ModuleCard eyebrow="PRIVATE EVENTS" title="Event request">
-        <p className={rx['module-lede']}>Book the dining room for a private event. Flavors approves every request; sending one charges nothing.</p>
+      <ModuleCard title="Event request">
+        <p className={rx['module-lede']}>Flavors confirms every request; sending one charges nothing.</p>
       <form className={s.nmForm} onSubmit={submit}>
         <fieldset className={s.nmPkgs}>
           <legend>Package</legend>
           {EVENT_PACKAGES.map(p => (
             <label key={p} className={s.nmPkg} data-on={pkg === p ? 'true' : 'false'}>
               <input type="radio" name="evt-pkg" value={p} checked={pkg === p} onChange={() => setPkg(p)} />
-              <strong>{p}</strong><span>{PACKAGES[p].hours} hours</span><b>{formatCents(PACKAGES[p].priceCents)}</b>
+              <strong>{p}</strong><span>{PACKAGES[p].hours} hours</span><b>{formatPrice(PACKAGES[p].priceCents)}</b>
             </label>
           ))}
         </fieldset>
@@ -68,13 +68,13 @@ export default function EventsView(props: IEventsViewProps): React.ReactElement 
               <p>Package balance due {quote.balanceDueNow ? 'at once, because the event is less than 30 days away' : `on ${formatDate(quote.balanceDueYmd)}, 30 days before the event`}.</p>
               {quote.overSeats && <p>More than {DINING_SEATS} guests needs extra seating. Flavors will quote it.</p>}
             </>
-          ) : <p>Choose a package and a date to see the price and when it is due. A {formatCents(DEPOSIT_CENTS)} deposit applies to every event.</p>}
+          ) : <p>Choose a package and a date to see the price and when it is due. A {formatPrice(DEPOSIT_CENTS)} deposit applies to every event.</p>}
         </div>
         {error && <p className={s.cwErr} role="alert">{error}</p>}
         <div className={s.cwActions}><button type="submit" className={s.cwYes} disabled={busy}>{busy ? 'Sending…' : 'Send request'}</button></div>
       </form>
       </ModuleCard>
-      <ModuleCard eyebrow="HISTORY" title="Your requests">
+      <ModuleCard title="Your requests">
       <LoadError error={mine.error} what="your event requests" onRetry={mine.reload} />
       {mine.data && mine.data.length === 0 && <Empty>No event requests yet.</Empty>}
       <ul className={s.nmList}>

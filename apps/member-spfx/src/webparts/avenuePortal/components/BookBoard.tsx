@@ -260,7 +260,7 @@ export default function BookBoard(props: IBookBoardProps): React.ReactElement {
         {!o.final && <p className={s.muted}>Checking for the answer automatically. You can leave this page; the result also appears in My bookings.</p>}
         <div className={s.row}>
           <button type="button" className={`${s.btn} ${s.btnInk}`} onClick={onSent}>View my bookings</button>
-          <button type="button" className={s.btn} onClick={reset}>Make another request</button>
+          <button type="button" className={s.btn} onClick={reset}>Book again</button>
         </div>
       </section>
     );
@@ -350,7 +350,7 @@ export default function BookBoard(props: IBookBoardProps): React.ReactElement {
           )}
           {mode === 'dining' && (
             <>
-              <div className={s.diningStrip}><img src={diningRoomImage} alt="The dining room at Flavors" /><p>{totalSeats !== undefined ? `${totalSeats} seats` : 'Seating confirmed by our team'}</p></div>
+              <div className={s.diningStrip}><img src={diningRoomImage} alt="The dining room at Flavors" /><p>{totalSeats !== undefined ? `${totalSeats} seats` : 'Seating confirmed by Flavors'}</p></div>
               <div className={s.diningForm}>
                 <label className={s.inline}><span>Number of people</span><input type="number" inputMode="numeric" min={1} step={1} value={people} onChange={e => setPeople(e.target.value)} /></label>
                 {totalSeats !== undefined && <button type="button" className={s.btn} onClick={() => setPeople(String(totalSeats))}>Whole room</button>}
@@ -365,7 +365,7 @@ export default function BookBoard(props: IBookBoardProps): React.ReactElement {
           </div>
           {!cal.ready ? <div className={s.skeleton} style={{ height: 260 }} role="status" aria-label="Checking what is booked" />
             : <Board timeline={timeline} tz={tz} lanes={lanes} nowMs={Date.now()} step={step} label="Booking board" block={block && startMin !== undefined && endMin !== undefined ? { startMin, endMin, flagged: problems.length > 0 } : undefined} blockLaneIds={blockLaneIds} rejected={rejected} onCommit={onCommit} onBusy={onBusy} />}
-          {cal.failed && <p className={s.hintOnDark} role="status">We could not check what is already booked. You can still send your request; our team will check it.</p>}
+          {cal.failed && <p className={s.hintOnDark} role="status">We could not check what is already booked. You can still send your request; Flavors will check it.</p>}
         </div>
       </div>
 
@@ -382,7 +382,7 @@ export default function BookBoard(props: IBookBoardProps): React.ReactElement {
               <span className={s.dockFact}>{hoursFact || lengthLabel((Date.parse(block.endUtc) - Date.parse(block.startUtc)) / 60000)}</span>
               {problems.length > 0 && <span className={s.dockCount} aria-live="polite">{problems.length} {problems.length === 1 ? 'thing' : 'things'} to fix</span>}
               <button type="button" className={s.btn} onClick={() => setDetailsOpen(true)}>Details</button>
-              <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={send} disabled={!canSend}>{sending ? 'Sending…' : 'Request this slot'}</button>
+              <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={send} disabled={!canSend}>{sending ? 'Sending…' : 'Send request'}</button>
             </>
           )}
         </div>

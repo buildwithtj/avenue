@@ -37,7 +37,7 @@ export const KITS: IKit[] = [
   { key: 'hot-line', title: 'Hot line', sub: 'Stove and flat-top grill', mode: 'equipment', categories: ['Stove', 'Grill'] },
   { key: 'bakery', title: 'Bakery and ovens', sub: 'Oven, pizza oven and mixer', mode: 'equipment', categories: ['Oven', 'Pizza oven', 'Mixer'] },
   { key: 'prep', title: 'Prep only', sub: 'Prep tables, no cooking', mode: 'equipment', categories: [] },
-  { key: 'whole-kitchen', title: 'Whole kitchen', sub: 'Every unit, just for you', mode: 'whole-kitchen', categories: [] },
+  { key: 'whole-kitchen', title: 'Whole kitchen', sub: 'All equipment and prep tables', mode: 'whole-kitchen', categories: [] },
   { key: 'dining', title: 'Dining room', sub: 'Tables for a meal or pop-up', mode: 'dining', categories: [] },
   { key: 'private-event', title: 'Private event', sub: 'The whole building', mode: 'private-event', categories: [] }
 ];

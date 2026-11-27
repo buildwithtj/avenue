@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import s from './Site.module.scss';
 import { SUPPORT_CATEGORIES, type IMySupportMessage } from '../../../avenue/contracts';
 import { type AvenueReadSource, newSubmissionId } from '../../../avenue/readSource';
-import { ATTACH_ACCEPT, groupThreads, MAX_ATTACHMENTS, threadStatus, validateAttachments, validateSupport, type IThread, type ISupportInput, type ThreadStatus } from '../../../avenue/support';
+import { ATTACH_ACCEPT, SUPPORT_ATTACHMENTS_ENABLED, groupThreads, MAX_ATTACHMENTS, threadStatus, validateAttachments, validateSupport, type IThread, type ISupportInput, type ThreadStatus } from '../../../avenue/support';
 import { toast } from './feedback';
 import { useSize } from './motion';
 import { RefIcon } from './RefUi';
@@ -92,7 +92,10 @@ export default function SupportView(props: ISupportViewProps): React.ReactElemen
 
   const listPane: React.ReactElement = (
     <div className={s.msgList}>
-      <p className={s.msgCount}>{threads.length > 0 ? `${threads.length} ${threads.length === 1 ? 'conversation' : 'conversations'} with Flavors` : 'Ask Flavors anything'}</p>
+      <div className={s.msgHeadRow}>
+        <p className={s.msgCount}>{threads.length > 0 ? `${threads.length} ${threads.length === 1 ? 'conversation' : 'conversations'} with Flavors` : ''}</p>
+        <button type="button" className={s.msgNew} onClick={() => { setDraft(undefined); setOpenId(undefined); go('topic', 'fwd'); }}><RefIcon name="message-square" size={18} /><span>New message</span></button>
+      </div>
       <LoadError error={data.error} what="your conversations" onRetry={data.reload} />
       {data.loading && !data.data ? <div className={s.msgSkel} role="status" aria-label="Loading your messages"><i /><i /><i /></div> : threads.length === 0 ? (
         <div className={s.msgEmpty} role="status"><Ico name="message-square" size="lg" /><b>No messages yet</b><p>Use New message to write to Flavors. Replies appear here.</p></div>
@@ -113,7 +116,6 @@ export default function SupportView(props: ISupportViewProps): React.ReactElemen
           })}
         </ul>
       )}
-      <button type="button" className={s.msgFab} onClick={() => { setDraft(undefined); setOpenId(undefined); go('topic', 'fwd'); }} aria-label="New message"><RefIcon name="plus" size={22} /><span>New message</span></button>
     </div>
   );
 
@@ -126,7 +128,6 @@ export default function SupportView(props: ISupportViewProps): React.ReactElemen
             <button type="button" className={s.msgTopic} onClick={() => { setDraft({ category: c, subject: '' }); go('subject', 'fwd'); }}>
               <Ico name={topicIcon(c)} size="lg" tone={c === 'Billing' ? 'sky' : c === 'Documents' ? 'rose' : c === 'Equipment' ? 'gold' : c === 'Other' ? 'slate' : 'teal'} />
               <strong>{topicLabel(c)}</strong>
-              {c === 'Other' && <small>Chat assistant coming soon</small>}
             </button>
           </li>
         ))}
@@ -156,7 +157,7 @@ export default function SupportView(props: ISupportViewProps): React.ReactElemen
   const chatNode: React.ReactNode = chat && phone ? createPortal(chat, root || document.body) : chat;
 
   const right: React.ReactNode = screen === 'topic' ? topicPane : screen === 'subject' ? subjectPane : screen === 'chat' ? chatNode
-    : <div className={s.msgHint}><Ico name="message-square" size="lg" /><b>Select a conversation</b><p>Or start a new message to Flavors.</p></div>;
+    : <div className={s.msgHint}><Ico name="message-square" size="lg" /><b>Select a conversation</b></div>;
 
   return (
     <section className={s.msg} aria-label="Messages with Flavors" ref={el => { host.current = el; }} data-phone={phone ? '1' : undefined}>
@@ -244,8 +245,7 @@ function Chat(props: { thread?: IThread; draftSubject?: string; topic: string; p
         <div className={s.msgChatTitle}><h2>{title}</h2><span><em className={s.msgChip}>{topicLabel(props.topic)}</em>{st && <em className={`${s.msgChip} ${st === 'Answered' ? s.msgChipOk : st === 'Open' ? s.msgChipWait : ''}`}>{STATUS_LABEL[st]}</em>}</span></div>
       </header>
       <ol ref={log} className={s.msgLog} aria-live="polite">
-        {props.topic === 'Other' && <li className={s.msgInfo}><RefIcon name="sparkles" size={16} /><span><b>Chat assistant (coming soon)</b> For now your message goes straight to the Flavors team.</span></li>}
-        {(!t || t.messages.length === 0) && props.pending.length === 0 && <li className={s.msgInfo}><RefIcon name="message-square" size={16} /><span>Write your first message below. Flavors replies here, in Avenue.</span></li>}
+        {(!t || t.messages.length === 0) && props.pending.length === 0 && <li className={s.msgInfo}><RefIcon name="message-square" size={16} /><span>Write your first message below.</span></li>}
         {t && t.messages.map((m, n) => {
           const reply: string = (m.reply || '').trim();
           const fresh: boolean = !!reply && reply !== shown;
@@ -285,10 +285,12 @@ function Chat(props: { thread?: IThread; draftSubject?: string; topic: string; p
       )}
       {(local || props.error) && <p className={`${s.cwErr} ${s.msgErr}`} role="alert">{local || props.error}</p>}
       <form className={s.msgComposer} onSubmit={submit}>
-        <label className={s.msgAttach} aria-label="Attach photos or PDF" title={`Up to ${MAX_ATTACHMENTS} files, 10 MB each`}>
-          <input ref={input} type="file" multiple accept={ATTACH_ACCEPT} onChange={e => pick(e.target.files)} disabled={files.length >= MAX_ATTACHMENTS} />
-          <RefIcon name="paperclip" size={20} />
-        </label>
+        {SUPPORT_ATTACHMENTS_ENABLED && (
+          <label className={s.msgAttach} aria-label="Attach photos or PDF" title={`Up to ${MAX_ATTACHMENTS} files, 10 MB each`}>
+            <input ref={input} type="file" multiple accept={ATTACH_ACCEPT} onChange={e => pick(e.target.files)} disabled={files.length >= MAX_ATTACHMENTS} />
+            <RefIcon name="paperclip" size={20} />
+          </label>
+        )}
         <label className={s.msgField}><span className={s.srOnly}>{t ? 'Reply' : 'Message'}</span>
           <textarea ref={area} rows={1} value={body} maxLength={2000} placeholder="Write a message" onChange={e => setBody(e.target.value)} />
         </label>

@@ -13,8 +13,9 @@ import type { ISupportInput } from './support';
 export function memberPlan(m: IMyMembership | undefined, plans: IPlan[]): IPlan | undefined {
   if (!m || !m.planId) { return undefined; }
   const found: IPlan | undefined = plans.filter(p => p.planId === m.planId)[0];
-  const name: string = found?.name || m.planName || m.planId;
-  const base: IPlan = found || { planId: m.planId, name, ...planFromSheet(m.planId, name) };
+  // Shown to members: a plan id is never a display name.
+  const name: string = found?.name || m.planName || 'Plan not named yet';
+  const base: IPlan = found || { planId: m.planId, name, ...planFromSheet(m.planId, m.planName || m.planId) };
   return { ...base, monthlyHours: base.monthlyHours ?? m.monthlyHours, extraHourRate: base.extraHourRate ?? m.extraHourRate };
 }
 

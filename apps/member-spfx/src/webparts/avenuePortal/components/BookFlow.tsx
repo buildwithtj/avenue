@@ -7,6 +7,7 @@ import {
   type BookingMode, type ISelectionInput, type ISelectionResult, DEFAULT_MIN_PREP_TABLES, DINING_KEY,
   buildBusyMap, cookingUnits, dayTimeline, hoursPreview, prepTables, unitStatus, validateSelection
 } from '../../../avenue/availability';
+import { formatPrice } from '../../../avenue/billing';
 import { hoursThisMonth } from '../../../avenue/booking';
 import { selectionToRequest, sentOutcome } from '../../../avenue/bookingFlow';
 import { addDays, localDay, localTime } from '../../../avenue/calendar';
@@ -186,7 +187,7 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
     usage = { uses: `This booking: ${hoursLabel(p.thisBooking)} · ${Math.round(used * 100) / 100} of ${planHours} plan hours used this month`, left: p.over > 0 ? undefined : `${hoursLabel(p.leftAfter)} left this month after this booking` };
     if (extraThis > 0) {
       const usd: string | undefined = rate !== undefined ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(extraThis * rate) : undefined;
-      usage.extra = `${extraThis >= p.thisBooking ? 'All of it is extra time' : `${hoursLabel(extraThis)} of it is extra time`}${usd ? `: ${hoursLabel(extraThis)} × $${rate} = ${usd}` : ''} (estimate, billed with your next payment)`;
+      usage.extra = `${extraThis >= p.thisBooking ? 'All of it is extra time' : `${hoursLabel(extraThis)} of it is extra time`}${usd ? `: ${hoursLabel(extraThis)} × ${formatPrice(Math.round((rate || 0) * 100))} = ${usd}` : ''} (estimate, billed with your next payment)`;
     }
   }
   const fridge: string | undefined = result ? result.resolvedUnitIds.filter(id => resources.some(r => r.resourceId === id && r.category === 'Fridge'))[0] : undefined;
@@ -309,7 +310,7 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
       {usageLines}
       {missing && <p className={s.bk7Missing} role="status">{missing}</p>}
       <button type="button" className={`${s.btn} ${s.btnCitrus} ${s.bk7Go}`} disabled={!ready} onClick={openReview}>Review request</button>
-      <p className={s.bfFine}>Nothing to pay now. Flavors confirms every request.</p>
+      <p className={s.bfFine}>Nothing to pay now.</p>
     </aside>
   );
 
@@ -321,7 +322,7 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
     sheetBody = (
       <section className={`${s.bk7Sent} ${outcome.state === 'approved' ? s.resultOk : outcome.state === 'declined' ? s.resultBad : ''}`} aria-live="polite" aria-label="Booking request result">
         <SendMark state={outcome.state as MarkState} />
-        <h3>{outcome.final ? outcome.title : 'Request sent — Flavors will confirm'}</h3>
+        <h3>{outcome.final ? outcome.title : 'Request sent. Flavors will confirm'}</h3>
         {outcome.detail && <p>{outcome.detail}</p>}
         <p className={s.muted}>{sentSummary}</p>
         {!outcome.final && <p className={`${s.muted} ${s.waitDots}`}>Checking with Flavors<i /><i /><i /></p>}
@@ -331,7 +332,7 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
     sheetFoot = (
       <div className={s.row}>
         <button type="button" className={`${s.btn} ${s.btnInk}`} onClick={props.onSent}>View my bookings</button>
-        <button type="button" className={s.btn} onClick={closeReview}>Book something else</button>
+        <button type="button" className={s.btn} onClick={closeReview}>Book again</button>
       </div>
     );
   } else {
@@ -371,27 +372,14 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
   return (
     <section className={s.bf} aria-label="Book kitchen time">
       <div className={s.container}>
-        <PageHead eyebrow={props.facility.title} title="Book the kitchen" />
+        <PageHead eyebrow={props.facility.title} title="Book" />
         <div className={s.flowSteps}>
-          <span className={s.srOnly}>Pick a day, your hours and the equipment. Flavors confirms every request; nothing is charged now.</span>
+          <span className={s.srOnly}>Pick a day, your hours and the equipment.</span>
           {props.onNavigate && <button type="button" className={s.flowHow} onClick={() => { if (props.onNavigate) { props.onNavigate('policies'); } }}><RefIcon name="circle-question-mark" size={16} />How booking works</button>}
         </div>
         <ol className={s.steps} aria-label="Booking steps">
           {steps.map((n, i) => <li key={n} className={i < at ? s.stepDone : i === at ? s.stepNow : ''} aria-current={i === at ? 'step' : undefined}><b>{i < at ? '✓' : i + 1}</b>{n}</li>)}
         </ol>
-        {me.data && me.data.requests.length > 0 && (
-          <section className={s.bfRecent} aria-label="Recent bookings">
-            <h2>Recent bookings</h2>
-            <ul>
-              {me.data.requests.slice().sort((a, b) => Date.parse(b.startUtc) - Date.parse(a.startUtc)).slice(0, 3).map(r => (
-                <li key={r.requestId}>
-                  <span><strong>{r.space === 'Whole facility' ? 'Private event' : r.space}</strong><em>{formatWhen(r.startUtc, r.endUtc, tz)}</em></span>
-                  <b className={s.bfRecentSt} data-status={r.status || 'Pending'}>{r.cancelRequested && r.status !== 'Cancelled' ? 'Cancel requested' : r.status || 'Sent'}</b>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
         <div className={`${s.bk} ${size === 'wide' ? s.bk7Wide : ''}`}>
             <div className={s.bkSide} role="group" aria-label="When">
               
@@ -434,10 +422,10 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
                     <ul className={s.winList} aria-label="Free and booked times">
                       {blocks.map((k, i) => k.free ? (
                         <li key={i}><button type="button" aria-pressed={win === undefined ? false : win.a === k.a} className={win && win.a === k.a ? s.winOn : ''} onClick={() => pickWindow(k)}>
-                          <span className={s.winDot} aria-hidden="true" /><strong>{at12(k.a)} – {at12(k.b)}</strong><em>{dur(k.b - k.a)} free</em><i aria-hidden="true">{win && win.a === k.a ? '✓' : '›'}</i>
+                          <span className={s.winDot} aria-hidden="true" /><strong>{at12(k.a)} - {at12(k.b)}</strong><em>{dur(k.b - k.a)} free</em><i aria-hidden="true">{win && win.a === k.a ? '✓' : '›'}</i>
                         </button></li>
                       ) : (
-                        <li key={i} className={s.winBusy}><span className={s.winDot} aria-hidden="true" /><strong>{at12(k.a)} – {at12(k.b)}</strong><em>Not available</em></li>
+                        <li key={i} className={s.winBusy}><span className={s.winDot} aria-hidden="true" /><strong>{at12(k.a)} - {at12(k.b)}</strong><em>Not available</em></li>
                       ))}
                     </ul>
                     {win && startMin !== undefined && endMin !== undefined && (
@@ -448,7 +436,7 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
                     )}
                   </>
                 )}
-              {cal.failed && <p className={s.muted}>We could not check what is booked. You can still send a request; our team will check it.</p>}
+              {cal.failed && <p className={s.muted}>We could not check what is booked. You can still send a request; Flavors will check it.</p>}
               </div>
             </div>
 
@@ -486,7 +474,7 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
                               </button>
                               {unitBar(u.resourceId)}
                               {timed && !f.free && (alt !== undefined
-                                ? <button type="button" className={s.bkMove} onClick={() => { buzz('success'); setStartMin(alt); setEndMin(alt + lengthMin); }}>Move to {at12(alt)} – {at12(alt + lengthMin)}</button>
+                                ? <button type="button" className={s.bkMove} onClick={() => { buzz('success'); setStartMin(alt); setEndMin(alt + lengthMin); }}>Move to {at12(alt)} - {at12(alt + lengthMin)}</button>
                                 : <span className={s.bkMoveNone}>Not free later today. Try another day.</span>)}
                             </li>
                           );
@@ -495,7 +483,7 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
                     </section>
                   ))}
                   <div className={s.bfPrep}>
-                    <EquipmentArt hint="Prep table" size="sm" /><div><strong>Prep tables</strong><span>Every booking includes at least {minPrep}</span></div>
+                    <EquipmentArt hint="Prep table" size="sm" /><div className={s.bkUnitText}><strong>Prep tables</strong><small className={s.prepCap}>Every booking includes at least {minPrep}</small></div>
                     <div className={s.stepper} role="group" aria-label="Number of prep tables">
                       <button type="button" className={s.iconBtn} aria-label="Fewer prep tables" disabled={prepCount <= minPrep} onClick={() => setPrepCount(prepCount - 1)}>−</button>
                       <b aria-live="polite">{prepCount}</b>
@@ -520,7 +508,7 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
               {(mode === 'whole-kitchen' || mode === 'private-event') && (
                 <section className={s.bkGroup} aria-label="Included">
                   <h3>{mode === 'whole-kitchen' ? 'Every station and prep table is yours' : 'The kitchen and the dining room are yours'}</h3>
-                  <p className={s.muted}>Only start and end times when everything is free are offered on the left.</p>
+                  <p className={s.muted}>Only times when everything is free are offered.</p>
                   {mode === 'private-event' && <p className={s.muted}>Event packages: 4 hours, 6 hours, 8 hours or 12 hours of access, each with a $500 refundable deposit. Hours beyond your package are added at the member rate. Flavors confirms the price with your request.</p>}
                   {problems.length > 0 && timed && <p className={s.inlineErr} role="alert">{problems[0]}</p>}
                 </section>
@@ -528,10 +516,23 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
             </div>
             {size === 'wide' && cart}
           </div>
+        {me.data && me.data.requests.length > 0 && (
+          <section className={s.bfRecent} aria-label="Recent bookings">
+            <h2>Recent bookings</h2>
+            <ul>
+              {me.data.requests.slice().sort((a, b) => Date.parse(b.startUtc) - Date.parse(a.startUtc)).slice(0, 3).map(r => (
+                <li key={r.requestId}>
+                  <span><strong>{r.space === 'Whole facility' ? 'Private event' : r.space}</strong><em>{formatWhen(r.startUtc, r.endUtc, tz)}</em></span>
+                  <b className={s.bfRecentSt} data-status={r.status || 'Pending'}>{r.cancelRequested && r.status !== 'Cancelled' ? 'Cancel requested' : r.status || 'Sent'}</b>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
 
       {size !== 'wide' && (
-        <div className={`${s.bfBar} ${s.bk7Bar}`} data-empty={!timed && rows.length === 0 ? '1' : '0'}>
+        <div className={`${s.bfBar} ${s.bk7Bar}`} data-empty={!timed && (mode !== 'equipment' || unitIds.length === 0) ? '1' : '0'}>
           <div className={s.container}>
             <span className={s.capIco} aria-hidden="true"><span className={`${s.ico3d} ${s.ico40}`}><RefIcon name="cooking-pot" size={18} /></span>{itemCount > 0 && ready && <b key={itemCount} className={s.capBadge}>{itemCount}</b>}</span>
             <span className={s.capText}>

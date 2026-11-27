@@ -13,7 +13,7 @@ import { tabOn } from '../../../avenue/release';
 import { ScrollRow } from './ScrollRow';
 import { agendaGroups, buildIcs, icsFileName, monthStrip, phaseView } from '../../../avenue/ui-view';
 import { EquipmentArt } from './EquipmentArt';
-import { BookingProgress, RefIcon } from './RefUi';
+import { BookingProgress, RefIcon, shortSite } from './RefUi';
 import { Sheet } from './Sheet';
 import { formatWhen, useLoad } from './ui';
 
@@ -75,7 +75,7 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
   const booked = strip.filter(d => d.booked);
   const anchorYmd: string | undefined = view === 'past' ? (booked[booked.length - 1] || { ymd: undefined }).ymd : (booked[0] || { ymd: undefined }).ymd;
   // "3:30p": fits the 58 px day card.
-  const shortTime = (iso: string): string => new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', minute: '2-digit' }).format(new Date(iso)).replace(/\s?([AP])M$/, (_m: string, x: string) => x.toLowerCase());
+  const shortTime = (iso: string): string => new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', minute: '2-digit' }).format(new Date(iso)).replace(':00 ', ' ');
   const STRIP_TONE: Record<string, string> = { Approved: s.monthOk, Pending: s.monthWait, Mixed: s.monthMixed };
   const open: IMyRequest | undefined = all.filter(r => r.requestId === openId)[0];
 
@@ -136,7 +136,7 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
     inFlight.current = true;
     setBusy(true);
     source.submitExtension(extend, endUtc, newSubmissionId('ext'), Date.now())
-      .then(() => { toast('Extension request sent'); setDone('Request for more time sent. Flavors will reply, usually within minutes.'); setExtend(undefined); requests.reload(); })
+      .then(() => { toast('Extension request sent'); setDone('Request for more time sent. Flavors will reply here.'); setExtend(undefined); requests.reload(); })
       .catch((e: Error) => { setExtendError(e.message); toast('Could not send', 'bad'); })
       .then(release, release);
   };
@@ -178,7 +178,7 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
         <div className={s.mbSheetHead}>
           <span className={`${s.mbStamp} ${STAMP[r.status || 'Pending']}`}>{stampText(r)}</span>
           <h3>{facilityDayLabel(localDay(r.startUtc, tz), localDay(new Date(), tz))}{['Today', 'Tomorrow'].indexOf(facilityDayLabel(localDay(r.startUtc, tz), localDay(new Date(), tz))) >= 0 ? `, ${new Intl.DateTimeFormat('en-US', { timeZone: tz, weekday: 'short', month: 'short', day: 'numeric' }).format(new Date(r.startUtc))}` : ''}</h3>
-          <p className={s.mbSheetTime}>{localTime(r.startUtc, tz)} – {localTime(r.endUtc, tz)}<em>{lengthOf(r)}</em></p>
+          <p className={s.mbSheetTime}>{localTime(r.startUtc, tz)} - {localTime(r.endUtc, tz)}<em>{lengthOf(r)}</em></p>
           {r.status === 'Approved' && phase.tone !== 'done' && <p className={s.drawerPhase}>{phase.headline}</p>}
         </div>
         {span > 0 && (
@@ -222,11 +222,11 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
     <section aria-label="My bookings" className={s.mb}>
       <div className={s.pageHead}>
         <div className={`${s.container} ${s.headRow}`}>
-          <div><p className={s.pgEyebrow}>{props.facility.title}</p><h1 className={s.pageTitle}>My bookings<span className={s.rDot} aria-hidden="true">.</span></h1>
+          <div><p className={s.pgEyebrow}>{shortSite(props.facility.title)}</p><h1 className={s.pageTitle}>My bookings<span className={s.rDot} aria-hidden="true">.</span></h1>
             <dl className={s.factRow}>
               <div><dt>{liveNow ? 'Now' : 'Next'}</dt><dd>{liveNow ? `In the kitchen until ${localTime(liveNow.endUtc, tz)}` : nextUp ? `${facilityDayLabel(localDay(nextUp.startUtc, tz), todayYmd)}, ${localTime(nextUp.startUtc, tz)}` : 'Nothing booked'}</dd></div>
-              <div><dt>Waiting for Flavors</dt><dd>{waitingCount}</dd></div>
-              <div><dt>Booked this month</dt><dd>{monthHours} h</dd></div>
+              <div><dt>Waiting</dt><dd>{waitingCount}</dd></div>
+              <div><dt>This month</dt><dd>{monthHours} h</dd></div>
             </dl>
           </div>
           <div className={s.row}>
@@ -234,8 +234,7 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
               <button type="button" aria-pressed={view === 'upcoming'} onClick={() => setView('upcoming')}>Upcoming</button>
               <button type="button" aria-pressed={view === 'past'} onClick={() => setView('past')}>Past</button>
             </div>
-            {props.onCheckIn && tabOn('checkin') && <button type="button" className={s.btn} onClick={props.onCheckIn}><RefIcon name="clipboard-check" size={17} />Check in</button>}
-            <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={onBook}><RefIcon name="plus" size={17} />Book</button>
+            {props.onCheckIn && tabOn('checkin') && <button type="button" className={`${s.btn} ${s.btnTonal}`} onClick={props.onCheckIn}><RefIcon name="clipboard-check" size={17} />Check in</button>}
           </div>
         </div>
       </div>
@@ -272,7 +271,7 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
 
         {!requests.data && !requests.error && <div className={s.skeleton} style={{ height: 160 }} role="status" aria-label="Loading your bookings" />}
         {requests.data && groups.length === 0 && (
-          <div className={s.mbEmpty}><EquipmentArt hint="Stove" size="md" /><div><strong>{view === 'upcoming' ? 'No upcoming bookings' : 'No past bookings yet'}</strong><p>{view === 'upcoming' ? 'Choose a day and your hours; Flavors confirms.' : 'Finished bookings appear here.'}</p></div>{view === 'upcoming' && <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={onBook}>Book kitchen time</button>}</div>
+          <div className={s.mbEmpty}><EquipmentArt hint="Stove" size="md" /><div><strong>{view === 'upcoming' ? 'No upcoming bookings' : 'No past bookings yet'}</strong><p>{view === 'upcoming' ? 'Pick a day and your hours.' : 'Finished bookings appear here.'}</p></div>{view === 'upcoming' && <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={onBook}>Book kitchen time</button>}</div>
         )}
         <div className={s.mbList}>
           {groups.slice(0, view === 'past' ? 20 : 60).map(g => {

@@ -20,14 +20,14 @@ export interface ICategory {
 
 export const CATEGORIES: ICategory[] = [
   {
-    key: 'permits', title: 'Permits & licences', blurb: 'Your right to operate',
+    key: 'permits', title: 'Permits and licences', blurb: 'Permits and licences you need to trade',
     items: [
       { type: 'County food permit', question: 'Do you have a Prince George\'s County Food Service Facility Permit?', help: 'The current permit. Enter its expiry date.' },
       { type: 'MD good standing', question: 'Is your business in good standing with the State of Maryland?', help: 'Your SDAT good-standing certificate. The annual report is due every April 15.' }
     ]
   },
   {
-    key: 'insurance', title: 'Insurance', blurb: 'Cover for you and the kitchen',
+    key: 'insurance', title: 'Insurance', blurb: 'Insurance Flavors requires',
     items: [
       { type: 'Liability insurance', question: 'Do you have general liability insurance?', help: 'Certificate of insurance (COI). Flavors Culinary Hub | Hyattsville and Appetites By RJ, LLC must be listed as additional insured. Limits: $2,000,000 each occurrence, personal and advertising injury, general aggregate and products/completed operations; $300,000 fire damage; $10,000 medical payments.' },
       { type: 'Workers comp or waiver', question: 'Do you have workers\' compensation insurance, or a waiver?', help: 'The workers\' comp certificate, or the Maryland exclusion waiver.' }
@@ -114,6 +114,12 @@ export function hasHold(flags: IMyFlag[]): boolean {
 export interface IOnboardingStep { key: 'membership' | 'plan' | 'documents'; label: string; done: boolean; detail: string }
 export interface IOnboarding { steps: IOnboardingStep[]; complete: boolean; missing: DocType[]; sent: number; required: number }
 
+function ordinalDay(n: number | undefined): string {
+  if (n === undefined) { return ''; }
+  const t: number = n % 100;
+  return `${n}${t >= 11 && t <= 13 ? 'th' : n % 10 === 1 ? 'st' : n % 10 === 2 ? 'nd' : n % 10 === 3 ? 'rd' : 'th'}`;
+}
+
 export function onboarding(membership: { status?: string; planName?: string; collectionDay?: number } | undefined, docs: IMyDocumentSubmission[], required: DocType[], todayYmd: string): IOnboarding {
   const missing: DocType[] = required.filter(t => itemState(t, docs, todayYmd) === 'missing' || itemState(t, docs, todayYmd) === 'expired');
   const sent: number = required.length - missing.length;
@@ -121,8 +127,8 @@ export function onboarding(membership: { status?: string; planName?: string; col
   const planned: boolean = !!membership && !!membership.planName && membership.collectionDay !== undefined;
   const steps: IOnboardingStep[] = [
     { key: 'membership', label: 'Membership active', done: active, detail: active ? 'Your membership is active.' : 'Flavors activates your membership once you are set up.' },
-    { key: 'plan', label: 'Plan and payment day', done: planned, detail: planned ? `${membership && membership.planName}, payment day ${membership && membership.collectionDay}.` : 'Flavors sets your plan and payment day (1st to 15th).' },
-    { key: 'documents', label: 'Compliance documents', done: required.length > 0 && missing.length === 0, detail: required.length === 0 ? 'Flavors has not set the required documents yet.' : missing.length === 0 ? 'Everything required is on file.' : `${sent} of ${required.length} sent. Still needed: ${missing.join(', ')}.` }
+    { key: 'plan', label: 'Plan and payment day', done: planned, detail: planned ? `${membership && membership.planName}, payment day: the ${ordinalDay(membership && membership.collectionDay)} of each month.` : 'Flavors sets your plan and payment day (1st to 15th).' },
+    { key: 'documents', label: 'Compliance documents', done: required.length > 0 && missing.length === 0, detail: required.length === 0 ? 'Flavors has not set the required documents yet.' : missing.length === 0 ? 'Everything required is on file.' : `${sent} of ${required.length} sent. Each one is listed below with its status.` }
   ];
   return { steps, complete: steps.every(x => x.done), missing, sent, required: required.length };
 }

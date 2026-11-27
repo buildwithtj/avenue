@@ -1,5 +1,63 @@
 # Changelog
 
+## 27 Nov 2026: staging 1.12.0.0, unslop pass 2 and attachments off (built, not deployed)
+- Second copy pass (17 findings, list in `UNSLOP_AUDIT_MEMBER_PORTAL.md` "Pass 2 (1.12)"): dropped the unsourced "Chat assistant coming soon", one name per page (My bookings, Events, Week, Documents), US dates and `formatPrice` everywhere, sentence-case eyebrow, repeated explanations cut on Messages, My team and Storage.
+- Support attachments (R2) are not built, so `SUPPORT_ATTACHMENTS_ENABLED = false` in `src/avenue/support.ts` hides the attach button and makes `submitSupportMessage` send one plain create (no "Uploading" mark, no attach, no clear). The three-step code stays; set the constant to true when R2 ships. Tests: p5p6 mocks the flag on; one new test covers the off path.
+- 451 tests pass (`npm run build:staging`, run as the Mac user); package `sharepoint/solution/member-spfx-staging.sppkg` 1.12.0.0.
+
+## 27 Nov 2026: data alignment
+- Compared live config lists with the client sheet; plans, equipment, dining, doc types, sensors already matched. Set `AvenueFacilities.EntryGraceMinutes` 15 -> 10 (client check-in grace). Recycled demo/test rows one id at a time: notices 10/11/13, calendar 53/55/56, MyMembership 2/3/4, equipment 2/3/4, plan 1 (`demo-plan-std`, unreferenced). Renamed automations@ test member to `Avenue Test Kitchen` on emerging-10. Details and leftovers: [DATA_ALIGNMENT_27NOV.md](DATA_ALIGNMENT_27NOV.md).
+
+## 2026-11-27 — Live flow edits R1/R8/R9; staging staff app Setup/Support re-pasted
+- Support message to case (R1): new `Topic` lookup in AvenueSupportCategories replaces the hard-coded category list; case Category takes the catalogue spelling. AvenueSupportMessages.Category converted Choice -> Text. Tested: valid category (Choice and Text), unknown category refused.
+- Support reply to echo (R9): Archived -> "Archived by Flavors". Event and Storage decision echo (R8): Requested with DecidedBy set -> "Re-opened by Flavors" / "Flavors is reviewing your request again."; new cases not echoed. All tested; gaptest rows recycled one id at a time.
+- R2 support attachments not built (needs a trigger change on the live flow).
+- gen.py: support Category is plain text (no `.Value`); setup.pa.yaml and support.pa.yaml regenerated (check.py OK, 1909 controls). Pasted into the STAGING app only (Screen11, Screen15); App checker 0 errors; published. Client app not opened.
+
+## 2026-11-27 — staging 1.11.0.0: Liquid Glass material (built, not deployed)
+- One shared mixin `liquid-glass` in apps/member-spfx/src/webparts/avenuePortal/components/_glass.scss (translucent fill, blur 20px + saturate 170%, specular top highlight, inner edge, soft shadow, optional press sheen on opacity only). Applied to: phone nav buttons (inactive ones), Book cart capsule (with press sheen), scrolled phone top bar, More sheet header (now sticky), Profile header (dark glass), segmented control thumb, date panel (no outer shadow; bubbles unchanged), Home hero pill and shortcut circles (dark glass, keeps white text readable).
+- Fallback: solid colour when backdrop-filter is unsupported or prefers-reduced-transparency is set; reduced motion drops the sheen transition. The top bar no longer transitions backdrop-filter.
+- Build: 450 tests passed, 0 failed; package apps/member-spfx/sharepoint/solution/member-spfx-staging.sppkg (bundle 1f0e2b0b). Not checked in a browser (SharePoint sign-in needed).
+
+## 2026-11-27 — staging 1.10.0.0 built (browser audit fixes), not deployed
+- All 19 findings in docs/BROWSER_AUDIT_STAGING_1.9.md addressed (see its Resolution table): Policies chip overlap, Home documents tile, rounded date bubbles on My bookings (specificity root cause), Book capsule hidden until a choice, More lit on the phone tab bar for More pages, money formatting with thousands separators plus formatPrice for offers, Notices chips without a second All, layout fixes. 450 tests pass. Package apps/member-spfx/sharepoint/solution/member-spfx-staging.sppkg (bundle e37b9673). Live config unchanged (2.22.0.0 in source, 2.19.0.0 deployed).
+
+## 2026-11-27 — staging 1.9.0.0 built: unslop audit fixes (not deployed)
+- 27 of 30 audit findings fixed, 3 kept (flow Outcome text, brand dot, misconfiguration errors); see docs/UNSLOP_AUDIT_MEMBER_PORTAL.md Resolution. 449 tests pass. Package apps/member-spfx/sharepoint/solution/member-spfx-staging.sppkg (bundle 0ba26e03). Live config unchanged (2.22.0.0). Not deployed, not checked in a browser.
+
+## 2026-11-25 — staging 1.8.0.0 deployed (live still 2.19.0.0)
+- Fresh 412px frame on SharePoint loads bundle 01310b49: Home shortcut row is My bookings / Check in / Documents / Messages (no Book), no dashes in page text, darker hero scrim with solid CTA; Bookings, Schedule and Book show only the nav Book button; 'Tap a day' text gone; no horizontal overflow (scrollWidth 412) on those 4 pages. Not checked by eye: Messages New message pill, date bubbles, prep tables card, desktop widths.
+
+## 2026-11-25 — Data admin (Screen24) live in the STAGING staff app only
+- Staging copy 'Avenue Staff Console (Staging)' (app 2637a8df-...): new Screen24 pasted from screens/dataadmin.pa.yaml; Screen12 (More) replaced with the new hub (Data admin card). Client app 'Avenue Staff Console' not opened. Saved and published.
+- gen.py: Form controls now emit 'Layout: Vertical' (Studio paste failed PA1011 without it).
+- Data sources: all 25 already present (no change); an old AvenueTeamMembers_1 duplicate exists and was left alone.
+- Forms configured by hand (Edit fields): StaffAccess 11, Notices 11, StorageCases 12, EventCases 14, MemberDocuments 12, Sensors 11, SupportTopics 4, ChecklistQuestions 6, RequiredDocuments 4, DiningTables 5, Equipment 12, Plans 10, Applicants 17 (Stripe/host-written fields left off on purpose).
+- App checker: 22 errors, all on Screen11 (Setup support topics uTpSave/uTpDelete, 8) and Screen15 (Support supGal, 14): '.' operator / incompatible types on Category (column type vs the .Value formulas). Not from this paste; Screen24 and Screen12 have none.
+- Tested in the played staging app (automations@): Plans create gaptest-plan1 -> search -> edit 12 h -> Deactivate -> typed delete -> Delete (recycle bin) PASS; Equipment create gaptest-eq1 -> edit title -> delete PASS; Bookings guard: real row req-mwtbpp9k... keeps Delete disabled after typing delete PASS (gaptest-hrs-* rows show Delete enabled; NOT clicked, they are the user's plan-hours test). Note: on a NEW form a number typed without leaving the field may not save (MonthlyHours stayed empty on create; saved on edit).
+- Not tested: Dining tables, Doc types, Checklist, Support topics, Sensors, Staff access (same code path as Plans/Equipment); Notices create skipped because the live 'Notice e-mail' flow would e-mail members; Applicants edit skipped (only real/TDDAdmin rows, Stage changes may trigger flows).
+
+## 2026-11-25 — staging 1.8.0.0 built (not deployed)
+- Client batch 1-10: Book shortcut removed from the Home round row (Messages added); '+ Book' removed from My bookings and Schedule (nav Book is the one entry); Messages 'New message' is a labelled teal pill in the list header row (no floating gold +); page eyebrows show only the facility name ('Flavors Culinary Hub'), one line, 14 px slate-indigo, no '· HELP' etc.; decorative eyebrow/hero dash lines removed and en/em dashes replaced in UI strings (time ranges use ' - '); My bookings date strip is rounded capsules with no shadow; booking-type cards lose their card shadow; Check in (My bookings) and Today (Schedule) are flat tonal buttons; 'Tap a day with bookings...' removed; Prep tables row restyled as an equipment card with a matching stepper; hero scrim, gold CTA and shortcut circles strengthened for contrast.
+- Bundle avenue-portal-web-part_01310b4971184a8420f3.js 1,193,140 B; package 363,581 B. 449 tests pass. Built with MOCK_PAYMENTS=false (staging script); live config restored to 2.22.0.0. NOT visually verified: the built-in browser is not signed in to SharePoint and Chrome was reserved for another agent.
+
+## 2026-11-25 — plan-hours test on staging link (TDDAdmin, Emerging-80), PASSED
+- Member 12 set Active by staff (TDDAdmin). Requests gaptest-hrs-a (Nov 26 4 h), -b (Nov 28 4 h), -c (Dec 3 3 h) -> booking flow created Pending bookings 99/100/101 (Outcome Pending). Approved 99 and 101 -> HoursLedger: 2026-11 4 h Used (a), 2026-12 3 h Used (c); pending b not counted. Portal Home: '4 of 80 h used · 76 h left'. Approved 100 -> ledger 2026-11 +4 h (b); portal '8 of 80 h used · 72 h left'. December hours kept in their own month (monthly reset, no rollover).
+- Over-plan math (hoursPreview, compiled build): used 78 + 4 h -> 2 h extra ($90 at $45/h); used 80 + 3 h -> 3 h extra ($135).
+- Test rows: requests 108-110, bookings 99-101, ledger rows for gaptest-hrs-*, member 12, applicant 2, HostRequests 6-7: remove by id when done (all TDDAdmin test data; shared live lists).
+
+## 2026-11-25 — TDDAdmin onboarded on staging link (Emerging-80)
+- Join from the staging page: HostRequests 6 answered 'Test mode: payment skipped, nothing was charged'; AvenueApplicants 2 (Onboarding, emerging-80) and AvenueMembers 12 (Onboarding, emerging-80, day 1, PaymentStatus Current) created; MyMembership 12 mirror Onboarding. A second submit (HostRequests 7) was refused 'an application for this e-mail is already being processed' (correct). Staging shares the live lists, so these rows are in the live lists too.
+- Not done: activation to Active and the plan-hours booking test (writes to shared lists blocked pending the user's decision). A separate site /sites/Avenue-Staging was created by a stopped job and is EMPTY (no lists/pages); the user said to keep using the existing staging link.
+
+## 2026-11-25 — TDDAdmin reset for onboarding test; staging 1.7.2.0 (real Join)
+- Recycled 104 rows that belong to TDDAdmin as a member (BookingRequests 16, Bookings 6, CheckIns 15, ComplianceCases 1, Invoices 3, MyDocuments 6, SupportCases 2, MyMembership 1, MyHours 2, MyBookings 6, HoursLedger 13, CheckInSubmissions 18, SupportMessages 3, EventRequests 2, StorageRequests 1, NoticeReads 5, TeamMembers 3, Calendar 1). Kept facility config TDDAdmin authored (Plans, Equipment, RequiredDocTypes, DiningTables, ChecklistQuestions, Notices). NOTE: staging shares the live lists (no separate staging site yet), so this also affects how TDDAdmin looks on the live portal. All rows restorable from the site recycle bin.
+- Staging build now uses the real Join path (scripts/build-staging.mjs flips MOCK_PAYMENTS to false only for the staging build). 1.7.2.0 deployed; TDDAdmin sees 'Become a member'. Join filled to Review (Emerging-80, 80 h, $4000/mo, day 1, business 'gaptest TDD Kitchen'); final submit NOT sent (blocked pending user confirmation).
+- Staff app: Data admin screen (Screen24) generated with CRUD for 25 lists; not pasted into Studio.
+
+## 2026-11-25 — staff app: Data admin (Screen24), CRUD for every workflow list (built, not pasted)
+- New screens/dataadmin.pa.yaml and a More hub card; gen.py, release.py, check.py updated (OK: 1909 controls in 24 files). Matrix: docs/STAFF_CRUD_MATRIX.md; paste + gaptest plan: docs/STAFF_CRUD_GUIDE.md. Not pasted into Studio, not run.
+
 ## 2026-11-25 — staging 1.7.1.0 deployed (live portal still 2.19.0.0)
 - Hero shortcut count badge: red fill, white number, 2 px white ring, no inherited text shadow. Bundle avenue-portal-web-part_e128198f0274dd0c67a3.js; package 362,975 B; 449 tests. Uploaded + deployed as TDDAdmin; returning browsers kept the old bundle until the SharePoint service worker was unregistered.
 

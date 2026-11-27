@@ -53,3 +53,22 @@ Nothing here has been done. Order matters.
 5. **Screens** (`cd apps/staff-powerapps && python3 gen.py && python3 check.py`; for each screen: clear the canvas, paste the file). Order: `setup`, `notices`, `checklist`, `support`, `events`, `storage`, `applicants`, then a **new blank screen renamed Screen23** with `memberadmin.pa.yaml`, then `more` (its new card points at Screen23). Do not paste members, compliance or payments (unchanged).
 6. **Member admin form** (once, in Studio): select `maDocForm` → Edit fields → add **Attachments**; on its attachment control set *Max attachments* = 5 and *Max attachment size* = 10 (MB). If Studio rejects `Form@2.4.4` on paste, insert an Edit form named `maDocForm` by hand and copy the properties from the YAML (DataSource, Item `varMaDoc`, DefaultMode Edit, OnSuccess, OnFailure, Visible).
 7. Publish the app, then test with `gaptest-` rows (one member, one application, one support message with an attachment, one document on behalf) and remove them by id.
+
+
+## Data admin (Screen24), added 25 Nov 2026 (built, not pasted)
+Screen file `screens/dataadmin.pa.yaml` (Screen24) plus the changed `screens/more.pa.yaml` (new "Data admin" card). Coverage: docs/STAFF_CRUD_MATRIX.md.
+Paste: in the **staging** copy only ("Avenue Staff Console (Staging)"): New screen > Blank, rename it Screen24, click the canvas, paste dataadmin.pa.yaml; then replace the More screen (Screen12: click canvas, Cmd+A, Delete, paste more.pa.yaml).
+Data sources (add any missing): AvenueApplicants, AvenueMembers, AvenuePlans, AvenueEquipment, AvenueDiningTables, AvenueRequiredDocTypes, AvenueChecklistQuestions, AvenueSupportCategories, AvenueSensors, AvenueBookings, AvenueBookingRequests, AvenueHoursLedger, AvenueCheckIns, AvenueInvoices, AvenueMemberDocuments, AvenueDocumentSubmissions, AvenueComplianceCases, AvenueComplianceOverrides, AvenueSupportCases, AvenueEventCases, AvenueStorageCases, AvenueNotices, AvenueStaffCapabilities, AvenueCalendar, AvenueHostRequests.
+After pasting, open each `daForm…` form (13: Applicants, Plans, Equipment, DiningTables, RequiredDocuments, ChecklistQuestions, SupportTopics, Sensors, MemberDocuments, EventCases, StorageCases, Notices, StaffAccess) > Edit fields > Add field > select all > Add (Power Apps cannot receive form cards from pasted YAML). FacilityId is filled automatically on save when left blank.
+Rules built in: one selected row per delete, typed "delete" confirm; config rows can be deleted or deactivated; money/audit rows only when the id or Title starts with gaptest- or demo-; members never (Member admin deactivates). Buttons are hidden by capability toggles (UI only).
+
+### gaptest plan per workflow (staging copy, gaptest- rows only; remove each by its own id)
+| Workflow | Create | Read | Update | Delete |
+|---|---|---|---|---|
+| Onboarding (Applicants) | New: ApplicantId gaptest-app1, Email gaptest-app1@example.invalid, Stage PaymentPending | search "gaptest-app1" | change Stage to Onboarding, Save | type delete > Delete selected |
+| Plans | New: PlanId gaptest-plan1, 10 h, PriceCents 1000 | search | MonthlyHours 12; Deactivate/Reactivate | delete |
+| Equipment | New: EquipmentId gaptest-eq1, Category Stove | search | Title; Deactivate | delete |
+| Dining tables | New: TableId gaptest-t1, Seats 4 | search | Seats 6 | delete |
+| Required documents / Checklist / Support topics / Sensors / Staff access | New row titled gaptest-… | search | edit one field; Deactivate where offered | delete |
+| Payments (Invoices) | not here (Stripe) | search gaptest-/demo- | not here | only a gaptest-/demo- invoice row |
+| Bookings / requests / ledger / check-ins / cases / documents | create through their own screens or the portal as gaptest- | search | own screens | Delete selected is enabled only for gaptest-/demo- rows; check a real row shows it disabled |

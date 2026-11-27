@@ -42,7 +42,7 @@ describe('profile drawer', () => {
     expect(t.indexOf('Your account')).toBeLessThan(t.indexOf('Preferences'));
     expect(t.indexOf('Preferences')).toBeLessThan(t.indexOf('Help'));
     expect(t).toContain('$824.00');
-    expect(t).toContain('Documents and compliance');
+    expect(t).toContain('Documents');
     expect(document.querySelector('[role="menu"]')).toBeNull();
   });
   it('Escape closes; so does the scrim', async () => {
@@ -54,7 +54,7 @@ describe('profile drawer', () => {
   });
   it('choosing a destination closes the sheet and then opens that screen', async () => {
     await draw(true);
-    const row = Array.prototype.slice.call(dlg()!.querySelectorAll('button')).filter((b: HTMLElement) => /Billing and payments/.test(b.textContent || ''))[0] as HTMLElement;
+    const row = Array.prototype.slice.call(dlg()!.querySelectorAll('button')).filter((b: HTMLElement) => /^Billing/.test(b.textContent || ''))[0] as HTMLElement;
     await act(async () => { row.click(); });
     await wait(10);
     expect(closed).toBe(1);

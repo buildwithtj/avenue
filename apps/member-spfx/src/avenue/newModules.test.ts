@@ -22,6 +22,12 @@ describe('support reads and writes', () => {
     expect(decodeURIComponent(urls[0])).toContain('AuthorId eq 42');
     expect(urls[0]).toContain('AvenueSupportMessages');
   });
+  it('sends one plain create while support attachments are off', async () => {
+    const added: Array<[string, Record<string, unknown>]> = [];
+    await src([], [], writer(added)).submitSupportMessage({ facilityId: 'f1', category: 'Billing', subject: 'Invoice', body: 'Please check' }, 'msg-9', undefined, [Object.assign(new Blob(['x']), { name: 'a.jpg' })]);
+    expect(added.length).toBe(1);
+    expect(added[0][1].Outcome).toBeUndefined();
+  });
   it('writes a validated item, and a reply keeps the thread id', async () => {
     const added: Array<[string, Record<string, unknown>]> = [];
     const s = src([], [], writer(added));

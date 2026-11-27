@@ -54,13 +54,16 @@ export function RefIcon(props: { name: string; size?: number }): React.ReactElem
   );
 }
 
+/** Page eyebrow: the facility name only (client 25 Nov 2026: "Flavors Culinary Hub", one line). */
+export const shortSite = (t: string): string => t.split(' · ')[0].replace(/\s+Hyattsville$/i, '');
+
 /** Page header block of the reference: gold-dash eyebrow, 27 px title with a gold full stop, grey sub line, primary action on the right. */
 export function PageHead(props: { eyebrow: string; title: string; lede?: string; action?: React.ReactNode; back?: React.ReactNode }): React.ReactElement {
   return (
     <div className={r['greeting-row']}>
       <div>
         {props.back}
-        <div className={r.eyebrow}><span className={r['eyebrow-line']} />{props.eyebrow}</div>
+        <div className={`${r.eyebrow} ${r['page-eyebrow']}`}>{shortSite(props.eyebrow)}</div>
         <h1>{props.title}<span aria-hidden="true">.</span></h1>
         {props.lede && <p className={r['page-subtitle']}>{props.lede}</p>}
       </div>
@@ -160,7 +163,7 @@ export function HomeImageCard(props: { facility: string; onBook?: () => void }):
       {!failed && <img className={r['photo-img']} src={homeImage} alt={`The dining room at ${props.facility}`} loading="lazy" decoding="async" width={960} height={600} onError={() => setFailed(true)} />}
       <div className={r['photo-scrim']} aria-hidden="true" />
       <div className={r['photo-copy']}>
-        <span className={`${r.eyebrow} ${r['photo-eyebrow']}`}><span className={r['eyebrow-line']} />Your kitchen</span>
+        <span className={`${r.eyebrow} ${r['photo-eyebrow']}`}>Your kitchen</span>
         <b>Your kitchen at {props.facility}</b>
         {props.onBook && <button type="button" className={r['photo-action']} onClick={props.onBook}>Book kitchen time<RefIcon name="arrow-up-right" size={14} /></button>}
       </div>
@@ -198,7 +201,7 @@ export function HomeHero(props: { facility: string; eyebrow: string; title: stri
       <div className={r['hero-scrim']} aria-hidden="true" />
       <div className={r['hero-copy']}>
         {props.pill && <span className={r['hero-pill']}><i aria-hidden="true" />{props.pill}</span>}
-        <div className={`${r.eyebrow} ${r['hero-eyebrow']}`}><span className={r['eyebrow-line']} />{props.eyebrow}</div>
+        <div className={`${r.eyebrow} ${r['hero-eyebrow']}`}>{props.eyebrow}</div>
         <h1>{props.title}<span aria-hidden="true">.</span></h1>
         {props.lede && <p>{props.lede}</p>}
         {props.onBook && <button type="button" className={r['hero-cta']} aria-label="Book kitchen time" onClick={props.onBook}><span className={r['cta-plus']} aria-hidden="true"><RefIcon name="plus" size={15} /></span>Book kitchen time</button>}

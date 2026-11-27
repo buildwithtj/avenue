@@ -7,15 +7,18 @@ import { spawnSync } from 'node:child_process';
 
 const SOLUTION = new URL('../config/package-solution.json', import.meta.url);
 const MANIFEST = new URL('../src/webparts/avenuePortal/AvenuePortalWebPart.manifest.json', import.meta.url);
+// Staging uses the real Join path (host request; the server skips Stripe in test mode) instead of the UI-only mock payment.
+const BILLING = new URL('../src/avenue/billing.ts', import.meta.url);
 const STAGING = {
   solutionId: 'd5270044-328c-4f85-a99d-5e985562c6a9',
   featureId: '3536ace4-8cb5-41b7-b17b-a190ea119886',
   webPartId: 'b7cbec8a-2b76-4c3d-82ce-a8a3448b8e4f',
-  version: '1.7.1.0'
+  version: '1.12.0.0'
 };
 
 const origSolution = readFileSync(SOLUTION, 'utf8');
 const origManifest = readFileSync(MANIFEST, 'utf8');
+const origBilling = readFileSync(BILLING, 'utf8');
 let status = 1;
 try {
   const sol = JSON.parse(origSolution);
@@ -40,9 +43,13 @@ try {
     .replace('"description": { "default": "Avenue member portal" }', '"description": { "default": "Avenue member portal (staging build)" }');
   if (man === origManifest || !man.includes(STAGING.webPartId)) { throw new Error('manifest patterns did not match; staging build aborted'); }
   writeFileSync(MANIFEST, man);
+  const bill = origBilling.replace('export const MOCK_PAYMENTS: boolean = true;', 'export const MOCK_PAYMENTS: boolean = false;');
+  if (bill === origBilling) { throw new Error('MOCK_PAYMENTS pattern did not match; staging build aborted'); }
+  writeFileSync(BILLING, bill);
   status = spawnSync('npm', ['run', 'build'], { stdio: 'inherit', shell: process.platform === 'win32' }).status ?? 1;
 } finally {
   writeFileSync(SOLUTION, origSolution);
   writeFileSync(MANIFEST, origManifest);
+  writeFileSync(BILLING, origBilling);
 }
 process.exit(status);

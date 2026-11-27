@@ -8,7 +8,7 @@ import type { IFacility, IMyMembership, IMyRequest, IPlan } from '../../../avenu
 import { type AvenueReadSource, newSubmissionId } from '../../../avenue/readSource';
 import { hoursThisMonth } from '../../../avenue/booking';
 import { localDay } from '../../../avenue/calendar';
-import { formatCents } from '../../../avenue/billing';
+import { formatCents, formatPrice } from '../../../avenue/billing';
 import { dueInfo } from '../../../avenue/payments';
 import { firstOfNextMonth, memberPlan, planChangeMessage, planChoices, recommendPlan, usageState } from '../../../avenue/plans';
 import { Sheet } from './Sheet';
@@ -77,7 +77,7 @@ export default function MembershipView(props: IMembershipViewProps): React.React
 
   return (
     <div className={styles.stack}>
-      <ModuleCard eyebrow="MEMBERSHIP" title={m.businessName || 'Not set yet'} ariaLabel="My membership" count={m.status || 'Not set yet'}>
+      <ModuleCard title={m.businessName || 'Not set yet'} ariaLabel="My membership" count={m.status || 'Not set yet'}>
         <div className={rx['module-settings']} style={{ maxWidth: 'none' }}>
           <SettingRow title={<span>Plan: {plan ? plan.name : 'Not set yet'}</span>} sub={allowance !== undefined ? `${allowance} hours a month` : 'Hours appear once Flavors sets up your plan'} side={m.status || 'Not set yet'} />
         </div>
@@ -86,13 +86,13 @@ export default function MembershipView(props: IMembershipViewProps): React.React
       {sent && (
         <div className={s.mbSent} role="status">
           <strong>Plan change request sent.</strong>
-          <span>{`You asked to move to ${sent}. Flavors confirms plan changes and when they start; nothing is charged now. Their reply appears in Messages with Flavors.`}</span>
+          <span>{`You asked to move to ${sent}. Flavors confirms plan changes and when they start; nothing is charged now. Their reply appears in Messages.`}</span>
           {props.onNavigate && <button type="button" className={s.btn} onClick={() => props.onNavigate && props.onNavigate('support')}>Open Messages</button>}
         </div>
       )}
 
       {plan && (
-        <ModuleCard eyebrow="CURRENT PLAN" title={plan.name} ariaLabel="Current plan" count={plan.priceCents !== undefined ? `${money(plan.priceCents)}/month` : money(plan.priceCents)}>
+        <ModuleCard eyebrow="Current plan" title={plan.name} ariaLabel="Current plan" count={plan.priceCents !== undefined ? `${formatPrice(plan.priceCents)}/month` : undefined}>
           <div className={rx['module-stat-grid']}>
             <StatCard icon="clock-3" title={allowance !== undefined ? `${allowance} h` : 'Not set yet'} sub="Hours each month" />
             <StatCard icon="credit-card" title={rateText(plan)} sub="Extra hours" />
@@ -106,7 +106,7 @@ export default function MembershipView(props: IMembershipViewProps): React.React
         </ModuleCard>
       )}
 
-      <ModuleCard eyebrow="THIS MONTH" title="Plan hours" ariaLabel="Hours this month">
+      <ModuleCard eyebrow="This month" title="Plan hours" ariaLabel="Hours this month">
         <div className={`${s.mbUsage} ${usage.level === 'over' ? s.mbOver : usage.level === 'high' ? s.mbHigh : ''}`}>
           {allowance !== undefined ? (
             <>
@@ -128,7 +128,7 @@ export default function MembershipView(props: IMembershipViewProps): React.React
       </ModuleCard>
 
       {plan && choices.length > 0 && (
-        <ModuleCard eyebrow="PLANS" title="Compare plans" ariaLabel="Compare plans" count={`${choices.length} plans`}>
+        <ModuleCard title="Compare plans" ariaLabel="Compare plans" count={`${choices.length} plans`}>
           <div className={`${s.mbCompare} ${rx['module-tenant-grid']}`}>
             {choices.map(p => {
               const current: boolean = p.planId === plan.planId;
@@ -165,7 +165,7 @@ export default function MembershipView(props: IMembershipViewProps): React.React
             <tbody>
               <tr><th scope="row">Plan</th><td>{plan.name}</td><td>{target.name}</td></tr>
               <tr><th scope="row">Price</th><td>{money(plan.priceCents)}</td><td>{money(target.priceCents)}</td></tr>
-              <tr><th scope="row">Hours</th><td>{plan.monthlyHours ?? '–'} h</td><td>{target.monthlyHours ?? '–'} h</td></tr>
+              <tr><th scope="row">Hours</th><td>{plan.monthlyHours ?? '-'} h</td><td>{target.monthlyHours ?? '-'} h</td></tr>
               <tr><th scope="row">Extra hours</th><td>{rateText(plan)}</td><td>{rateText(target)}</td></tr>
             </tbody>
           </table>

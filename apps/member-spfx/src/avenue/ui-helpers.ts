@@ -114,8 +114,13 @@ export function colourIndex(name: string, buckets: number): number {
 
 /**
  * Short chips for what a booking holds: "Stove #1", "2 prep tables", or "Whole kitchen" / "Dining room" / "Private event".
- * Unknown ids are shown as they are.
+ * Unknown ids are humanised ("stove-1" -> "Stove 1"), never shown raw.
  */
+export function humaniseId(id: string): string {
+  const t: string = id.replace(/[-_]+/g, ' ').trim();
+  return t ? t.charAt(0).toUpperCase() + t.slice(1) : id;
+}
+
 export function equipmentChips(space: string, ids: string[] | undefined, resources: IResource[]): string[] {
   if (space === 'Dining') { return ['Dining room']; }
   if (space === 'Whole facility') { return ['Private event']; }
@@ -126,7 +131,7 @@ export function equipmentChips(space: string, ids: string[] | undefined, resourc
   const cooking: IResource[] = resources.filter(r => r.bookable !== false && r.kind !== 'Space' && r.category !== 'Fridge' && !isPrep(r.resourceId));
   if (list.length > 0 && cooking.length > 0 && cooking.every(r => list.indexOf(r.resourceId) >= 0)) { return ['Whole kitchen']; }
   const prep: string[] = list.filter(isPrep);
-  const chips: string[] = list.filter(id => !isPrep(id)).map(id => (find(id) ? (find(id) as IResource).title : id));
+  const chips: string[] = list.filter(id => !isPrep(id)).map(id => (find(id) ? (find(id) as IResource).title : humaniseId(id)));
   if (prep.length > 0) { chips.push(`${prep.length} prep ${prep.length === 1 ? 'table' : 'tables'}`); }
   return chips.length > 0 ? chips : [space];
 }
@@ -254,15 +259,15 @@ export function noticeGroup(n: { pinned: boolean; publishedUtc: string }, nowMs:
   return age <= 0 ? 'Today' : age < 7 ? 'This week' : 'Earlier';
 }
 
-/** Short time for a list row: "now", "5m", "3h" today; weekday this week; "12 Nov" older; "12 Nov 2025" another year. */
+/** Short time for a list row: "now", "5 min ago", "3 h ago" today (same units as every countdown); weekday this week; "12 Nov" older; "12 Nov 2025" another year. */
 export function noticeWhen(iso: string, nowMs: number, timeZone: string): string {
   const mins: number = Math.round((nowMs - Date.parse(iso)) / 60000);
   const sameDay: boolean = ymdIn(iso, timeZone) === ymdIn(new Date(nowMs).toISOString(), timeZone);
-  if (sameDay && mins < 1) { return 'now'; }
-  if (sameDay && mins < 60) { return `${mins}m`; }
-  if (sameDay) { return `${Math.floor(mins / 60)}h`; }
+  if (sameDay && mins < 1) { return 'Just now'; }
+  if (sameDay && mins < 60) { return `${mins} min ago`; }
+  if (sameDay) { return `${Math.floor(mins / 60)} h ago`; }
   const days: number = dayNumber(ymdIn(new Date(nowMs).toISOString(), timeZone)) - dayNumber(ymdIn(iso, timeZone));
   if (days < 7) { return new Intl.DateTimeFormat('en-US', { timeZone, weekday: 'short' }).format(new Date(iso)); }
   const sameYear: boolean = ymdIn(iso, timeZone).slice(0, 4) === ymdIn(new Date(nowMs).toISOString(), timeZone).slice(0, 4);
-  return new Intl.DateTimeFormat('en-GB', { timeZone, day: 'numeric', month: 'short', ...(sameYear ? {} : { year: 'numeric' }) }).format(new Date(iso));
+  return new Intl.DateTimeFormat('en-US', { timeZone, month: 'short', day: 'numeric', ...(sameYear ? {} : { year: 'numeric' }) }).format(new Date(iso));
 }

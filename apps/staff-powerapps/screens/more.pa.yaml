@@ -740,3 +740,51 @@
               Color: =RGBA(91,99,112,1)
               Size: =11
               OnSelect: =Navigate(Screen23)
+        - morBtn10:
+            Control: Classic/Button
+            Properties:
+              Text: =""
+              X: =460
+              Y: =412
+              Width: =420
+              Height: =104
+              OnSelect: =Navigate(Screen24)
+              Fill: =RGBA(255,255,255,1)
+              Color: =RGBA(31,31,31,1)
+              HoverFill: =RGBA(244,245,247,1)
+              HoverColor: =RGBA(31,31,31,1)
+              PressedFill: =RGBA(229,231,235,1)
+              DisabledFill: =RGBA(225,228,233,1)
+              DisabledColor: =RGBA(91,99,112,1)
+              BorderThickness: =1
+              Size: =12
+              FontWeight: =FontWeight.Semibold
+              RadiusTopLeft: =12
+              RadiusTopRight: =12
+              RadiusBottomLeft: =12
+              RadiusBottomRight: =12
+              BorderColor: =RGBA(225,228,233,1)
+              HoverBorderColor: =RGBA(15,76,92,1)
+        - morTitle10:
+            Control: Label
+            Properties:
+              Text: ="Data admin (Screen24)"
+              X: =480
+              Y: =426
+              Width: =380
+              Height: =28
+              Color: =RGBA(15,76,92,1)
+              Size: =15
+              FontWeight: =FontWeight.Bold
+              OnSelect: =Navigate(Screen24)
+        - morDesc10:
+            Control: Label
+            Properties:
+              Text: ="Read, create, edit and delete rows of every workflow list (plans, equipment, onboarding, payments...)."
+              X: =480
+              Y: =458
+              Width: =380
+              Height: =48
+              Color: =RGBA(91,99,112,1)
+              Size: =11
+              OnSelect: =Navigate(Screen24)
