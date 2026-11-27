@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Spinner } from '@fluentui/react';
 import styles from './AvenuePortal.module.scss';
 import rx from './Ref.module.scss';
-import { ModuleCard, SettingRow, StatCard } from './RefUi';
+import { ModuleCard, StatCard } from './RefUi';
 import s from './Site.module.scss';
 import type { IFacility, IMyMembership, IMyRequest, IPlan } from '../../../avenue/contracts';
 import { type AvenueReadSource, newSubmissionId } from '../../../avenue/readSource';
@@ -77,11 +77,7 @@ export default function MembershipView(props: IMembershipViewProps): React.React
 
   return (
     <div className={styles.stack}>
-      <ModuleCard title={m.businessName || 'Not set yet'} ariaLabel="My membership" count={m.status || 'Not set yet'}>
-        <div className={rx['module-settings']} style={{ maxWidth: 'none' }}>
-          <SettingRow title={<span>Plan: {plan ? plan.name : 'Not set yet'}</span>} sub={allowance !== undefined ? `${allowance} hours a month` : 'Hours appear once Flavors sets up your plan'} side={m.status || 'Not set yet'} />
-        </div>
-      </ModuleCard>
+      <ModuleCard title={m.businessName || 'Not set yet'} ariaLabel="My membership" count={m.status || 'Not set yet'}>{null}</ModuleCard>
 
       {sent && (
         <div className={s.mbSent} role="status">
@@ -110,7 +106,7 @@ export default function MembershipView(props: IMembershipViewProps): React.React
         <div className={`${s.mbUsage} ${usage.level === 'over' ? s.mbOver : usage.level === 'high' ? s.mbHigh : ''}`}>
           {allowance !== undefined ? (
             <>
-              <strong className={s.mbUsed}>{`${used} of ${allowance} h used · resets on ${formatDate(firstOfNextMonth(today))}`}</strong>
+              <strong className={s.mbUsed}>{`${used} of ${allowance} h used`}<small>{`Resets on ${formatDate(firstOfNextMonth(today))}`}</small></strong>
               <span className={s.mbMeter} role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct} aria-label="Plan hours used"><span style={{ width: `${pct}%` }} /></span>
               {usage.level === 'over' && (
                 <span className={s.mbOverText}>{`${usage.overHours} h over your plan${plan?.extraHourRate !== undefined ? ` · about ${formatCents(usage.extraCents)} extra so far (estimate, before any card fee)` : ''}. Extra hours are billed with your next payment.`}</span>
@@ -129,7 +125,7 @@ export default function MembershipView(props: IMembershipViewProps): React.React
 
       {plan && choices.length > 0 && (
         <ModuleCard title="Compare plans" ariaLabel="Compare plans" count={`${choices.length} plans`}>
-          <div className={`${s.mbCompare} ${rx['module-tenant-grid']}`}>
+          <div className={s.mbCompare}>
             {choices.map(p => {
               const current: boolean = p.planId === plan.planId;
               return (
@@ -145,7 +141,7 @@ export default function MembershipView(props: IMembershipViewProps): React.React
                     <li>{`Extra hours ${rateText(p)}`}</li>
                     {p.cardPriceCents !== undefined && p.cardPriceCents !== p.priceCents && <li>{`${formatCents(p.cardPriceCents)} by card (+3%)`}</li>}
                   </ul>
-                  {!current && <button type="button" className={s.btn} onClick={() => { setTarget(p); setSendError(undefined); }}>Change plan</button>}
+                  {current ? <span className={s.mbYours}>Your plan</span> : <button type="button" className={s.btn} onClick={() => { setTarget(p); setSendError(undefined); }}>Change plan</button>}
                 </article>
               );
             })}

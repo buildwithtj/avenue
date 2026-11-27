@@ -163,6 +163,7 @@ export default function SupportView(props: ISupportViewProps): React.ReactElemen
     <section className={s.msg} aria-label="Messages with Flavors" ref={el => { host.current = el; }} data-phone={phone ? '1' : undefined}>
       {phone
         ? (screen === 'list' ? listPane : screen === 'chat' ? <>{listPane}{right}</> : right)
+        : threads.length === 0 && screen === 'list' ? <div className={s.msgSolo}>{listPane}</div>
         : <div className={s.msgShell}>{listPane}<div className={s.msgRight}>{right}</div></div>}
     </section>
   );

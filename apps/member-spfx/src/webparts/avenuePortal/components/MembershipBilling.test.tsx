@@ -37,9 +37,9 @@ describe('my membership (P4)', () => {
   it('shows the plan name, usage over plan and the recommended plan', async () => {
     await act(async () => { root.render(<MembershipView source={source([], [])} userEmail="a@b.co" />); });
     await wait();
-    expect(host.textContent).toContain('Plan: Emerging 10 hours');
-    expect(host.textContent).not.toContain('Plan: emerging-10');
-    expect(host.textContent).toContain('12 of 10 h used · resets on');
+    expect(host.textContent).toContain('Emerging 10 hours');
+    expect(host.textContent).not.toContain('emerging-10 ');
+    expect(host.textContent).toContain('12 of 10 h used');
     expect(host.textContent).toContain('2 h over your plan · about $150.00 extra so far');
     const rec = host.querySelector('[aria-label="Emerging-20"]');
     expect(rec?.textContent).toContain('Recommended');

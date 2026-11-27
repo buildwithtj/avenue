@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { RefIcon, shortSite } from './RefUi';
+import { RefIcon, SiteEyebrow } from './RefUi';
 import s from './Site.module.scss';
+import rf from './Ref.module.scss';
 import { DINING_KEY, buildBusyMap, cookingUnits, dayTimeline, type IDayTimeline, type ITimelineSegment } from '../../../avenue/availability';
 import { addDays, groupByDay, localDay, localTime } from '../../../avenue/calendar';
 import type { IFacility, IResource } from '../../../avenue/contracts';
@@ -72,8 +73,8 @@ export default function CalendarView(props: ICalendarViewProps): React.ReactElem
     <section aria-label="Facility schedule">
       <div className={s.pageHead}>
         <div className={`${s.container} ${s.headRow}`}>
-          <div>
-            <p className={s.pgEyebrow}>{shortSite(props.facility.title)}</p>
+          <div className={rf['head-copy']}>
+            <SiteEyebrow title={props.facility.title} />
             <h1 className={s.pageTitle}>{view === 'month' ? 'Kitchen schedule' : view === 'week' ? 'The week at a glance' : facilityDayLabel(day, today)}<span className={s.rDot} aria-hidden="true">.</span></h1>
             {view !== 'month' && <p className={s.scSub}>{view === 'week' ? `${range(day)} - ${range(addDays(day, 6))}` : long(day)}</p>}
             <dl className={s.factRow}>

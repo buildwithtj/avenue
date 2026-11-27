@@ -3,6 +3,14 @@
 
 
 
+## 27 Nov 2026 (late night) — staging 1.15.4.0 LIVE on the staging page (bundle 6c4255ff): arc date wheel (phone) / week bar (desktop), redesigned booking sheet, [PROPOSED] Flavors wordmark, AI photos, attachments on (flow R2 live). Client live portal unchanged (2.19.0.0). Next: Next-tag overlap on the arc, check the month popover and >5-unit sheet in a browser, decide how to beat the SharePoint service-worker cache, get the client's OK on the wordmark and AI photos.
+
+## 27 Nov 2026 (night) — staging 1.15.1.0 LIVE on the staging page (bundle da52fff4): AI equipment and Home photos (Higgsfield Unlimited, no credits), phone gap and Review bar fixes. Client live portal unchanged (2.19.0.0). Nothing committed since 2970bd2.
+
+## 27 Nov 2026 (evening) — staging 1.14.1.0 LIVE on the staging page (bundle c4c219ca): clock picker, desktop layout fixes, glass, check-in lock, attachments ON in staging (flow R2 live). Client live portal unchanged (2.19.0.0). Open: Check in phone gap, bubble echo contrast, test a real attachment end to end.
+
+## 27 Nov 2026 (late) — staging member portal 1.13.2.0 LIVE on the staging page (bundle eaec0d22): new Start/End time picker on Book and the phone UI audit fixes (see CHANGELOG). Client live portal unchanged (2.19.0.0).
+
 ## 27 Nov 2026 (end of day) — staging member portal 1.12.0.0 LIVE on the staging page; client live portal unchanged (2.19.0.0)
 - Staging page https://bstreethq.sharepoint.com/sites/Avenue/SitePages/Member-portal-staging.aspx loads bundle 358f450d (1.12: browser-audit fixes, liquid glass, unslop copy pass 2, support attachments hidden until flow R2). Uses the real Join path (MOCK_PAYMENTS false in the staging build only; server skips Stripe in test mode).
 - Staff staging app 'Avenue Staff Console (Staging)' (2637a8df): Data admin CRUD (Screen24) + Support/Setup re-pasted for text Category; App checker 0 errors.

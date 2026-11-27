@@ -9,16 +9,18 @@ const SOLUTION = new URL('../config/package-solution.json', import.meta.url);
 const MANIFEST = new URL('../src/webparts/avenuePortal/AvenuePortalWebPart.manifest.json', import.meta.url);
 // Staging uses the real Join path (host request; the server skips Stripe in test mode) instead of the UI-only mock payment.
 const BILLING = new URL('../src/avenue/billing.ts', import.meta.url);
+const SUPPORT = new URL('../src/avenue/support.ts', import.meta.url);
 const STAGING = {
   solutionId: 'd5270044-328c-4f85-a99d-5e985562c6a9',
   featureId: '3536ace4-8cb5-41b7-b17b-a190ea119886',
   webPartId: 'b7cbec8a-2b76-4c3d-82ce-a8a3448b8e4f',
-  version: '1.12.0.0'
+  version: '1.15.4.0'
 };
 
 const origSolution = readFileSync(SOLUTION, 'utf8');
 const origManifest = readFileSync(MANIFEST, 'utf8');
 const origBilling = readFileSync(BILLING, 'utf8');
+const origSupport = readFileSync(SUPPORT, 'utf8');
 let status = 1;
 try {
   const sol = JSON.parse(origSolution);
@@ -46,10 +48,15 @@ try {
   const bill = origBilling.replace('export const MOCK_PAYMENTS: boolean = true;', 'export const MOCK_PAYMENTS: boolean = false;');
   if (bill === origBilling) { throw new Error('MOCK_PAYMENTS pattern did not match; staging build aborted'); }
   writeFileSync(BILLING, bill);
+  // R2 (support attachments) is live on the flow since 27 Nov; staging shows the attach button, the client's live build stays off until approved.
+  const sup = origSupport.replace('export const SUPPORT_ATTACHMENTS_ENABLED: boolean = false;', 'export const SUPPORT_ATTACHMENTS_ENABLED: boolean = true;');
+  if (sup === origSupport) { throw new Error('SUPPORT_ATTACHMENTS_ENABLED pattern did not match; staging build aborted'); }
+  writeFileSync(SUPPORT, sup);
   status = spawnSync('npm', ['run', 'build'], { stdio: 'inherit', shell: process.platform === 'win32' }).status ?? 1;
 } finally {
   writeFileSync(SOLUTION, origSolution);
   writeFileSync(MANIFEST, origManifest);
   writeFileSync(BILLING, origBilling);
+  writeFileSync(SUPPORT, origSupport);
 }
 process.exit(status);

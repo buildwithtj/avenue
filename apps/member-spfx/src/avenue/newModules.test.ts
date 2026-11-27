@@ -1,3 +1,5 @@
+// This file tests the attachments-off path, so pin the flag off whichever build (live or staging) runs the tests.
+jest.mock('./support', () => ({ ...jest.requireActual('./support'), SUPPORT_ATTACHMENTS_ENABLED: false }));
 import { AvenueReadSource, LISTS } from './readSource';
 import { demoFetchJson, demoStore, demoWriter, DEMO_FACILITY_ID } from './demoData';
 import type { IIntakeWriter } from './contracts';

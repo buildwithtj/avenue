@@ -1,0 +1,55 @@
+{
+ "_note": "Rollback for R2, flow 'Avenue - Support message to case' (id aa9db7b4-80b0-4099-ad9e-4a12843a63b5), captured 27 Nov 2026 from Code view as automations@. Live trigger had NO trigger condition (Settings > Trigger conditions empty).",
+ "trigger_When_an_item_is_created": {
+  "type": "OpenApiConnection",
+  "inputs": {
+   "parameters": {
+    "dataset": "https://bstreethq.sharepoint.com/sites/Avenue",
+    "table": "88420e75-d9c4-4e88-98f7-84e0936c9d56"
+   },
+   "host": {
+    "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+    "connection": "shared_sharepointonline",
+    "operationId": "GetOnNewItems"
+   }
+  },
+  "recurrence": {
+   "frequency": "Minute",
+   "interval": 1
+  },
+  "runtimeConfiguration": {
+   "concurrency": {
+    "runs": 1
+   }
+  },
+  "splitOn": "@triggerOutputs()?['body/value']"
+ },
+ "Send_an_HTTP_request_to_SharePoint_3": {
+  "type": "OpenApiConnection",
+  "inputs": {
+   "parameters": {
+    "dataset": "https://bstreethq.sharepoint.com/sites/Avenue",
+    "parameters/method": "POST",
+    "parameters/uri": "_api/web/lists/getbytitle('AvenueSupportMessages')/items(@{triggerOutputs()?['body/ID']})",
+    "parameters/headers": {
+     "accept": "application/json;odata=nometadata",
+     "content-type": "application/json;odata=nometadata",
+     "X-HTTP-Method": "MERGE",
+     "IF-MATCH": "*"
+    },
+    "parameters/body": "@addProperty(addProperty(json('{}'),'ThreadId',outputs('Compose')),'Outcome',if(empty(outputs('Compose_1')),'Received · Flavors replies here in the portal',outputs('Compose_1')))"
+   },
+   "host": {
+    "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+    "connection": "shared_sharepointonline",
+    "operationId": "HttpRequest"
+   }
+  },
+  "runAfter": {
+   "Condition_1": [
+    "Succeeded"
+   ]
+  }
+ },
+ "_flow_shape": "trigger -> Compose (Thread id) -> Send_an_HTTP_request_to_SharePoint -> Topic -> Compose_1 (refusal text, empty when valid) -> Condition (create case) -> Condition_1 (update case) -> Send_an_HTTP_request_to_SharePoint_3 (final Outcome, always non-empty)"
+}

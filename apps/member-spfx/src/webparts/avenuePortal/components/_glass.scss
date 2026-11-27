@@ -32,4 +32,8 @@
   @media (prefers-reduced-motion: reduce) {
     &::after { transition: none; }
   }
+  // Portal motion setting (data-motion='reduce' on an ancestor): same solid fallback as reduced transparency.
+  [data-motion='reduce'] & {
+    background-color: $solid $imp; background-image: none $imp; -webkit-backdrop-filter: none $imp; backdrop-filter: none $imp;
+  }
 }

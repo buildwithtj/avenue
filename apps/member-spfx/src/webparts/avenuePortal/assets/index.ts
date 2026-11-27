@@ -3,6 +3,7 @@
 // photos are added to imageData.generated.ts / gen_assets.py. AvenueEquipment.PhotoUrl always overrides a bundled image.
 // Images are inlined as data URIs: webpack here has no emitting loader and jest has no asset transform (see docs/EQUIPMENT_IMAGES.md).
 import { DINING_ROOM } from './imageData.generated';
+import { PHOTOS } from './photoData.generated';
 
 const BY_ID: Record<string, string> = {};
 const BY_CATEGORY: Record<string, string> = {};
@@ -21,4 +22,13 @@ export const diningRoomImage: string = DINING_ROOM;
 export { LOGO_ON_DARK as brandLogoOnDark, LOGO_ON_LIGHT as brandLogoOnLight, LOGO_MARK as brandMark } from './brand.generated';
 
 /** The picture on the Home page. Swap the client's final image by changing ONLY this line (any data URI or URL). */
-export const homeImage: string = DINING_ROOM;
+export const homeImage: string = PHOTOS.home || DINING_ROOM;
+
+/** Bundled photo for an equipment kind (ArtKey: stove, flattop, oven, warmer, pizza, prep, fryer, rack, fridge). Upper/lower ovens share 'oven'.
+ *  AI-generated (Higgsfield, 27 Nov 2026) because the client has supplied no equipment photos; replace with real ones when they arrive. */
+export function artPhoto(kind: string): string | undefined {
+  const k: string = kind === 'oven-upper' || kind === 'oven-lower' ? 'oven' : kind;
+  return k === 'home' ? undefined : PHOTOS[k];
+}
+
+export { LOGO_VIEWBOX as siteLogoViewBox, LOGO_SERIF as siteLogoSerif, LOGO_SANS as siteLogoSans, LOGO_DOT as siteLogoDot } from './logo.generated';

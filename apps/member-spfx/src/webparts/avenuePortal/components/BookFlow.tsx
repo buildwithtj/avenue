@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { PageHead, RefIcon } from './RefUi';
 import { tiltProps } from './mobileFx';
-import RangeSlider from './RangeSlider';
 import s from './Site.module.scss';
 import {
   type BookingMode, type ISelectionInput, type ISelectionResult, DEFAULT_MIN_PREP_TABLES, DINING_KEY,
@@ -19,7 +18,11 @@ import { categoryGroups } from '../../../avenue/ui-view';
 import { EquipmentArt } from './EquipmentArt';
 import { formatWhen, useCalendarDay, useLoad } from './ui';
 import { buzz, celebrate, toast } from './feedback';
+import { ClockPicker } from './ClockPicker';
 import { Sheet } from './Sheet';
+import ds from './DateSelect.module.scss';
+import { DateArc } from './DateArc';
+import { DateWeek } from './DateWeek';
 import { useSize } from './motion';
 import { popIn, useFlipList, useSheetMotion } from './gsapMotion';
 
@@ -91,12 +94,6 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
   // Client sheet (19 Nov 2026): private events are booked as 4 / 6 / 8 / 12-hour packages, so the shortest is 4 hours (UI limit; further hours are extra).
   const bounds = mode === 'private-event' ? { ...baseBounds, min: Math.max(baseBounds.min, 240), max: Math.max(baseBounds.max, 240) } : baseBounds;
   const [day, setDay] = React.useState<string>(today);
-  const daysRef: React.RefObject<HTMLDivElement> = React.useRef<HTMLDivElement>(null);
-  // The picked day slides to the centre of the strip (phone), so the neighbours on both sides stay visible.
-  React.useEffect(() => {
-    const on: Element | null = daysRef.current ? daysRef.current.querySelector('[aria-pressed="true"]') : null;
-    if (on && daysRef.current && daysRef.current.scrollWidth > daysRef.current.clientWidth + 4) { const row: HTMLElement = daysRef.current; const b: HTMLElement = on as HTMLElement; row.scrollTo({ left: b.offsetLeft - (row.clientWidth - b.offsetWidth) / 2, behavior: 'smooth' }); }
-  }, [day]);
   const [startMin, setStartMin] = React.useState<number | undefined>();
   const [endMin, setEndMin] = React.useState<number | undefined>();
   const [unitIds, setUnitIds] = React.useState<string[]>(pre && props.preselectUnit ? [props.preselectUnit] : []);
@@ -264,7 +261,17 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
   windows.forEach(w => { if (w.a > cursor) { blocks.push({ a: cursor, b: w.a, free: false }); } blocks.push({ a: w.a, b: w.b, free: true }); cursor = Math.max(cursor, w.b); });
   if (cursor < timeline.totalMinutes && starts.length > 0) { blocks.push({ a: cursor, b: timeline.totalMinutes, free: false }); }
   const win = startMin !== undefined ? windows.filter(w => startMin >= w.a && startMin < w.b)[0] : undefined;
-  const pickWindow = (w: { a: number; b: number }): void => { buzz('tap'); setStartMin(w.a); setEndMin(Math.min(w.b, w.a + Math.max(bounds.min, Math.min(120, bounds.max)))); };
+  const defLen: number = Math.max(bounds.min, Math.min(120, bounds.max));
+  const pickStart = (a: number): void => {
+    buzz('tap');
+    const w = windows.filter(k => a >= k.a && a < k.b)[0];
+    const keep: number | undefined = startMin !== undefined && endMin !== undefined && w && a + (endMin - startMin) <= w.b ? a + (endMin - startMin) : undefined;
+    setStartMin(a);
+    setEndMin(keep !== undefined ? keep : Math.min(w ? w.b : timeline.totalMinutes, a + defLen));
+  };
+  const pickEnd = (m: number): void => { buzz('tap'); setEndMin(m); };
+  const [clock, setClock] = React.useState<'start' | 'end' | undefined>(undefined);
+  const endOpts: number[] = startMin !== undefined && win ? Array.from({ length: Math.max(0, Math.floor((Math.min(startMin + bounds.max, win.b) - (startMin + bounds.min)) / bounds.step) + 1) }, (_, i) => startMin + bounds.min + i * bounds.step) : [];
   const dur = (m: number): string => { const h: number = Math.floor(m / 60); return `${h > 0 ? `${h} h` : ''}${m % 60 ? ` ${m % 60} min` : ''}`.trim(); };
   const DAY0: number = 0;
   const pastEnd: number = starts.length > 0 ? starts[0] : timeline.totalMinutes;
@@ -373,13 +380,13 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
     <section className={s.bf} aria-label="Book kitchen time">
       <div className={s.container}>
         <PageHead eyebrow={props.facility.title} title="Book" />
-        <div className={s.flowSteps}>
-          <span className={s.srOnly}>Pick a day, your hours and the equipment.</span>
-          {props.onNavigate && <button type="button" className={s.flowHow} onClick={() => { if (props.onNavigate) { props.onNavigate('policies'); } }}><RefIcon name="circle-question-mark" size={16} />How booking works</button>}
-        </div>
+        <div className={s.flowRow}>
         <ol className={s.steps} aria-label="Booking steps">
           {steps.map((n, i) => <li key={n} className={i < at ? s.stepDone : i === at ? s.stepNow : ''} aria-current={i === at ? 'step' : undefined}><b>{i < at ? '✓' : i + 1}</b>{n}</li>)}
         </ol>
+        <span className={s.srOnly}>Pick a day, your hours and the equipment.</span>
+          {props.onNavigate && <button type="button" className={s.flowHow} onClick={() => { if (props.onNavigate) { props.onNavigate('policies'); } }}><RefIcon name="circle-question-mark" size={16} />How booking works</button>}
+        </div>
         <div className={`${s.bk} ${size === 'wide' ? s.bk7Wide : ''}`}>
             <div className={s.bkSide} role="group" aria-label="When">
               
@@ -395,45 +402,40 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
 
               <div className={s.bkDateHead}>
                 <h2 className={s.bkLabel}>1 · Date</h2>
-                <strong>{fmt(day, { month: 'long', year: 'numeric' })}</strong>
+                {size === 'phone' && <strong>{fmt(day, { month: 'long', year: 'numeric' })}</strong>}
                 <label className={s.bkCalBtn} title="Pick any date"><RefIcon name="calendar-days" size={18} /><span>Calendar</span><input type="date" min={today} value={day} aria-label="Pick any date" onChange={e => { if (e.target.value && e.target.value >= today) { pickDay(e.target.value); } }} /></label>
               </div>
-              <div className={s.bkDateCard}><div className={s.bkDays} ref={daysRef}>
-                {(dayOpts.indexOf(day) < 0 ? dayOpts.concat(day) : dayOpts).map((d, i) => (
-                  <button key={d} type="button" aria-pressed={day === d} aria-label={fmt(d, { weekday: 'long', month: 'long', day: 'numeric' })} className={`${day === d ? s.bkDayOn : ''} ${d === today ? s.bkDayToday : ''}`} onClick={() => pickDay(d)}>
-                    {(i === 0 || d.slice(8) === '01') && <em className={s.bkMon}>{fmt(d, { month: 'short' })}</em>}
-                    <span>{d === today ? 'Today' : fmt(d, { weekday: 'short' })}</span><b>{fmt(d, { day: 'numeric' })}</b>
-                  </button>
-                ))}
-              </div></div>
+              {(() => {
+                const list: string[] = dayOpts.indexOf(day) < 0 ? dayOpts.concat(day) : dayOpts;
+                const cell = (d: string): React.ReactNode => <><span className={ds.wd}>{fmt(d, { weekday: 'short' })}</span><b className={ds.num}>{fmt(d, { day: 'numeric' })}</b></>;
+                return size === 'phone'
+                  ? <div className={s.bkDateCard}><DateArc days={list} value={day} onChange={pickDay} renderDay={cell} label="Pick a day" today={today} /></div>
+                  : <DateWeek days={list} value={day} onChange={pickDay} renderDay={cell} label="Pick a day" today={today} />;
+              })()}
 
-              <div className={s.bkHours} data-pending={timed ? '0' : '1'}>
+              <div className={s.bkHours}>
               <h2 className={s.bkLabel}>2 · Pick your time</h2>
-              {!timed && <p className={s.bkHint}><RefIcon name="clock-3" size={16} />Tap a green time block, then drag the handles to set your start and end.</p>}
               {!cal.ready ? <div className={s.skeleton} style={{ height: 120 }} role="status" aria-label="Checking what is booked" />
                 : windows.length === 0 ? <p className={s.bfEmpty}>Nothing is free on this day for {SUMMARY[mode].toLowerCase()}. Try another day.</p> : (
                   <>
+                    <div className={s.bkTimes}>
+                      <button type="button" className={s.bkField} aria-haspopup="dialog" onClick={() => setClock('start')}>
+                        <span>Start</span>
+                        <b>{startMin === undefined ? 'Choose' : at12(startMin)}<RefIcon name="clock-3" size={18} /></b>
+                      </button>
+                      <button type="button" className={s.bkField} aria-haspopup="dialog" disabled={startMin === undefined || !win} onClick={() => setClock('end')}>
+                        <span>End</span>
+                        <b>{endMin === undefined ? 'Choose' : at12(endMin)}<RefIcon name="clock-3" size={18} /></b>
+                      </button>
+                    </div>
+                    {clock && <ClockPicker title={clock === 'start' ? 'Start time' : 'End time'} value={clock === 'start' ? startMin : endMin} allowed={clock === 'start' ? okStarts : endOpts} step={bounds.step} format={at12} onPick={clock === 'start' ? pickStart : pickEnd} onClose={() => setClock(undefined)} />}
+                    <p className={s.bkSum} aria-live="polite">{timed && startMin !== undefined && endMin !== undefined ? `${dur(endMin - startMin)} · ${at12(startMin)} - ${at12(endMin)}`
+                      : `Free today: ${windows.slice(0, 3).map(k => `${at12(k.a)} - ${at12(k.b)}`).join(', ')}${windows.length > 3 ? ` +${windows.length - 3} more` : ''}`}</p>
                     <div className={s.dayTrack} aria-hidden="true">
                       {pastEnd > DAY0 && <i className={s.dtPast} style={{ left: 0, width: `${pct(pastEnd)}%` }} />}
                       {blocks.map((k, i) => <i key={i} className={k.free ? s.dtFree : s.dtBusy} style={{ left: `${pct(k.a)}%`, width: `${pct(k.b) - pct(k.a)}%` }} />)}
                       {timed && startMin !== undefined && endMin !== undefined && <b className={s.dtSel} style={{ left: `${pct(startMin)}%`, width: `${pct(endMin) - pct(startMin)}%` }} />}
                     </div>
-                    <div className={s.dtScale} aria-hidden="true"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>12 AM</span></div>
-                    <ul className={s.winList} aria-label="Free and booked times">
-                      {blocks.map((k, i) => k.free ? (
-                        <li key={i}><button type="button" aria-pressed={win === undefined ? false : win.a === k.a} className={win && win.a === k.a ? s.winOn : ''} onClick={() => pickWindow(k)}>
-                          <span className={s.winDot} aria-hidden="true" /><strong>{at12(k.a)} - {at12(k.b)}</strong><em>{dur(k.b - k.a)} free</em><i aria-hidden="true">{win && win.a === k.a ? '✓' : '›'}</i>
-                        </button></li>
-                      ) : (
-                        <li key={i} className={s.winBusy}><span className={s.winDot} aria-hidden="true" /><strong>{at12(k.a)} - {at12(k.b)}</strong><em>Not available</em></li>
-                      ))}
-                    </ul>
-                    {win && startMin !== undefined && endMin !== undefined && (
-                      <div className={s.range} role="group" aria-label="Start and end time">
-                        <RangeSlider min={win.a} max={win.b} step={bounds.step} start={startMin} end={endMin} minLen={bounds.min} maxLen={bounds.max} format={at12}
-                          onChange={(a2, b2) => { if (a2 !== startMin) { setStartMin(a2); } if (b2 !== endMin) { setEndMin(b2); } }} />
-                      </div>
-                    )}
                   </>
                 )}
               {cal.failed && <p className={s.muted}>We could not check what is booked. You can still send a request; Flavors will check it.</p>}

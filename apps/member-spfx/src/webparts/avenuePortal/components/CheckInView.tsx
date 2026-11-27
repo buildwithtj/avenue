@@ -2,7 +2,7 @@ import * as React from 'react';
 import { celebrate } from './feedback';
 import styles from './AvenuePortal.module.scss';
 import type { Answer } from '../../../avenue/checkin';
-import { checkInCountdown, defaultBooking, eligibleBookings, progress, recordState, sentChecklistLabel, suggestKind } from '../../../avenue/checklist';
+import { checkInCountdown, defaultBooking, eligibleBookings, progress, recordState, sentChecklistLabel, sentFor, suggestKind } from '../../../avenue/checklist';
 import ChecklistStepper from './ChecklistStepper';
 import WellnessCheck from './WellnessCheck';
 import { wellnessNames } from '../../../avenue/team';
@@ -12,7 +12,7 @@ import { equipmentChips } from '../../../avenue/ui-helpers';
 import { dateParts } from '../../../avenue/home';
 import { type AvenueReadSource, newSubmissionId } from '../../../avenue/readSource';
 import rx from './Ref.module.scss';
-import { ModuleCard, ModuleRow } from './RefUi';
+import { ModuleCard, ModuleRow, RefIcon } from './RefUi';
 import { Empty, ErrorBar, useLoad } from './ui';
 
 export interface ICheckInViewProps {
@@ -50,6 +50,8 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
   const [sending, setSending] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | undefined>();
   const [sentId, setSentId] = React.useState<string | undefined>();
+  // Optimistic: what this session just sent counts as pending until the list returns it.
+  const [justSent, setJustSent] = React.useState<IMyCheckIn[]>([]);
   const inFlight: React.MutableRefObject<boolean> = React.useRef<boolean>(false);
 
   // Pre-pick the booking and the checklist still to do, once the data arrives. The member can change both.
@@ -97,7 +99,15 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
   const prog = progress(questions, answers);
   const chosen: IMyRequest | undefined = byId.get(bookingId);
   const closesIn: number | undefined = chosen && activeKind !== 'Exit' ? checkInCountdown(chosen.startUtc, now, facility.earlyEntryMinutes ?? 30) : undefined;
-  const sentItem: IMyCheckIn | undefined = sentId ? data.data.history.filter(h => h.submissionId === sentId)[0] : undefined;
+  const history: IMyCheckIn[] = data.data.history.concat(justSent.filter(j => !data.data!.history.some(h => h.submissionId === j.submissionId)));
+  const found = activeKind === 'Wellness' ? {} : sentFor(history, bookingId, activeKind);
+  const refusedNow: IMyCheckIn | undefined = !found.sent && found.refused && recordState(found.refused).state === 'not-recorded' ? found.refused : undefined;
+  const sentWhen = (h: IMyCheckIn): string => {
+    const d: Date = new Date(h.createdUtc || Date.now());
+    const fmt = (o: Intl.DateTimeFormatOptions): string => new Intl.DateTimeFormat('en-US', { timeZone: tz, ...o }).format(d);
+    const same: boolean = new Intl.DateTimeFormat('en-US', { timeZone: tz }).format(d) === new Intl.DateTimeFormat('en-US', { timeZone: tz }).format(new Date());
+    return `${same ? 'today' : fmt({ month: 'short', day: 'numeric' })} at ${fmt({ hour: 'numeric', minute: '2-digit' })}`;
+  };
 
   const chooseBooking = (id: string): void => {
     setBookingId(id);
@@ -113,27 +123,10 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
     setError(undefined);
     const id: string = newSubmissionId('chk');
     source.submitCheckIn({ facilityId: facility.facilityId, bookingId, kind: activeKind, answers }, data.data!.questions, id)
-      .then(() => { setSentId(id); setAnswers({}); celebrate('Checklist sent'); })
+      .then(() => { setSentId(id); setJustSent(prev => prev.concat({ submissionId: id, bookingId, kind: activeKind, createdUtc: new Date().toISOString() })); setAnswers({}); celebrate('Checklist sent'); })
       .catch((err: Error) => setError(`${err.message} Your answers are kept; you can send it again.`))
       .then(() => { inFlight.current = false; setSending(false); }, () => { inFlight.current = false; setSending(false); });
   };
-
-  if (sentId) {
-    const r = recordState(sentItem);
-    return (
-      <div aria-live="polite" aria-label="Checklist result">
-        <ModuleCard eyebrow={`${activeKind} checklist`} title={r.state === 'recorded' ? 'Checklist recorded.' : r.state === 'not-recorded' ? 'Checklist not recorded.' : 'Checklist sent.'} count={r.state === 'recorded' ? 'Recorded' : r.state === 'not-recorded' ? 'Not recorded' : 'Sent'}>
-          <p className={rx['module-lede']}>{r.text}</p>
-          <div className={rx['modal-footer']} style={{ borderTop: 0, justifyContent: 'flex-start', paddingTop: 0 }}>
-            {activeKind === 'Entry' && data.data.questions.some(q => q.kind === 'Wellness') && (
-              <button type="button" className={rx['primary-button']} onClick={() => { setSentId(undefined); setKind('Wellness'); }}>Next: team wellness</button>
-            )}
-            <button type="button" className={rx['secondary-button']} onClick={() => { setSentId(undefined); }}>Done</button>
-          </div>
-        </ModuleCard>
-      </div>
-    );
-  }
 
   return (
     <div className={styles.stack}>
@@ -171,10 +164,22 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
             bookingId
               ? <WellnessCheck key={bookingId} roster={data.data.roster} source={source} facilityId={facility.facilityId} timeZone={tz} bookingId={bookingId} questions={questions} onDone={() => { setKind('Entry'); data.reload(); }} />
               : <Empty>Choose a booking first.</Empty>
+          ) : found.sent ? (
+            <div aria-live="polite" aria-label="Checklist already sent">
+              <ModuleRow avatar={<RefIcon name="check" size={16} />} tone="teal" title={`${activeKind} checklist already sent`}
+                sub={`Sent ${sentWhen(found.sent)} for ${chosen ? ((p) => `${p.weekday} ${p.month} ${p.day}, ${p.time}`)(dateParts(chosen.startUtc, chosen.endUtc, tz)) : 'this booking'}`}
+                status={recordState(found.sent).state === 'recorded' ? 'Recorded' : 'Sent'} statusTone={recordState(found.sent).state === 'recorded' ? 'ok' : 'wait'} />
+              {activeKind === 'Entry' && (
+                <div className={rx['modal-footer']} style={{ borderTop: 0, justifyContent: 'flex-start', paddingTop: 12 }}>
+                  <button type="button" className={rx['primary-button']} onClick={() => { setKind('Wellness'); setAnswers({}); }}>Next: Team wellness</button>
+                </div>
+              )}
+            </div>
           ) : questions.length === 0 ? (
             <Empty>Flavors has not set up the {activeKind.toLowerCase()} checklist yet.</Empty>
           ) : (
             <>
+              {refusedNow && <p className={rx['module-lede']} role="status">{recordState(refusedNow).text.replace(/[.\s]*$/, '')}. Please send it again.</p>}
               <ChecklistStepper key={`${bookingId}-${activeKind}`} questions={questions} answers={answers} onAnswer={(id, a) => setAnswers(prev => ({ ...prev, [id]: a }))} onSend={send} sending={sending} canSend={!!bookingId && prog.complete} />
             </>
           )}

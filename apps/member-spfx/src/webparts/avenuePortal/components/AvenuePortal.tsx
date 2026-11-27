@@ -391,7 +391,7 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
   }, [reduced]);
   useScrollFx(rootRef, size !== 'wide', `${tab}-${fresh}-${!!portal.data}-${visited.length}`);
   const phoneKeys: TabKey[] = PHONE.filter(k => tabOn(k));
-  const phoneHere: TabKey | undefined = viaMore ? undefined : here;
+  const phoneHere: TabKey | undefined = viaMore ? undefined : tab === 'join' ? 'home' : tab; // More destinations (checkin, events, team...) are not in PHONE, so index -1 lights More
   const phoneIndex: number = phoneHere === undefined ? -1 : phoneKeys.indexOf(phoneHere);
   useRevealFallback(rootRef, React.useMemo(() => revealSelector(s as unknown as Record<string, string>), []), s.rvPending, reduced, `${tab}-${fresh}-${!!portal.data}`);
   // A new section starts at its top, not at the scroll position of the last one.
@@ -510,7 +510,7 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
           <div className={s.bar} data-wide={wide ? '1' : undefined}>
             {!wide && <button type="button" className={s.brand} onClick={() => setTab('home')} aria-label="Flavors Avenue, home"><span className={s.logoStack}><img className={`${s.brandLogo} ${s.logoOnLight}`} src={brandLogoOnLight} alt="Avenue" /><img className={`${s.brandLogo} ${s.logoOnDark}`} src={brandLogoOnDark} alt="" aria-hidden="true" /></span></button>}
             {wide
-              ? <div className={r.breadcrumbs} aria-label="You are here"><span>{portal.data ? portal.data.facility.title : 'Flavors'}</span><RefIcon name="chevron-right" size={14} /><b>{CRUMB[tab] || 'Avenue'}</b></div>
+              ? <span aria-hidden="true" />
               : <p className={s.crumb} aria-label="You are here"><span>{portal.data ? portal.data.facility.title : 'Flavors'}</span><i aria-hidden="true">›</i><strong>{CRUMB[tab] || 'Avenue'}</strong></p>}
             {!wide && <nav className={s.links} aria-label="Avenue sections" ref={linksRef}>
               {ink && <span className={s.navInk} style={{ transform: `translateX(${ink.left}px)`, width: ink.width }} aria-hidden="true" />}
@@ -609,7 +609,7 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
         <MoreSheet open={more} onClose={() => setMore(false)} onNavigate={goFromMore} isDemo={isDemo} badges={{ notices: unreadList.length, bookings: alerts.length }} />
         <Toaster />
         <Celebration />
-        <nav className={s.tabbar} aria-label="Avenue sections (phone)" data-book={here === 'book' ? '1' : undefined} style={{ ['--tabs' as string]: phoneKeys.length + 1, ['--ti' as string]: phoneIndex < 0 ? phoneKeys.length : phoneIndex } as React.CSSProperties}>
+        <nav className={s.tabbar} aria-label="Avenue sections (phone)" data-book={tab === 'book' ? '1' : undefined} style={{ ['--tabs' as string]: phoneKeys.length + 1, ['--ti' as string]: phoneIndex < 0 ? phoneKeys.length : phoneIndex } as React.CSSProperties}>
           <span className={s.tabInk} aria-hidden="true" />
           {phoneKeys.map(k => { const t = PRIMARY.filter(x => x.key === k)[0]; return (
             <button key={t.key} type="button" className={`${s.tab} ${phoneHere === t.key ? s.tabOn : ''} ${t.key === 'book' ? s.tabBook : ''}`} aria-current={phoneHere === t.key ? 'page' : undefined} onClick={() => setTab(t.key)}>

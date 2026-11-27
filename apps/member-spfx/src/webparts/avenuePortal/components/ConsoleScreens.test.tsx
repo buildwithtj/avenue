@@ -1,8 +1,12 @@
 /** @jest-environment jsdom */
+// Must stay above the imports (tests are precompiled, so jest.mock is not hoisted). Equipment photos: drawing tests run with no bundled photo; one test below switches a photo on.
+const mockArtPhoto = jest.fn((_k: string): string | undefined => undefined);
+jest.mock('../assets', () => ({ ...jest.requireActual('../assets'), artPhoto: (k: string) => mockArtPhoto(k) }));
 import * as React from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 import s from './Site.module.scss';
+import ds from './DateSelect.module.scss';
 import { toIntakeItem } from '../../../avenue/booking';
 import { addDays, localDay, zonedToUtc } from '../../../avenue/calendar';
 import type { ICalendarEntry, IFacility, INotice, IMyRequest, IResource } from '../../../avenue/contracts';
@@ -16,6 +20,7 @@ import MyBookings from './MyBookings';
 import NoticesView from './NoticesView';
 import { SizeContext } from './motion';
 import { NOTICES_READ_KEY } from '../../../avenue/ui-helpers';
+
 
 (globalThis as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -217,11 +222,11 @@ describe('my bookings', () => {
   it('groups by day and the drawer shows the three windows, Extend, Cancel and a calendar download', async () => {
     await mount();
     expect(document.querySelector('[data-booking="req-1"]')).not.toBeNull();
-    expect(document.querySelectorAll('[aria-label^="Next 31 days"] button[class*="monthBooked"], [aria-label^="Next 31 days"] .' + s.monthBooked).length).toBe(1);
+    expect(document.querySelectorAll('[aria-label^="Next 31 days"] .' + ds.ok).length).toBe(1);
     await click(document.querySelector('[data-booking="req-1"] button'));
     const sheet = document.querySelector('[role="dialog"]') as HTMLElement;
-    expect(sheet.textContent).toContain('Entry from');
-    expect(sheet.textContent).toContain('Booked ');
+    expect(sheet.textContent).toContain('Entry');
+    expect(sheet.textContent).toContain('Start');
     expect(sheet.textContent).toContain('Clean-up until');
     expect(sheet.textContent).toContain('See you then');
     expect(button(/^Extend$/, sheet)).toBeDefined();
@@ -234,6 +239,19 @@ describe('my bookings', () => {
     expect(decodeURIComponent(href)).toContain('BEGIN:VCALENDAR');
     await act(async () => { document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })); });
     expect(document.querySelector('[role="dialog"]')).toBeNull();
+  });
+  it('more than 5 units: shows 5 rows and a Show all button that reveals the rest', async () => {
+    const many: IResource[] = Array.from({ length: 7 }, (_, i) => U(`u-${i}`, `Unit ${i}`, 'Stove', i));
+    const big: IMyRequest = { ...req, equipmentIds: many.map(m => m.resourceId) };
+    const bigSrc = { listMyRequests: async () => [big], submitCancel: async () => undefined, submitExtension: async () => undefined } as never;
+    await act(async () => { root.render(<MyBookings source={bigSrc} facility={facility} resources={many} onBook={() => undefined} />); });
+    await flush();
+    await click(document.querySelector('[data-booking="req-1"] button'));
+    const rows = (): number => document.querySelectorAll('[data-testid="equipment-rows"] li').length;
+    expect(rows()).toBe(5);
+    await click(button(/^Show all 7 items$/));
+    expect(rows()).toBe(7);
+    expect(button(/^Show fewer$/)?.getAttribute('aria-expanded')).toBe('true');
   });
   it('the Upcoming and Past switch changes the list', async () => {
     await mount();
@@ -349,6 +367,10 @@ describe('equipment artwork', () => {
     expect(equipmentArt('Stove')).toBe('stove');
     expect(equipmentArt('oven-low', 'Convection Oven (Lower)', 'Oven')).toBe('oven-lower');
     expect(equipmentArt('pizza-up', 'Pizza Oven 1 (Upper)', 'Pizza oven')).toBe('pizza');
+    expect(equipmentArt('stove-1', 'Gas Stove w/Under Oven #1', 'Stove')).toBe('stove');
+    expect(equipmentArt('fryer-table', 'Open Equipment Table Under Hood for Fryer', 'Other')).toBe('fryer');
+    expect(equipmentArt('rack-1', "Baker's Rack #1", 'Other')).toBe('rack');
+    expect(equipmentArt('fridge-1', 'Reach-In Double Door Refrigerator #1', 'Fridge')).toBe('fridge');
   });
   it('draws the SVG, and a non-empty PhotoUrl overrides it with an img that has alt text', async () => {
     await act(async () => { root.render(<><EquipmentArt unit={resources[0]} /><EquipmentArt unit={{ ...resources[1], photoUrl: 'https://example.com/s2.jpg' }} /></>); });
@@ -357,6 +379,20 @@ describe('equipment artwork', () => {
     expect(img.getAttribute('alt')).toBe('Stove #2');
     expect(img.getAttribute('src')).toBe('https://example.com/s2.jpg');
     expect(host.querySelectorAll('svg').length).toBe(1);
+  });
+  it('shows the bundled photo for its kind (alt = unit title) when the unit has no PhotoUrl', async () => {
+    mockArtPhoto.mockImplementation((k: string) => (k === 'stove' ? 'data:image/jpeg;base64,AAAA' : undefined));
+    await act(async () => { root.render(<EquipmentArt unit={resources[0]} />); });
+    const img = host.querySelector('[data-art="stove"] img') as HTMLImageElement;
+    expect(img.getAttribute('src')).toBe('data:image/jpeg;base64,AAAA');
+    expect(img.getAttribute('alt')).toBe('Stove #1');
+    expect(host.querySelector('svg')).toBeNull();
+    mockArtPhoto.mockImplementation(() => undefined);
+  });
+  it('bundles a photo for every equipment kind the client has', () => {
+    const real = jest.requireActual('../assets') as { artPhoto: (k: string) => string | undefined };
+    for (const k of ['stove', 'flattop', 'oven', 'oven-upper', 'oven-lower', 'warmer', 'pizza', 'prep', 'fryer', 'rack', 'fridge']) { expect(real.artPhoto(k)).toMatch(/^data:image\/jpeg;base64,/); }
+    expect(real.artPhoto('home')).toBeUndefined();
   });
   it('animates only when motion is allowed', async () => {
     setReduced(false);

@@ -31,13 +31,30 @@ const draw = async (el: React.ReactElement, size: PortalSize = 'wide'): Promise<
 const btn = (label: RegExp, scope: ParentNode = document.body): HTMLButtonElement => Array.from(scope.querySelectorAll('button')).find(b => label.test(b.textContent || '')) as HTMLButtonElement;
 const click = async (el: Element): Promise<void> => { await act(async () => { (el as HTMLElement).click(); }); await flush(); };
 const cart = (): Element => host.querySelector('aside[aria-label="Your booking"]') as Element;
+const pick = async (label: string, i: number): Promise<void> => {
+  await click(Array.from(host.querySelectorAll('button')).find(b => (b.textContent || '').startsWith(label)) as Element);
+  const hours = Array.from(document.body.querySelectorAll('button[aria-pressed]')).filter(b => /^\d+ (AM|PM)$/.test(b.getAttribute('aria-label') || '') && !(b as HTMLButtonElement).disabled);
+  await click(hours[i]);
+  const chip = Array.from(document.body.querySelectorAll('button')).find(b => /^:\d\d$/.test(b.textContent || ''));
+  if (chip) { await click(chip); }
+};
 /** Tomorrow (never in the past), then its first free window (two hours). */
 const pickHours = async (): Promise<void> => {
-  await click(host.querySelectorAll('.bkDays button')[1]);
-  await click(host.querySelector('.winList button') as Element);
+  await click(host.querySelectorAll('[aria-label="Pick a day"] button, [aria-label="Pick a day"] [role="option"]')[1]);
+  await pick('Start', 1);
 };
 
 describe('BookFlow (v7 Book)', () => {
+  it('start then end time updates the summary line', async () => {
+    await draw(<BookFlow source={source()} facility={facility()} resources={resources} tables={[]} onSent={() => undefined} userEmail="m@x" />);
+    await click(host.querySelectorAll('[aria-label="Pick a day"] button, [aria-label="Pick a day"] [role="option"]')[1]);
+    expect(host.textContent).toContain('Free today:');
+    await pick('Start', 1);
+    expect(host.textContent).toContain('2 h · ');
+    await pick('End', 0);
+    expect(host.textContent).toMatch(/\d+ h( \d+ min)? · .* - /);
+  });
+
   it('shows the intro strip and "How booking works" opens Policies', async () => {
     const went: string[] = [];
     await draw(<BookFlow source={source()} facility={facility()} resources={resources} tables={[]} onSent={() => undefined} userEmail="m@x" onNavigate={t => went.push(t)} />);

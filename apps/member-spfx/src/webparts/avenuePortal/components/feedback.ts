@@ -1,7 +1,7 @@
 // Feedback a member can feel and hear: haptic taps, a service-bell chime, toasts and desktop alerts.
 // Browser-native only (Vibration, Web Audio, Notification). Every channel has a per-browser on/off switch.
 
-export type Haptic = 'tap' | 'success' | 'warn';
+export type Haptic = 'tap' | 'tick' | 'success' | 'warn';
 export type Tone = 'ok' | 'bad' | 'info';
 export interface IFeedbackPrefs { sound: boolean; haptics: boolean; alerts: boolean }
 
@@ -25,7 +25,7 @@ export function writePrefs(p: IFeedbackPrefs, st: IStore | undefined = store()):
   try { window.dispatchEvent(new CustomEvent('avenue-feedback-prefs')); } catch { /* old browser */ }
 }
 
-const PATTERN: Record<Haptic, number | number[]> = { tap: 8, success: [12, 60, 18], warn: [30, 50, 30] };
+const PATTERN: Record<Haptic, number | number[]> = { tap: 8, tick: 5, success: [12, 60, 18], warn: [30, 50, 30] };
 
 // iOS Safari has no Vibration API; toggling a native switch checkbox gives a system haptic (iOS 18+).
 let iosSwitch: HTMLLabelElement | undefined;

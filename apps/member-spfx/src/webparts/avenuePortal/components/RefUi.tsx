@@ -1,6 +1,6 @@
 import * as React from 'react';
 import r from './Ref.module.scss';
-import { homeImage } from '../assets';
+import { homeImage, siteLogoDot, siteLogoSans, siteLogoSerif, siteLogoViewBox } from '../assets';
 
 // Reference console building blocks (markup lifted from https://culina-rust.vercel.app/; classes in Ref.module.scss).
 // Icons are the reference's own set (lucide, 24 grid, 2 px stroke), drawn inline so there is no icon font to load.
@@ -25,6 +25,8 @@ const P: Record<string, string[]> = {
   'clipboard-check': ['M9 2h6a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z', 'M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2', 'm9 14 2 2 4-4'],
   'credit-card': ['M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z', 'M2 10h20'],
   'file-text': ['M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z', 'M14 2v4a2 2 0 0 0 2 2h4', 'M10 9H8', 'M16 13H8', 'M16 17H8'],
+  'calendar-plus': ['M8 2v4', 'M16 2v4', 'M21 13V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8', 'M3 10h18', 'M16 19h6', 'M19 16v6'],
+  'x-circle': ['M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z', 'm15 9-6 6', 'm9 9 6 6'],
   'message-square': ['M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'],
   'id-card': ['M16 10h2', 'M16 14h2', 'M6.17 15a3 3 0 0 1 5.66 0', 'M9 9a2 2 0 1 0 0 4 2 2 0 0 0 0-4z', 'M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z'],
   sparkles: ['M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z'],
@@ -54,16 +56,31 @@ export function RefIcon(props: { name: string; size?: number }): React.ReactElem
   );
 }
 
-/** Page eyebrow: the facility name only (client 25 Nov 2026: "Flavors Culinary Hub", one line). */
 export const shortSite = (t: string): string => t.split(' · ')[0].replace(/\s+Hyattsville$/i, '');
+/** The facility name at the top of every page. Flavors gets its [PROPOSED] wordmark (gen_logo.py); any other facility shows its name as text. */
+export function SiteEyebrow(props: { title: string }): React.ReactElement {
+  const name: string = shortSite(props.title);
+  if (!/^flavors\b/i.test(name)) { return <div className={`${r.eyebrow} ${r['page-eyebrow']}`}>{name}</div>; }
+  return (
+    <div className={`${r.eyebrow} ${r['page-eyebrow']} ${r['page-logo']}`}>
+      <svg className={r['site-logo']} viewBox={siteLogoViewBox} role="img" aria-label={name} focusable="false">
+        <path d={siteLogoSerif} fill="currentColor" />
+        <circle cx={siteLogoDot.cx} cy={siteLogoDot.cy} r={siteLogoDot.r} fill="#C9A24D" />
+        <path d={siteLogoSans} fill="#4b5563" />
+      </svg>
+    </div>
+  );
+}
+
+/** Page eyebrow: the facility name only (client 25 Nov 2026: "Flavors Culinary Hub", one line). */
 
 /** Page header block of the reference: gold-dash eyebrow, 27 px title with a gold full stop, grey sub line, primary action on the right. */
 export function PageHead(props: { eyebrow: string; title: string; lede?: string; action?: React.ReactNode; back?: React.ReactNode }): React.ReactElement {
   return (
     <div className={r['greeting-row']}>
-      <div>
+      <div className={r['head-copy']}>
         {props.back}
-        <div className={`${r.eyebrow} ${r['page-eyebrow']}`}>{shortSite(props.eyebrow)}</div>
+        <SiteEyebrow title={props.eyebrow} />
         <h1>{props.title}<span aria-hidden="true">.</span></h1>
         {props.lede && <p className={r['page-subtitle']}>{props.lede}</p>}
       </div>
@@ -76,7 +93,7 @@ export function PageHead(props: { eyebrow: string; title: string; lede?: string;
 /** Reference "module-view": white card with eyebrow + h2 heading (and an optional count / actions), then the body. */
 export function ModuleCard(props: { id?: string; icon?: string; focal?: boolean; eyebrow?: string; title?: string; count?: React.ReactNode; actions?: React.ReactNode; className?: string; ariaLabel?: string; children: React.ReactNode }): React.ReactElement {
   return (
-    <section id={props.id} data-focal={props.focal ? '1' : undefined} className={`${r['module-view']} ${props.className || ''}`} aria-label={props.title ? undefined : props.ariaLabel} aria-labelledby={props.id && props.title ? `${props.id}-h` : undefined}>
+    <section id={props.id} data-focal={props.focal ? '1' : undefined} data-bare={props.children === null ? '1' : undefined} className={`${r['module-view']} ${props.className || ''}`} aria-label={props.title ? undefined : props.ariaLabel} aria-labelledby={props.id && props.title ? `${props.id}-h` : undefined}>
       {(props.title || props.count || props.actions) && (
         <div className={r['module-view-heading']}>
           <div>{props.eyebrow && <span className={r.eyebrow}>{props.eyebrow}</span>}{props.title && <h2 id={props.id ? `${props.id}-h` : undefined}>{props.icon && <span className={r['mv-ico']} aria-hidden="true"><RefIcon name={props.icon} size={20} /></span>}<span className={r['mv-title-text']}>{props.title}</span></h2>}</div>
@@ -235,7 +252,7 @@ export function BookingProgress(props: { status?: string; live?: boolean; past?:
   const at: number = props.past ? 3 : props.live ? 2 : st === 'Approved' ? 1 : 0;
   return (
     <ol className={r.track} aria-label={`Progress: ${['Requested', 'Approved', 'In use', 'Done'][at]}`}>
-      {['Requested', 'Approved', 'In use', 'Done'].map((l, i) => <li key={l} data-s={i < at ? 'done' : i === at ? 'now' : 'todo'} aria-current={i === at ? 'step' : undefined}><i aria-hidden="true" /><span>{l}</span></li>)}
+      {['Requested', 'Approved', 'In use', 'Done'].map((l, i) => <li key={l} data-s={i < at ? 'done' : i === at ? 'now' : 'todo'} aria-current={i === at ? 'step' : undefined}><i aria-hidden="true">{i < at && <RefIcon name="check" size={13} />}</i><span>{l}</span></li>)}
     </ol>
   );
 }

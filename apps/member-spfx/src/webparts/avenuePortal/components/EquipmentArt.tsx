@@ -3,6 +3,7 @@ import s from './Site.module.scss';
 import type { IResource } from '../../../avenue/contracts';
 import { type ArtKey, artKeyFor } from '../../../avenue/ui-view';
 import { useReducedMotion } from './motion';
+import { artPhoto } from '../assets';
 
 // Illustrated equipment set: flat duotone, one stroke weight, one palette (CSS variables --art-1/--art-2/--art-ink/--art-hot).
 // Motion (steam, flame flicker, door glint) is CSS transform/opacity only and is dropped under reduced motion.
@@ -10,7 +11,7 @@ import { useReducedMotion } from './motion';
 /** Which artwork a category, id or title gets. */
 export function equipmentArt(...hints: (string | undefined)[]): ArtKey { return artKeyFor(...hints); }
 
-const TILE: Record<ArtKey, string> = { stove: s.tileA, flattop: s.tileB, oven: s.tileC, 'oven-upper': s.tileC, 'oven-lower': s.tileC, warmer: s.tileD, pizza: s.tileA, prep: s.tileB, mixer: s.tileD, dining: s.tileC, generic: s.tileB };
+const TILE: Record<ArtKey, string> = { stove: s.tileA, flattop: s.tileB, oven: s.tileC, 'oven-upper': s.tileC, 'oven-lower': s.tileC, warmer: s.tileD, pizza: s.tileA, prep: s.tileB, mixer: s.tileD, fryer: s.tileA, rack: s.tileB, fridge: s.tileC, dining: s.tileC, generic: s.tileB };
 
 function Steam(props: { x: number; y: number; on: boolean }): React.ReactElement {
   return <g className={props.on ? s.aSteam : ''}><path className={s.aLine} d={`M${props.x} ${props.y} q-4 -5 0 -10 t0 -10`} /></g>;
@@ -113,8 +114,11 @@ export function EquipmentArt(props: { unit?: Pick<IResource, 'resourceId' | 'tit
   const [failed, setFailed] = React.useState<boolean>(false);
   const k: ArtKey = unit ? equipmentArt(unit.resourceId, unit.title, unit.category) : equipmentArt(props.hint);
   const size: string = s[`art_${props.size || 'sm'}` as 'art_sm'];
-  if (unit && unit.photoUrl && !failed) {
-    return <span className={`${s.artTile} ${size}`}><img className={s.artPhoto} src={unit.photoUrl} alt={unit.title} loading="lazy" onError={() => setFailed(true)} /></span>;
+  // A unit's own PhotoUrl wins; otherwise the bundled photo for its kind (AI-generated, see docs/EQUIPMENT_IMAGES.md); else the drawing.
+  const photo: string | undefined = (unit && unit.photoUrl && !failed) ? unit.photoUrl : artPhoto(k);
+  if (photo) {
+    const alt: string = props.label || (unit ? unit.title : '');
+    return <span className={`${s.artTile} ${s.artTilePhoto} ${size}`} data-art={k}><img className={s.artPhoto} src={photo} alt={alt} aria-hidden={alt ? undefined : true} loading="lazy" decoding="async" onError={() => setFailed(true)} /></span>;
   }
   return (
     <span className={`${s.artTile} ${size} ${TILE[k]}`} data-art={k}>

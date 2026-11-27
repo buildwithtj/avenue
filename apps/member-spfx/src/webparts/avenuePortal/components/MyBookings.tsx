@@ -1,6 +1,7 @@
 import { toast } from './feedback';
 import * as React from 'react';
 import s from './Site.module.scss';
+import rf from './Ref.module.scss';
 import { canSelfCancel, extensionWaiting, hoursThisMonth, validateExtension } from '../../../avenue/booking';
 import { addDays, localDay, localTime, zonedToUtc } from '../../../avenue/calendar';
 import type { IFacility, IMyRequest, IResource } from '../../../avenue/contracts';
@@ -10,10 +11,13 @@ import { equipmentChips } from '../../../avenue/ui-helpers';
 import { type AvenueReadSource, newSubmissionId } from '../../../avenue/readSource';
 import { dateParts, facilityDayLabel, relativeDay } from '../../../avenue/home';
 import { tabOn } from '../../../avenue/release';
-import { ScrollRow } from './ScrollRow';
+import ds from './DateSelect.module.scss';
+import { DateArc } from './DateArc';
+import { DateWeek } from './DateWeek';
+import { useSize } from './motion';
 import { agendaGroups, buildIcs, icsFileName, monthStrip, phaseView } from '../../../avenue/ui-view';
 import { EquipmentArt } from './EquipmentArt';
-import { BookingProgress, RefIcon, shortSite } from './RefUi';
+import { BookingProgress, RefIcon, SiteEyebrow } from './RefUi';
 import { Sheet } from './Sheet';
 import { formatWhen, useLoad } from './ui';
 
@@ -33,6 +37,33 @@ const STAMP: Record<string, string> = { Approved: s.mbOk, Pending: s.mbWait, Dec
 const stampText = (r: IMyRequest): string => (!r.status || r.status === 'Pending' ? 'Waiting' : r.status === 'No-show credited' ? 'Credited' : r.status);
 const lengthOf = (r: IMyRequest): string => { const m: number = Math.round((Date.parse(r.endUtc) - Date.parse(r.startUtc)) / 60000); const h: number = Math.floor(m / 60); return `${h > 0 ? `${h} h` : ''}${m % 60 ? ` ${m % 60} min` : ''}`.trim(); };
 const statusText = (r: IMyRequest): string => (r.status === 'Pending' || !r.status ? 'Waiting for approval' : r.status);
+
+interface IEqItem { key: string; title: string; sub?: string; unit?: IResource; hint: string }
+const EQ_LIMIT = 5;
+// One card per unit (name left, photo right). Beyond five, the rest sit behind a Show all / Show fewer button.
+function EquipmentRows(props: { items: IEqItem[] }): React.ReactElement {
+  const [open, setOpen] = React.useState<boolean>(false);
+  const id: string = React.useId();
+  const more: boolean = props.items.length > EQ_LIMIT;
+  const shown: IEqItem[] = more && !open ? props.items.slice(0, EQ_LIMIT) : props.items;
+  return (
+    <>
+      <ul id={id} className={s.mbdEq} data-testid="equipment-rows">
+        {shown.map((i, n) => (
+          <li key={i.key} className={n >= EQ_LIMIT ? s.mbdEqNew : undefined}>
+            <span className={s.mbdEqText}><b>{i.title}</b>{i.sub && <em>{i.sub}</em>}</span>
+            <EquipmentArt unit={i.unit} hint={i.hint} size="md" />
+          </li>
+        ))}
+      </ul>
+      {more && (
+        <button type="button" className={s.mbdToggle} aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}>
+          {open ? 'Show fewer' : `Show all ${props.items.length} items`}<RefIcon name="chevron-down" size={16} />
+        </button>
+      )}
+    </>
+  );
+}
 
 // The member's own requests (they can read only their own). Status is what the flows echo back; display only. Cancelling 24 hours
 // or more ahead cancels and returns hours; under 24 hours it messages management (BKG-09).
@@ -64,7 +95,7 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
   const [newEnd, setNewEnd] = React.useState<string>('');
   const [extendError, setExtendError] = React.useState<string | undefined>();
   const [focusDay, setFocusDay] = React.useState<string | undefined>();
-  const anchorRef: React.MutableRefObject<HTMLButtonElement | null> = React.useRef<HTMLButtonElement | null>(null);
+  const size = useSize();
 
   const now: number = Date.now();
   const all: IMyRequest[] = requests.data || [];
@@ -76,19 +107,17 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
   const anchorYmd: string | undefined = view === 'past' ? (booked[booked.length - 1] || { ymd: undefined }).ymd : (booked[0] || { ymd: undefined }).ymd;
   // "3:30p": fits the 58 px day card.
   const shortTime = (iso: string): string => new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', minute: '2-digit' }).format(new Date(iso)).replace(':00 ', ' ');
-  const STRIP_TONE: Record<string, string> = { Approved: s.monthOk, Pending: s.monthWait, Mixed: s.monthMixed };
+  const STRIP_TONE: Record<string, string> = { Approved: ds.ok, Pending: ds.wait, Mixed: ds.mixed };
+  const byDay: Map<string, (typeof strip)[number]> = new Map(strip.map(d => [d.ymd, d] as [string, (typeof strip)[number]]));
+  const stripValue: string = focusDay && byDay.has(focusDay) ? focusDay : anchorYmd || todayYmd;
+  // Choosing a day (wheel, week bar, month grid, Today) marks it and brings its bookings into view.
+  const pickStripDay = (ymd: string): void => { setFocusDay(ymd); const el: HTMLElement | null = document.getElementById(`day-${ymd}`); if (el && el.scrollIntoView) { el.scrollIntoView({ block: 'start', behavior: 'smooth' }); } };
   const open: IMyRequest | undefined = all.filter(r => r.requestId === openId)[0];
 
   const cancellable = (r: IMyRequest): boolean => !r.cancelSent && !r.cancelRequested && (r.status === 'Approved' || r.status === 'Pending' || !r.status) && Date.parse(r.startUtc) > now;
   const hhmm = (iso: string): string => new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(iso));
   const extendable = (r: IMyRequest): boolean => r.status === 'Approved' && Date.parse(r.endUtc) > now && !extensionWaiting(r.extension);
   const openExtend = (r: IMyRequest): void => { setDone(undefined); setExtendError(undefined); setNewEnd(hhmm(new Date(Date.parse(r.endUtc) + 3600000).toISOString())); setExtend(r); };
-
-  // Open the strip scrolled to the anchor day (once per view, after the bookings load).
-  React.useEffect(() => {
-    const el: HTMLButtonElement | null = anchorRef.current;
-    if (el && typeof el.scrollIntoView === 'function') { el.scrollIntoView({ block: 'nearest', inline: 'center' }); }
-  }, [!!requests.data, view]);
 
   // Deep link (the reminder e-mail): open the booking, and its Extend dialog when asked. Once.
   const linked: React.MutableRefObject<boolean> = React.useRef<boolean>(false);
@@ -160,48 +189,63 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
   const artOf = (id: string): IResource | undefined => resources.filter(x => x.resourceId === id)[0];
 
   const drawer = (r: IMyRequest): React.ReactElement => {
-    const w = timeLines(r, facility);
     const phase = phaseView({ startUtc: r.startUtc, endUtc: r.endUtc, status: r.status }, facility, Date.now());
     const total: number = Date.parse(r.endUtc) - Date.parse(r.startUtc);
     const early: number = (facility.earlyEntryMinutes || 0) * 60000;
     const clean: number = (facility.cleanupMinutes || 0) * 60000;
     const span: number = early + total + clean;
+    const at = (ms: number): string => localTime(new Date(ms).toISOString(), tz);
+    const dayLabel: string = facilityDayLabel(localDay(r.startUtc, tz), localDay(new Date(), tz));
+    const dayHead: string = ['Today', 'Tomorrow'].indexOf(dayLabel) >= 0 ? `${dayLabel}, ${new Intl.DateTimeFormat('en-US', { timeZone: tz, weekday: 'short', month: 'short', day: 'numeric' }).format(new Date(r.startUtc))}` : dayLabel;
+    const items: IEqItem[] = r.space === 'Kitchen' && names(r).length > 0
+      ? (r.equipmentIds || []).map(id => { const u = artOf(id); return { key: id, title: (u || { title: id }).title, sub: u && u.category, unit: u, hint: id }; })
+      : equipmentChips(r.space, r.equipmentIds, resources).map(c => ({ key: c, title: c, hint: c }));
     return (
       <Sheet title="Booking details" onClose={() => setOpenId(undefined)}
         footer={(
-          <div className={s.row}>
-            {extendable(r) && <button type="button" className={`${s.btn} ${s.btnCitrus}`} onClick={() => openExtend(r)}>Extend</button>}
-            <button type="button" className={s.btn} aria-label="Add to calendar" onClick={() => addToCalendar(r)}>Calendar</button>
-            {cancellable(r) && <button type="button" className={s.btn} onClick={() => { setDone(undefined); setCancelMsg(''); setConfirm(r); }} aria-label={canSelfCancel(r.startUtc, Date.now()) ? 'Cancel booking' : 'Ask to cancel'}>{canSelfCancel(r.startUtc, Date.now()) ? 'Cancel' : 'Ask to cancel'}</button>}
+          <div className={s.mbdActs}>
+            {extendable(r) && <button type="button" className={`${s.mbdAct} ${s.mbdPrimary}`} onClick={() => openExtend(r)}>Extend</button>}
+            <button type="button" className={s.mbdAct} aria-label="Add to calendar" onClick={() => addToCalendar(r)}><RefIcon name="calendar-plus" size={17} />Calendar</button>
+            {cancellable(r) && <button type="button" className={s.mbdAct} onClick={() => { setDone(undefined); setCancelMsg(''); setConfirm(r); }} aria-label={canSelfCancel(r.startUtc, Date.now()) ? 'Cancel booking' : 'Ask to cancel'}><RefIcon name="x-circle" size={17} />{canSelfCancel(r.startUtc, Date.now()) ? 'Cancel' : 'Ask to cancel'}</button>}
           </div>
         )}>
-        <div className={s.mbSheetHead}>
-          <span className={`${s.mbStamp} ${STAMP[r.status || 'Pending']}`}>{stampText(r)}</span>
-          <h3>{facilityDayLabel(localDay(r.startUtc, tz), localDay(new Date(), tz))}{['Today', 'Tomorrow'].indexOf(facilityDayLabel(localDay(r.startUtc, tz), localDay(new Date(), tz))) >= 0 ? `, ${new Intl.DateTimeFormat('en-US', { timeZone: tz, weekday: 'short', month: 'short', day: 'numeric' }).format(new Date(r.startUtc))}` : ''}</h3>
-          <p className={s.mbSheetTime}>{localTime(r.startUtc, tz)} - {localTime(r.endUtc, tz)}<em>{lengthOf(r)}</em></p>
-          {r.status === 'Approved' && phase.tone !== 'done' && <p className={s.drawerPhase}>{phase.headline}</p>}
-        </div>
-        {span > 0 && (
-          <div className={s.mbWin} aria-hidden="true">
-            <span className={s.mbWinEarly} style={{ flexGrow: early }}>Entry</span><span className={s.mbWinBooked} style={{ flexGrow: total }}>Booked</span><span className={s.mbWinClean} style={{ flexGrow: clean }}>Clean-up</span>
+        <div className={s.mbd}>
+          <div className={s.mbdHead}>
+            <span className={`${s.mbStamp} ${STAMP[r.status || 'Pending']}`}>{stampText(r)}</span>
+            <h3>{dayHead}</h3>
+            <p className={s.mbdTime}>{localTime(r.startUtc, tz)} - {localTime(r.endUtc, tz)}<em>{lengthOf(r)}</em></p>
+            {r.status === 'Approved' && phase.tone !== 'done' && <p className={s.drawerPhase}>{phase.headline}</p>}
           </div>
-        )}
-        <ul className={s.mbWindows} aria-label="Entry, booked and cleaning times">
-          <li>{w.early}</li><li>{w.booked}</li><li>{w.cleaning}</li>
-        </ul>
-        <p className={s.muted}>{hoursNote(facility)}</p>
-        <h4 className={s.mbSub}>{r.space === 'Kitchen' ? 'Equipment' : 'Space'}</h4>
-        <ul className={s.mbPlates}>
-          {r.space === 'Kitchen' && names(r).length > 0
-            ? (r.equipmentIds || []).map(id => <li key={id}><EquipmentArt unit={artOf(id)} hint={id} size="xs" /><span>{(artOf(id) || { title: id }).title}</span></li>)
-            : equipmentChips(r.space, r.equipmentIds, resources).map(c => <li key={c}><EquipmentArt hint={c} size="xs" /><span>{c}</span></li>)}
-        </ul>
-        <h4 className={s.mbSub}>Message from Flavors</h4>
-        <blockquote className={s.mbSlip}>{r.note || sentOutcome(r).detail || 'No message yet.'}</blockquote>
-        {r.cancelRequested && r.status !== 'Cancelled' && <p className={s.muted}>Cancellation requested. Flavors will reply here.</p>}
-        {r.hoursKept && <p className={s.muted}>Cancelled by Flavors. The hours for this booking were not returned.</p>}
-        {r.extension && <p className={s.muted}>Extra time to {localTime(r.extension.endUtc, tz)}: {r.extension.outcome || 'sent, waiting for Flavors'}</p>}
-        <details className={s.more}><summary>More details</summary><ul>{detailLines(facility).map((l, i) => <li key={i}>{l}</li>)}</ul></details>
+          {span > 0 && (
+            <div className={s.mbdCard} aria-label="Entry, booked and cleaning times" role="group">
+              <div className={s.mbdTrack} aria-hidden="true">
+                {early > 0 && <span className={s.mbdEarly} style={{ flexGrow: early }} />}<span className={s.mbdBooked} style={{ flexGrow: total }} />{clean > 0 && <span className={s.mbdClean} style={{ flexGrow: clean }} />}
+              </div>
+              <dl className={s.mbdStops}>
+                {early > 0 && <div><dt><i className={s.mbdEarly} />Entry</dt><dd>{at(Date.parse(r.startUtc) - early)}</dd></div>}
+                <div><dt><i className={s.mbdBooked} />Start</dt><dd>{localTime(r.startUtc, tz)}</dd></div>
+                <div><dt><i className={s.mbdBooked} />End</dt><dd>{localTime(r.endUtc, tz)}</dd></div>
+                {clean > 0 && <div><dt><i className={s.mbdClean} />Clean-up until</dt><dd>{at(Date.parse(r.endUtc) + clean)}</dd></div>}
+              </dl>
+              <p className={s.mbdFoot}>{hoursNote(facility)}</p>
+            </div>
+          )}
+          <section>
+            <h4 className={s.mbdLabel}>{r.space === 'Kitchen' ? 'Equipment' : 'Space'}</h4>
+            <EquipmentRows key={r.requestId} items={items} />
+          </section>
+          <section>
+            <h4 className={s.mbdLabel}>Message from Flavors</h4>
+            <div className={s.mbdMsg}>
+              <span className={s.mbdAvatar} aria-hidden="true"><RefIcon name="message-square" size={16} /></span>
+              <p>{r.note || sentOutcome(r).detail || 'No message yet.'}</p>
+            </div>
+            {r.cancelRequested && r.status !== 'Cancelled' && <p className={s.muted}>Cancellation requested. Flavors will reply here.</p>}
+            {r.hoursKept && <p className={s.muted}>Cancelled by Flavors. The hours for this booking were not returned.</p>}
+            {r.extension && <p className={s.muted}>Extra time to {localTime(r.extension.endUtc, tz)}: {r.extension.outcome || 'sent, waiting for Flavors'}</p>}
+          </section>
+          <details className={s.mbdMore}><summary>More details<RefIcon name="chevron-down" size={16} /></summary><ul>{detailLines(facility).map((l, i) => <li key={i}>{l}</li>)}</ul></details>
+        </div>
       </Sheet>
     );
   };
@@ -222,7 +266,7 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
     <section aria-label="My bookings" className={s.mb}>
       <div className={s.pageHead}>
         <div className={`${s.container} ${s.headRow}`}>
-          <div><p className={s.pgEyebrow}>{shortSite(props.facility.title)}</p><h1 className={s.pageTitle}>My bookings<span className={s.rDot} aria-hidden="true">.</span></h1>
+          <div className={rf['head-copy']}><SiteEyebrow title={props.facility.title} /><h1 className={s.pageTitle}>My bookings<span className={s.rDot} aria-hidden="true">.</span></h1>
             <dl className={s.factRow}>
               <div><dt>{liveNow ? 'Now' : 'Next'}</dt><dd>{liveNow ? `In the kitchen until ${localTime(liveNow.endUtc, tz)}` : nextUp ? `${facilityDayLabel(localDay(nextUp.startUtc, tz), todayYmd)}, ${localTime(nextUp.startUtc, tz)}` : 'Nothing booked'}</dd></div>
               <div><dt>Waiting</dt><dd>{waitingCount}</dd></div>
@@ -244,30 +288,31 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
         {requests.error && <div className={s.errorPanel} role="alert">{`Could not load your bookings. ${requests.error}`}</div>}
 
         <div key={view} className={s.pane} data-dir={pdir}>
-        <div className={s.stripHead}><b>{new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', month: 'long', year: 'numeric' }).format(new Date(`${focusDay || anchorYmd || todayYmd}T12:00:00Z`))}</b><button type="button" onClick={() => { const el: HTMLElement | null = document.querySelector(`[data-ymd="${todayYmd}"]`); if (el && el.scrollIntoView) { el.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' }); } }}>Today</button></div>
-        <div className={s.datePanel} data-idle>
-        <ScrollRow label="days">
-        <ol className={s.monthStrip} aria-label={view === 'past' ? 'Last 31 days, booked days marked' : 'Next 31 days, booked days marked'}>
-          {strip.map(d => {
-            const dt = new Date(`${d.ymd}T12:00:00Z`);
-            const isNext: boolean = view === 'upcoming' && d.ymd === anchorYmd;
-            const what: string = d.status === 'Approved' ? 'approved' : d.status === 'Pending' ? 'waiting for approval' : 'approved and waiting';
+        <div className={s.stripHead}>{size === 'phone' ? <b>{new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', month: 'long', year: 'numeric' }).format(new Date(`${stripValue}T12:00:00Z`))}</b> : <span />}<button type="button" onClick={() => pickStripDay(todayYmd)}>Today</button></div>
+        {(() => {
+          const stripLabel: string = view === 'past' ? 'Last 31 days, booked days marked' : 'Next 31 days, booked days marked';
+          const days: string[] = strip.map(d => d.ymd);
+          const marker = (ymd: string): string | undefined => { const d = byDay.get(ymd); return d && d.booked ? STRIP_TONE[d.status || ''] : undefined; };
+          const describe = (ymd: string): string => {
+            const d = byDay.get(ymd);
+            const what: string = !d || !d.booked ? '' : d.status === 'Approved' ? 'approved' : d.status === 'Pending' ? 'waiting for approval' : 'approved and waiting';
+            return `${d && d.booked ? `, ${d.count} ${d.count === 1 ? 'booking' : 'bookings'} ${what}${d.firstStartUtc ? ` from ${localTime(d.firstStartUtc, tz)}` : ', continues overnight'}` : ''}${view === 'upcoming' && ymd === anchorYmd ? ', next booking' : ''}`;
+          };
+          const cell = (ymd: string): React.ReactNode => {
+            const d = byDay.get(ymd);
+            const dt = new Date(`${ymd}T12:00:00Z`);
             return (
-              <li key={d.ymd}>
-                <button type="button" ref={d.ymd === anchorYmd ? anchorRef : undefined} data-ymd={d.ymd} data-status={d.status}
-                  className={`${s.monthDay} ${d.booked ? `${s.monthBooked} ${s.monthFill} ${STRIP_TONE[d.status || ''] || ''}` : ''} ${d.today ? s.monthToday : ''} ${focusDay === d.ymd ? s.monthFocus : ''}`} disabled={!d.booked}
-                  aria-label={`${facilityDayLabel(d.ymd, todayYmd)}${d.booked ? `, ${d.count} ${d.count === 1 ? 'booking' : 'bookings'} ${what}${d.firstStartUtc ? ` from ${localTime(d.firstStartUtc, tz)}` : ', continues overnight'}` : ''}${isNext ? ', next booking' : ''}`}
-                  onClick={e => { setFocusDay(d.ymd); if (e.currentTarget.scrollIntoView) { e.currentTarget.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' }); } const el: HTMLElement | null = document.getElementById(`day-${d.ymd}`); if (el && el.scrollIntoView) { el.scrollIntoView({ block: 'start', behavior: 'smooth' }); } }}>
-                  {isNext && <em className={s.monthNext} aria-hidden="true">Next</em>}
-                  <span>{new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: 'short' }).format(dt)}</span><b>{dt.getUTCDate()}</b>
-                  {d.booked && <small className={s.monthTime} aria-hidden="true">{d.firstStartUtc ? shortTime(d.firstStartUtc) : 'cont.'}</small>}
-                </button>
-              </li>
+              <>
+                {view === 'upcoming' && ymd === anchorYmd && <em className={ds.tag} aria-hidden="true">Next</em>}
+                <span className={ds.wd}>{new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: 'short' }).format(dt)}</span><b className={ds.num}>{dt.getUTCDate()}</b>
+                {d && d.booked && <small className={ds.time} aria-hidden="true">{d.firstStartUtc ? shortTime(d.firstStartUtc) : 'cont.'}</small>}
+              </>
             );
-          })}
-        </ol>
-        </ScrollRow>
-        </div>
+          };
+          return size === 'phone'
+            ? <div className={s.datePanel} data-idle><DateArc days={days} value={stripValue} onChange={pickStripDay} renderDay={cell} markers={marker} describe={describe} label={stripLabel} today={todayYmd} /></div>
+            : <div className={ds.weekWrap}><DateWeek days={days} value={stripValue} onChange={pickStripDay} renderDay={cell} markers={marker} describe={describe} label={stripLabel} today={todayYmd} /></div>;
+        })()}
 
         {!requests.data && !requests.error && <div className={s.skeleton} style={{ height: 160 }} role="status" aria-label="Loading your bookings" />}
         {requests.data && groups.length === 0 && (
@@ -295,7 +340,7 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
                             <strong className={s.kitChips}>{chips.slice(0, 2).map(c => <i key={c}>{c}</i>)}{chips.length > 2 && <i>+{chips.length - 2}</i>}</strong>
                             {r.note && <em className={s.mbNote}>{r.note}</em>}
                           </span>
-                          <span className={`${s.mbStamp} ${STAMP[r.status || 'Pending']}`}>{stampText(r)}</span>
+                          {(r.status === 'Cancelled' || r.status === 'Declined') && <span className={`${s.mbStamp} ${STAMP[r.status || 'Pending']}`}>{stampText(r)}</span>}
                         </button>
                         {r.status !== 'Cancelled' && r.status !== 'Declined' && <BookingProgress status={r.status} live={live} past={view === 'past'} />}
                       </li>

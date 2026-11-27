@@ -1031,33 +1031,6 @@ $ink2d: #0B3A47;
   .dtFree { background: #DCE8EC; }
   .dtBusy { background: repeating-linear-gradient(135deg, #9AA5B1 0 3px, #C8CFD6 3px 7px); }
   .dtSel { position: absolute; top: 0; bottom: 0; background: $citrus; box-shadow: inset 0 0 0 2px $ink; transition: left .25s var(--av-ease), width .25s var(--av-ease); } }
-.dtScale { display: flex; justify-content: space-between; margin: 6px 0 4px; font-family: $mono; font-size: 12px; color: $subtle; }
-.winList { list-style: none; margin: 10px 0 0; padding: 0;
-  li > button, .winBusy { width: 100%; display: grid; grid-template-columns: 12px minmax(0, 1fr) auto 20px; gap: 12px; align-items: center; padding: 13px 6px; border: 0; border-bottom: 1px solid $line; background: none; font: inherit; text-align: left; color: $text; }
-  li > button { cursor: pointer; transition: background .2s;@media (hover: hover) { &:hover { background: rgba(15, 76, 92, .04); } } i { font-style: normal; color: $subtle; font-size: 18px; } }
-  strong { font-family: $mono; font-size: 15px; letter-spacing: -.02em; }
-  em { font-style: normal; font-size: 13px; color: $ink; font-weight: 600; } }
-.winOn { background: linear-gradient(90deg, rgba(201, 162, 77, .16), transparent 80%) !important; box-shadow: inset 3px 0 0 $citrus; i { color: $ink !important; font-weight: 800; } }
-.winDot { width: 12px; height: 12px; border-radius: 50%; background: $citrus; box-shadow: 0 0 0 3px #F6EEDA; }
-.winBusy { color: #8A949E !important; .winDot { background: repeating-linear-gradient(135deg, #9AA5B1 0 2px, #C8CFD6 2px 4px); box-shadow: none; } em { color: #8A949E !important; font-weight: 400 !important; } strong { font-weight: 500; } }
-.range { margin-top: 16px; padding: 16px 16px 10px; background: #fff; border-top: 3px solid $ink; box-shadow: 0 10px 24px rgba(15, 76, 92, .08); animation: v3Rise .35s var(--av-ease) backwards; }
-.rangeRead { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px;
-  small { display: block; font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: $subtle; }
-  b { font-family: $mono; font-size: 26px; letter-spacing: -.04em; color: $ink; }
-  > div:last-child { text-align: right; }
-  span { align-self: center; font-size: 13px; font-weight: 700; color: #1F1F1F; background: #F6EEDA; padding: 4px 10px; border-radius: 999px; white-space: nowrap; } }
-.rangeTrack { position: relative; height: 44px; margin-top: 6px;
-  &::before { content: ''; position: absolute; left: 0; right: 0; top: 19px; height: 6px; background: #E3ECEE; border-radius: 3px; }
-  i { position: absolute; top: 19px; height: 6px; background: $citrus; border-radius: 3px; }
-  input { position: absolute; inset: 0; width: 100%; margin: 0; background: transparent; pointer-events: none; -webkit-appearance: none; appearance: none;
-    &::-webkit-slider-runnable-track { background: transparent; height: 44px; }
-    &::-webkit-slider-thumb { -webkit-appearance: none; pointer-events: auto; width: 28px; height: 28px; margin-top: 8px; border-radius: 50%; background: #fff; border: 3px solid $ink; box-shadow: 0 3px 8px rgba(7, 44, 54, .25); cursor: grab; transition: transform .15s; }
-    &::-moz-range-track { background: transparent; }
-    &::-moz-range-thumb { pointer-events: auto; width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 3px solid $ink; cursor: grab; }
-    &:active::-webkit-slider-thumb { transform: scale(1.15); cursor: grabbing; }
-    &:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgba(201, 162, 77, .5); } } }
-.rangeEnds { display: flex; justify-content: space-between; font-family: $mono; font-size: 12px; color: $subtle; }
-
 // 9. Footer edge to edge
 .siteFooter { margin: 0; }
 
@@ -1075,7 +1048,7 @@ $ink2d: #0B3A47;
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .site:not([data-motion='reduce']) {
-      .kbList li, .wkRail li, .winList li, .bkUnits li, .agendaList li, .mcList li, .threeGrid li, .feedList > *, .tl, .tlTimes, .kbHead, .wkHead, .secHead, .splitHead, .wkSide > *, .attn4 .container > div, .unitCard, .kTile {
+      .kbList li, .wkRail li, .bkUnits li, .agendaList li, .mcList li, .threeGrid li, .feedList > *, .tl, .tlTimes, .kbHead, .wkHead, .secHead, .splitHead, .wkSide > *, .attn4 .container > div, .unitCard, .kTile {
         // Longhands only: the production minifier reorders declarations, and an `animation` shorthand placed last resets the timeline.
         animation-name: sdIn !important; animation-timing-function: linear !important; animation-fill-mode: both !important; animation-duration: auto !important;
         animation-timeline: view() !important; animation-range: entry 0% entry 60% !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; }
@@ -1105,9 +1078,8 @@ $ink2d: #0B3A47;
 .lpLabel { font-size: 13px; }
 .kbLive { font-size: 13px; }
 // Monospace stays on order tickets and time readouts only; elsewhere tabular figures.
-.lpMeta, .dtScale, .bkScale, .kbCount, .wkBody strong, .wkRail time span, .winList strong, .bkUnitText em, .bkMove { font-family: inherit !important; font-variant-numeric: tabular-nums; }
+.lpMeta, .bkScale, .kbCount, .wkBody strong, .wkRail time span, .bkUnitText em, .bkMove { font-family: inherit !important; font-variant-numeric: tabular-nums; }
 
-.winList strong { font-weight: 700; }
 .dayTrack .dtPast { background: repeating-linear-gradient(90deg, #F4F6F7 0 6px, #EEF2F4 6px 12px); }
 // Hero photo parallax moves the image inside its frame, never the frame (no gap above it).
 @supports (animation-timeline: view()) {
@@ -1150,10 +1122,1033 @@ $ink2d: #0B3A47;
 [data-size='phone'] .pageTitle { font-size: 36px; }
 .lpHead { font-size: 26px !important; }
 // figures: tabular
-.kbCount, .lpRing b, .rangeRead b, .bkDays b, .wkRail time span, .wkBody strong, .winList strong, .dtScale, .rangeEnds, .lpMeta {
+.kbCount, .lpRing b, .bkDays b, .wkRail time span, .wkBody strong, .lpMeta {
   font-family: var(--av-font) !important; font-variant-numeric: tabular-nums; }
 .kbCount { font-size: 34px; font-weight: 800; }
-.rangeRead b { font-size: 30px; font-weight: 800; }
+
+// equipment names
+.bkUnitText strong, .kbList strong, .wkModes button, .lpKit { font-weight: 700; }
+// buttons and navigation
+.btn, .link, .tab span, .segmented button, .bkModes button { font-weight: 650; letter-spacing: .005em; }
+.link { font-size: 16px; }
+// reading text stays at normal width with a sensible measure
+.hxLede, .muted, .wkBody em, .splitHead p { max-width: 64ch; }
+
+// =====================================================================================================================
+// v6: MY BOOKINGS. One block for the whole screen (facts, tear-off day strip, day headings, ticket stubs with a status
+// stamp, detail sheet). Kitchen ticket metaphor: the time block is the stub, a dashed perforation with notches, and the
+// rubber stamp is the status (uppercase is the stamp's own lettering, not a label style).
+// =====================================================================================================================
+.factRow { display: flex; flex-wrap: wrap; margin: 14px 0 0; padding: 0;
+  > div { padding: 0 20px; border-left: 1px solid $line; &:first-child { padding-left: 0; border-left: 0; } }
+  dt { font-size: 13px; color: $subtle; }
+  dd { margin: 0; font-size: 21px; font-weight: 800; font-variant-numeric: tabular-nums; color: $ink; } }
+[data-size='phone'] .factRow { display: grid; grid-template-columns: 1.3fr 1fr 1fr; > div { padding: 0 10px; } dt { font-size: 12px; } dd { font-size: 17px; } }
+
+.monthStrip { list-style: none; display: flex; gap: 6px; margin: 18px 0 4px; padding: 2px 2px 8px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; &::-webkit-scrollbar { display: none; }
+  li { flex: 0 0 54px; scroll-snap-align: start; } }
+.monthDay { width: 100%; display: grid; justify-items: center; padding: 0 0 7px; border: 1px solid $line; border-radius: 4px; background: #fff; color: $subtle; font: inherit; overflow: hidden; position: relative; cursor: default; transition: transform .15s var(--av-ease), border-color .15s;
+  span { display: block; width: 100%; padding: 3px 0; margin-bottom: 3px; background: $steel; color: $ink; font-size: 12px; font-weight: 700; text-align: center; border-bottom: 1px dashed #B9C3CA; }
+  b { font-size: 19px; font-weight: 800; line-height: 1.1; }
+  i { position: absolute; left: 50%; bottom: 3px; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: transparent; }
+  &:disabled { opacity: .55; } }
+.monthBooked { color: $text; cursor: pointer; i { background: $citrus; }@media (hover: hover) { &:hover { transform: translateY(-2px); border-color: $ink; } } }
+.monthToday span { background: $ink; color: #fff; border-bottom-color: rgba(255, 255, 255, .3); }
+.monthFocus { border-color: $citrus; box-shadow: 0 0 0 2px $citrus; }
+
+.mbList { padding: 4px 0 64px; }
+.mbDayHead { display: flex; align-items: baseline; gap: 10px; margin: 30px 0 12px !important; padding-bottom: 8px; border-bottom: 2px solid $ink;
+  b { font-size: 26px; font-weight: 800; } span { font-size: 15px; color: $subtle; font-weight: 500; } em { margin-left: auto; font-style: normal; font-size: 13px; font-weight: 600; color: var(--av-accent-deep); } }
+.mbTickets { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.mbTicket { --stub: 110px; width: 100%; display: grid; grid-template-columns: 92px minmax(0, 1fr) auto; align-items: center; gap: 18px; padding: 16px 18px; border: 0; border-radius: 3px; background: #fff; color: $text; font: inherit; text-align: left; cursor: pointer; position: relative;
+  box-shadow: 0 1px 0 #D9DFE3, 0 8px 18px rgba(15, 76, 92, .06); transition: transform .2s var(--av-ease), box-shadow .2s;
+  -webkit-mask: radial-gradient(circle 7px at var(--stub) 0, #0000 96%, #000) top / 100% 51% no-repeat, radial-gradient(circle 7px at var(--stub) 100%, #0000 96%, #000) bottom / 100% 51% no-repeat;
+  mask: radial-gradient(circle 7px at var(--stub) 0, #0000 96%, #000) top / 100% 51% no-repeat, radial-gradient(circle 7px at var(--stub) 100%, #0000 96%, #000) bottom / 100% 51% no-repeat;
+@media (hover: hover) { &:hover { transform: translateY(-2px); box-shadow: 0 1px 0 #D9DFE3, 0 14px 26px rgba(15, 76, 92, .12); } } }
+.mbTime { display: grid; align-self: stretch; align-content: center; padding-right: 16px; border-right: 2px dashed #D3DAE0;
+  b { font-size: 20px; font-weight: 800; line-height: 1.15; font-variant-numeric: tabular-nums; } b + b { font-size: 16px; color: $subtle; font-weight: 700; }
+  em { margin-top: 4px; font-style: normal; font-size: 12px; color: $subtle; } }
+.mbBody { display: grid; gap: 6px; min-width: 0;
+  strong { font-size: 15px; font-weight: 700; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; } }
+.mbKit { display: flex; align-items: center; gap: 6px; .artTile { width: 36px; height: 28px; } i { font-style: normal; font-size: 12px; font-weight: 800; color: $ink; } }
+.mbNote { font-style: normal; font-size: 14px; color: $subtle; }
+.mbNow { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; color: $ink; i { width: 8px; height: 8px; border-radius: 50%; background: $citrus; animation: v3Glow 2s ease-in-out infinite; } }
+.mbStamp { justify-self: end; padding: 4px 10px; border: 2px solid currentColor; border-radius: 4px; font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; transform: rotate(-4deg); white-space: nowrap; }
+.mbOk { color: $ink; } .mbWait { color: #A8853A; } .mbBad { color: #9B2C2C; } .mbOff { color: #8A949E; }
+.mbLive .mbTicket { box-shadow: inset 4px 0 0 $citrus, 0 1px 0 #D9DFE3, 0 10px 22px rgba(15, 76, 92, .1); }
+.mbPast .mbTicket { opacity: .8;@media (hover: hover) { &:hover { transform: none; } } }
+.mbEmpty { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 24px; padding: 22px 0; border-top: 1px solid $line; border-bottom: 1px solid $line; > div { flex: 1; min-width: 200px; } p { margin: 4px 0 0; color: $subtle; } }
+[data-size='phone'] {
+  .mbTicket { --stub: 90px; grid-template-columns: 76px minmax(0, 1fr); gap: 14px; padding: 14px; .mbStamp { grid-column: 2; justify-self: start; transform: rotate(-3deg); } }
+  .mbTime b { font-size: 17px; } .mbTime b + b { font-size: 14px; }
+  .mbDayHead b { font-size: 22px; }
+}
+
+// Detail sheet
+.mbd { display: grid; gap: 24px; padding-bottom: 8px; }
+.mbdHead { display: grid; gap: 6px; justify-items: start; h3 { margin: 0; font-size: 30px; font-weight: 800; line-height: 1.1; letter-spacing: -.01em; } .drawerPhase { margin: 0; } }
+.mbdTime { margin: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums;
+  em { font-style: normal; font-size: 13px; font-weight: 600; color: $subtle; background: #EEF1F3; border-radius: 999px; padding: 3px 10px; } }
+.mbdCard { background: #fff; border: 1px solid $line; border-radius: 16px; padding: 16px; box-shadow: 0 1px 3px rgba(15, 76, 92, .06); display: grid; gap: 14px; }
+.mbdTrack { display: flex; gap: 3px; height: 10px; border-radius: 999px; overflow: hidden; }
+.mbdEarly { background: #EBD9A8; } .mbdBooked { background: $ink; } .mbdClean { background: #B9CDD3; }
+.mbdTrack span { min-width: 6px; }
+.mbdStops { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(104px, 1fr)); gap: 12px;
+  div { min-width: 0; } dt { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: $subtle; i { flex: none; width: 8px; height: 8px; border-radius: 50%; } }
+  dd { margin: 2px 0 0; font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; } }
+.mbdFoot { margin: 0; font-size: 13px; color: $subtle; }
+.mbdLabel { margin: 0 0 10px !important; font-size: 13px !important; font-weight: 700 !important; letter-spacing: .08em; text-transform: uppercase; color: $subtle; }
+.mbdEq { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px;
+  li { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 10px 10px 16px; background: #fff; border: 1px solid $line; border-radius: 16px; box-shadow: 0 1px 3px rgba(15, 76, 92, .06); }
+  .artTile { width: 104px; height: 78px; border-radius: 14px; } }
+.mbdEqText { display: grid; gap: 2px; min-width: 0; b { font-size: 16px; font-weight: 700; overflow-wrap: anywhere; } em { font-style: normal; font-size: 13px; color: $subtle; } }
+.mbdToggle { margin-top: 10px; width: 100%; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 0; background: transparent; font: inherit; font-weight: 700; color: var(--av-accent-deep); cursor: pointer; border-radius: 12px;
+  svg { transition: transform .2s ease; } &[aria-expanded='true'] svg { transform: rotate(180deg); } }
+.mbdMsg { display: flex; gap: 12px; align-items: flex-start; background: #fff; border: 1px solid $line; border-radius: 16px; padding: 14px; box-shadow: 0 1px 3px rgba(15, 76, 92, .06);
+  p { margin: 0; font-size: 15px; line-height: 1.45; min-width: 0; overflow-wrap: anywhere; } }
+.mbdAvatar { flex: none; width: 32px; height: 32px; border-radius: 50%; background: $ink; color: #fff; display: grid; place-items: center; }
+.mbdMore { background: #fff; border: 1px solid $line; border-radius: 16px; overflow: hidden;
+  summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; min-height: 48px; padding: 0 16px; font-weight: 700; &::-webkit-details-marker { display: none; } svg { transition: transform .2s ease; color: $subtle; } }
+  &[open] summary svg { transform: rotate(180deg); }
+  ul { margin: 0; padding: 0 16px 16px 36px; display: grid; gap: 8px; color: $subtle; } }
+.mbdActs { width: 100%; display: flex; flex-wrap: wrap; gap: 10px; }
+.mbdAct { flex: 1 1 120px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; border-radius: 999px; border: 1.5px solid $ink; background: #fff; color: $ink; font: inherit; font-weight: 700; cursor: pointer; white-space: nowrap;
+  &:active { transform: scale(.97); } }
+.mbdPrimary { background: $ink; color: #fff; }
+@media (prefers-reduced-motion: no-preference) {
+  .mbdEqNew { animation: mbdIn .25s ease both; }
+  @keyframes mbdIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+}
+@media (prefers-reduced-motion: reduce) { .mbdToggle svg, .mbdMore summary svg, .mbdAct { transition: none !important; } }
+
+.meterOver { background: $taken !important; }
+
+// ---- Equipment artwork ----
+.artTile { display: inline-grid; place-items: center; border-radius: 12px; flex: none; overflow: hidden; }
+.art_xs { width: 36px; height: 30px; border-radius: 8px; } .art_sm { width: 56px; height: 46px; } .art_md { width: 96px; height: 76px; } .art_lg { width: 160px; height: 120px; }
+.art { width: 100%; height: 100%; display: block; }
+.artPhoto { width: 100%; height: 100%; object-fit: cover; }
+.tileA { background: #F1E6C8; --art-1: #FBF6E6; --art-2: #D9C07A; } .tileB { background: #E3ECEE; --art-1: #F1F4F9; --art-2: #9FB0CC; } .tileC { background: #E8E1D2; --art-1: #FBF8F0; --art-2: #CDBF9F; } .tileD { background: #D5E6E8; --art-1: #EEF7F8; --art-2: #8DB9BE; }
+.aLine { stroke: var(--art-ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+.aBody { fill: var(--art-1); } .aShade { fill: var(--art-2); } .aHot { fill: var(--art-hot); stroke: none; } .aHotTint { fill: var(--art-hot-tint); }
+.aGlint { fill: #fff; opacity: .55; stroke: none; }
+.aFlame { transform-box: fill-box; transform-origin: bottom center; animation: flicker 1.1s ease-in-out infinite; }
+.aSteam { animation: steam 2.6s ease-in-out infinite; }
+.aGlintMove { animation: glint 3.8s ease-in-out infinite; }
+.aGlow { animation: pulse 2s ease-in-out infinite; }
+.aSpin { transform-box: fill-box; transform-origin: center; animation: spin 2.4s linear infinite; }
+
+// ---- Sheets, drawer, dialog ----
+.scrim { position: fixed; inset: 0; background: rgba(10, 17, 31, .55); z-index: 90; }
+.scrimIn { animation: fade .25s var(--av-ease) backwards; }
+.sheet { position: fixed; z-index: 91; background: #fff; color: $text; display: flex; flex-direction: column; box-shadow: var(--av-shadow-3); max-height: 100vh; box-sizing: border-box; }
+.sheetRight { top: 0; right: 0; bottom: 0; width: min(560px, 100vw); min-width: min(480px, 100vw); border-radius: 0; }
+.sheetBottom { left: 0; right: 0; top: 0; bottom: 0; max-height: none; border-radius: 0; }
+.sheetCenter { left: 50%; top: 50%; width: min(520px, calc(100vw - 32px)); max-height: 86vh; border-radius: 6px; transform: translate(-50%, -50%); }
+.sheetIn { animation: sheetIn .38s var(--av-ease) backwards; }
+.sheetOut { animation: sheetIn var(--av-d-2, 200ms) var(--av-ease-exit) reverse forwards; }
+.sheetBottom.sheetOut { animation-name: sheetInBottom; }
+.sheetCenter.sheetOut { animation-name: sheetInCenter; }
+.scrimOut { animation: fade var(--av-d-2, 200ms) var(--av-ease-exit) reverse forwards; }
+.sheetHead { display: flex; justify-content: space-between; align-items: center; padding: 20px 28px 8px; }
+.sheetTitle { font-family: $serif; font-size: 28px; }
+.sheetBody { padding: 12px 28px 28px; overflow-y: auto; flex: 1; display: grid; align-content: start; gap: 12px; font-size: 17px; line-height: 1.6; }
+.sheetFoot { padding: 12px 28px; min-height: 64px; display: flex; align-items: center; border-top: 1px solid $line; background: $cream; }
+
+.drawerPhase { margin: 2px 0 0; color: var(--av-accent-deep); font-weight: 700; } // deep accent: gold text on white fails contrast (about 2.3:1)
+
+  
+.windows { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; li { padding-left: 14px; border-left: 3px solid var(--av-primary-tint); } }
+
+// ---- Book on the board ----
+.bookPage { background: $cream; }
+.kitBar { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; margin-top: 20px; }
+[data-size='mid'] .kitBar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+[data-size='phone'] .kitBar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.kit { display: flex; align-items: center; gap: 10px; text-align: left; padding: 8px 12px 8px 8px; border-radius: 14px; border: 1.5px solid $line; background: #fff; color: $text; font: inherit; cursor: pointer; transition: transform .2s var(--av-ease), border-color .2s, box-shadow .2s; min-height: 62px;
+@media (hover: hover) { &:hover { transform: translateY(-2px); box-shadow: var(--av-shadow-2); } }
+  &[aria-pressed='true'] { border-color: $ink; box-shadow: inset 0 0 0 1.5px $ink; background: #EEF1F7; } }
+
+.kitOn { background: #EEF1F7; }
+.kitText { display: grid; strong { font-size: 16px; line-height: 1.25; } }
+.boardBand { background: $board; color: $onInk; padding: 24px 0 40px; margin-top: 32px;
+  .dayNav { margin-top: 0; } .btn { color: $onInk; border-color: rgba(247, 244, 238, .4); } .btnCitrus { color: var(--av-on-accent); border-color: $citrus; } .iconBtn { border-color: rgba(247, 244, 238, .4); } }
+.boardTools { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; margin-bottom: 14px; }
+
+.pickers { display: flex; gap: 10px; label { display: grid; gap: 2px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: $mutedOnInk; } select { min-width: 120px; } }
+.chipBar { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+
+.stepper { display: flex; align-items: center; gap: 10px; b { min-width: 24px; text-align: center; font-size: 20px; } }
+.diningStrip { display: flex; gap: 16px; align-items: center; margin-bottom: 14px; img { width: 140px; height: 74px; object-fit: cover; border-radius: 12px; } p { margin: 0; color: $mutedOnInk; } }
+.messages { min-height: 0; }
+.suggest { background: #3A1F28; border-left: 4px solid #5B6370; color: #F8DDE2; margin: 0 0 8px; padding: 10px 14px; border-radius: 0 10px 10px 0; font-weight: 600; }
+.hintOnDark { color: $mutedOnInk; }
+
+.busyGrow { animation: grow .45s var(--av-ease) backwards; }
+.block { position: absolute; top: 5px; bottom: 5px; border-radius: 10px; background: $citrus; color: var(--av-on-accent); display: flex; align-items: center; padding: 0 8px; overflow: hidden; box-shadow: 0 4px 14px rgba(201, 162, 75, .45); pointer-events: none; z-index: 2; transform-origin: left center; b { font-size: 12px; white-space: nowrap; } }
+.blockFlag { background: #E6C77A; box-shadow: 0 0 0 2px #E6C77A; }
+.blockGhost { background: rgba(201, 162, 75, .5); box-shadow: none; }
+.blockRejected { background: rgba(217, 132, 111, .65); box-shadow: 0 0 0 2px #5B6370; }
+.blockSettle { animation: settle .45s var(--av-spring) backwards; }
+.blockShake { animation: shake .4s var(--av-ease); }
+.pendingMark { position: absolute; top: 4px; bottom: 4px; width: 4px; border-radius: 2px; background: $citrus; z-index: 2; pointer-events: none; }
+
+.nowPulse { animation: fade 2s ease-in-out infinite alternate; }
+
+  
+
+// Dock: ONE slim row (what, when, one key fact, the button). Everything long lives in the Details drawer.
+.dock { position: sticky; bottom: var(--tab-h); z-index: 20; background: $ink; color: $onInk; border-top: 2px solid $citrus; height: 64px; display: flex; align-items: center; }
+[data-size='phone'] .dock { height: 56px; }
+.dock .container { display: flex; align-items: center; gap: 14px; width: 100%; }
+.dockText { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 6px 14px; flex-wrap: nowrap; overflow: hidden; white-space: nowrap; strong { font-family: $serif; font-size: 18px; } span { color: $mutedOnInk; font-size: 16px; overflow: hidden; text-overflow: ellipsis; } }
+[data-size='phone'] .dockText { span:last-child { display: none; } }
+.dockFact { color: $onInk; font-weight: 600; white-space: nowrap; }
+[data-size='phone'] .dockFact { display: none; }
+.dockCount { color: #F0A5B2; font-weight: 700; white-space: nowrap; font-size: 15px; }
+.dock .btn { min-height: 40px; white-space: nowrap; color: $onInk; border-color: rgba(247, 244, 238, .45); }
+.dock .btnCitrus { color: var(--av-on-accent); border-color: $citrus; }
+[data-size='phone'] .dock .btn { padding: 0 12px; font-size: 15px; }
+.inlineErr { color: #F0A5B2; font-weight: 600; margin: 0 0 10px; font-size: 16px; }
+.facts { display: grid; gap: 0; margin: 0; div { display: grid; grid-template-columns: 130px 1fr; gap: 16px; padding: 12px 0; border-top: 1px solid $line; } dt { font-size: 14px; letter-spacing: 0; text-transform: none; color: $subtle; font-weight: 700; padding-top: 3px; } dd { margin: 0; font-weight: 600; } }
+.hoursLine { margin: 0; font-weight: 600; }
+.more { border-top: 1px solid $line; padding-top: 12px; summary { cursor: pointer; font-weight: 700; min-height: 32px; } ul { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 8px; color: $subtle; } }
+.problems { margin: 8px 0 0; padding: 12px 16px 12px 32px; background: var(--av-bad-tint); color: var(--av-bad); border-radius: 10px; font-weight: 600; }
+.diningForm { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: end; margin-bottom: 14px; .inline { color: $onInk; } .inline input { color: $text; } }
+.slots { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+.slot { width: 100%; display: grid; text-align: left; gap: 2px; padding: 12px 16px; border-radius: 14px; border: 1.5px solid $line; background: #fff; font: inherit; cursor: pointer; min-height: 56px;@media (hover: hover) { &:hover { border-color: $ink; transform: translateY(-1px); } } b { color: var(--av-accent-deep); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; } }
+[data-size='phone'] [data-size='phone'] .sheet .row { flex-wrap: nowrap; width: 100%; gap: 8px; .btn { flex: 1; padding: 0 8px; font-size: 15px; } }
+
+.result { max-width: 640px; margin: 48px auto; padding: 32px; display: grid; gap: 8px; }
+.resultIn { animation: pageIn .45s var(--av-ease) backwards; }
+.resultMark { width: 56px; height: 56px; border-radius: 50%; background: $ink; color: $onInk; display: grid; place-items: center; font-size: 28px; font-weight: 800; }
+.resultOk .resultMark { background: var(--av-ok); } .resultBad .resultMark { background: var(--av-bad); }
+
+// ---- Schedule ----
+
+    
+
+   
+
+// ---- Motion ----
+@keyframes pageIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes menuIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sheetIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: none; } }
+@keyframes sheetInBottom { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: none; } }
+@keyframes sheetInCenter { from { opacity: 0; transform: translate(-50%, -46%) scale(.97); } to { opacity: 1; transform: translate(-50%, -50%); } }
+@keyframes settle { 0% { transform: scaleX(.4); opacity: .4; } 60% { transform: scaleX(1.05); opacity: 1; } 100% { transform: scaleX(1); } }
+@keyframes grow { from { transform: scaleX(.2); opacity: 0; } to { transform: scaleX(1); opacity: 1; } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+@keyframes shimmer { to { background-position: -200% 0; } }
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .45; transform: scale(.8); } }
+@keyframes flicker { 0%, 100% { transform: scaleY(1) scaleX(1); } 35% { transform: scaleY(1.18) scaleX(.9); } 70% { transform: scaleY(.9) scaleX(1.08); } }
+@keyframes steam { 0%, 100% { opacity: .3; transform: translateY(2px); } 50% { opacity: .9; transform: translateY(-4px); } }
+@keyframes glint { 0%, 70%, 100% { opacity: 0; transform: translateX(-10px); } 82% { opacity: .7; transform: translateX(8px); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+.sheetBottom.sheetIn { animation-name: sheetInBottom; }
+.sheetCenter.sheetIn { animation-name: sheetInCenter; }
+
+[data-motion='reduce'] * { animation: none !important; transition: none !important; }
+
+// ---- v1.5: equipment cards, home tiles, booking steps ----
+
+  
+
+.steps {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 14px;
+  font-weight: 600;
+  color: $subtle;
+  li { display: flex; align-items: center; gap: 8px; }
+  b { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid var(--av-border-strong); font-size: 13px; }
+  .stepNow { color: $text; b { background: $ink; color: #fff; border-color: $ink; } }
+  .stepDone { color: #0F4C5C; b { background: #0F4C5C; color: #fff; border-color: #0F4C5C; } }
+}
+
+.pillOk, .pillWait { font-style: normal; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+.pillOk { background: #DCE8EB; color: #0F4C5C; } .pillWait { background: #F3E6C4; color: #6B5320; }
+
+  
+
+// ---- v1.6: step-by-step booking ----
+.bf { padding: 28px 0 120px; .pageTitle { margin: 6px 0 18px; } .steps { margin-bottom: 8px; } }
+
+.bfPrep {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 14px;
+  span { display: block; color: $subtle; font-size: 14px; }
+}
+.bfTicket { background: #fff; border: 1px solid $line; border-top: 4px solid $citrus; border-radius: 4px; padding: 20px; max-width: 640px; }
+.bfBar { position: sticky; bottom: var(--tab-h); z-index: 20; background: #fff; border-top: 1px solid $line; padding: 10px 0; box-shadow: 0 -6px 18px rgba(31, 31, 31, .08); .container { display: flex; align-items: center; gap: 14px; } }
+.bfBarText { flex: 1; font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+[data-size='phone'] .bfBarText { display: none; } [data-size='phone'] .bfBar .container { justify-content: space-between; }
+
+// ---- v1.7: product polish ----
+
+.bfLayout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: start; }
+.bfMain { min-width: 0; }
+.bfSummary { display: none; }
+[data-size='wide'] {
+  .bfLayout:has(.bfSummary) { grid-template-columns: minmax(0, 1fr) 340px; }
+  .bfSummary { display: block; position: sticky; top: calc(var(--bar-h) + 24px); background: #fff; border: 1px solid $line; border-radius: 4px; padding: 20px; box-shadow: 0 6px 24px rgba(31, 31, 31, .08);
+    h2 { font-size: 18px; margin: 0 0 12px; } dl { margin: 0; display: grid; gap: 10px; } dl > div { display: grid; grid-template-columns: 78px 1fr; gap: 8px; padding-bottom: 10px; border-bottom: 1px solid $line; }
+    dt { color: $subtle; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; } dd { margin: 0; font-weight: 600; } }
+  .bfBar { display: none; }
+}
+.bfFine { color: $subtle; font-size: 13px; margin: 12px 0; }
+.bfSummaryAct .btn { width: 100%; min-height: 48px; }
+
+body, .site { -webkit-font-smoothing: antialiased; }
+
+// ---- v1.8: single-page booking bar ----
+.bfTitle { font-size: clamp(30px, 4vw, 44px); line-height: 1.1; margin: 4px 0 6px; font-weight: 800; letter-spacing: -.03em; }
+
+.bfEmpty { background: #fff; border: 1px solid $line; border-radius: 4px; padding: 14px 16px; color: $subtle; }
+
+// ---- v2.0: home as a site landing page ----
+
+.secHead { display: flex; justify-content: space-between; align-items: end; gap: 12px; margin-bottom: 18px; h2 { font-size: clamp(24px, 3vw, 32px); font-weight: 800; letter-spacing: -.025em; margin-top: 4px; } }
+
+.siteFooter {
+  background: #0B3A47;
+  color: #D5E3E7;
+  padding: 44px 0 20px;
+  font-size: 14px;
+  .footGrid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.3fr; gap: 32px; }
+  h3 { color: #fff; font-size: 13px; text-transform: uppercase; letter-spacing: .1em; margin: 0 0 12px; font-family: inherit; }
+  p { margin: 0 0 8px; }
+  nav { display: grid; gap: 6px; justify-items: start; }
+  nav button { background: none; border: 0; padding: 0; font: inherit; color: #D5E3E7; cursor: pointer;@media (hover: hover) { &:hover { color: #fff; text-decoration: underline; } } }
+  .footFine { color: #9FB6BD; }
+  .footBase { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 28px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, .15); color: #9FB6BD; }
+}
+.footLogo { height: 30px; margin-bottom: 12px; display: block; }
+// Phone: the footer alone clears the fixed tab bar (and the iPhone home indicator); the page adds no second gap.
+[data-size='phone'] .siteFooter { padding-bottom: calc(18px + var(--tab-h) + env(safe-area-inset-bottom, 0px)); .footGrid { grid-template-columns: 1fr 1fr; } }
+// Book: also clear the fixed Review request bar that sits on the tab bar.
+.site[data-size='phone']:has([data-section='book']:not([hidden])) .siteFooter { padding-bottom: calc(18px + var(--tab-h) + 64px + env(safe-area-inset-bottom, 0px)); }
+.brand:focus-visible { outline: 2px solid $citrus; outline-offset: 4px; border-radius: 6px; }
+
+// ---- v2.1: landing page bands ----
+.heroBand { padding: 80px 0 88px; }
+
+.band { padding: 84px 0; }
+
+.bandInk { background: $ink; color: #fff; h2 { color: #fff; } p { color: #D5E3E7; } }
+.splitHead { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; margin-bottom: 36px; h2 { font-size: clamp(28px, 3.6vw, 42px); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; margin-top: 6px; } p { margin: 0; font-size: 17px; color: $subtle; max-width: 52ch; } }
+[data-size='phone'] .splitHead, [data-size='mid'] .splitHead { grid-template-columns: 1fr; gap: 12px; }
+
+.tl { display: flex; height: 64px; border-radius: 4px; overflow: hidden; margin-top: 8px; span { display: grid; place-items: center; font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; } }
+.tlEarly { background: #C9A24D; color: #1F1F1F; } .tlBook { background: #fff; color: $ink; } .tlClean { background: #3F7482; color: #fff; }
+.tlTimes { display: flex; margin-top: 10px; font-size: 13px; color: #D5E3E7; span { white-space: nowrap; } span:last-child { text-align: right; } }
+.threeGrid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px;
+  li { display: grid; gap: 8px; align-content: start; } b { font-size: 44px; font-weight: 800; letter-spacing: -.04em; color: $ink; line-height: 1; border-bottom: 3px solid $citrus; padding-bottom: 12px; margin-bottom: 4px; } strong { font-size: 19px; } span { color: $subtle; } }
+
+.siteFooter { margin-top: 0; }
+.bandInk .splitHead p { color: #D5E3E7; }
+
+// ---- v2.2: light hero (no full-bleed dark block) ----
+
+ 
+
+// ---- v2.2 motion: entrance on load, reveal on scroll (CSS only; Chrome/Edge scroll timelines, others show the content at once) ----
+@keyframes heroIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes heroImgIn { from { opacity: 0; transform: scale(1.07); } to { opacity: 1; transform: none; } }
+@keyframes floatIn { from { opacity: 0; transform: translateY(36px) scale(.97); } to { opacity: 1; transform: none; } }
+@keyframes rvUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+@keyframes rvGrow { from { transform: scaleX(0); opacity: .4; } to { transform: scaleX(1); opacity: 1; } }
+
+   
+
+// ---- v2.3: shared month calendar ----
+
+// ---- v2.4: notifications ----
+.dismissX, .dismissOnDark { background: none; border: 0; cursor: pointer; font: inherit; font-size: 15px; padding: 6px 8px; border-radius: 8px; color: $subtle; margin-left: auto;@media (hover: hover) { &:hover { background: rgba(31, 31, 31, .08); } } }
+.dismissOnDark { color: #D5E3E7; margin-left: 4px;@media (hover: hover) { &:hover { background: rgba(255, 255, 255, .14); } } }
+.ribbon .container { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.bellWrap { position: relative; margin-left: auto; margin-right: 12px; }
+.bell {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--av-border-strong);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  svg { width: 22px; height: 22px; fill: none; stroke: $ink; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+@media (hover: hover) { &:hover { box-shadow: 0 3px 10px rgba(31, 31, 31, .14); } }
+  b { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: $citrus; color: #1F1F1F; font-size: 12px; font-weight: 800; display: grid; place-items: center; box-sizing: border-box; border: 2px solid #fff; }
+}
+.bellBackdrop { position: fixed; inset: 0; z-index: 38; background: rgba(7, 44, 54, .08); }
+// Open: drops from the bell's corner with a slight settle. Close: the same path in reverse, quicker.
+.bellMenu[data-state='open'] { animation: bellIn .28s cubic-bezier(.22, 1.2, .36, 1) both; }
+.bellMenu[data-state='closing'] { animation: bellOut .2s cubic-bezier(.4, 0, 1, 1) both; pointer-events: none; }
+.bellBackdrop[data-state='open'] { animation: bellFade .2s ease-out both; }
+.bellBackdrop[data-state='closing'] { animation: bellFade .2s ease-in reverse both; pointer-events: none; }
+@keyframes bellIn { from { opacity: 0; transform: translateY(-10px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes bellOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-8px) scale(.97); } }
+@keyframes bellFade { from { opacity: 0; } to { opacity: 1; } }
+.bellMenu[data-state='open'] li { animation: bellRow .3s var(--av-ease) both; }
+.bellMenu[data-state='open'] li:nth-child(2) { animation-delay: .04s; } .bellMenu[data-state='open'] li:nth-child(3) { animation-delay: .08s; } .bellMenu[data-state='open'] li:nth-child(4) { animation-delay: .12s; }
+@keyframes bellRow { from { opacity: 0; transform: translateX(8px); } to { opacity: 1; transform: none; } }
+.bellMenu { position: absolute; right: 0; top: calc(100% + 10px); width: 360px; max-width: calc(100vw - 32px); background: #fff; color: $text; border-radius: 4px; border-top: 3px solid $ink; box-shadow: 0 18px 44px rgba(7, 44, 54, .22), 0 2px 6px rgba(7, 44, 54, .08); z-index: 40; overflow: hidden; transform-origin: top right;
+  ul { list-style: none; margin: 0; padding: 0; } li button { width: 100%; text-align: left; font: inherit; background: none; border: 0; border-top: 1px solid $line; padding: 12px 16px; cursor: pointer; display: grid; gap: 2px;@media (hover: hover) { &:hover { background: #F4F5F7; } } }
+  strong { font-size: 15px; } em { font-style: normal; font-size: 12px; color: $subtle; } }
+.bellHead { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px 10px; strong { font-size: 18px; font-weight: 800; } }
+.bellCat { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0; text-transform: none; color: $ink; }
+.bellNtIcon { width: 22px; height: 22px; font-size: 12px; font-style: normal; }
+.bellEmpty { display: grid; justify-items: center; gap: 8px; padding: 18px 16px 22px; color: $subtle; margin: 0; text-align: center; span { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--av-free-tint); color: $ink; font-weight: 700; } }
+.bellAll { width: 100%; border: 0; border-top: 1px solid $line; background: #F4F5F7; font: inherit; font-weight: 700; color: $ink; padding: 12px; cursor: pointer; }
+[data-size='phone'] .bellWrap { margin-right: 4px; }
+
+// ---- v2.4.1: next-booking card no longer covers the photo ----
+
+ 
+.bellOk { color: #0F4C5C; } .bellBad { color: #9B2C2C; }
+.bellMenu li em { display: block; white-space: normal; }
+
+// ---- v2.5.1: scroll rows with end arrows instead of a scrollbar ----
+.srWrap { position: relative; }
+.srRow { display: flex; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth; &::-webkit-scrollbar { display: none; } }
+.srArrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--av-border-strong); background: #fff; color: $ink; font-size: 22px; line-height: 1; cursor: pointer; box-shadow: 0 4px 14px rgba(31, 31, 31, .2); display: grid; place-items: center; transition: transform .2s var(--av-ease), box-shadow .2s;@media (hover: hover) { &:hover { box-shadow: 0 6px 18px rgba(31, 31, 31, .28); } } }
+.srLeft { left: -6px; } .srRight { right: -6px; }
+.srWrap::after { content: ''; position: absolute; top: 0; bottom: 0; right: 0; width: 36px; pointer-events: none; background: linear-gradient(90deg, rgba(244, 245, 247, 0), #F4F5F7); }
+ 
+
+// ---- v2.7: phone editorial layout. Full-bleed photo with the headline on it, the next booking as an ink band,
+// and hairline-ruled rows instead of stacked rounded cards. Phone only; desktop untouched. ----
+[data-size='phone'] {
+  // top bar: every control fits inside the 52px bar
+  .bar { gap: 8px; }
+  .brandLogo { height: 24px; }
+  .bell { width: 36px; height: 36px; svg { width: 19px; height: 19px; } }
+  .userChip { padding: 0; min-height: 0; border: 0; box-shadow: none; background: none; }
+  .avatar { width: 34px; height: 34px; font-size: 12px; box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--av-border-strong); }
+  .bellWrap { margin-right: 0; }
+
+  // hero: photo edge to edge, headline set on it
+  
+  
+  
+  
+  
+  .blockedNote { margin-top: 10px; color: #fff; }
+  
+  
+  
+
+  // right now: one ruled line of status, scrolls sideways
+  
+  
+
+  // notices and attention: ruled rows, no boxes
+  .ribbon { padding: 12px 0; }
+  
+  
+
+  // sections
+  .band { padding-top: 36px; padding-bottom: 36px; }
+  
+  .secHead { align-items: flex-end; margin-bottom: 8px; padding-bottom: 12px; border-bottom: 2px solid $ink; h2 { font-size: 26px; } }
+  .splitHead { margin-bottom: 20px; h2 { font-size: 28px; } p { font-size: 16px; } }
+  .band .row { gap: 8px; .btn { flex: 1 1 100%; } }
+
+  // coming up: a ruled agenda, not a stack of cards
+  
+  
+  
+  
+
+  // equipment: a two-column spec sheet with hairline rules
+  
+
+  // timeline and facts
+  .tl { border-radius: 0; height: 52px; margin-left: -16px; margin-right: -16px; span { font-size: 12px; } }
+  .threeGrid { gap: 0; li { padding: 18px 0; border-top: 1px solid $line; } li:last-child { border-bottom: 1px solid $line; } }
+  
+  .tab { font-size: 12px; white-space: nowrap; min-width: 0; padding: 0 2px; }
+}
+
+// ---- v2.8: booking page. Left: what, date, start, end. Right: equipment with its availability under each piece. ----
+.bk { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 0; align-items: start; border-top: 2px solid $ink; margin-top: 8px; }
+.bkSide { position: sticky; top: calc(var(--bar-h) + 12px); padding: 20px 28px 28px 0; border-right: 1px solid $line; .bfTitle { font-size: 30px; margin: 0 0 14px; } .bfSlots { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; } .bfSlot { min-height: 40px; font-size: 14px; border-radius: 8px; border-width: 1px; } }
+.bkMain { padding: 20px 0 32px 28px; min-width: 0; }
+.bkLabel { text-transform: uppercase; }
+.bkModes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid $ink;
+  overflow: hidden;
+  button { font: inherit; font-size: 14px; font-weight: 600; background: #fff; color: $ink; border: 0; border-right: 1px solid $line; border-bottom: 1px solid $line; padding: 10px 8px; cursor: pointer; min-height: 44px; &:nth-child(2n) { border-right: 0; } &:nth-child(n+3) { border-bottom: 0; } }
+}
+.bkModeOn { background: $ink !important; color: #fff !important; }
+.bkDays { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px;
+  button { font: inherit; background: #fff; border: 1px solid $line; border-radius: 8px; padding: 6px 0; display: grid; justify-items: center; cursor: pointer; color: $text; min-height: 52px; span { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: $subtle; } b { font-size: 17px; line-height: 1.1; }@media (hover: hover) { &:hover { border-color: $ink; } } } }
+.bkDayOn {
+  background: $ink !important;
+  border-color: $ink !important;
+  color: #fff !important;
+  span { color: #D5E3E7 !important; }
+}
+
+.bkHead { display: grid; gap: 4px; padding-bottom: 14px; border-bottom: 1px solid $line; h2 { font-size: 26px; font-weight: 800; letter-spacing: -.02em; margin: 0; } p { margin: 0; color: $subtle; font-size: 15px; } }
+.bkKey { list-style: none; margin: 6px 0 0; padding: 0; display: flex; gap: 16px; font-size: 12px; color: $subtle; li { display: flex; align-items: center; gap: 6px; } i { width: 18px; height: 8px; display: inline-block; } }
+.bkKeyBusy, .bkBusy { background: repeating-linear-gradient(135deg, #9AA5B1 0 3px, #C8CFD6 3px 6px); }
+.bkKeyWin { background: $citrus; }
+.bkGroup { margin-top: 22px; h3 { font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: $subtle; margin: 0 0 4px; } }
+.bkUnits { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); column-gap: 24px;
+  li { border-bottom: 1px solid $line; padding: 12px 0; display: grid; gap: 8px; } }
+.bkUnitBtn {
+  display: grid;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: $text;
+  .artTile { width: 56px; height: 44px; }
+  &:disabled { cursor: not-allowed; }
+}
+.bkUnitText {
+  strong { font-size: 16px; }
+  em { font-style: normal; font-size: 13px; color: $subtle; }
+}
+.bkFree { color: #0F4C5C !important; font-weight: 700; }
+.bkTaken { color: #9B2C2C !important; font-weight: 700; }
+.bkTick { width: 30px; height: 30px; border: 1.5px solid $ink; display: grid; place-items: center; color: $ink; font-size: 16px; }
+.bkUnitOn .bkTick { background: $ink; color: #fff; }
+.bkUnitOn .bkUnitText strong { color: $ink; }
+.bkUnitOff .bkUnitBtn { opacity: .55; }
+.bkBar {
+  position: relative;
+  display: block;
+  background: #E3ECEE;
+  overflow: hidden;
+  i { position: absolute; top: 0; bottom: 0; }
+}
+.bkWin { background: $citrus; opacity: .85; }
+.bkMove {
+  justify-self: start;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: $ink;
+  background: none;
+  border: 0;
+  border-bottom: 1.5px solid $citrus;
+  padding: 2px 0;
+}
+.bkMoveNone { font-size: 13px; color: $subtle; }
+[data-size='phone'], [data-size='mid'] {
+  .bk { grid-template-columns: 1fr; border-top: 0; }
+  .bkSide { position: static; border-right: 0; padding: 4px 0 20px; border-bottom: 2px solid $ink; .bfSlots { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .bkMain { padding: 16px 0 24px; }
+  .bkUnits { grid-template-columns: 1fr; }
+}
+[data-size='phone'] {  .bkHead h2 { font-size: 22px; } }
+
+// =====================================================================================================================
+// v3: KITCHEN THEME. Same palette; new component language taken from a working kitchen:
+// order tickets on a rail (bookings), menu rows with dotted leaders (availability), ticket stubs (time slots),
+// tear-off calendar pages (dates), burner lights (equipment state), subway tile (page heads). Motion on mount only.
+// =====================================================================================================================
+$steel: #DDE3E7;
+// Ticket and time figures: the body family with tabular figures.
+$mono: var(--av-font);
+
+// ---- motion primitives (dropped under reduced motion) ----
+@keyframes v3Rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes v3Pop { 0% { transform: scale(1); } 40% { transform: scale(.94); } 100% { transform: scale(1); } }
+@keyframes v3Glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(201, 162, 77, .55); } 50% { box-shadow: 0 0 0 6px rgba(201, 162, 77, 0); } }
+@keyframes v3Steam { 0% { opacity: 0; transform: translateY(2px) scaleY(.8); } 50% { opacity: .9; } 100% { opacity: 0; transform: translateY(-6px) scaleY(1.1); } }
+@keyframes v3Slide { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: none; } }
+.bkUnits li, .threeGrid li, .bkDays button {
+  animation: v3Rise .45s var(--av-ease) backwards; }
+@for $i from 1 through 12 {
+  .bkUnits li:nth-child(#{$i}), .agendaList li:nth-child(#{$i}), .mcList li:nth-child(#{$i}), .pieceGrid li:nth-child(#{$i}), .compactList li:nth-child(#{$i}), .threeGrid li:nth-child(#{$i}), .feedList > :nth-child(#{$i}) { animation-delay: #{$i * .04}s; }
+  .bfSlots > :nth-child(#{$i}), .bkDays button:nth-child(#{$i}) { animation-delay: #{$i * .015}s; }
+}
+
+[data-motion='reduce'] { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+// ---- buttons: firm, tactile ----
+.btn {
+  letter-spacing: .01em;
+  transition: transform .15s var(--av-ease), background .2s, box-shadow .2s, color .2s;
+  &:active:not(:disabled) { transform: scale(.96); }
+}
+.btnCitrus {
+  box-shadow: 0 2px 0 #A8853A;
+@media (hover: hover) { &:hover:not(:disabled) { box-shadow: 0 4px 0 #A8853A; transform: translateY(-2px); } }
+  &:active:not(:disabled) { box-shadow: 0 0 0 #A8853A; transform: translateY(2px); }
+}
+.btnInk { box-shadow: 0 2px 0 #072C36; }
+
+// ---- page heads on subway tile ----
+.pageHead {
+  position: relative;
+  background-color: #fff;
+  background-image: linear-gradient(#EEF1F3 1px, transparent 1px), linear-gradient(90deg, #EEF1F3 1px, transparent 1px), linear-gradient(90deg, #EEF1F3 1px, transparent 1px);
+  background-size: 48px 24px, 48px 48px, 48px 48px;
+  background-position: 0 0, 0 0, 24px 24px;
+  border-bottom: 3px solid $ink;
+  &::after { content: ''; position: absolute; left: 0; right: 0; bottom: -3px; height: 3px; background: linear-gradient(90deg, $citrus 0 64px, transparent 64px); }
+}
+.pageTitle { font-weight: 800; letter-spacing: -.03em; }
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  &::before { content: ''; width: 18px; height: 2px; background: $citrus; }
+}
+
+// ---- segmented: a pass rail of tabs ----
+.segmented {
+  background: #fff;
+  border: 1.5px solid $ink;
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+  button { border-radius: 7px; min-height: 38px; font-size: 15px; white-space: nowrap; transition: background .2s, color .2s; &[aria-pressed='true'] { box-shadow: 0 2px 0 #072C36; } }
+}
+
+// ---- steps: kitchen-ticket progress ----
+.steps {
+  gap: 0;
+  li { position: relative; padding-right: 34px; &::after { content: ''; position: absolute; right: 8px; top: 50%; width: 18px; border-top: 2px dotted var(--av-border-strong); } &:last-child::after { display: none; } }
+}
+
+// ---- time slots: ticket stubs with notched sides ----
+
+// ---- dates: tear-off calendar pages ----
+.bkDays button { border-radius: 4px; padding: 0 0 6px; overflow: hidden; border: 1px solid $line; transition: transform .15s var(--av-ease), border-color .15s;
+  span { display: block; width: 100%; background: $steel; color: $ink !important; font-weight: 800; padding: 3px 0; margin-bottom: 4px; border-bottom: 1px dashed #B9C3CA; }
+@media (hover: hover) { &:hover { transform: translateY(-2px); } } }
+.bkDayOn {
+  animation: v3Pop .3s var(--av-ease);
+  span { background: $citrus !important; color: #1F1F1F !important; border-bottom-color: rgba(0, 0, 0, .2) !important; }
+}
+
+// ---- book page: labels as ticket headers, picked values as stamped lines ----
+.bkLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 26px 0 12px;
+  letter-spacing: .06em;
+  &::after { content: ''; flex: 1; border-top: 1.5px dashed var(--av-border-strong); }
+}
+.bkSide .bkLabel:first-of-type { margin-top: 20px; }
+.bkModes {
+  border-radius: 6px;
+  border-width: 1.5px;
+  button { transition: background .2s, color .2s; }
+}
+
+.bkHead h2 { font-size: 28px; }
+
+// ---- availability as a menu: name ······ status ----
+.bkUnitText {
+  display: flex !important;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+  strong { flex: none; max-width: 70%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  em { flex: none; font-family: $mono; font-size: 13px !important; }
+}
+.leader { flex: 1; min-width: 16px; border-bottom: 2px dotted #B9C3CA; transform: translateY(-4px); }
+.bkUnits li { transition: background .2s; padding-left: 6px; padding-right: 6px;@media (hover: hover) { &:hover { background: rgba(15, 76, 92, .035); } } }
+.bkUnitOn { background: linear-gradient(90deg, rgba(201, 162, 77, .14), transparent 70%); box-shadow: inset 3px 0 0 $citrus; }
+.bkTick { border-radius: 6px; transition: transform .2s var(--av-ease), background .2s; }
+.bkUnitOn .bkTick { animation: v3Pop .3s var(--av-ease); }
+.bkBar { height: 10px; border-radius: 2px; }
+.bkScale { display: flex; justify-content: space-between; margin: 14px 0 -8px; font-family: $mono; font-size: 12px; color: $subtle; span { position: relative; } }
+.bkMove {
+  cursor: pointer;
+  font-family: $mono;
+  &::before { content: '↻ '; }
+}
+.bfPrep { border-radius: 4px; border: 1.5px dashed var(--av-border-strong); background: #fff; }
+
+// ---- bookings: order tickets clipped to a rail ----
+
+// ---- equipment cards on the schedule ----
+
+// ---- live band: steam over the active booking ----
+
+// ---- phone tab bar: raised plate under the active icon ----
+.tab { transition: color .2s; .navIcon { transition: transform .25s var(--av-ease); } }
+.tabOn .navIcon { transform: translateY(-3px) scale(1.12); color: $citrus; }
+.tabOn::after { content: ''; position: absolute; top: 9px; left: 50%; width: 38px; height: 30px; margin-left: -19px; border-radius: 10px; background: rgba(255, 255, 255, .1); animation: v3Pop .3s var(--av-ease); }
+.bell svg { stroke-width: 1.7; }
+
+// ---- audit fixes ----
+// Schedule head on phone: one tidy row of controls
+[data-size='phone'] {
+  .headRow > .row { width: 100%; flex-wrap: nowrap; gap: 8px; }
+  .segmented { flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; &::-webkit-scrollbar { display: none; } button { padding: 0 12px; font-size: 14px; } }
+  .headRow > .row > .btn { flex: none; padding: 0 14px; }
+  
+  .pageHead { padding: 20px 0 16px; }
+  .pageTitle { font-size: 32px; }
+  
+  // Book: the action bar sits right on top of the tab bar
+  .bfBar { position: fixed; left: 0; right: 0; bottom: var(--tab-h); z-index: 29; padding: 8px 0; .container { justify-content: space-between; gap: 10px; } .btn { flex: none; } }
+  .bfBarText { display: block; font-size: 14px; }
+  .bf { padding-bottom: 80px; }
+  // My bookings: days scroll in one row; tickets read in one line
+  
+  
+  
+  
+  
+  // Home: the start-to-finish strip stacks its times
+  .tl { span { font-size: 12px; } .tlEarly, .tlClean { font-size: 0; } }
+  .tlTimes { flex-direction: column; gap: 2px; span { flex-basis: auto !important; text-align: left !important; } }
+  // Footer: one line; the tab bar already links everything
+  .siteFooter .footGrid { display: none; }
+  .siteFooter { padding-top: 18px; .footBase { margin-top: 0; padding-top: 0; border-top: 0; flex-direction: column; } }
+}
+// Top bar at mid width: links stay on one line, avatar stays inside the bar
+[data-size='mid'] {
+  .userName { display: none; }
+  .userChip { padding: 2px; }
+  .bar { gap: 14px; }
+  .link { white-space: nowrap; padding: 0 9px; }
+  .links { gap: 0; }
+}
+.link { white-space: nowrap; }
+
+// ---- desktop home: the same editorial hero as phone (photo with the headline on it, booking as an ink band) ----
+
+// ---- v3.1: navigation and page motion (one clock: .34s, same curve), confirmation mark, toasts ----
+$navClock: .34s;
+$navEase: cubic-bezier(.34, 1.36, .64, 1);   // slight overshoot for the nav indicator
+$pageEase: cubic-bezier(.22, 1, .36, 1);     // calm settle for the page
+.links { position: relative; }
+.navInk { position: absolute; left: 0; background: $citrus; transition: transform $navClock $navEase, width $navClock $navEase; pointer-events: none; }
+.linkOn::after { display: none !important; }
+.tabbar { position: fixed; }
+.tabInk { position: absolute; top: 0; left: 0; height: 100%; width: calc(100% / var(--tabs, 5)); transform: translateX(calc(var(--ti, 0) * 100%)); transition: transform $navClock $navEase; pointer-events: none;
+  &::before { content: ''; position: absolute; top: 0; left: 28%; right: 28%; height: 3px; border-radius: 0 0 3px 3px; background: $citrus; }
+  &::after { content: ''; position: absolute; top: 8px; left: 50%; width: 42px; height: 32px; margin-left: -21px; border-radius: 12px; background: rgba(255, 255, 255, .1); } }
+.tab::before, .tabOn::after { display: none !important; }
+.tab { z-index: 1; }
+
+.page[hidden] { display: none !important; }
+.pageEnter { animation: none; }
+[data-dir='right'] .pageEnter { animation: pageFromRight $navClock $pageEase backwards; }
+[data-dir='left'] .pageEnter { animation: pageFromLeft $navClock $pageEase backwards; }
+// Slide by `left`, not `transform`: a transform makes the page the containing block of its fixed bars (the Book bar) while it runs.
+.page { position: relative; }
+@keyframes pageFromRight { from { opacity: 0; left: 28px; } to { opacity: 1; left: 0; } }
+@keyframes pageFromLeft { from { opacity: 0; left: -28px; } to { opacity: 1; left: 0; } }
+
+// confirmation mark
+.result {
+  justify-items: center;
+  text-align: center;
+  animation: v3Rise .4s var(--av-ease) backwards;
+  .row { justify-content: center; }
+}
+.sendMark { position: relative; width: 88px; height: 88px; margin-bottom: 8px;
+  svg { width: 100%; height: 100%; transform: rotate(-90deg); overflow: visible; }
+  circle { fill: none; stroke-width: 4; }
+  .smTrack { stroke: $steel; }
+  .smRing { stroke: $ink; stroke-linecap: round; stroke-dasharray: 176; stroke-dashoffset: 0; animation: smClose .6s $pageEase backwards; }
+  .smTick { fill: none; stroke: $ink; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 40; stroke-dashoffset: 0; transform: rotate(90deg); transform-origin: 32px 32px; animation: smDraw .4s .45s $pageEase backwards; } }
+.smSpin { svg { animation: smRotate 1s linear infinite; } .smRing { stroke-dashoffset: 120; animation: none; } }
+.smGold { .smRing, .smTick { stroke: $citrus; } animation: v3Pop .45s .9s var(--av-ease) backwards; }
+.smBad { .smRing, .smTick { stroke: var(--av-bad, #9B2C2C); } animation: smShake .45s .6s ease backwards; }
+.smBurst { position: absolute; inset: 0; pointer-events: none;
+  i { position: absolute; inset: 0; }
+  i::before { content: ''; position: absolute; left: 50%; top: 50%; width: 3px; height: 12px; margin-left: -1.5px; border-radius: 2px; background: $citrus; opacity: 0; animation: smBurst .7s .95s cubic-bezier(.22, 1, .36, 1); } }
+@keyframes smRotate { to { transform: rotate(270deg); } }
+@keyframes smClose { from { stroke-dashoffset: 176; } }
+@keyframes smDraw { from { stroke-dashoffset: 40; } }
+@keyframes smShake { 0%, 100% { transform: none; } 25% { transform: translateX(-6px); } 50% { transform: translateX(6px); } 75% { transform: translateX(-3px); } }
+@keyframes smBurst { 0% { opacity: 1; transform: translateY(-34px) scaleY(.4); } 100% { opacity: 0; transform: translateY(-60px) scaleY(1); } }
+.waitDots i { display: inline-block; width: 5px; height: 5px; margin-left: 4px; border-radius: 50%; background: $subtle; animation: dotBounce 1.2s ease-in-out infinite; &:nth-child(2) { animation-delay: .15s; } &:nth-child(3) { animation-delay: .3s; } }
+@keyframes dotBounce { 0%, 80%, 100% { transform: translateY(0); opacity: .4; } 40% { transform: translateY(-4px); opacity: 1; } }
+.btnSpin { width: 14px; height: 14px; margin-right: 8px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; display: inline-block; animation: smRotate .8s linear infinite; }
+
+// toasts
+.toasts { position: fixed; left: 50%; bottom: calc(var(--tab-h) + 72px); transform: translateX(-50%); z-index: 95; display: grid; gap: 8px; width: min(420px, calc(100vw - 32px)); pointer-events: none; }
+.toast { display: flex; align-items: center; gap: 10px; background: $ink; color: #fff; padding: 12px 16px; border-radius: 4px; font-weight: 600; font-size: 15px; box-shadow: 0 10px 30px rgba(7, 44, 54, .3); border-left: 4px solid $citrus; animation: toastIn .38s $navEase backwards;
+  i { font-style: normal; width: 22px; height: 22px; border-radius: 50%; background: $citrus; color: #1F1F1F; display: grid; place-items: center; font-size: 13px; font-weight: 800; flex: none; } }
+.toastBad { border-left-color: #E8A0A0; i { background: #E8A0A0; } }
+.toastInfo { border-left-color: #B4C8CE; i { background: #B4C8CE; } }
+@keyframes toastIn { from { opacity: 0; transform: translateY(16px) scale(.96); } to { opacity: 1; transform: none; } }
+.toastLane { display: grid; gap: 8px; }
+.toast { pointer-events: auto; }
+.toastOut { animation: toastOut .16s var(--av-ease-exit) forwards; }
+@keyframes toastOut { to { opacity: 0; transform: translateY(8px) scale(.97); } }
+[data-size='wide'] .toasts { bottom: 32px; }
+
+// ---- v3.2: phone polish after the live check ----
+[data-size='phone'] {
+  
+  
+  
+  .segmented button { flex: 1; }
+  
+  .steps { flex-wrap: nowrap; font-size: 13px; li { padding-right: 22px; white-space: nowrap; &::after { width: 10px; right: 6px; } } }
+  
+}
+
+// =====================================================================================================================
+// v4: STRUCTURE. Edge to edge, split hero, status panel, equipment board, time rail, free-window picker, scroll-linked motion.
+// =====================================================================================================================
+$ink2d: #0B3A47;
+// 1. No frame around the portal (the root's own 16 px padding caused the side and bottom gaps).
+.site { padding: 0 !important; }
+// Only while there is no footer yet (loading): keep content clear of the tab bar.
+.site[data-size='phone']:not(:has(> footer)) { padding-bottom: var(--tab-h) !important; }
+
+// 2. Navigation on ink
+.topbar { background: $ink; color: #fff; border-bottom: 0; box-shadow: 0 1px 0 rgba(255, 255, 255, .06), 0 8px 24px rgba(7, 44, 54, .18); }
+.brandSub { color: #B4C8CE; border-left-color: rgba(255, 255, 255, .22); }
+.link {
+  color: rgba(255, 255, 255, .72);
+@media (hover: hover) { &:hover { color: #fff; } }
+}
+.linkOn { color: #fff; }
+.bell {
+  background: rgba(255, 255, 255, .06);
+  border-color: rgba(255, 255, 255, .28);
+  svg { stroke: #fff; }
+@media (hover: hover) { &:hover { background: rgba(255, 255, 255, .14); } }
+}
+.userChip {
+  background: rgba(255, 255, 255, .06);
+  color: #fff;
+  border-color: rgba(255, 255, 255, .28);
+  box-shadow: none;
+@media (hover: hover) { &:hover { background: rgba(255, 255, 255, .14); } }
+}
+[data-size='phone'] .avatar { box-shadow: 0 0 0 2px $ink, 0 0 0 3px rgba(255, 255, 255, .4); }
+.navInk { bottom: 0; height: 3px; border-radius: 3px 3px 0 0; }
+
+// 3. Home hero: text and photo side by side, never on top of each other
+.h4 { background: #fff; }
+.hx { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); min-height: 540px; background: #fff; overflow: hidden; }
+.hxText { display: flex; justify-content: flex-end; align-items: center; padding: 56px 56px 56px 32px; }
+.hxInner { width: min(600px, 100%); }
+.hxKicker { margin: 0 0 14px; letter-spacing: .12em; text-transform: uppercase; }
+.hxTitle { font-size: clamp(40px, 4.6vw, 62px) !important; font-weight: 800; color: $text; margin: 0 0 16px !important; }
+.hxLede { margin: 0 0 28px; font-size: 18px; color: $subtle; max-width: 46ch; }
+.hxMedia { position: relative; min-height: 100%; }
+.hxPhoto { position: absolute; inset: 0; background-size: cover; background-position: center; clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%); }
+.hxMedia::after { content: ''; position: absolute; left: 0; bottom: 36px; width: 40%; height: 6px; background: $citrus; clip-path: polygon(6% 0, 100% 0, 94% 100%, 0 100%); }
+[data-size='phone'], [data-size='mid'] {
+  .hx { grid-template-columns: 1fr; min-height: 0; }
+  .hxMedia { order: -1; height: 210px; }
+  .hxPhoto { clip-path: polygon(0 0, 100% 0, 100% 86%, 0 100%); }
+  .hxMedia::after { display: none; }
+  .hxText { padding: 8px 16px 28px; justify-content: flex-start; }
+  .hxInner { width: 100%; }
+  .hxTitle { font-size: 34px !important; }
+  .hxLede { font-size: 16px; margin-bottom: 20px; }
+}
+[data-size='mid'] .hxText { padding: 12px 32px 36px; }
+
+// 4. Live status panel with a progress ring (bevelled corner, no rounded card)
+.lp { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px 20px; align-items: center; padding: 22px; background: $ink; color: #fff; clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%); box-shadow: inset 4px 0 0 $citrus; }
+.lpEmpty { grid-template-columns: minmax(0, 1fr); }
+.lpRing { position: relative; width: 104px; height: 104px;
+  svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  circle { fill: none; stroke-width: 7; }
+  .lpTrack { stroke: rgba(255, 255, 255, .14); }
+  .lpArc { stroke: $citrus; stroke-linecap: round; transition: stroke-dashoffset 1.2s cubic-bezier(.22, 1, .36, 1); }
+  span { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; b { font-family: $mono; font-size: 19px; letter-spacing: -.03em; } small { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: #B4C8CE; } } }
+.lpText { min-width: 0; display: grid; gap: 4px; }
+.lpLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #E6C77A;
+  i { width: 8px; height: 8px; border-radius: 50%; background: $citrus; animation: v3Glow 2s ease-in-out infinite; }
+}
+.lpHead { font-size: 24px !important; line-height: 1.15; color: #fff; letter-spacing: -.02em; }
+.lpMeta { margin: 0; color: #B4C8CE; font-size: 14px; font-family: $mono; }
+.lpKit { list-style: none; margin: 6px 0 0; padding: 0; display: flex; gap: 6px; flex-wrap: wrap; li { width: 34px; height: 34px; border-radius: 6px; background: #fff; display: grid; place-items: center; overflow: hidden; .artTile { width: 30px; height: 26px; } } }
+.lpMore { color: $ink; font-size: 12px; font-weight: 800; }
+.lpAct { grid-column: 1 / -1; display: flex; gap: 10px; flex-wrap: wrap;
+  .btn:not(.btnCitrus) { color: #fff; border-color: rgba(255, 255, 255, .4);@media (hover: hover) { &:hover:not(:disabled) { background: rgba(255, 255, 255, .1); } } } }
+[data-size='phone'] { .lp { padding: 18px 16px; gap: 12px 14px; } .lpRing { width: 84px; height: 84px; span b { font-size: 15px; } } .lpHead { font-size: 19px !important; } .lpAct .btn { flex: 1; } }
+
+// 5. Kitchen right now: a departures-board row, columns split by hairlines
+.kb { background: #fff; border-top: 1px solid $line; border-bottom: 1px solid $line; padding: 28px 0 0; }
+.kbHead { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 16px; h2 { font-size: 26px !important; font-weight: 800; letter-spacing: -.03em; margin-top: 6px !important; } }
+.kbLive {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: $ink;
+  i { width: 7px; height: 7px; border-radius: 50%; background: $citrus; animation: v3Glow 2s ease-in-out infinite; }
+}
+.kbList { list-style: none; margin: 0 -32px; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); border-top: 1px solid $line;
+  li { border-right: 1px solid $line; &:last-child { border-right: 0; } }
+  button { width: 100%; height: 100%; display: grid; gap: 6px; justify-items: start; text-align: left; font: inherit; color: $text; background: none; border: 0; padding: 20px 20px 22px; cursor: pointer; transition: background .2s;
+    .artTile { width: 72px; height: 54px; transition: transform .3s var(--av-ease); }
+    @media (hover: hover) { &:hover { background: #F7F9FA; .artTile { transform: translateY(-3px) rotate(-2deg); } } } }
+  strong { font-size: 15px; } }
+.kbCount {
+  font-family: $mono;
+  line-height: 1;
+  color: $ink;
+  letter-spacing: -.04em;
+  small { font-size: 12px; color: $subtle; letter-spacing: 0; margin-left: 2px; }
+}
+.kbBusy .kbCount { color: #9AA5B1; }
+.kbBars { display: flex; gap: 3px; width: 100%; i { flex: 1; height: 6px; background: #D3DAE0; } .kbOn { background: $citrus; } }
+[data-size='phone'] {
+  .kb { padding-top: 22px; } .kbHead h2 { font-size: 22px !important; }
+  .kbList { margin: 0 -16px; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; &::-webkit-scrollbar { display: none; } li { flex: 0 0 44%; scroll-snap-align: start; } }
+}
+
+// 6. Attention: one line each, no box
+.attn4 { background: #FBF6EA; border-bottom: 1px solid #EFE3C4;
+  .container > div { display: flex; align-items: center; gap: 12px; padding: 12px 0; & + div { border-top: 1px solid #EFE3C4; } }
+  i { flex: none; width: 22px; height: 22px; border-radius: 50%; background: $citrus; color: #1F1F1F; display: grid; place-items: center; font-style: normal; font-weight: 800; font-size: 13px; }
+  strong { flex: 1; font-size: 15px; } }
+
+// 7. Coming up: a time rail; account facts beside it
+.wk { background: $cream; padding: 52px 0; }
+.wkGrid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 56px; align-items: start; }
+.wkHead { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; h2 { font-size: 28px !important; font-weight: 800; letter-spacing: -.03em; } }
+.wkRail { list-style: none; margin: 0; padding: 0;
+  button { width: 100%; display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 18px; align-items: center; text-align: left; font: inherit; color: $text; background: none; border: 0; border-bottom: 1px solid $line; padding: 16px 0; cursor: pointer; transition: padding .2s var(--av-ease), background .2s;
+@media (hover: hover) { &:hover { padding-left: 8px; background: linear-gradient(90deg, rgba(15, 76, 92, .05), transparent); } } }
+  time { position: relative; display: grid; padding-right: 16px; border-right: 2px solid #D3DAE0; b { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: $ink; } span { font-family: $mono; font-size: 15px; color: $subtle; }
+    &::after { content: ''; position: absolute; right: -6px; top: 50%; margin-top: -5px; width: 10px; height: 10px; border-radius: 50%; background: #fff; border: 2px solid $citrus; } } }
+.wkBody { display: grid; min-width: 0; strong { font-family: $mono; font-size: 16px; } em { font-style: normal; color: $subtle; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } }
+.wkSide { display: grid; gap: 28px; padding-left: 32px; border-left: 1px solid $line; .meter { margin: 0; } }
+.wkModes { display: grid; button { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; font: inherit; font-weight: 600; text-align: left; background: none; border: 0; border-bottom: 1px solid $line; padding: 12px 0; cursor: pointer; color: $text; .artTile { width: 40px; height: 30px; } em { font-style: normal; font-size: 22px; color: $subtle; transition: transform .2s; }@media (hover: hover) { &:hover em { transform: translateX(4px); color: $ink; } } } }
+.wkEmpty { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 18px 0; border-top: 1px solid $line; border-bottom: 1px solid $line; > div { flex: 1; min-width: 200px; } p { margin: 4px 0 0; color: $subtle; } }
+[data-size='phone'], [data-size='mid'] { .wk { padding: 32px 0; } .wkGrid { grid-template-columns: 1fr; gap: 28px; } .wkSide { padding-left: 0; border-left: 0; border-top: 2px solid $ink; padding-top: 20px; } }
+[data-size='phone'] .wkRail button { grid-template-columns: 78px minmax(0, 1fr); .pillOk, .pillWait { grid-column: 2; justify-self: start; } }
+
+// 8. Book: day track, free windows, two-handle range
+.dayTrack { position: relative; height: 30px; background: #EEF2F4; overflow: hidden; border-radius: 3px;
+  i { position: absolute; top: 0; bottom: 0; }
+  .dtFree { background: #DCE8EC; }
+  .dtBusy { background: repeating-linear-gradient(135deg, #9AA5B1 0 3px, #C8CFD6 3px 7px); }
+  .dtSel { position: absolute; top: 0; bottom: 0; background: $citrus; box-shadow: inset 0 0 0 2px $ink; transition: left .25s var(--av-ease), width .25s var(--av-ease); } }
+// 9. Footer edge to edge
+.siteFooter { margin: 0; }
+
+// Scroll reveal fallback (useRevealFallback) for browsers without scroll timelines; never applied under reduced motion.
+.rvPending { opacity: 0; transform: translateY(16px); }
+.site:not([data-motion='reduce']) [data-revealed] { transition: opacity var(--av-d-3, 300ms) var(--av-ease-enter), transform var(--av-d-3, 300ms) var(--av-ease-enter); }
+// Home hero: kicker, title and lede arrive 60 ms apart.
+.site:not([data-motion='reduce']) {
+  .hxKicker, .hxTitle, .hxLede { animation: hxIn var(--av-d-4, 400ms) var(--av-ease-enter) backwards; }
+  .hxTitle { animation-delay: 60ms; } .hxLede { animation-delay: 120ms; }
+}
+@keyframes hxIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+// 10. Scroll-linked motion: progress follows the scroll position, so a fast scroll lands every item in place at once.
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .site:not([data-motion='reduce']) {
+      .kbList li, .wkRail li, .bkUnits li, .agendaList li, .mcList li, .threeGrid li, .feedList > *, .tl, .tlTimes, .kbHead, .wkHead, .secHead, .splitHead, .wkSide > *, .attn4 .container > div, .unitCard, .kTile {
+        // Longhands only: the production minifier reorders declarations, and an `animation` shorthand placed last resets the timeline.
+        animation-name: sdIn !important; animation-timing-function: linear !important; animation-fill-mode: both !important; animation-duration: auto !important;
+        animation-timeline: view() !important; animation-range: entry 0% entry 60% !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; }
+      .hxPhoto { animation-name: sdPar; animation-timing-function: linear; animation-fill-mode: both; animation-duration: auto; animation-timeline: scroll(); animation-range: 0 700px; }
+    }
+  }
+  @keyframes sdIn { from { opacity: .12; transform: translateY(26px) scale(.985); } to { opacity: 1; transform: none; } }
+  @keyframes sdPar { from { transform: scale(1.04); } to { transform: scale(1.12) translateY(40px); } }
+}
+@supports (animation-timeline: scroll()) {
+  .topbar::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: $citrus; transform-origin: 0 50%; transform: scaleX(0); animation-name: sdProg; animation-timing-function: linear; animation-fill-mode: both; animation-duration: auto; animation-timeline: scroll(); }
+  @keyframes sdProg { to { transform: scaleX(1); } }
+}
+.kbFree .kbCount { color: $ink; }
+
+// ---- v4.1: restraint pass (design-skill critique) ----
+// Labels in sentence case, no tracking; one bold element per screen (status ring, equipment board), the rest quiet.
+.eyebrow, .eyebrowOnDark, .hxKicker, .kbLive, .lpLabel, .bkLabel, .miniHead, .ribbonTag, .wkModes .eyebrow {
+  text-transform: none !important; letter-spacing: 0 !important; }
+.eyebrow {
+  font-size: 14px;
+  font-weight: 600;
+  &::before { display: none; }
+}
+.hxKicker { font-size: 17px; font-weight: 600; color: $ink; margin-bottom: 10px; }
+.bkLabel { font-family: inherit; font-size: 15px; font-weight: 700; color: $text; }
+.lpLabel { font-size: 13px; }
+.kbLive { font-size: 13px; }
+// Monospace stays on order tickets and time readouts only; elsewhere tabular figures.
+.lpMeta, .bkScale, .kbCount, .wkBody strong, .wkRail time span, .bkUnitText em, .bkMove { font-family: inherit !important; font-variant-numeric: tabular-nums; }
+
+.dayTrack .dtPast { background: repeating-linear-gradient(90deg, #F4F6F7 0 6px, #EEF2F4 6px 12px); }
+// Hero photo parallax moves the image inside its frame, never the frame (no gap above it).
+@supports (animation-timeline: view()) {
+  @keyframes sdPar { from { background-position: 50% 35%; } to { background-position: 50% 75%; } }
+}
+.hxMedia { overflow: hidden; }
+// Phone: the notifications menu spans the screen under the bar instead of hanging off the left edge.
+[data-size='phone'] .bellMenu { position: fixed; left: 12px; right: 12px; top: calc(var(--bar-h) + 8px); width: auto; max-width: none; transform-origin: top center; }
+// Equipment rows: the name shortens (ellipsis) before the status ever leaves the screen.
+.bkUnitBtn { grid-template-columns: auto minmax(0, 1fr) auto; }
+.bkUnitText strong { flex: 0 1 auto; min-width: 0; max-width: none; }
+// No horizontal scrollbar while a page slides in.
+.main { overflow-x: clip; }
+// Footer headings: sentence case like the rest of the portal.
+.siteFooter h3 { text-transform: none; letter-spacing: 0; font-size: 15px; }
+
+// =====================================================================================================================
+// v5: TYPE SYSTEM. One family, Inter Variable (bundled, SIL OFL), always at normal width (the old condensed face read
+// tall and narrow). Figures use tabular-nums. 12px is the smallest size anywhere (enforced by styleRules.test.ts).
+// Scale (px): 13 · 15 · 17 · 20 · 24 · 30 · 38 · 48 · 60. Body 17/1.55 desktop, 16/1.55 phone. Measure under 70ch.
+// =====================================================================================================================
+.site {
+  --bar-h: 64px;
+  --tab-h: 0px;
+  --label-w: 188px;
+  border-radius: 0 !important;
+  font-family: var(--av-font);
+  font-size: 17px;
+  line-height: 1.55;
+  font-optical-sizing: auto;
+}
+[data-size='phone'] { font-size: 16px; }
+.site button, .site input, .site select, .site textarea { font-family: inherit; }
+// headings: heavy, tight
+.site :where(h1, h2, h3), .pageTitle, .hxTitle, .bfTitle, .display, .lpHead, .kbHead h2, .wkHead h2, .bkHead h2, .splitHead h2, .secHead h2, .sheetTitle {
+  font-family: var(--av-font) !important; font-weight: 800; letter-spacing: -.012em; }
+.hxTitle { font-size: clamp(44px, 5.2vw, 72px) !important; line-height: .98; letter-spacing: -.02em; }
+[data-size='phone'] .hxTitle, [data-size='mid'] .hxTitle { font-size: 40px !important; }
+.pageTitle { font-size: clamp(38px, 4.4vw, 60px); line-height: 1; }
+[data-size='phone'] .pageTitle { font-size: 36px; }
+.lpHead { font-size: 26px !important; }
+// figures: tabular
+.kbCount, .lpRing b, .bkDays b, .wkRail time span, .wkBody strong, .lpMeta {
+  font-family: var(--av-font) !important; font-variant-numeric: tabular-nums; }
+.kbCount { font-size: 34px; font-weight: 800; }
 
 // equipment names
 .bkUnitText strong, .kbList strong, .wkModes button, .lpKit { font-weight: 700; }
@@ -1858,7 +2853,8 @@ $ink2d: #0B3A47;
 // v7 · P2 Book
 // Intro strip, desktop cart column, phone/mid bottom bar, Review & send sheet (GSAP animates the sheet; gsapMotion.ts).
 .bk7Intro { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 0 0 12px; padding: 12px 16px; background: #fff; border: 1px solid $line; border-radius: 16px; font-size: 16px; line-height: 1.5; }
-[data-size='wide'] .bk.bk7Wide { grid-template-columns: 320px minmax(0, 1fr) 300px; }
+[data-size='wide'] .bk.bk7Wide { grid-template-columns: minmax(340px, 380px) minmax(0, 1fr) 300px; }
+@media (max-width: 1399px) { [data-size='wide'] .bk.bk7Wide { grid-template-columns: minmax(300px, 340px) minmax(0, 1fr); } [data-size='wide'] .bk7Wide .bk7Cart { grid-column: 2; margin: 16px 0 0; } }
 .bk7Cart { position: sticky; top: calc(var(--bar-h) + 12px); margin: 20px 0 0 24px; padding: 20px; background: #fff; border: 1px solid $line; border-radius: 16px; box-shadow: 0 6px 24px rgba(31, 31, 31, .08); display: grid; gap: 12px;
   h2 { margin: 0; font-size: 22px; }
   .bfFine { margin: 0; } }
@@ -2167,9 +3163,6 @@ $rSlate: #5B6370;
   button { border-radius: 5px !important; font-size: 12px !important; font-weight: 600; }
   button[aria-pressed='true'] { background: #EAF0F1 !important; color: #0F4C5C !important; box-shadow: none !important; } }
 .bkDays button { border: 1px solid #E9EBED !important; border-radius: 9px !important; }
-.winList button, .winList li { border-radius: 9px !important; }
-.winList button { border: 1px solid #E9EBED; background: #fff; transition: border-color .2s, transform .2s; }
-@media (hover: hover) { .winList button:hover { border-color: #C9A24D; transform: translateY(-1px); } }
 .winOn { border-color: #0F4C5C !important; background: #EAF0F1 !important; }
 .bk7Group { background: #fff; border: 1px solid #E9EBED; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(31, 31, 31, .03); }
 .bk7Group h3, .bk7GroupHead h3 { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #5B6370; }
@@ -2254,9 +3247,6 @@ $rSlate: #5B6370;
 [data-size='phone'] .lp, [data-size='phone'] .lp * { box-sizing: border-box; min-width: 0; }
 [data-size='phone'] .lp { max-width: 100%; overflow: hidden; grid-template-columns: minmax(0, 1fr) 92px; gap: 12px; padding: 16px; }
 [data-size='phone'] .lp .lpRing { width: 92px; height: 92px; order: 2; justify-self: end; }
-[data-size='phone'] .lp .lpRing span { display: grid; gap: 1px; place-items: center; text-align: center; }
-[data-size='phone'] .lp .lpRing span b { font-size: 16px; line-height: 1; letter-spacing: -.02em; white-space: nowrap; }
-[data-size='phone'] .lp .lpRing span small { font-size: 12px; line-height: 1; }
 [data-size='phone'] .lp .lpText { order: 1; }
 [data-size='phone'] .lp .lpHead { font-size: 20px !important; line-height: 1.15; overflow-wrap: anywhere; }
 [data-size='phone'] .lp .lpAct { grid-column: 1 / -1; order: 3; display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 10px; }
@@ -2281,7 +3271,7 @@ button, a, [role='button'], input, select, textarea, summary { touch-action: man
 .site .iconBtn { border: 0; background: #e4eef0; color: #0f4c5c; }
 @media (hover: hover) { .site .btn:hover:not(:disabled) { background: #d8e8ec; transform: translateY(-1px); } .site .btnCitrus:hover:not(:disabled) { background: linear-gradient(180deg, #1b7389 0%, #115568 100%); } }
 
-.site .segmented { position: relative; display: flex; isolation: isolate; background: #e4eef0; border: 0; border-radius: 999px; padding: 4px; gap: 0; min-height: 48px; box-shadow: none; overflow: visible; --n: 2; --i: 0; }
+.site .segmented { position: relative; display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; isolation: isolate; background: #e4eef0; border: 0; border-radius: 999px; padding: 4px; gap: 0; min-height: 48px; box-shadow: none; overflow: visible; --n: 2; --i: 0; }
 .site .segmented::before { content: ''; position: absolute; z-index: -1; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px) / var(--n)); border-radius: 999px; background: #0f4c5c; box-shadow: 0 6px 14px rgba(15, 76, 92, .28); transform: translateX(calc(var(--i) * 100%)); opacity: 0; transition: transform .24s cubic-bezier(.34, 1.3, .64, 1), opacity .15s; will-change: transform; }
 .site .segmented:has([aria-pressed='true'])::before { opacity: 1; }
 .site .segmented:has(> :nth-child(3)) { --n: 3; }
@@ -2291,11 +3281,11 @@ button, a, [role='button'], input, select, textarea, summary { touch-action: man
 .site .segmented:has(> :nth-child(3)[aria-pressed='true']) { --i: 2; }
 .site .segmented:has(> :nth-child(4)[aria-pressed='true']) { --i: 3; }
 .site .segmented:has(> :nth-child(5)[aria-pressed='true']) { --i: 4; }
-.site .segmented button { flex: 1 1 0; min-width: 0; min-height: 40px; padding: 0 12px; border: 0; border-radius: 999px; background: transparent; color: #3f4a56; font-weight: 650; box-shadow: none; transition: color .2s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.site .segmented button { min-width: auto; white-space: nowrap; min-height: 40px; padding: 0 12px; border: 0; border-radius: 999px; background: transparent; color: #3f4a56; font-weight: 650; box-shadow: none; transition: color .2s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 .site .segmented button[aria-pressed='true'] { background: transparent; color: #fff; box-shadow: none; }
 .site .segmented button:active { transform: scale(.97); }
 [data-size='phone'] .headRow .row { flex-wrap: wrap; gap: 10px; width: 100%; }
-[data-size='phone'] .headRow .row .segmented { flex: 1 1 100%; }
+[data-size='phone'] .headRow .row .segmented { flex: 1 1 100%; display: grid; }
 [data-size='phone'] .headRow .row > .btn { flex: 1 1 0; padding: 0 12px; }
 @media (prefers-reduced-motion: reduce) { .site .segmented::before, .site .btn, .site .segmented button { transition: none !important; } }
 [data-motion='reduce'] .segmented::before, [data-motion='reduce'] .btn { transition: none !important; }
@@ -2413,10 +3403,12 @@ button, a, [role='button'], input, select, textarea, summary { touch-action: man
 @keyframes paneFwd { from { opacity: 0; transform: translate3d(36px, 0, 0); } }
 @keyframes paneBack { from { opacity: 0; transform: translate3d(-36px, 0, 0); } }
 // Schedule: four views fit their labels (icon over a short label, equal columns)
-.segIcons { --n: 4; }
-.segIcons button { display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 56px !important; padding: 6px 2px !important; font-size: 12px !important; line-height: 1.1; white-space: nowrap; }
+.segIcons { --n: 4; border-radius: 22px !important; max-width: 100%; }
+.site .segIcons::before { border-radius: 18px !important; }
+.site .segIcons button { border-radius: 18px; }
+.segIcons button { display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 56px !important; padding: 6px 10px !important; font-size: 12px !important; line-height: 1.1; white-space: nowrap; }
 .segIcons button svg { width: 20px; height: 20px; flex: none; }
-.segIcons button span { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.segIcons button span { display: block; white-space: nowrap; }
 [data-size='phone'] .headRow .row .segIcons { flex: 1 1 100%; }
 
 // 5) Date strips: big touch cells (56 x 76), snap to centre, edge fade, month label and a Today button.
@@ -2587,6 +3579,7 @@ svg { overflow: visible; }
 .msgTicks[data-state='answered'] { color: #9be0c8; }
 .msgTicks[data-state='failed'] { color: #ffd2d2; }
 .msgOutcome { font-size: 12px; }
+.msgMine .msgOutcome, .msgMine small { color: rgba(255, 255, 255, .9) !important; }
 @keyframes msgIn { from { opacity: 0; transform: translate3d(0, 10px, 0) scale(.96); } to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); } }
 .msgFiles { margin: 0 14px; flex: none; }
 .msgErr { margin: 0 14px 6px; flex: none; }
@@ -2837,8 +3830,8 @@ $fb-ink: #0f4c5c; $fb-gold: #c9a24d; $fb-edge: #c9d4d9;
 @media (min-width: 900px) { .kbSlider > li { flex-basis: 190px; } }
 
 /* Booking: date strip */
-.bkDateHead { display: flex; align-items: center; gap: 12px; margin: 4px 0 8px; .bkLabel { margin: 0; } strong { margin-left: auto; font-size: 15px; font-weight: 800; color: $fb-ink; } }
-.bkCalBtn { position: relative; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px; border: 1.5px solid $fb-ink; border-radius: 0; background: #fff; color: $fb-ink; font-weight: 700; font-size: 14px; cursor: pointer;
+.bkDateHead { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 4px 0 8px; .bkLabel { margin: 0; } strong { margin-left: auto; font-size: 15px; font-weight: 800; color: $fb-ink; } }
+.bkCalBtn { position: relative; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px; border: 1.5px solid $fb-ink; border-radius: 12px; background: #fff; color: $fb-ink; font-weight: 700; font-size: 14px; cursor: pointer;
   input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 }
 .bkDateCard { border: 1.5px solid $fb-edge; border-radius: 0 !important; background: #fff; box-shadow: none !important; padding: 8px 0; margin: 0 0 14px; overflow: hidden; }
@@ -2852,11 +3845,27 @@ $fb-ink: #0f4c5c; $fb-gold: #c9a24d; $fb-edge: #c9d4d9;
 .bkMon { position: absolute; top: -17px; left: 0; font-style: normal; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: $fb-ink; white-space: nowrap; }
 
 /* Booking: time picker stands out until a time is chosen */
-.bkHours { padding: 14px; margin: 6px 0 14px; border: 1.5px solid $fb-edge; background: #fff; .bkLabel { margin-top: 0; } }
-.bkHours[data-pending='1'] { border-color: $fb-gold; background: #fffaf0; box-shadow: 0 0 0 3px rgba(201, 162, 77, .22); animation: bkNudge 2s ease-in-out 2; }
-.bkHint { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-size: 14px; font-weight: 650; color: #6b5313; }
-@keyframes bkNudge { 50% { box-shadow: 0 0 0 7px rgba(201, 162, 77, .12); } }
-@media (prefers-reduced-motion: reduce) { .bkHours[data-pending='1'] { animation: none; } }
+.bkHours { padding: 18px; margin: 6px 0 14px; border-radius: 20px; @include liquid-glass(rgba(255, 255, 255, .62), #fff, rgba(255, 255, 255, .75), true, false, !important); .bkLabel { margin-top: 0; &::after { display: none; } } }
+.bkTimes { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; min-width: 0; }
+.bkField { display: block; min-width: 0; position: relative; text-align: left; font: inherit; padding: 0; border: 0; background: none; cursor: pointer;
+  span { display: block; margin: 0 0 6px 4px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: $subtle; }
+  b { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: 52px; padding: 0 14px; border-radius: 14px; border: 1px solid rgba(15, 76, 92, .16); background: rgba(255, 255, 255, .7); color: $fb-ink; font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; transition: border-color .2s, box-shadow .2s; @media (min-width: 700px) { font-size: 18px; } svg { flex: none; } }
+  &:focus-visible { outline: none; b { border-color: $fb-ink; box-shadow: 0 0 3px 3px rgba(15, 76, 92, .2); } }
+  &:disabled { cursor: not-allowed; b { opacity: .55; } } }
+/* Clock-dial time picker */
+.ckWrap { display: grid; justify-items: center; gap: 12px; padding: 4px 0 12px; }
+.ckRead { margin: 0; font-size: 34px; font-weight: 800; color: $fb-ink; font-variant-numeric: tabular-nums; }
+.ckHalves { display: inline-flex; padding: 3px; border-radius: 999px; background: rgba(15, 76, 92, .08); button { min-width: 72px; min-height: 40px; border: 0; border-radius: 999px; background: none; color: $fb-ink; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; &:disabled { opacity: .4; cursor: not-allowed; } } }
+.ckHalfOn { background: $fb-ink !important; color: #fff !important; }
+.ckDial { position: relative; width: 240px; max-width: 100%; aspect-ratio: 1; flex: none; border-radius: 50%; background: rgba(15, 76, 92, .06); border: 1px solid rgba(15, 76, 92, .14); }
+.ckHub { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: $fb-ink; }
+.ckHand { position: absolute; left: 50%; top: calc(50% - 88px); width: 3px; height: 88px; margin-left: -1.5px; background: $fb-ink; transform-origin: 50% 100%; transition: transform .2s ease; @media (prefers-reduced-motion: reduce) { transition: none; } }
+.ckHour { position: absolute; width: 44px; height: 44px; border-radius: 50%; border: 0; background: transparent; color: $fb-ink; font: inherit; font-size: 17px; font-weight: 700; cursor: pointer; z-index: 1; &:disabled { color: rgba(15, 76, 92, .3); cursor: not-allowed; } &:focus-visible { outline: 3px solid $fb-gold; } }
+.ckHourOn { background: $fb-ink !important; color: #fff !important; }
+.ckMins { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; min-height: 44px; }
+.ckChip { display: inline-flex; align-items: center; gap: 6px; min-width: 64px; min-height: 44px; padding: 0 16px; justify-content: center; border-radius: 999px; border: 1.5px solid $fb-ink; background: #fff; color: $fb-ink; font: inherit; font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; cursor: pointer; }
+.bkSum { margin: 12px 4px 0; font-size: 14px; font-variant-numeric: tabular-nums; color: $subtle; }
+.bkHours .dayTrack { height: 8px; margin-top: 12px; border-radius: 999px; .dtSel { box-shadow: none; border-radius: 999px; } @media (prefers-reduced-motion: reduce) { .dtSel { transition: none; } } }
 
 /* Booking: equipment headings and one card per group */
 .bkHead h2 { font-size: 30px; color: $fb-ink; }
@@ -2890,8 +3899,8 @@ $fb-ink: #0f4c5c; $fb-gold: #c9a24d; $fb-edge: #c9d4d9;
 .mbTickets > li > ol { margin: 0; padding: 10px 14px 14px; border-top: 1px dashed $fb-edge; background: #f6f9fa; }
 .mbTickets > li.mbLive { border-color: $fb-gold; }
 .bkDateHead .bkLabel { flex: none; white-space: nowrap; &::after, &::before { display: none !important; } }
-.bkDateHead strong { white-space: nowrap; }
-.bkCalBtn { flex: none; white-space: nowrap; }
+.bkDateHead strong { white-space: nowrap; margin-left: 0 !important; }
+.bkCalBtn { flex: none; white-space: nowrap; max-width: 100%; margin-left: auto; }
 [data-size='phone'] .bkCalBtn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 [data-size='phone'] .bkCalBtn { width: 44px; justify-content: center; padding: 0; }
 .site .headRow .row > .btn.btnCitrus { background: $fb-gold !important; background-image: none !important; border: 1.5px solid $fb-gold !important; color: #14262e !important; box-shadow: none !important; }
@@ -2934,9 +3943,9 @@ $fb-ink: #0f4c5c; $fb-gold: #c9a24d; $fb-edge: #c9d4d9;
 .mbCard.mbCardOn { border-color: $fb-ink !important; background: #e8f2f5 !important; }
 .mbCard .btn { background: $fb-ink !important; background-image: none !important; color: #fff !important; border: 0 !important; box-shadow: none !important; }
 
-/* Kitchen right now: centred cover-flow. Cards snap to the centre; the centre card is full size, neighbours shrink (--k from useCenterScale). */
-.kbSlider { scroll-snap-type: x mandatory; padding-left: calc(50% - 95px) !important; padding-right: calc(50% - 95px) !important; scroll-padding-inline: 0; }
-.kbSlider > li { flex: 0 0 190px !important; scroll-snap-align: center !important; animation: none !important; transform: scale(calc(.86 + var(--k, 1) * .14)); opacity: calc(.6 + var(--k, 1) * .4); transform-origin: center; transition: none; will-change: transform; }
+/* Kitchen right now (phone): cards start at the left edge of the card and snap to the start; all cards full size. */
+.kbSlider { scroll-snap-type: x mandatory; padding-left: 0 !important; padding-right: 16px !important; scroll-padding-inline: 0; }
+.kbSlider > li { flex: 0 0 190px !important; scroll-snap-align: start !important; animation: none !important; transform: none; opacity: 1; transform-origin: left center; transition: none; will-change: transform; }
 .kbSlider > li:first-child { margin-left: 0; }
 @media (prefers-reduced-motion: reduce) { .kbSlider > li { transform: none; opacity: 1; transition: none; } }
 /* The scroll-linked reveal (sdIn) owns `transform` on .kbList li; switch it off in the slider so the centre scale shows. */
@@ -3009,9 +4018,12 @@ $fb-ink: #0f4c5c; $fb-gold: #c9a24d; $fb-edge: #c9d4d9;
 // ---- 1.11 Liquid Glass (shared material in _glass.scss). Small floating surfaces only; solid fallback without backdrop-filter
 //      or under prefers-reduced-transparency. Nothing here animates backdrop-filter. ----
 // Phone nav: the standalone round buttons (not the active teal one, not the gold Book) become clear glass over the page fade.
-[data-size='phone'] .tabbar .tab:not(.tabOn):not(.tabBook) .navIcon { @include liquid-glass(rgba(255, 255, 255, .62), #fff, rgba(255, 255, 255, .7), true, false, !important); }
+// Bottom bar (1.15.2): plain icons, no tile behind them; a tap shows a soft round highlight that fades out (Book keeps its gold disc).
+[data-size='phone'] .tabbar .tab:not(.tabBook) .navIcon { padding: 6px !important; border-radius: 50% !important; background: transparent !important; background-image: none !important; box-shadow: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; transition: transform .18s var(--ease-out, ease-out), background-color .25s ease-out !important; }
+[data-size='phone'] .tabbar .tab:not(.tabBook):active .navIcon { background: rgba(15, 76, 92, .12) !important; transform: scale(.92) !important; transition-duration: .08s !important; }
+[data-size='phone'] .tabbar .tab.tabOn:not(.tabBook) .navIcon { filter: drop-shadow(0 2px 3px rgba(15, 76, 92, .25)); }
 // Book cart capsule.
-[data-size='phone'] .bfBar.bk7Bar, [data-size='mid'] .bfBar.bk7Bar { @include liquid-glass(rgba(255, 255, 255, .58), #fff, rgba(255, 255, 255, .75), true, true, !important); border-color: rgba(255, 255, 255, .6) !important; }
+[data-size='phone'] .bfBar.bk7Bar, [data-size='mid'] .bfBar.bk7Bar { @include liquid-glass(rgba(255, 255, 255, .58), #fff, rgba(255, 255, 255, .75), true, true, !important); border-color: rgba(255, 255, 255, .6) !important; position: fixed; }
 // Top bar once the page has scrolled (on top of the Home photo it stays clear, as before). Transition no longer includes backdrop-filter.
 [data-size='phone'] .topbar { transition: background-color .3s ease, box-shadow .3s ease; }
 .site[data-size='phone']:not([data-hero='top']) .topbar { @include liquid-glass(rgba(250, 250, 247, .6), #fafaf7, rgba(255, 255, 255, .55), false); }
@@ -3022,3 +4034,76 @@ $fb-ink: #0f4c5c; $fb-gold: #c9a24d; $fb-edge: #c9d4d9;
 .site .segmented::before { @include liquid-glass(rgba(15, 76, 92, .86), #0f4c5c, rgba(255, 255, 255, .22), true, false, !important); }
 // Date panel (Book, My bookings): light glass panel; the date bubbles inside keep their flat, shadow-free style.
 .datePanel, [data-size='phone'] .datePanel { @include liquid-glass(rgba(255, 255, 255, .6), #fff, rgba(255, 255, 255, .8), false, false, !important); }
+
+/* ===== 1.13 audit fixes ===== */
+/* Countdown ring: two-line value inside the ring at every size. */
+.lp .lpRing span { inset: 12%; padding: 0 2px; box-sizing: border-box; }
+.lp .lpRing span b { font-size: 14px; line-height: 1.1; white-space: normal; em { display: block; font-style: normal; white-space: nowrap; } }
+.lp .lpRing span small { font-size: 12px; letter-spacing: .04em; line-height: 1; }
+
+/* 8 Footer follows content on phones: the footer already clears the tab bar, so .main needs no second tab-bar gap and does not stretch. */
+.site[data-size='phone'] .main { min-height: 0; flex: 0 0 auto; padding-bottom: 12px !important; }
+.site[data-size='phone']:has([data-section='book']:not([hidden])) .main { padding-bottom: calc(var(--tab-h, 100px) + 96px) !important; }
+/* 9 Month calendar: today is the gold circle only; a selected day gets a rounded outline. */
+.mcCell.mcToday:not(.mcSel) { box-shadow: none; outline: 0; }
+.mcCell.mcSel { border-radius: 12px; }
+.mcCell.mcSel.mcToday { box-shadow: none; background: transparent; }
+.mbUsed { display: block; font-size: 17px; font-weight: 600; line-height: 1.3; small { display: block; margin-top: 2px; font-size: 13px; font-weight: 500; color: #4b5563; } }
+/* 12 Events, Storage and My team fields share the rounded field style of the Storage select. */
+.site :is(.nmForm, .wlAdd) :is(input:not([type='radio']):not([type='checkbox']), textarea) { min-height: 48px; padding: 12px 14px; border: 1.5px solid #cfd8dc; border-radius: 14px; background: #fff; font-size: 16px; box-sizing: border-box; }
+.site .wlAdd select { -webkit-appearance: none; appearance: none; min-height: 48px; padding: 12px 40px 12px 14px; border: 1.5px solid #cfd8dc; border-radius: 14px; font-size: 16px; box-sizing: border-box; background-color: #fff; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230f4c5c' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+.site :is(.nmForm, .wlAdd) :is(input, textarea, select):focus-visible { outline: 3px solid #0f4c5c; outline-offset: 2px; }
+.site[data-size='phone'] .nmForm .cwActions { display: block; }
+.site[data-size='phone'] .nmForm .cwActions .cwYes { width: 100%; min-height: 48px !important; border-radius: 999px !important; }
+.site[data-size='phone'] .wlAdd { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; input { grid-column: 1 / -1; } select { min-width: 0; width: 100%; } .cwYes { min-height: 48px !important; border-radius: 999px !important; padding: 0 22px !important; } }
+/* 13 Messages: on phones the count sits above a full-width New message button. */
+.site[data-size='phone'] .msgHeadRow { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.site[data-size='phone'] .msgHeadRow .msgNew { width: 100%; justify-content: center; }
+
+/* ===== 1.13.3 audit: Kitchen right now fills the card left to right outside phone; only a category with 0 free fades. ===== */
+[data-size='mid'] .kbList.kbSlider, [data-size='wide'] .kbList.kbSlider { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); overflow: visible; padding: 4px 0 8px !important; scroll-snap-type: none; }
+[data-size='mid'] .kbList.kbSlider > li, [data-size='wide'] .kbList.kbSlider > li { flex: none !important; transform: none !important; opacity: 1 !important; }
+[data-size='mid'] .kbList.kbSlider > li.kbBusy, [data-size='wide'] .kbList.kbSlider > li.kbBusy { opacity: .55 !important; }
+
+/* Messages with no conversations: one empty state, list header and New message aligned. */
+.msgSolo { max-width: 640px; }
+
+/* Compare plans: balanced columns (4 plans in one row when wide), equal-height cards, action pinned to the bottom. */
+.mbCompare { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); align-items: stretch; }
+.mbCard { display: flex !important; flex-direction: column; align-items: stretch !important; gap: 8px; }
+.mbCard > ul { flex: 1 1 auto; }
+.mbCard > .btn, .mbCard > .mbYours { margin-top: auto; }
+.mbYours { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; border-radius: 999px; border: 1.5px solid #b9c8ce; background: transparent; color: #0f4c5c; font-size: 14px; font-weight: 700; }
+.jnPlans { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+/* Book page: steps and "How booking works" share one row; date strip is rounded tiles with a soft fade; Calendar stays inside the column. */
+.flowRow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin: 6px 0 12px; .steps { margin: 0; flex: 1 1 auto; } }
+.flowRow .flowHow { justify-self: auto; margin-left: auto; padding: 0 4px; }
+.bkDateCard { border: 0 !important; border-radius: 12px !important; padding: 0; background: none; }
+.bkDateCard .bkDays { padding: 18px 20px 8px; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 28px), transparent 100%) !important; mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 28px), transparent 100%) !important; }
+.bkDateCard .bkDays button, [data-size='phone'] .bkDateCard .bkDays button { border-radius: 12px !important; }
+[data-size='wide'] .bkCalBtn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+[data-size='wide'] .bkCalBtn { width: 44px; justify-content: center; padding: 0; }
+
+/* ===== 1.14 liquid glass on floating surfaces ===== */
+// Sheets (Sheet.tsx: bottom sheet, drawer, centre, ClockPicker sheet): glass panel over the dim scrim; text sits on >= .82 white.
+.sheet { @include liquid-glass(rgba(255, 255, 255, .84), #fff, rgba(255, 255, 255, .8), false); }
+.sheetFoot { background: rgba(255, 255, 255, .6) !important; }
+// Wide and mid top bar: sticky, content scrolls under it; dark text on .8 cream.
+.site:not([data-size='phone']) .topbar { @include liquid-glass(rgba(250, 250, 247, .8), #fafaf7, rgba(255, 255, 255, .55), false); }
+// Toasts: dark glass, white text on .84 ink.
+.toast { @include liquid-glass(rgba(7, 44, 54, .84), #072c36, rgba(255, 255, 255, .18), false, false, !important); }
+// Book "Your booking" sticky aside on wide.
+[data-size='wide'] .bk7Cart { @include liquid-glass(rgba(255, 255, 255, .78), #fff, rgba(255, 255, 255, .8), true, false, !important); }
+// Clock dial face: subtle glass disc; the selected hour (.ckHourOn) stays solid ink.
+.ckDial { @include liquid-glass(rgba(255, 255, 255, .6), #fff, rgba(15, 76, 92, .16), false, false, !important); }
+
+// 1.15 equipment photos: a photo fills its tile edge to edge (rounded by the tile), no tint, no drawing scale-up.
+.artTile.artTilePhoto { padding: 0 !important; overflow: hidden; background: #e9eef0 !important; }
+.artTile.artTilePhoto .artPhoto { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.kbSlider .artTile.artTilePhoto { transform: none !important; margin: 0 !important; }
+
+// 1.15.3: no browser tap-highlight box anywhere in the portal (it showed as a grey rectangle behind checklist buttons on phones).
+// Buttons keep their own press effects; the keyboard focus ring stays (focus-visible), only pointer focus loses the outline.
+.site button, .site a, .site [role='button'], .site [role='tab'], .site [role='option'], .site label, .site summary, .site input, .site select { -webkit-tap-highlight-color: transparent; }
+.site button:focus:not(:focus-visible), .site [role='button']:focus:not(:focus-visible), .site summary:focus:not(:focus-visible) { outline: none; }

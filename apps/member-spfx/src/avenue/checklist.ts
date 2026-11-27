@@ -69,6 +69,13 @@ export function recordState(item: IMyCheckIn | undefined): { state: RecordState;
   return { state: 'recording', text: o };
 }
 
+/** The member's Entry or Exit checklist for a booking: `sent` is one recorded or still pending; else `refused` is the latest the flow refused. */
+export function sentFor(history: IMyCheckIn[], bookingId: string, kind: CheckInKind): { sent?: IMyCheckIn; refused?: IMyCheckIn } {
+  const mine: IMyCheckIn[] = history.filter(h => h.bookingId === bookingId && h.kind === kind);
+  const ok: IMyCheckIn[] = mine.filter(h => recordState(h).state !== 'not-recorded');
+  return { sent: ok[ok.length - 1], refused: mine[mine.length - 1] };
+}
+
 const MIN_MS: number = 60 * 1000;
 
 /**

@@ -36,3 +36,10 @@ These are placeholders. Ask Flavors for proper photos of each unit (stove, grill
 |---|---|
 | `dining-room.jpg` | none (hero only) |
 | stove-1/2, grill-1/2, convection-upper/lower, warmer-1/2, pizza-oven-1-upper, prep-table-1..6 | no image available |
+
+## AI-generated photos (27 Nov 2026, staging 1.15)
+The developer asked for realistic photos of every equipment kind and a better Home photo, generated with Higgsfield because the client has supplied none. These are **AI images, not the client's own equipment or room**; replace them with real photos when Flavors sends them (a unit's `AvenueEquipment.PhotoUrl` still overrides the bundled photo).
+- Tool: Higgsfield web app, model GPT Image 2.6 Sunburst, **Unlimited mode** (no credits used; balance checked before and after: 357.5 credits throughout), 4:3 for equipment, 16:9 for Home.
+- Home: image-to-image from `dining-room.jpg` (same room, better light). Equipment: text-to-image, one per kind: stove, flattop, oven (upper and lower share it), warmer, pizza, prep, fryer, rack, fridge.
+- Files: originals in `apps/member-spfx/src/webparts/avenuePortal/assets/photos/src/`, web copies in `assets/photos/*.jpg`, bundled data URIs in `assets/photoData.generated.ts` (run `python3 gen_photos.py` after changing `photos/src`). Equipment 480 px, Home 1440 px.
+- Code: `artPhoto(kind)` and `homeImage` in `assets/index.ts`; `EquipmentArt` shows the photo instead of the drawing. New art kinds `fryer`, `rack`, `fridge` in `artKeyFor`.

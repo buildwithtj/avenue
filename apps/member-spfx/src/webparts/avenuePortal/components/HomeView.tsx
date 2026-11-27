@@ -92,7 +92,7 @@ function Live(props: { next?: INextBooking; data: IPortalData; now: number; onNa
     <div className={`${s.lp} ${TONE[ph.tone]}`} aria-label="Next booking" data-tone={ph.tone}>
       <div className={s.lpRing} role="img" aria-label={inside ? `${mins(en - now)} left` : `${mins(st - now)} to start`}>
         <svg viewBox="0 0 100 100"><circle className={s.lpTrack} cx="50" cy="50" r="44" /><circle className={s.lpArc} cx="50" cy="50" r="44" style={{ strokeDasharray: C, strokeDashoffset: C * (1 - pct) }} /></svg>
-        <span><b>{inside ? mins(en - now) : now < st ? mins(st - now) : 'Done'}</b><small>{inside ? 'left' : now < st ? 'to start' : ''}</small></span>
+        <span><b>{(inside ? mins(en - now) : now < st ? mins(st - now) : 'Done').split(/ (?=\d+ min)/).map((x, i) => <em key={i}>{x}</em>)}</b><small>{inside ? 'left' : now < st ? 'to start' : ''}</small></span>
       </div>
       <div className={s.lpText}>
         <span className={s.lpLabel}><i aria-hidden="true" />{ph.headline.toLowerCase().indexOf(ph.label.toLowerCase()) === 0 ? (inside ? 'Now' : 'Next') : ph.label}</span>
@@ -172,7 +172,7 @@ function AttnBanner(props: { items: { key: string; kind: string; title: string; 
   const row = (i: { key: string; kind: string; title: string; consequence: string; howTo: string; target: TabKey }): React.ReactElement => (
     <div key={i.key} className={i.kind === 'document-expired' ? s.attnUrgent : ''} title={`${i.consequence} ${i.howTo}`}>
       <i aria-hidden="true">!</i><strong>{i.title}</strong>
-      <button type="button" className={s.linkBtn} onClick={() => onNavigate(i.target)}>{i.target === 'documents' ? 'Upload renewal' : 'View'}</button>
+      <button type="button" className={s.linkBtn} onClick={() => onNavigate(i.target)}>{i.target === 'documents' ? (i.kind === 'onboarding-docs' ? 'Upload documents' : 'Upload renewal') : 'View'}</button>
     </div>
   );
   if (items.length === 1) { return <section aria-label="Needs your attention" className={s.attn4}>{row(items[0])}</section>; }
@@ -310,7 +310,7 @@ export default function HomeView(props: IHomeViewProps): React.ReactElement {
             <Kpi label="Documents" icon="file-text" value={`${reqN.current} of ${reqRows.length}`}
               pill={reqN.missing + reqN.expired > 0 ? { text: 'Needs attention', tone: 'bad' } : reqN.expiring > 0 ? { text: 'Expiring soon', tone: 'warn' } : { text: 'All current', tone: 'ok' }}
               detail={`Current · ${reqN.missing + reqN.expired > 0 ? `${reqN.missing + reqN.expired} still to send` : reqN.expiring > 0 ? `${reqN.expiring} expiring soon` : 'nothing missing'}`}
-              action={{ text: docIssues > 0 ? 'Review documents' : 'View documents', go: () => onNavigate('documents') }} />
+              action={{ text: docIssues > 0 ? 'Review' : 'View', go: () => onNavigate('documents') }} />
           )}
           {tabOn('billing') && (() => {
             const due: number = d.invoices === 'not-connected' ? 0 : balanceDueCents(d.invoices);

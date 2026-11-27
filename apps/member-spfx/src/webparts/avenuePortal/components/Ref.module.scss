@@ -691,6 +691,8 @@
 .filter-tabs button { flex: 1 1 0; min-width: 0; min-height: 40px; padding: 0 14px; border: 0; border-radius: 999px; background: none; color: #3f4a56; font-size: 13px; font-weight: 650; transition: color .3s ease; }
 .filter-tabs button.filter-active { color: #fff; border: 0; }
 .filter-tabs button span { background: rgba(255, 255, 255, .22); color: inherit; }
+/* Toggle never stretches across a wide card. */
+.module-view .filter-tabs { max-width: 320px; }
 @media (prefers-reduced-motion: reduce) { .filter-tabs::before, .filter-tabs button { transition: none; } }
 [data-motion='reduce'] .filter-tabs::before, [data-motion='reduce'] .filter-tabs button { transition: none; }
 
@@ -728,9 +730,9 @@ $ico-sh: 0 10px 20px rgba(8, 24, 30, .28), 0 2px 4px rgba(8, 24, 30, .2), inset 
 .ns-pill { padding: 3px 8px; }
 .notice-wrap .notice-slide b, [data-size='phone'] .notice-wrap .notice-slide b { -webkit-line-clamp: 1; font-size: 14px; line-height: 1.25; }
 
-/* Focal section title (Check in "Checklist"): big, heavy, circular icon, gold highlighter swash */
+/* Focal section title (Check in "Checklist"): big, heavy, circular icon, no highlight behind the text */
 .module-view[data-focal] .module-view-heading h2 { display: flex; align-items: center; gap: 12px; font-size: 30px; font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin-top: 8px; }
-.module-view[data-focal] .mv-title-text { padding: 0 4px; margin: 0 -4px; border-radius: 4px; background: linear-gradient(transparent 62%, rgba(201, 162, 77, .5) 62%, rgba(201, 162, 77, .5) 90%, transparent 90%); }
+.module-view[data-focal] .mv-title-text { padding: 0; margin: 0; background: none; }
 .module-view:not([data-focal]) .mv-ico { display: none; }
 @keyframes ico-pop { 0% { transform: scale(.92); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 .module-view[data-focal] .mv-ico { animation: ico-pop .35s cubic-bezier(.23, 1, .32, 1) both; }
@@ -902,6 +904,12 @@ $ico-sh: 0 10px 20px rgba(8, 24, 30, .28), 0 2px 4px rgba(8, 24, 30, .2), inset 
 /* ===== 1.8 client feedback (25 Nov 2026) ===== */
 /* 3 Page eyebrow: facility name only, one line with ellipsis, muted slate-indigo, sentence case, 14 px. */
 .greeting-row .eyebrow.page-eyebrow, .eyebrow.page-eyebrow { display: block; font-family: var(--av-font); font-size: 14px; font-weight: 600; letter-spacing: .02em; text-transform: none; color: #4a5578; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.greeting-row .eyebrow.page-eyebrow, .eyebrow.page-eyebrow { display: flex; justify-content: center; align-items: center; gap: 8px; text-align: center; overflow: visible; }
+.eyebrow.page-eyebrow::before, .eyebrow.page-eyebrow::after { content: ''; flex: none; width: 5px; height: 5px; border-radius: 50%; background: #C9A24D; }
+/* Every page head: eyebrow centred across the whole head copy (phone and mid), left with the title on wide. */
+.head-copy { flex: 1 1 280px; min-width: 0; }
+.eyebrow.page-eyebrow { width: 100%; }
+[data-size='wide'] .eyebrow.page-eyebrow { justify-content: flex-start; text-align: left; }
 /* 4 No decorative dash lines. */
 .eyebrow-line { display: none !important; }
 
@@ -930,3 +938,44 @@ $ico-sh: 0 10px 20px rgba(8, 24, 30, .28), 0 2px 4px rgba(8, 24, 30, .2), inset 
 //      darkened lower half of the photo; solid dark fallback without backdrop-filter or under reduced transparency. ----
 .hero-pill { @include liquid-glass(rgba(8, 32, 40, .5), rgba(8, 32, 40, .82), rgba(255, 255, 255, .32), false, false, !important); }
 .shortcuts-hero .shortcut-dot { @include liquid-glass(rgba(8, 32, 40, .46), rgba(8, 32, 40, .8), rgba(255, 255, 255, .4), true, false, !important); }
+
+/* ===== 1.13 phone audit fixes ===== */
+[data-size='phone'] .kpi-card .review-link, [data-size='phone'] .kpi-card button.review-link { padding: 0 8px !important; font-size: 13px; gap: 4px; min-width: 0; }
+.kpi-card .review-link svg { flex: none; }
+
+/* ===== 1.13 phone audit fixes ===== */
+[data-size='phone'] .kpi-card .review-link, [data-size='phone'] .kpi-card button.review-link { padding: 0 8px !important; font-size: 13px; gap: 4px; min-width: 0; }
+.kpi-card .review-link svg { flex: none; }
+/* Phone list rows: no ticket notches; the badge sits fully inside the padding, light shadow. */
+[data-size='phone'] .module-row { -webkit-mask: none !important; mask: none !important; padding: 14px 16px !important; box-shadow: 0 2px 8px rgba(15, 76, 92, .08) !important; }
+[data-size='phone'] .module-row .tenant-avatar { margin: 0 !important; left: auto !important; position: relative; box-shadow: none !important; }
+/* Stepper: done = white check on ink, now = filled with a white dot, future = empty ring. */
+.track li[data-s='done'] i::after { display: none; }
+.track li i svg { color: #fff; width: 13px; height: 13px; stroke-width: 3; }
+.track li[data-s='todo'] i { background: #fff; box-shadow: 0 0 0 4px #fff, inset 0 0 0 2px #cfd6da; animation: none; }
+/* 1.13.1 Current step: an ink ring with a centred ink dot (the old pulse + offset white dot read as a "C"). */
+.track li[data-s='now'] i { position: relative; background: #fff; box-shadow: 0 0 0 4px #fff, inset 0 0 0 3px #0f4c5c; animation: none; }
+.track li[data-s='now'] i::after { content: ''; position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: #0f4c5c; }
+/* Connector lines stop at the dot edges (22px dots), so a line can never paint inside a dot. */
+.track li::before { left: calc(-50% + 15px); width: calc(100% - 30px); }
+
+/* 1.13.3 audit: Your month fills the row for any tile count; list rows keep avatar and time inside the card. */
+[data-size='wide'] .kpi-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.module-row, .tenant-row { box-sizing: border-box; max-width: 100%; }
+.module-row .tenant-avatar, .tenant-row .tenant-avatar { position: relative; left: auto; margin: 0 !important; box-shadow: none !important; flex: none; }
+.module-row-time { flex: none; white-space: nowrap; }
+/* A card with a heading and no body is one compact row. */
+.module-view[data-bare] { min-height: 0; }
+.module-view[data-bare] .module-view-heading { margin: 0; padding-bottom: 0; border-bottom: 0; }
+/* Home two-column area: columns end at the same height; the last card in each column absorbs the slack. */
+[data-size='wide'] .dashboard-grid { align-items: stretch; }
+[data-size='wide'] .dashboard-grid > .right-column > :last-child { flex: 1 1 auto; }
+/* Coming up: the list track must not grow past its card (it clipped "Details" on narrower desktops). */
+.module-booking-list { grid-template-columns: minmax(0, 1fr); }
+.module-booking-list > .module-row { min-width: 0; }
+/* Phone: the page head stacks in a column, so the 280px flex-basis became a 280px height (blank gap above Check in). */
+[data-size='phone'] .head-copy { flex: 0 0 auto; }
+/* 1.15.3 facility wordmark in place of the eyebrow text: 20 px tall (18 on phone), no side dots (the mark has its own). */
+.eyebrow.page-eyebrow.page-logo::before, .eyebrow.page-eyebrow.page-logo::after { display: none; }
+.site-logo { display: block; height: 20px; width: auto; color: #0f4c5c; }
+[data-size='phone'] .site-logo { height: 18px; }

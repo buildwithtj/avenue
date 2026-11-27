@@ -73,14 +73,6 @@ export default function ChecklistStepper(props: IChecklistStepperProps): React.R
       <div className={rx['cl-bar']} role="progressbar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={answered} aria-label="Checklist progress">
         <i style={{ transform: `scaleX(${total ? answered / total : 0})` }} />
       </div>
-      <ol className={rx['cl-dots']} aria-label="Steps">
-        {questions.map((x, i) => (
-          <li key={x.id}>
-            <button type="button" className={`${rx['cl-dot']} ${i === index ? rx['is-now'] : ''} ${answers[x.id] ? rx['is-done'] : ''}`} aria-label={`Question ${i + 1}${answers[x.id] ? `: ${answers[x.id]}` : ''}`}
-              aria-current={i === index ? 'step' : undefined} onClick={() => go(i, i > index ? 1 : -1)} />
-          </li>
-        ))}
-      </ol>
       <div className={rx['visually-hidden']} role="status" aria-live="polite">{review ? 'Review your answers, then send.' : q ? `Question ${index + 1} of ${total}: ${q.text}` : ''}</div>
 
       {!review && q && (

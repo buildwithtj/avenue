@@ -279,18 +279,22 @@ export function phaseView(b: IWindowBooking & { status?: string }, f: IFacility,
 
 // ---- Equipment artwork key ----
 
-export type ArtKey = 'stove' | 'flattop' | 'oven' | 'oven-upper' | 'oven-lower' | 'warmer' | 'pizza' | 'prep' | 'mixer' | 'dining' | 'generic';
+export type ArtKey = 'stove' | 'flattop' | 'oven' | 'oven-upper' | 'oven-lower' | 'warmer' | 'pizza' | 'prep' | 'mixer' | 'fryer' | 'rack' | 'fridge' | 'dining' | 'generic';
 
 /** Picks the artwork from any mix of category, id and title text ("Stove", "oven-up", "Convection Oven (Upper)"). */
 export function artKeyFor(...hints: (string | undefined)[]): ArtKey {
   const h: string = hints.filter(Boolean).join(' ').toLowerCase();
+  if (/fryer/.test(h)) { return 'fryer'; }
+  if (/fridge|refrigerat|freezer|reach-in/.test(h)) { return 'fridge'; }
+  if (/rack/.test(h)) { return 'rack'; }
   if (/pizza/.test(h)) { return 'pizza'; }
   if (/prep/.test(h)) { return 'prep'; }
   if (/mix/.test(h)) { return 'mixer'; }
   if (/warm|holding|cabinet/.test(h)) { return 'warmer'; }
   if (/grill|flat ?top|griddle/.test(h)) { return 'flattop'; }
-  if (/oven|convection/.test(h)) { return /upper|oven-up\b/.test(h) ? 'oven-upper' : /lower|oven-low\b/.test(h) ? 'oven-lower' : 'oven'; }
+  // Stove before oven: "Gas Stove w/Under Oven" is a stove.
   if (/stove|range|burner/.test(h)) { return 'stove'; }
+  if (/oven|convection/.test(h)) { return /upper|oven-up\b/.test(h) ? 'oven-upper' : /lower|oven-low\b/.test(h) ? 'oven-lower' : 'oven'; }
   if (/dining|room|table/.test(h)) { return 'dining'; }
   return 'generic';
 }
