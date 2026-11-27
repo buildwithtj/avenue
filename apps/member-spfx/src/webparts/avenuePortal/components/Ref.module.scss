@@ -983,3 +983,6 @@ $ico-sh: 0 10px 20px rgba(8, 24, 30, .28), 0 2px 4px rgba(8, 24, 30, .2), inset 
 [data-size='wide'] .eyebrow.page-eyebrow.page-logo { margin-left: 0; }
 /* Phone: the page head block spans the row so the centred wordmark is centred on the page (My bookings wraps its head row). */
 [data-size='phone'] .head-copy { width: 100%; }
+/* 1.15.7 smaller page titles everywhere (PageHead h1 and the pages that render .pageTitle themselves): 22 px phone, 26 px wider. */
+.greeting-row h1, [data-size='phone'] .greeting-row h1 { font-size: 26px !important; font-weight: 700; letter-spacing: -.02em; line-height: 1.15; margin: 6px 0 4px !important; }
+[data-size='phone'] .greeting-row h1 { font-size: 22px !important; }

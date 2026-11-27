@@ -95,23 +95,18 @@ export type PortalSize = 'phone' | 'mid' | 'wide';
 export const SizeContext: React.Context<PortalSize> = React.createContext<PortalSize>('wide');
 export function useSize(): PortalSize { return React.useContext(SizeContext); }
 
-/** Elements that rise into view as they scroll in. Browsers with CSS scroll timelines do this in CSS (Site.module.scss §10);
- *  the rest get the same effect from an IntersectionObserver (useRevealFallback). Class names come in already resolved. */
+/** Elements that rise into view as they scroll in. One-time reveal from an IntersectionObserver (useRevealFallback); no scroll-linked CSS timelines (they re-ran every frame on SharePoint's scroller). Class names come in already resolved. */
 export function revealSelector(cls: Record<string, string>): string {
   return ['kbList li', 'wkRail li', 'winList li', 'bkUnits li', 'agendaList li', 'mcList li', 'threeGrid li', 'unitCard', 'kTile', 'kbHead', 'wkHead', 'secHead', 'splitHead', 'mbTickets li', 'mbDayHead']
     .map(sel => sel.split(' ').map((part, i) => (i === 0 ? `.${cls[part] || part}` : part)).join(' ')).join(',');
 }
 
-function cssHasScrollTimeline(): boolean {
-  try { return typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('animation-timeline', 'view()'); } catch { return false; }
-}
-
 /** Fallback scroll reveal: marks matching elements `pending` (hidden, lowered) and reveals each once it is 10% in view.
- *  Off under reduced motion, without IntersectionObserver, or where CSS scroll timelines already animate it. Re-scans on `key`. */
+ *  Off under reduced motion, without IntersectionObserver. Re-scans on `key`. */
 export function useRevealFallback(ref: React.RefObject<HTMLElement>, selector: string, pending: string, reduced: boolean, key: unknown): void {
   React.useEffect(() => {
     const root: HTMLElement | null = ref.current;
-    if (!root || reduced || typeof IntersectionObserver !== 'function' || cssHasScrollTimeline()) { return undefined; }
+    if (!root || reduced || typeof IntersectionObserver !== 'function') { return undefined; }
     const io: IntersectionObserver = new IntersectionObserver(entries => {
       for (const e of entries) { if (e.isIntersecting) { e.target.classList.remove(pending); io.unobserve(e.target); } }
     }, { rootMargin: '0px 0px -10% 0px' });

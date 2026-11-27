@@ -82,7 +82,7 @@ export function PageHead(props: { eyebrow: string; title: string; lede?: string;
         {props.back}
         <SiteEyebrow title={props.eyebrow} />
         <h1>{props.title}<span aria-hidden="true">.</span></h1>
-        {props.lede && <p className={r['page-subtitle']}>{props.lede}</p>}
+        {/* Page subtitles removed on request (27 Nov 2026): the title alone heads each page. `lede` is kept in the props for callers. */}
       </div>
       {props.action}
     </div>
@@ -193,24 +193,7 @@ export function HomeImageCard(props: { facility: string; onBook?: () => void }):
 export function HomeHero(props: { facility: string; eyebrow: string; title: string; lede?: string; pill?: string; onBook?: () => void; children?: React.ReactNode }): React.ReactElement {
   const [failed, setFailed] = React.useState<boolean>(false);
   const ref = React.useRef<HTMLElement>(null);
-  // Phone: the photo is full screen and stays behind while the content slides over it. --hero-p (0..1) follows the scroll of the page's scroller
-  // and fades/zooms the photo slightly. Reduced motion: no listener, no parallax.
-  React.useEffect(() => {
-    const el: HTMLElement | null = ref.current;
-    if (!el || !(typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: no-preference)').matches)) { return undefined; }
-    let sc: HTMLElement | null = el.parentElement;
-    while (sc && !(/(auto|scroll)/.test(getComputedStyle(sc).overflowY) && sc.scrollHeight > sc.clientHeight)) { sc = sc.parentElement; }
-    const target: HTMLElement | Window = sc || window;
-    // No layout reads while scrolling: the hero height is measured once (and on resize); the handler is passive and rAF-throttled, and only writes one CSS variable.
-    let h: number = Math.max(1, el.offsetHeight); let queued: boolean = false;
-    const write = (): void => { queued = false; const y: number = sc ? sc.scrollTop : window.scrollY; el.style.setProperty('--hero-p', Math.min(1, Math.max(0, y / h)).toFixed(2)); };
-    const read = (): void => { if (!queued) { queued = true; requestAnimationFrame(write); } };
-    const measure = (): void => { h = Math.max(1, el.offsetHeight); read(); };
-    window.addEventListener('resize', measure, { passive: true } as AddEventListenerOptions);
-    target.addEventListener('scroll', read, { passive: true } as AddEventListenerOptions);
-    read();
-    return () => { window.removeEventListener('resize', measure); target.removeEventListener('scroll', read); };
-  }, []);
+  // No scroll listener: the phone photo is pinned (CSS sticky) and never transforms while scrolling; --hero-p was written every frame and nothing used it.
   return (
     <section ref={ref} className={r.hero} aria-label={`Your kitchen at ${props.facility}`} data-failed={failed ? '1' : undefined}>
       {!failed && <img className={r['hero-img']} src={homeImage} alt={`The dining room at ${props.facility}`} decoding="async" width={1280} height={560} onError={() => setFailed(true)} />}

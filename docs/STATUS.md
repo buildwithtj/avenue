@@ -3,7 +3,7 @@
 
 
 
-## 27 Nov 2026 (late night) — staging 1.15.6.0 LIVE on the staging page (bundle 3eaa209d; 1.15.4 was 6c4255ff): arc date wheel (phone) / week bar (desktop), redesigned booking sheet, [PROPOSED] Flavors wordmark, AI photos, attachments on (flow R2 live). Client live portal unchanged (2.19.0.0). Next: Next-tag overlap on the arc, check the month popover and >5-unit sheet in a browser, decide how to beat the SharePoint service-worker cache, get the client's OK on the wordmark and AI photos.
+## 27 Nov 2026 (late night) — staging 1.15.7.0 LIVE on the staging page (bundle 098c0c49; scroll/flicker, sticky footer, smaller titles without subtitles): arc date wheel (phone) / week bar (desktop), redesigned booking sheet, [PROPOSED] Flavors wordmark, AI photos, attachments on (flow R2 live). Client live portal unchanged (2.19.0.0). Next: Next-tag overlap on the arc, check the month popover and >5-unit sheet in a browser, decide how to beat the SharePoint service-worker cache, get the client's OK on the wordmark and AI photos.
 
 ## 27 Nov 2026 (night) — staging 1.15.1.0 LIVE on the staging page (bundle da52fff4): AI equipment and Home photos (Higgsfield Unlimited, no credits), phone gap and Review bar fixes. Client live portal unchanged (2.19.0.0). Nothing committed since 2970bd2.
 

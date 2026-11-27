@@ -343,9 +343,17 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
     // Match on overflow only: at mount the page may not be taller than the scroller yet, and a height test would fall back to window and never fire.
     while (el && !/(auto|scroll)/.test(getComputedStyle(el).overflowY)) { el = el.parentElement; }
     const target: HTMLElement | Window = el || window;
-    const read = (): void => setCompact((el ? el.scrollTop : window.scrollY) > 24);
+    // Hysteresis (on above 32 px, off below 8 px), rAF-throttled, state set only when the boolean flips: no flicker around the threshold.
+    let on: boolean = false; let queued: boolean = false;
+    const write = (): void => {
+      queued = false;
+      const y: number = el ? el.scrollTop : window.scrollY;
+      const next: boolean = on ? y > 8 : y > 32;
+      if (next !== on) { on = next; setCompact(next); }
+    };
+    const read = (): void => { if (!queued) { queued = true; window.requestAnimationFrame(write); } };
     target.addEventListener('scroll', read, { passive: true } as AddEventListenerOptions);
-    read();
+    write();
     return () => target.removeEventListener('scroll', read);
   }, [portal.data, showJoin]);
   const wide: boolean = size === 'wide' && !!source && !!portal.data && !showJoin;

@@ -1045,23 +1045,6 @@ $ink2d: #0B3A47;
 @keyframes hxIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
 // 10. Scroll-linked motion: progress follows the scroll position, so a fast scroll lands every item in place at once.
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .site:not([data-motion='reduce']) {
-      .kbList li, .wkRail li, .bkUnits li, .agendaList li, .mcList li, .threeGrid li, .feedList > *, .tl, .tlTimes, .kbHead, .wkHead, .secHead, .splitHead, .wkSide > *, .attn4 .container > div, .unitCard, .kTile {
-        // Longhands only: the production minifier reorders declarations, and an `animation` shorthand placed last resets the timeline.
-        animation-name: sdIn !important; animation-timing-function: linear !important; animation-fill-mode: both !important; animation-duration: auto !important;
-        animation-timeline: view() !important; animation-range: entry 0% entry 60% !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; }
-      .hxPhoto { animation-name: sdPar; animation-timing-function: linear; animation-fill-mode: both; animation-duration: auto; animation-timeline: scroll(); animation-range: 0 700px; }
-    }
-  }
-  @keyframes sdIn { from { opacity: .12; transform: translateY(26px) scale(.985); } to { opacity: 1; transform: none; } }
-  @keyframes sdPar { from { transform: scale(1.04); } to { transform: scale(1.12) translateY(40px); } }
-}
-@supports (animation-timeline: scroll()) {
-  .topbar::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: $citrus; transform-origin: 0 50%; transform: scaleX(0); animation-name: sdProg; animation-timing-function: linear; animation-fill-mode: both; animation-duration: auto; animation-timeline: scroll(); }
-  @keyframes sdProg { to { transform: scaleX(1); } }
-}
 .kbFree .kbCount { color: $ink; }
 
 // ---- v4.1: restraint pass (design-skill critique) ----
@@ -1082,9 +1065,6 @@ $ink2d: #0B3A47;
 
 .dayTrack .dtPast { background: repeating-linear-gradient(90deg, #F4F6F7 0 6px, #EEF2F4 6px 12px); }
 // Hero photo parallax moves the image inside its frame, never the frame (no gap above it).
-@supports (animation-timeline: view()) {
-  @keyframes sdPar { from { background-position: 50% 35%; } to { background-position: 50% 75%; } }
-}
 .hxMedia { overflow: hidden; }
 // Phone: the notifications menu spans the screen under the bar instead of hanging off the left edge.
 [data-size='phone'] .bellMenu { position: fixed; left: 12px; right: 12px; top: calc(var(--bar-h) + 8px); width: auto; max-width: none; transform-origin: top center; }
@@ -2069,23 +2049,6 @@ $ink2d: #0B3A47;
 @keyframes hxIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
 // 10. Scroll-linked motion: progress follows the scroll position, so a fast scroll lands every item in place at once.
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .site:not([data-motion='reduce']) {
-      .kbList li, .wkRail li, .bkUnits li, .agendaList li, .mcList li, .threeGrid li, .feedList > *, .tl, .tlTimes, .kbHead, .wkHead, .secHead, .splitHead, .wkSide > *, .attn4 .container > div, .unitCard, .kTile {
-        // Longhands only: the production minifier reorders declarations, and an `animation` shorthand placed last resets the timeline.
-        animation-name: sdIn !important; animation-timing-function: linear !important; animation-fill-mode: both !important; animation-duration: auto !important;
-        animation-timeline: view() !important; animation-range: entry 0% entry 60% !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; }
-      .hxPhoto { animation-name: sdPar; animation-timing-function: linear; animation-fill-mode: both; animation-duration: auto; animation-timeline: scroll(); animation-range: 0 700px; }
-    }
-  }
-  @keyframes sdIn { from { opacity: .12; transform: translateY(26px) scale(.985); } to { opacity: 1; transform: none; } }
-  @keyframes sdPar { from { transform: scale(1.04); } to { transform: scale(1.12) translateY(40px); } }
-}
-@supports (animation-timeline: scroll()) {
-  .topbar::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: $citrus; transform-origin: 0 50%; transform: scaleX(0); animation-name: sdProg; animation-timing-function: linear; animation-fill-mode: both; animation-duration: auto; animation-timeline: scroll(); }
-  @keyframes sdProg { to { transform: scaleX(1); } }
-}
 .kbFree .kbCount { color: $ink; }
 
 // ---- v4.1: restraint pass (design-skill critique) ----
@@ -2106,9 +2069,6 @@ $ink2d: #0B3A47;
 
 .dayTrack .dtPast { background: repeating-linear-gradient(90deg, #F4F6F7 0 6px, #EEF2F4 6px 12px); }
 // Hero photo parallax moves the image inside its frame, never the frame (no gap above it).
-@supports (animation-timeline: view()) {
-  @keyframes sdPar { from { background-position: 50% 35%; } to { background-position: 50% 75%; } }
-}
 .hxMedia { overflow: hidden; }
 // Phone: the notifications menu spans the screen under the bar instead of hanging off the left edge.
 [data-size='phone'] .bellMenu { position: fixed; left: 12px; right: 12px; top: calc(var(--bar-h) + 8px); width: auto; max-width: none; transform-origin: top center; }
@@ -2222,13 +2182,6 @@ $ink2d: #0B3A47;
   li { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid $line; font-weight: 700; .artTile { width: 44px; height: 34px; } } }
 .mbSlip { margin: 0; padding: 14px 16px; background: #FBF6EA; border-left: 4px solid $citrus; font-size: 15px; }
 
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .site:not([data-motion='reduce']) {
-      .mbTickets li, .mbDayHead { animation-name: sdIn !important; animation-timing-function: linear !important; animation-fill-mode: both !important; animation-duration: auto !important; animation-timeline: view() !important; animation-range: entry 0% entry 60% !important; animation-delay: 0s !important; }
-    }
-  }
-}
 .mb { background: $cream; }
 // a day tapped in the strip lands below the sticky bar, not under it
 .mbDay { scroll-margin-top: calc(var(--bar-h) + 16px); }
@@ -2692,8 +2645,6 @@ $ink2d: #0B3A47;
 
 // Bar slims after a short scroll and stays visible (visible navigation beats hidden menus).
 .bar { transition: height .2s var(--av-ease, ease); }
-.site[data-compact='on'] { --bar-h: 54px; }
-.site[data-size='phone'][data-compact='on'] { --bar-h: 48px; }
 .site[data-compact='on'] .topbar { box-shadow: 0 6px 18px rgba(7, 44, 54, .22); }
 .site[data-compact='on'] .brandLogo { height: 24px; }
 .userChipOn { background: rgba(255, 255, 255, .16) !important; border-color: $citrus !important; }
@@ -3197,7 +3148,7 @@ $rSlate: #5B6370;
 [data-size='phone'] .tabInk::after { top: 14px; width: 54px; height: 36px; margin-left: -27px; border-radius: 18px; background: rgba(255, 255, 255, .16); }
 [data-size='phone'] .tab { min-height: 64px !important; }
 [data-size='phone'] .tab:active .navIcon { transform: scale(.88); }
-[data-size='phone'] .topbar { background: rgba(250, 250, 247, .84); -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px); }
+[data-size='phone'] .topbar { background: rgba(250, 250, 247, .84); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
 .bfBarText { display: inline-block; animation: bfBump .32s cubic-bezier(.34, 1.56, .64, 1); }
 @keyframes bfBump { 0% { transform: scale(.9); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
 .bkUnitBtn:active { transform: scale(.98); }
@@ -3215,7 +3166,7 @@ $rSlate: #5B6370;
 .site[data-size='phone'] { --tab-h: 96px; }
 [data-size='phone'] .tabbar {
   left: 12px; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); height: 68px; padding: 0; border-radius: 28px;
-  background: rgba(255, 255, 255, .9); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4);
+  background: rgba(255, 255, 255, .9); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
   border: 1px solid rgba(15, 76, 92, .12); box-shadow: 0 10px 30px rgba(15, 76, 92, .16), 0 1px 2px rgba(15, 76, 92, .08);
   grid-auto-flow: unset; grid-template-columns: repeat(5, minmax(0, 1fr)); touch-action: manipulation;
 }
@@ -3527,7 +3478,7 @@ svg { overflow: visible; }
 
 // G) Messages console
 .msg { position: relative; }
-.msgShell { display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: 16px; align-items: stretch; min-height: min(70vh, 720px); }
+.msgShell { display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: 16px; align-items: stretch; min-height: min(60vh, 560px); }
 .msgRight { min-width: 0; display: grid; }
 .msgList { position: relative; display: flex; flex-direction: column; gap: 10px; min-width: 0; padding-bottom: 84px; }
 .msgListHead { display: flex; align-items: center; gap: 12px; padding: 2px 2px 4px; h2 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -.5px; color: #14262e; } p { margin: 2px 0 0; font-size: 13px; color: #5b6370; } }
@@ -3649,7 +3600,7 @@ svg { overflow: visible; }
 .flowHow:active { transform: scale(.97); }
 
 // 4a) Glass date panel over a drifting mesh (the page's one idle loop, paused off screen); date bubbles are glass spheres
-.datePanel { position: relative; isolation: isolate; overflow: hidden; border-radius: 28px; margin: 4px 0 12px; padding: 6px 0; border: 1px solid rgba(255, 255, 255, .85); background: rgba(255, 255, 255, .55); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); box-shadow: inset 0 1px 0 #fff, 0 12px 28px rgba(15, 76, 92, .12); }
+.datePanel { position: relative; isolation: isolate; overflow: hidden; border-radius: 28px; margin: 4px 0 12px; padding: 6px 0; border: 1px solid rgba(255, 255, 255, .85); background: rgba(255, 255, 255, .55); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: inset 0 1px 0 #fff, 0 12px 28px rgba(15, 76, 92, .12); }
 .datePanel::before { content: ''; position: absolute; inset: -30%; z-index: -1; background: radial-gradient(30% 40% at 25% 35%, rgba(42, 129, 150, .28), transparent 70%), radial-gradient(28% 38% at 75% 60%, rgba(201, 162, 77, .3), transparent 70%), linear-gradient(135deg, #f4f8f9, #eef3f4); animation: meshDrift 14s ease-in-out infinite alternate; animation-play-state: paused; }
 .datePanel[data-playing='1']::before { animation-play-state: running; }
 @keyframes meshDrift { from { transform: translate3d(-4%, -3%, 0) rotate(0deg); } to { transform: translate3d(4%, 3%, 0) rotate(8deg); } }
@@ -3945,7 +3896,7 @@ $fb-ink: #0f4c5c; $fb-gold: #c9a24d; $fb-edge: #c9d4d9;
 
 /* Kitchen right now (phone): cards start at the left edge of the card and snap to the start; all cards full size. */
 .kbSlider { scroll-snap-type: x mandatory; padding-left: 0 !important; padding-right: 16px !important; scroll-padding-inline: 0; }
-.kbSlider > li { flex: 0 0 190px !important; scroll-snap-align: start !important; animation: none !important; transform: none; opacity: 1; transform-origin: left center; transition: none; will-change: transform; }
+.kbSlider > li { flex: 0 0 190px !important; scroll-snap-align: start !important; animation: none !important; transform: none; opacity: 1; transform-origin: left center; transition: none; }
 .kbSlider > li:first-child { margin-left: 0; }
 @media (prefers-reduced-motion: reduce) { .kbSlider > li { transform: none; opacity: 1; transition: none; } }
 /* The scroll-linked reveal (sdIn) owns `transform` on .kbList li; switch it off in the slider so the centre scale shows. */
@@ -4041,8 +3992,13 @@ $fb-ink: #0f4c5c; $fb-gold: #c9a24d; $fb-edge: #c9d4d9;
 .lp .lpRing span b { font-size: 14px; line-height: 1.1; white-space: normal; em { display: block; font-style: normal; white-space: nowrap; } }
 .lp .lpRing span small { font-size: 12px; letter-spacing: .04em; line-height: 1; }
 
-/* 8 Footer follows content on phones: the footer already clears the tab bar, so .main needs no second tab-bar gap and does not stretch. */
-.site[data-size='phone'] .main { min-height: 0; flex: 0 0 auto; padding-bottom: 12px !important; }
+/* 8 Sticky footer: .site is a flex column filling the visible height, .main grows (flex 1 0 auto), the footer takes margin-top: auto, so a short page
+   puts the footer at the bottom and a long page is unchanged. The footer padding clears the tab bar, so .main needs no second tab-bar gap.
+   Immersive mode hides SharePoint's chrome, so the full dynamic viewport is the visible height; otherwise a safe 70 percent (no forced scroll). */
+.site { min-height: 70vh; min-height: 70dvh; }
+.site[data-immersive='on'] { min-height: 100vh; min-height: 100dvh; }
+.site[data-size='phone'] .main { min-height: 0; flex: 1 0 auto; padding-bottom: 12px !important; }
+.site .siteFooter { margin-top: auto; }
 .site[data-size='phone']:has([data-section='book']:not([hidden])) .main { padding-bottom: calc(var(--tab-h, 100px) + 96px) !important; }
 /* 9 Month calendar: today is the gold circle only; a selected day gets a rounded outline. */
 .mcCell.mcToday:not(.mcSel) { box-shadow: none; outline: 0; }
@@ -4107,3 +4063,23 @@ $fb-ink: #0f4c5c; $fb-gold: #c9a24d; $fb-edge: #c9d4d9;
 // Buttons keep their own press effects; the keyboard focus ring stays (focus-visible), only pointer focus loses the outline.
 .site button, .site a, .site [role='button'], .site [role='tab'], .site [role='option'], .site label, .site summary, .site input, .site select { -webkit-tap-highlight-color: transparent; }
 .site button:focus:not(:focus-visible), .site [role='button']:focus:not(:focus-visible), .site summary:focus:not(:focus-visible) { outline: none; }
+
+// ---- 1.15.7 scroll performance ----
+// Top bar (phone): the blurred glass lives in a pseudo-element that is always present; only its opacity changes (compositor-only), so the
+// backdrop filter is never rebuilt when the bar flips between "clear over the hero photo" and "glass". The bar itself never has a backdrop-filter.
+.site.site.site[data-size='phone'] .topbar { background: transparent !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; transition: border-color .2s ease; }
+.site.site.site[data-size='phone'] .topbar::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: rgba(250, 250, 247, .78); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: inset 0 -1px 0 rgba(15, 76, 92, .08); opacity: 1; transition: opacity .2s ease-out; }
+.site.site.site[data-size='phone'][data-hero='top'] .topbar::before { opacity: 0; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .site.site.site[data-size='phone'] .topbar::before { background: #fafaf7; } }
+[data-motion='reduce'] .topbar::before { transition: none; }
+// Blur only on the bars, sheets and toasts. Everything else is a plain translucent fill (blur cost scales with area and runs every scrolled frame).
+.hero-blur { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+.site .segmented::before, .datePanel, [data-size='phone'] .datePanel, .bkHours, [data-size='wide'] .bk7Cart, .ckDial, .hero-pill, .shortcuts-hero .shortcut-dot, .photo-action,
+[data-size='phone'] .kpi-card, .site[data-size='phone'][data-hero='top'] .topbar .bell, .msgChatHead, .msgComposer, [data-size='phone'] .dock
+  { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+.datePanel, [data-size='phone'] .datePanel, .bkHours, [data-size='wide'] .bk7Cart, .ckDial { background-color: rgba(255, 255, 255, .9) !important; }
+// One shadow layer on the large cards.
+[data-size='phone'] .kpi-card, .bkHours, [data-size='wide'] .bk7Cart { box-shadow: 0 4px 14px rgba(8, 24, 30, .10) !important; }
+// 1.15.7 smaller page titles (My bookings, Schedule, Book board): match PageHead.
+.site .pageTitle { font-size: 26px !important; font-weight: 700; letter-spacing: -.02em; line-height: 1.15; margin: 6px 0 4px !important; }
+.site[data-size='phone'] .pageTitle { font-size: 22px !important; }

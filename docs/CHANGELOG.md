@@ -1,5 +1,11 @@
 # Changelog
 
+## 27 Nov 2026: staging 1.15.7.0 deployed (scroll, footer, page titles)
+- Scroll jank/flicker: top bar glass now toggles with hysteresis (on > 32 px, off < 8 px), no `--bar-h` change on scroll, blur on a permanent `::before` layer cross-faded by opacity; blur 20 px+saturate -> 12 px and removed from non-floating surfaces; scroll-driven CSS reveals/parallax (`animation-timeline`) and the hero scroll listener removed; single-layer shadows on phone KPI cards, `.bkHours`, wide cart.
+- Sticky footer: `.main` flex 1 0 auto, footer margin-top auto, `.site` min-height 100dvh in immersive mode (70dvh otherwise); desktop Messages shell shorter.
+- Page headers: subtitles under page titles removed (PageHead `lede` no longer rendered; Home's "Open 24 hours" stays); page titles 22 px phone / 26 px wider.
+- Build green. Deployed as TDDAdmin on the developer's OK: AppCatalogVersion 1.15.7.0, bundle `avenue-portal-web-part_098c0c49354e269b0ae3.js`. Checked as automations@ at phone width: Messages shows the smaller title with no subtitle and the footer below the list (not mid-screen). Scroll smoothness not checked on a real device.
+
 ## 27 Nov 2026: staging 1.15.6.0 deployed (past dates, Check in from booking details, logo)
 - Date wheel/week bar: the 14 days before today show greyed (`disabled` prop, aria-disabled, not selectable; the arc rubber-bands and settles on the nearest enabled day; keys skip them) on Book and on My bookings Upcoming. The "Next" tag sits below the bubble on the arc and above the pill on desktop.
 - Booking details sheet: "Check in" button for approved bookings in the check-in window (`eligibleBookings`); opens Check in with that booking pre-picked (`initialBookingId`).
