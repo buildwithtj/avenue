@@ -31,4 +31,4 @@ export function artPhoto(kind: string): string | undefined {
   return k === 'home' ? undefined : PHOTOS[k];
 }
 
-export { LOGO_VIEWBOX as siteLogoViewBox, LOGO_SERIF as siteLogoSerif, LOGO_SANS as siteLogoSans, LOGO_DOT as siteLogoDot } from './logo.generated';
+export { LOGO_VIEWBOX as siteLogoViewBox, LOGO_RATIO as siteLogoRatio, LOGO_SERIF as siteLogoSerif, LOGO_SANS as siteLogoSans, LOGO_DOT as siteLogoDot } from './logo.generated';

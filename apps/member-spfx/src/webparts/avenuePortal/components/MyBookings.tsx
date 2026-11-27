@@ -15,6 +15,7 @@ import ds from './DateSelect.module.scss';
 import { DateArc } from './DateArc';
 import { DateWeek } from './DateWeek';
 import { useSize } from './motion';
+import { eligibleBookings } from '../../../avenue/checklist';
 import { agendaGroups, buildIcs, icsFileName, monthStrip, phaseView } from '../../../avenue/ui-view';
 import { EquipmentArt } from './EquipmentArt';
 import { BookingProgress, RefIcon, SiteEyebrow } from './RefUi';
@@ -27,7 +28,8 @@ export interface IMyBookingsProps {
   /** Equipment catalogue, to show names and artwork instead of ids. */
   resources?: IResource[];
   onBook: () => void;
-  onCheckIn?: () => void;
+  /** Opens Check in; with a booking id it pre-picks that booking. */
+  onCheckIn?: (bookingId?: string) => void;
   /** From ?booking=<id>&action=extend: open this booking's drawer (and its Extend dialog). */
   deepLink?: { bookingId: string; action?: string };
 }
@@ -205,6 +207,7 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
         footer={(
           <div className={s.mbdActs}>
             {extendable(r) && <button type="button" className={`${s.mbdAct} ${s.mbdPrimary}`} onClick={() => openExtend(r)}>Extend</button>}
+            {props.onCheckIn && tabOn('checkin') && eligibleBookings([r], Date.now()).length > 0 && <button type="button" className={`${s.mbdAct} ${extendable(r) ? '' : s.mbdPrimary}`} onClick={() => { setOpenId(undefined); props.onCheckIn!(r.requestId); }}><RefIcon name="clipboard-check" size={17} />Check in</button>}
             <button type="button" className={s.mbdAct} aria-label="Add to calendar" onClick={() => addToCalendar(r)}><RefIcon name="calendar-plus" size={17} />Calendar</button>
             {cancellable(r) && <button type="button" className={s.mbdAct} onClick={() => { setDone(undefined); setCancelMsg(''); setConfirm(r); }} aria-label={canSelfCancel(r.startUtc, Date.now()) ? 'Cancel booking' : 'Ask to cancel'}><RefIcon name="x-circle" size={17} />{canSelfCancel(r.startUtc, Date.now()) ? 'Cancel' : 'Ask to cancel'}</button>}
           </div>
@@ -278,7 +281,7 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
               <button type="button" aria-pressed={view === 'upcoming'} onClick={() => setView('upcoming')}>Upcoming</button>
               <button type="button" aria-pressed={view === 'past'} onClick={() => setView('past')}>Past</button>
             </div>
-            {props.onCheckIn && tabOn('checkin') && <button type="button" className={`${s.btn} ${s.btnTonal}`} onClick={props.onCheckIn}><RefIcon name="clipboard-check" size={17} />Check in</button>}
+            {props.onCheckIn && tabOn('checkin') && <button type="button" className={`${s.btn} ${s.btnTonal}`} onClick={() => props.onCheckIn!()}><RefIcon name="clipboard-check" size={17} />Check in</button>}
           </div>
         </div>
       </div>
@@ -291,7 +294,9 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
         <div className={s.stripHead}>{size === 'phone' ? <b>{new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', month: 'long', year: 'numeric' }).format(new Date(`${stripValue}T12:00:00Z`))}</b> : <span />}<button type="button" onClick={() => pickStripDay(todayYmd)}>Today</button></div>
         {(() => {
           const stripLabel: string = view === 'past' ? 'Last 31 days, booked days marked' : 'Next 31 days, booked days marked';
-          const days: string[] = strip.map(d => d.ymd);
+          const lead: string[] = view === 'upcoming' ? Array.from({ length: 14 }, (_, i) => addDays(todayYmd, i - 14)) : [];
+          const days: string[] = lead.concat(strip.map(d => d.ymd));
+          const past = view === 'upcoming' ? (ymd: string): boolean => ymd < todayYmd : undefined;
           const marker = (ymd: string): string | undefined => { const d = byDay.get(ymd); return d && d.booked ? STRIP_TONE[d.status || ''] : undefined; };
           const describe = (ymd: string): string => {
             const d = byDay.get(ymd);
@@ -310,8 +315,8 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
             );
           };
           return size === 'phone'
-            ? <div className={s.datePanel} data-idle><DateArc days={days} value={stripValue} onChange={pickStripDay} renderDay={cell} markers={marker} describe={describe} label={stripLabel} today={todayYmd} /></div>
-            : <div className={ds.weekWrap}><DateWeek days={days} value={stripValue} onChange={pickStripDay} renderDay={cell} markers={marker} describe={describe} label={stripLabel} today={todayYmd} /></div>;
+            ? <div className={s.datePanel} data-idle><DateArc days={days} value={stripValue} onChange={pickStripDay} renderDay={cell} markers={marker} describe={describe} label={stripLabel} today={todayYmd} disabled={past} /></div>
+            : <div className={ds.weekWrap}><DateWeek days={days} value={stripValue} onChange={pickStripDay} renderDay={cell} markers={marker} describe={describe} label={stripLabel} today={todayYmd} disabled={past} /></div>;
         })()}
 
         {!requests.data && !requests.error && <div className={s.skeleton} style={{ height: 160 }} role="status" aria-label="Loading your bookings" />}

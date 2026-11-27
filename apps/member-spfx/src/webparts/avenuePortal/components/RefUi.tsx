@@ -1,6 +1,6 @@
 import * as React from 'react';
 import r from './Ref.module.scss';
-import { homeImage, siteLogoDot, siteLogoSans, siteLogoSerif, siteLogoViewBox } from '../assets';
+import { homeImage, siteLogoDot, siteLogoRatio, siteLogoSans, siteLogoSerif, siteLogoViewBox } from '../assets';
 
 // Reference console building blocks (markup lifted from https://culina-rust.vercel.app/; classes in Ref.module.scss).
 // Icons are the reference's own set (lucide, 24 grid, 2 px stroke), drawn inline so there is no icon font to load.
@@ -63,10 +63,10 @@ export function SiteEyebrow(props: { title: string }): React.ReactElement {
   if (!/^flavors\b/i.test(name)) { return <div className={`${r.eyebrow} ${r['page-eyebrow']}`}>{name}</div>; }
   return (
     <div className={`${r.eyebrow} ${r['page-eyebrow']} ${r['page-logo']}`}>
-      <svg className={r['site-logo']} viewBox={siteLogoViewBox} role="img" aria-label={name} focusable="false">
+      <svg className={r['site-logo']} viewBox={siteLogoViewBox} preserveAspectRatio="xMidYMid meet" style={{ aspectRatio: String(siteLogoRatio) }} role="img" aria-label={name} focusable="false">
         <path d={siteLogoSerif} fill="currentColor" />
         <circle cx={siteLogoDot.cx} cy={siteLogoDot.cy} r={siteLogoDot.r} fill="#C9A24D" />
-        <path d={siteLogoSans} fill="#4b5563" />
+        <path d={siteLogoSans} fill="#33414d" />
       </svg>
     </div>
   );

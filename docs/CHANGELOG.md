@@ -1,5 +1,11 @@
 # Changelog
 
+## 27 Nov 2026: staging 1.15.6.0 deployed (past dates, Check in from booking details, logo)
+- Date wheel/week bar: the 14 days before today show greyed (`disabled` prop, aria-disabled, not selectable; the arc rubber-bands and settles on the nearest enabled day; keys skip them) on Book and on My bookings Upcoming. The "Next" tag sits below the bubble on the arc and above the pill on desktop.
+- Booking details sheet: "Check in" button for approved bookings in the check-in window (`eligibleBookings`); opens Check in with that booking pre-picked (`initialBookingId`).
+- Wordmark: 26 px phone / 28 px desktop, sized by its aspect ratio (fixes the right shift), CULINARY HUB larger (19 vs 15 units), weight 650, darker.
+- 1.15.6: phone `.head-copy` spans the head row, so the wordmark is centred on the page (My bookings wraps its head row; it sat 31 px off). Build green (469 tests). Deployed as TDDAdmin: AppCatalogVersion 1.15.6.0, bundle `avenue-portal-web-part_3eaa209de531c1966864.js`. Checked as automations@ at phone width: My bookings wordmark centred (181 px each side), arc shows greyed days before today on the left, Next tag below the bubble. Not checked in a browser: the Check in button in the sheet (unit-tested), Book/Schedule logo position, desktop.
+
 ## 27 Nov 2026: staging 1.15.4.0 deployed (date wheel, booking sheet, logo, tap highlight)
 - Date selection: phone uses the new `DateArc` (quarter-circle track of radius 1.4 x width, recomputed on resize; the track stays fixed and only the dates move; drag/fling/snap, 5 ms `buzz('tick')` per date crossing the centre; listbox + arrow keys; flat row under reduced motion) on Book and My bookings. Mid/wide use `DateWeek` (7-day pill bar, week arrows, month button with a month-grid popover). Files `DateArc.tsx`, `DateWeek.tsx`, `DateSelect.module.scss`. 1.15.4 hides dates by angle as well as x (1.15.3 showed wrapped "ghost" dates).
 - Booking details sheet redesigned (`MyBookings.tsx` `drawer`, `mbd*` classes): status pill, timeline card with Entry/Start/End/Clean-up stops, equipment rows name left / 104x78 photo right, more than 5 units collapse behind "Show all N items", message card, rounded "More details", pill buttons with icons.

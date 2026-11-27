@@ -236,7 +236,9 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
   };
   // Pages opened from the More sheet keep "More" lit on the phone tab bar; any other navigation clears it.
   const [viaMore, setViaMore] = React.useState<boolean>(false);
-  const setTab = (t: TabKey): void => { if (tabOn(t, isDemo)) { go(t); setMenu(false); setViaMore(false); if (t !== 'bookings') { setDeep(undefined); } } };
+  // Booking details -> Check in for that booking (the checklist page pre-picks it).
+  const [checkInFor, setCheckInFor] = React.useState<string | undefined>();
+  const setTab = (t: TabKey): void => { if (t !== 'checkin') { setCheckInFor(undefined); } if (tabOn(t, isDemo)) { go(t); setMenu(false); setViaMore(false); if (t !== 'bookings') { setDeep(undefined); } } };
   const goFromMore = (t: TabKey): void => { setTab(t); setViaMore(true); };
   const [prefs, setPrefs] = React.useState<IFeedbackPrefs>(readPrefs);
   const setPref = (k: keyof IFeedbackPrefs, v: boolean): void => { const n: IFeedbackPrefs = { ...prefs, [k]: v }; setPrefs(n); writePrefs(n); if (v && k === 'sound') { chime('info'); } if (v && k === 'haptics') { buzz('success'); } };
@@ -409,7 +411,7 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
       case 'home': return <HomeView source={source} data={d} userEmail={email} userName={userDisplayName} isDemo={isDemo} onNavigate={setTab} onOpenBooking={openBooking} onBook={(m) => { setPreMode(m); setPreUnit(undefined); setBookKey(n => n + 1); setTab('book'); }} notices={notices.data} />;
       case 'book': return <BookFlow key={bookKey} preselectMode={preMode} preselectUnit={preUnit} source={source} facility={d.facility} resources={d.resources} tables={d.tables} userEmail={email} onSent={sent} onNavigate={setTab} />;
       case 'calendar': return <CalendarView source={source} facility={d.facility} resources={d.resources} onBook={tabOn('book') ? (unitId?: string) => { setPreMode(undefined); setPreUnit(unitId); setBookKey(n => n + 1); setTab('book'); } : undefined} />;
-      case 'bookings': return <MyBookings source={source} facility={d.facility} resources={d.resources} onBook={() => setTab('book')} onCheckIn={() => setTab('checkin')} deepLink={deep} />;
+      case 'bookings': return <MyBookings source={source} facility={d.facility} resources={d.resources} onBook={() => setTab('book')} onCheckIn={(id?: string) => { setCheckInFor(id); setTab('checkin'); }} deepLink={deep} />;
       case 'notices': return <NoticesView source={source} facility={d.facility} notices={notices.data} />;
       default: {
         const h = PAGE_HEAD[t];
@@ -426,7 +428,7 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
           )}
         <div className={s.container}>
           <div className={`${s.legacy} ${s.pgBody}`}>
-            {t === 'checkin' && <CheckInView source={source} facility={d.facility} rosterOn={tabOn('team', isDemo)} resources={d.resources} />}
+            {t === 'checkin' && <CheckInView key={checkInFor || 'any'} source={source} facility={d.facility} rosterOn={tabOn('team', isDemo)} resources={d.resources} initialBookingId={checkInFor} />}
             {t === 'documents' && <DocumentsView source={source} timeZone={d.facility.timeZone} staffUpload={staffUpload} userEmail={email} />}
             {t === 'billing' && <BillingView isDemo={isDemo} source={source} userEmail={email} timeZone={d.facility.timeZone} mockPayments={MOCK_PAYMENTS} />}
             {t === 'membership' && <MembershipView source={source} userEmail={email} onNavigate={setTab} />}

@@ -253,6 +253,19 @@ describe('my bookings', () => {
     expect(rows()).toBe(7);
     expect(button(/^Show fewer$/)?.getAttribute('aria-expanded')).toBe('true');
   });
+  it('the details sheet offers Check in only for an approved booking starting within 24 h, and passes its id', async () => {
+    const soon: IMyRequest = { ...req, requestId: 'req-soon', startUtc: new Date(Date.now() + 3 * 3600000).toISOString(), endUtc: new Date(Date.now() + 6 * 3600000).toISOString() };
+    const picked: (string | undefined)[] = [];
+    const two = { listMyRequests: async () => [soon, req], submitCancel: async () => undefined, submitExtension: async () => undefined } as never;
+    await act(async () => { root.render(<MyBookings source={two} facility={facility} resources={resources} onBook={() => undefined} onCheckIn={id => picked.push(id)} />); });
+    await flush();
+    await click(document.querySelector('[data-booking="req-1"] button'));
+    expect(button(/^Check in$/, document.querySelector('[role="dialog"]') as HTMLElement)).toBeUndefined();
+    await act(async () => { document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })); });
+    await click(document.querySelector('[data-booking="req-soon"] button'));
+    await click(button(/^Check in$/, document.querySelector('[role="dialog"]') as HTMLElement));
+    expect(picked).toEqual(['req-soon']);
+  });
   it('the Upcoming and Past switch changes the list', async () => {
     await mount();
     await click(button(/^Past$/));

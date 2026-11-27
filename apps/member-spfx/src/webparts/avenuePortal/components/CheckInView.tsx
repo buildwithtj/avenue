@@ -22,6 +22,8 @@ export interface ICheckInViewProps {
   rosterOn?: boolean;
   /** Catalogue, so bookings show unit names, never ids. */
   resources?: IResource[];
+  /** Opened from a booking's details: pre-pick this booking when it can take a checklist. */
+  initialBookingId?: string;
 }
 
 interface ICheckInData {
@@ -57,7 +59,9 @@ export default function CheckInView(props: ICheckInViewProps): React.ReactElemen
   // Pre-pick the booking and the checklist still to do, once the data arrives. The member can change both.
   React.useEffect(() => {
     if (!data.data || bookingId) { return; }
-    const pick: IMyRequest | undefined = defaultBooking(eligibleBookings(data.data.bookings, Date.now()), Date.now());
+    const eligible: IMyRequest[] = eligibleBookings(data.data.bookings, Date.now());
+    const asked: IMyRequest | undefined = props.initialBookingId ? eligible.filter(b => b.requestId === props.initialBookingId)[0] : undefined;
+    const pick: IMyRequest | undefined = asked || defaultBooking(eligible, Date.now());
     if (pick) {
       setBookingId(pick.requestId);
       setKind(suggestKind(pick.requestId, data.data.history));

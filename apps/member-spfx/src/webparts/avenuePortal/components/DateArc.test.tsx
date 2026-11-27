@@ -16,10 +16,10 @@ let host: HTMLDivElement; let root: Root; let got: string[];
 beforeEach(() => { host = document.createElement('div'); document.body.appendChild(host); root = createRoot(host); got = []; });
 afterEach(() => { act(() => root.unmount()); host.remove(); delete (window as unknown as { matchMedia?: unknown }).matchMedia; });
 
-const Harness = (p: { start?: string; Comp?: typeof DateArc }): React.ReactElement => {
+const Harness = (p: { start?: string; Comp?: typeof DateArc; off?: boolean }): React.ReactElement => {
   const [v, setV] = React.useState<string>(p.start || '2026-11-27');
   const C = p.Comp || DateArc;
-  return <C days={DAYS} value={v} label="Pick a day" today="2026-11-27" onChange={d => { got.push(d); setV(d); }} renderDay={d => <b>{d.slice(8)}</b>} />;
+  return <C days={DAYS} value={v} label="Pick a day" today="2026-11-27" disabled={p.off ? (d => d < '2026-11-27') : undefined} onChange={d => { got.push(d); setV(d); }} renderDay={d => <b>{d.slice(8)}</b>} />;
 };
 const draw = async (el: React.ReactElement): Promise<void> => { await act(async () => { root.render(el); }); };
 const opts = (): HTMLElement[] => Array.from(host.querySelectorAll('[role="option"]'));
@@ -69,6 +69,38 @@ describe('DateArc', () => {
     expect(got).toEqual(['2026-11-28']);
     await key('ArrowRight');
     expect(got[1]).toBe('2026-11-29');
+  });
+});
+
+describe('DateArc disabled days', () => {
+  it('greys them, ignores taps, and arrow keys never leave the first enabled day', async () => {
+    setMotion(false);
+    await draw(<Harness off />);
+    expect(opts()[0].getAttribute('aria-disabled')).toBe('true');
+    expect(opts()[1].getAttribute('aria-disabled')).toBeNull();
+    await act(async () => { opts()[0].click(); });
+    await wait(400);
+    await key('ArrowLeft'); await wait(400);
+    await key('Home'); await wait(400);
+    expect(got).toEqual([]);
+    expect(sel()).toBe('Friday, November 27');
+    await key('ArrowRight'); await wait(450);
+    expect(got).toEqual(['2026-11-28']);
+  });
+
+  it('flat row and week bar also refuse disabled days', async () => {
+    setMotion(true);
+    await draw(<Harness off />);
+    await act(async () => { opts()[0].click(); });
+    await key('ArrowLeft');
+    expect(got).toEqual([]);
+    act(() => root.unmount()); root = createRoot(host);
+    await draw(<Harness off Comp={DateWeek} />);
+    await act(async () => { (host.querySelector('[aria-label="Previous week"]') as HTMLElement).click(); });
+    const first = host.querySelector('[aria-label="Pick a day"] button[aria-label="Thursday, November 26"]') as HTMLElement;
+    expect(first.getAttribute('aria-disabled')).toBe('true');
+    await act(async () => { first.click(); });
+    expect(got).toEqual([]);
   });
 });
 

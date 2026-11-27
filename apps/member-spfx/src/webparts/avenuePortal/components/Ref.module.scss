@@ -977,5 +977,9 @@ $ico-sh: 0 10px 20px rgba(8, 24, 30, .28), 0 2px 4px rgba(8, 24, 30, .2), inset 
 [data-size='phone'] .head-copy { flex: 0 0 auto; }
 /* 1.15.3 facility wordmark in place of the eyebrow text: 20 px tall (18 on phone), no side dots (the mark has its own). */
 .eyebrow.page-eyebrow.page-logo::before, .eyebrow.page-eyebrow.page-logo::after { display: none; }
-.site-logo { display: block; height: 20px; width: auto; color: #0f4c5c; }
-[data-size='phone'] .site-logo { height: 18px; }
+.site-logo { display: block; flex: none; height: 28px; width: auto; max-width: 100%; color: #0f4c5c; }
+[data-size='phone'] .site-logo { height: 26px; }
+.eyebrow.page-eyebrow.page-logo { padding: 0; margin-left: auto; margin-right: auto; gap: 0; }
+[data-size='wide'] .eyebrow.page-eyebrow.page-logo { margin-left: 0; }
+/* Phone: the page head block spans the row so the centred wordmark is centred on the page (My bookings wraps its head row). */
+[data-size='phone'] .head-copy { width: 100%; }

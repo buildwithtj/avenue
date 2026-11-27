@@ -13,7 +13,7 @@ const shiftMonth = (vm: string, k: number): string => { const d: Date = new Date
  * Same props as DateArc so a page can swap the two by screen size.
  */
 export function DateWeek(props: IDateArcProps): React.ReactElement {
-  const { days, value, onChange, renderDay, label, markers, today, describe } = props;
+  const { days, value, onChange, renderDay, label, markers, today, describe, disabled } = props;
   const n: number = days.length;
   const idx: number = Math.max(0, days.indexOf(value));
   const maxStart: number = Math.max(0, n - 7);
@@ -59,7 +59,8 @@ export function DateWeek(props: IDateArcProps): React.ReactElement {
     else if (e.key === 'Home') { e.preventDefault(); move(first); }
     else if (e.key === 'End') { e.preventDefault(); move(`${vm}-${count < 10 ? '0' : ''}${count}`); }
   };
-  const pickCell = (c: string): void => { if (has.has(c)) { onChange(c); close(true); } };
+  const off = (d: string): boolean => !!(disabled && disabled(d));
+  const pickCell = (c: string): void => { if (has.has(c) && !off(c)) { onChange(c); close(true); } };
 
   return (
     <div className={ds.week} ref={wrap} onKeyDown={e => { if (open && e.key === 'Escape') { e.stopPropagation(); close(true); } }}>
@@ -70,8 +71,8 @@ export function DateWeek(props: IDateArcProps): React.ReactElement {
       </div>
       <div className={ds.pills} role="group" aria-label={label}>
         {days.slice(s0, s0 + 7).map(d => (
-          <button key={d} type="button" aria-pressed={d === value} aria-label={longDay(d) + (describe ? describe(d) : '')}
-            className={`${ds.cell} ${ds.pill} ${d === today ? ds.today : ''} ${(markers && markers(d)) || ''} ${d === value ? ds.sel : ''}`} onClick={() => onChange(d)}>
+          <button key={d} type="button" aria-pressed={d === value} aria-disabled={off(d) || undefined} aria-label={longDay(d) + (describe ? describe(d) : '')}
+            className={`${ds.cell} ${ds.pill} ${off(d) ? ds.off : ''} ${d === today ? ds.today : ''} ${(markers && markers(d)) || ''} ${d === value ? ds.sel : ''}`} onClick={() => { if (!off(d)) { onChange(d); } }}>
             {renderDay(d, d === value)}
           </button>
         ))}
@@ -86,7 +87,7 @@ export function DateWeek(props: IDateArcProps): React.ReactElement {
           <div className={ds.grid} role="group" aria-label={monthOf(vm)} onKeyDown={onGridKey}>
             {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((x, i) => <span key={i} className={ds.dow} aria-hidden="true">{x}</span>)}
             {cells.map((c, i) => c === undefined ? <i key={`b${i}`} /> : (
-              <button key={c} type="button" data-d={c} tabIndex={c === tab ? 0 : -1} aria-pressed={c === value} aria-disabled={!has.has(c)} aria-label={longDay(c)}
+              <button key={c} type="button" data-d={c} tabIndex={c === tab ? 0 : -1} aria-pressed={c === value} aria-disabled={!has.has(c) || off(c)} aria-label={longDay(c)}
                 className={`${ds.mcell} ${c === today ? ds.today : ''} ${has.has(c) ? (markers && markers(c)) || '' : ''} ${c === value ? ds.sel : ''}`} onClick={() => pickCell(c)}>{+c.slice(8)}</button>
             ))}
           </div>

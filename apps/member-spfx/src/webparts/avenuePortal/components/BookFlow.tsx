@@ -406,11 +406,13 @@ export default function BookFlow(props: IBookFlowProps): React.ReactElement {
                 <label className={s.bkCalBtn} title="Pick any date"><RefIcon name="calendar-days" size={18} /><span>Calendar</span><input type="date" min={today} value={day} aria-label="Pick any date" onChange={e => { if (e.target.value && e.target.value >= today) { pickDay(e.target.value); } }} /></label>
               </div>
               {(() => {
-                const list: string[] = dayOpts.indexOf(day) < 0 ? dayOpts.concat(day) : dayOpts;
+                const base: string[] = dayOpts.indexOf(day) < 0 ? dayOpts.concat(day) : dayOpts;
+                const list: string[] = Array.from({ length: 14 }, (_, i) => addDays(today, i - 14)).concat(base); // past days stay visible but greyed
+                const past = (d: string): boolean => d < today;
                 const cell = (d: string): React.ReactNode => <><span className={ds.wd}>{fmt(d, { weekday: 'short' })}</span><b className={ds.num}>{fmt(d, { day: 'numeric' })}</b></>;
                 return size === 'phone'
-                  ? <div className={s.bkDateCard}><DateArc days={list} value={day} onChange={pickDay} renderDay={cell} label="Pick a day" today={today} /></div>
-                  : <DateWeek days={list} value={day} onChange={pickDay} renderDay={cell} label="Pick a day" today={today} />;
+                  ? <div className={s.bkDateCard}><DateArc days={list} value={day} onChange={pickDay} renderDay={cell} label="Pick a day" today={today} disabled={past} /></div>
+                  : <DateWeek days={list} value={day} onChange={pickDay} renderDay={cell} label="Pick a day" today={today} disabled={past} />;
               })()}
 
               <div className={s.bkHours}>

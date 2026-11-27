@@ -21,14 +21,19 @@ export interface IDateArcProps {
   today?: string;
   /** Extra words after the date in each option's spoken label (e.g. ", 2 bookings approved"). */
   describe?: (day: string) => string;
+  /** Days shown greyed and not selectable (e.g. past days). The wheel never settles on one. */
+  disabled?: (day: string) => boolean;
 }
 
 const BW: number = 56;
 const BH: number = 64;
-const TOP: number = 22; // room above the bubbles for the caret and the "Next" tag
+const TOP: number = 22; // room above the bubbles for the caret
 const SPAN: number = 6.4; // dates across the visible width
 const TH_MAX: number = Math.asin(0.5 / 1.4); // angle of the screen edge: R = 1.4 * width, so it never depends on the width
 const clamp = (v: number, lo: number, hi: number): number => Math.min(hi, Math.max(lo, v));
+const OVER: number = 0.4; // days the wheel may be dragged past the first/last enabled day (rubber-band limit)
+/** Rubber band: free inside [lo, hi], resists asymptotically to OVER days beyond. */
+const band = (v: number, lo: number, hi: number): number => v < lo ? lo - OVER * (1 - Math.exp((v - lo) / OVER)) : v > hi ? hi + OVER * (1 - Math.exp((hi - v) / OVER)) : v;
 
 /**
  * Phone date wheel: dates ride a fixed quarter-ish circle (radius 1.4 x width, bowing upward); only the dates move.
@@ -36,8 +41,11 @@ const clamp = (v: number, lo: number, hi: number): number => Math.min(hi, Math.m
  * Reduced motion (OS setting or [data-motion='reduce']): a plain scroll-snap row.
  */
 export function DateArc(props: IDateArcProps): React.ReactElement {
-  const { days, value, onChange, renderDay, label, markers, today, describe } = props;
+  const { days, value, onChange, renderDay, label, markers, today, describe, disabled } = props;
   const n: number = days.length;
+  const isOff = (i: number): boolean => !!(disabled && days[i] !== undefined && disabled(days[i]));
+  let lo: number = 0; while (lo < n - 1 && isOff(lo)) { lo++; }
+  let hi: number = n - 1; while (hi > lo && isOff(hi)) { hi--; }
   const uid: string = React.useId();
   const rootRef: React.RefObject<HTMLDivElement> = React.useRef<HTMLDivElement>(null);
   const items: React.MutableRefObject<(HTMLDivElement | null)[]> = React.useRef<(HTMLDivElement | null)[]>([]);
@@ -64,10 +72,10 @@ export function DateArc(props: IDateArcProps): React.ReactElement {
   const ppd: number = R * step; // px of finger travel per date
   const yc: number = TOP + BH / 2;
   const yEdge: number = yc + R * (1 - Math.cos(TH_MAX));
-  const H: number = Math.ceil(TOP + BH + R * (1 - Math.cos(TH_MAX)) + 10);
+  const H: number = Math.ceil(TOP + BH + R * (1 - Math.cos(TH_MAX)) + 26); // + room under the bubbles for the "Next" tag
 
-  const st = React.useRef({ days, n, value, onChange, W, R, step, ppd });
-  st.current = { days, n, value, onChange, W, R, step, ppd };
+  const st = React.useRef({ days, n, value, onChange, W, R, step, ppd, lo, hi, off: isOff });
+  st.current = { days, n, value, onChange, W, R, step, ppd, lo, hi, off: isOff };
   const pos = React.useRef<number>(Math.max(0, days.indexOf(value))); // continuous index under the caret
   const tgt = React.useRef<number>(pos.current);
   const lastC = React.useRef<number>(pos.current);
@@ -91,9 +99,10 @@ export function DateArc(props: IDateArcProps): React.ReactElement {
       if (Math.abs(th) > Math.PI / 2 || Math.abs(x) > w0 / 2 + BW) { if (el.style.visibility !== 'hidden') { el.style.visibility = 'hidden'; } return; }
       const t: number = Math.min(1, Math.abs(th) / TH_MAX);
       el.style.visibility = 'visible';
-      el.style.opacity = String(1 - 0.65 * t);
+      const off: boolean = st.current.off(i);
+      el.style.opacity = String((1 - 0.65 * t) * (off ? 0.38 : 1));
       el.style.transform = `translate3d(${x.toFixed(1)}px, ${(r0 * (1 - Math.cos(th))).toFixed(1)}px, 0) rotate(${th.toFixed(4)}rad) scale(${(1 - 0.25 * t).toFixed(3)})`;
-      el.classList.toggle(ds.sel, i === c);
+      el.classList.toggle(ds.sel, i === c && !off);
     });
     // Haptic rule: one 5 ms tick each time a new date crosses the centre while the member drags or it flings (at most one per 24 ms).
     if (c !== lastC.current) {
@@ -111,8 +120,16 @@ export function DateArc(props: IDateArcProps): React.ReactElement {
   /** Spring-like settle (ease-out, 250 ms plus 45 ms per date travelled) to a whole index, then report it. */
   const go = (target: number, quiet: boolean = false, commitIt: boolean = true): void => {
     stop();
-    const t: number = clamp(Math.round(target), 0, st.current.n - 1);
     const from: number = pos.current;
+    // Nearest enabled day to the target, preferring the direction of travel.
+    const tc: number = clamp(Math.round(target), 0, st.current.n - 1);
+    const dir: number = target >= from ? 1 : -1;
+    let t: number = tc;
+    for (let k: number = 0; k < st.current.n; k++) {
+      const a: number = tc + dir * k; const b: number = tc - dir * k;
+      if (a >= 0 && a < st.current.n && !st.current.off(a)) { t = a; break; }
+      if (b >= 0 && b < st.current.n && !st.current.off(b)) { t = b; break; }
+    }
     tgt.current = t;
     silent.current = quiet;
     if (Math.abs(t - from) < 0.001) { pos.current = t; paint(); silent.current = false; if (commitIt) { commit(t); } return; }
@@ -155,7 +172,7 @@ export function DateArc(props: IDateArcProps): React.ReactElement {
       e.preventDefault();
       stop();
       silent.current = false;
-      pos.current = clamp(pos.current + e.deltaX / st.current.ppd, 0, st.current.n - 1);
+      pos.current = band(pos.current + e.deltaX / st.current.ppd, st.current.lo, st.current.hi);
       schedule();
       window.clearTimeout(timer);
       timer = window.setTimeout(() => go(pos.current), 120);
@@ -183,7 +200,7 @@ export function DateArc(props: IDateArcProps): React.ReactElement {
     const dt: number = now - d.lastT;
     if (dt > 0) { d.v = 0.7 * d.v + 0.3 * (-(e.clientX - d.lastX) / st.current.ppd / dt); }
     d.lastX = e.clientX; d.lastT = now;
-    pos.current = clamp(d.p0 - dx / st.current.ppd, 0, st.current.n - 1);
+    pos.current = band(d.p0 - dx / st.current.ppd, st.current.lo, st.current.hi);
     schedule();
   };
   const onUp = (e: React.PointerEvent<HTMLDivElement>): void => {
@@ -201,11 +218,13 @@ export function DateArc(props: IDateArcProps): React.ReactElement {
 
   const choose = (i: number): void => {
     const t: number = clamp(i, 0, n - 1);
+    if (isOff(t)) { return; }
     if (flat) { if (days[t] && days[t] !== value) { onChange(days[t]); } } else { go(t); }
   };
   const onKey = (e: React.KeyboardEvent<HTMLDivElement>): void => {
     const cur: number = flat ? Math.max(0, days.indexOf(value)) : tgt.current;
-    const to: number | undefined = e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? cur - 1 : e.key === 'ArrowRight' || e.key === 'ArrowDown' ? cur + 1 : e.key === 'Home' ? 0 : e.key === 'End' ? n - 1 : undefined;
+    const walk = (dir: number): number => { let j: number = cur + dir; while (j >= 0 && j < n && isOff(j)) { j += dir; } return j >= 0 && j < n ? j : cur; };
+    const to: number | undefined = e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? walk(-1) : e.key === 'ArrowRight' || e.key === 'ArrowDown' ? walk(1) : e.key === 'Home' ? lo : e.key === 'End' ? hi : undefined;
     if (to === undefined) { return; }
     e.preventDefault();
     choose(to);
@@ -219,8 +238,8 @@ export function DateArc(props: IDateArcProps): React.ReactElement {
       {!flat && <svg className={ds.guide} width={W} height={H} aria-hidden="true"><path d={`M0 ${yEdge.toFixed(1)} A ${R.toFixed(1)} ${R.toFixed(1)} 0 0 1 ${W} ${yEdge.toFixed(1)}`} /></svg>}
       {!flat && <i className={ds.caret} aria-hidden="true" />}
       {days.map((d, i) => (
-        <div key={d} id={`${uid}${d}`} role="option" aria-selected={d === value} aria-label={longDay(d) + (describe ? describe(d) : '')} ref={el => { items.current[i] = el; }}
-          className={`${ds.cell} ${ds.bub} ${d === today ? ds.today : ''} ${(markers && markers(d)) || ''} ${flat && d === value ? ds.sel : ''}`}
+        <div key={d} id={`${uid}${d}`} role="option" aria-selected={d === value} aria-disabled={isOff(i) || undefined} aria-label={longDay(d) + (describe ? describe(d) : '')} ref={el => { items.current[i] = el; }}
+          className={`${ds.cell} ${ds.bub} ${d === today ? ds.today : ''} ${isOff(i) ? ds.off : ''} ${(markers && markers(d)) || ''} ${flat && d === value ? ds.sel : ''}`}
           onClick={() => { if (!suppress.current) { choose(i); } }}>
           {renderDay(d, d === value)}
         </div>

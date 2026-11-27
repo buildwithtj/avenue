@@ -15,7 +15,10 @@ $edge: rgba(15, 76, 92, .14);
 .wd { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; line-height: 13px; color: #5b6370; }
 .num { font-size: 22px; font-weight: 800; line-height: 24px; font-variant-numeric: tabular-nums; }
 .time { font-size: 12px; font-weight: 700; line-height: 13px; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.tag { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); padding: 1px 6px; border-radius: 999px; background: $gold; color: $text; font-size: 12px; font-style: normal; font-weight: 800; line-height: 1.3; white-space: nowrap; }
+.tag { position: absolute; top: calc(100% + 4px); left: 50%; transform: translateX(-50%); padding: 1px 6px; border-radius: 999px; background: $gold; color: $text; font-size: 12px; font-style: normal; font-weight: 800; line-height: 1.3; white-space: nowrap; }
+// disabled (past) day: greyed, flat, not clickable
+.off { opacity: .38; box-shadow: none; cursor: default; color: #5b6370; }
+.off.sel { background: #fff; border-color: $edge; box-shadow: none; color: #5b6370; .wd { color: #5b6370; } }
 .today::after { content: ''; position: absolute; bottom: 4px; left: 50%; margin-left: -3px; width: 6px; height: 6px; border-radius: 50%; background: $gold; }
 
 // booked-day states (My bookings)
@@ -39,13 +42,14 @@ $edge: rgba(15, 76, 92, .14);
 // ---- desktop: week bar ----
 .weekWrap { margin: 18px 0 8px; }
 .week { position: relative; margin: 0 0 14px; }
-.weekHead { position: relative; display: flex; align-items: center; gap: 6px; margin-bottom: 14px; }
+.weekHead { position: relative; display: flex; align-items: center; gap: 6px; margin-bottom: 26px; }
 .monthBtn { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 12px; border: 1px solid $edge; border-radius: 12px; background: #fff; color: $ink; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer; &::after { content: ''; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; } }
 .navBtn { width: 36px; height: 36px; border: 1px solid $edge; border-radius: 12px; background: #fff; color: $ink; font: inherit; font-size: 20px; line-height: 1; cursor: pointer; &:disabled { opacity: .35; cursor: default; } }
 .navBtn:first-of-type { margin-left: auto; }
 .monthBtn:focus-visible, .navBtn:focus-visible, .pill:focus-visible, .mcell:focus-visible { outline: 2px solid $gold; outline-offset: 2px; }
 .pills { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
 .pill { width: 100%; min-height: 64px; border-radius: 14px; }
+.pill .tag { top: auto; bottom: calc(100% + 4px); } // week bar: tag above the pill
 
 // ---- desktop: month popover ----
 .pop { position: absolute; z-index: 30; top: 42px; left: 0; width: 300px; max-width: 100%; padding: 12px; border: 1px solid $edge; border-radius: 16px; background: #fff; box-shadow: 0 16px 40px rgba(15, 76, 92, .18); }
