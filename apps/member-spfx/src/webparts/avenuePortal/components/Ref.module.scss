@@ -989,3 +989,6 @@ $ico-sh: 0 10px 20px rgba(8, 24, 30, .28), 0 2px 4px rgba(8, 24, 30, .2), inset 
 // 1.15.8 page titles are visually hidden (the bottom nav already names the page); the h1 stays for screen readers.
 .srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .greeting-row { margin-bottom: 12px !important; }
+/* 1.15.10 clear space under the Flavors wordmark (titles are hidden now, so the logo sat right on the content). */
+.eyebrow.page-eyebrow.page-logo { margin-bottom: 24px !important; }
+[data-size='phone'] .eyebrow.page-eyebrow.page-logo { margin-bottom: 20px !important; }

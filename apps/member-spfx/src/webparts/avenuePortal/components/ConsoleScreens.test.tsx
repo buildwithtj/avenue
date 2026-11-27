@@ -303,9 +303,16 @@ describe('schedule', () => {
     expect(document.querySelector('[data-unit="stove-1"]')?.textContent).toMatch(/Next booking|In use|bookings?|Free for the rest of today/);   // the sample bookings end at 18:00 UTC, so later in the day a unit reads Free
     await click(button(/^Week$/));
     await flush();
-    expect(document.querySelectorAll('[aria-label="Week calendar"] [role="gridcell"]').length).toBe(7);
-    expect(document.querySelector('[aria-label="Bookings this week"]')?.textContent).toContain('Sample Bakery');
-    expect(document.querySelectorAll('[aria-label="Bookings this week"] section').length).toBe(7);
+    const boxes = Array.from(document.querySelectorAll('[aria-label="Week calendar"] [role="gridcell"]'));
+    expect(boxes.length).toBe(7);
+    const box = boxes.filter(b => /, 1 booking$/.test(b.getAttribute('aria-label') || ''))[0] as HTMLElement;
+    expect(box).toBeDefined();
+    expect(box.textContent).toMatch(/\d{1,2}:\d{2} [AP]M - \d{1,2}:\d{2} [AP]M/);
+    expect(box.textContent).not.toContain('Sample Bakery');
+    await click(box);
+    await flush();
+    expect(box.getAttribute('aria-selected')).toBe('true');
+    expect(document.querySelector('[aria-label="Selected day"]')?.textContent).toContain('Sample Bakery');
     expect(document.body.textContent).not.toContain('Timeline');
   });
   it('opens a booked day in a sheet on phones, so the member does not scroll past the month grid', async () => {

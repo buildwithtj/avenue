@@ -1,5 +1,10 @@
 # Changelog
 
+## 28 Nov 2026: staging 1.15.10.0 deployed (Schedule week day boxes, logo spacing)
+- Schedule Week view is now a grid of 7 day boxes (2 columns on phone with Saturday spanning, 4 mid, 7 wide); each box shows its bookings (time + equipment, "+N more", "Free"), today gold with a Today pill, selected box outlined; one detail panel below for the selected day (with member display names, as before). The old strip and list are removed.
+- 20 px (phone) / 24 px clear space under the Flavors wordmark.
+- Build green, bundle `avenue-portal-web-part_664007db29ba2afccfdb.js`. Previewed with the local dev server (debug manifests, automations@, phone width): 7 boxes, Thu booking inside its box, Fri today outlined, Sat full width with 2 bookings, detail panel. Deployed as TDDAdmin on the developer's OK: AppCatalogVersion 1.15.10.0, bundle `avenue-portal-web-part_664007db29ba2afccfdb.js`; checked on the staging page at 1470 px (7 boxes in one row, today outlined, detail panel).
+
 ## 28 Nov 2026: staging 1.15.9.0 deployed (Lenis, Schedule week grid, nav, titles)
 - Scroll: removed `.module-view { content-visibility: auto }` (cards popped in and the scroll height jumped); Lenis 1.1.20 smooth wheel scrolling on the SharePoint `contentScrollRegion` (desktop / fine pointer only, off under reduced motion; touch stays native; skips any element that scrolls itself, dialogs and `[data-lenis-prevent]`); `scrollMainTo` routes main-page scrolls through Lenis; hero image and sheet on their own layers.
 - Page titles visually hidden on tab pages (kept as screen-reader h1); Home greeting and the Flavors wordmark stay.

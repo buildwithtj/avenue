@@ -3,7 +3,7 @@
 
 
 
-## 27 Nov 2026 (late night) — staging 1.15.9.0 LIVE on the staging page (bundle 6cb01845; Lenis desktop smooth scroll, Schedule week grid, nav pill, titles hidden): arc date wheel (phone) / week bar (desktop), redesigned booking sheet, [PROPOSED] Flavors wordmark, AI photos, attachments on (flow R2 live). Client live portal unchanged (2.19.0.0). Next: Next-tag overlap on the arc, check the month popover and >5-unit sheet in a browser, decide how to beat the SharePoint service-worker cache, get the client's OK on the wordmark and AI photos.
+## 27 Nov 2026 (late night) — staging 1.15.10.0 LIVE on the staging page (bundle 664007db; week day-box grid; Lenis desktop smooth scroll, Schedule week grid, nav pill, titles hidden): arc date wheel (phone) / week bar (desktop), redesigned booking sheet, [PROPOSED] Flavors wordmark, AI photos, attachments on (flow R2 live). Client live portal unchanged (2.19.0.0). Next: Next-tag overlap on the arc, check the month popover and >5-unit sheet in a browser, decide how to beat the SharePoint service-worker cache, get the client's OK on the wordmark and AI photos.
 
 ## 27 Nov 2026 (night) — staging 1.15.1.0 LIVE on the staging page (bundle da52fff4): AI equipment and Home photos (Higgsfield Unlimited, no credits), phone gap and Review bar fixes. Client live portal unchanged (2.19.0.0). Nothing committed since 2970bd2.
 

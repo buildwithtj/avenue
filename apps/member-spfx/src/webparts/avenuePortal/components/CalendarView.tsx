@@ -23,7 +23,7 @@ export interface ICalendarViewProps {
 const WEEK: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const dow = (ymd: string): number => new Date(`${ymd}T12:00:00Z`).getUTCDay();
 
-// Facility schedule: the month calendar, the equipment cards for one day, or one week as a 7-cell grid with every day's bookings under it.
+// Facility schedule: the month calendar, the equipment cards for one day, or one week as a grid of day boxes with the selected day's details under it.
 // Names are the member display name only (the existing shared-calendar rule).
 
 export default function CalendarView(props: ICalendarViewProps): React.ReactElement {
@@ -37,7 +37,7 @@ export default function CalendarView(props: ICalendarViewProps): React.ReactElem
   const [filter, setFilter] = React.useState<'all' | 'free' | 'busy'>('all');
   const weekStart: string = addDays(day, -dow(day));
   const cal = useCalendarDay(source, view === 'week' ? weekStart : day, view === 'week' ? 7 : 1);
-  const dayRefs = React.useRef<Record<string, HTMLElement | null>>({});
+  const panelRef = React.useRef<HTMLDivElement | null>(null);
   const busy = React.useMemo(() => buildBusyMap(cal.entries), [cal.entries]);
   const units: IResource[] = React.useMemo(() => resources.concat({ resourceId: DINING_KEY, title: 'Dining room', kind: 'Space', category: 'Other', sortOrder: 100000 }), [resources]);
   const timeline: IDayTimeline = React.useMemo(() => dayTimeline(units, busy, day, tz), [units, busy, day, tz]);
@@ -94,31 +94,38 @@ export default function CalendarView(props: ICalendarViewProps): React.ReactElem
         {cal.failed && <div className={s.errorPanel} role="alert"><strong>We could not load the schedule.</strong><button type="button" className={s.btn} onClick={cal.reload}>Try again</button></div>}
         {!cal.ready && <div className={s.skeleton} style={{ height: 260 }} role="status" aria-label="Loading the schedule" />}
 
-        {cal.ready && !cal.failed && view === 'week' && (
-          <>
-            <div className={s.mcGrid} role="grid" aria-label="Week calendar">
-              {WEEK.map(w => <div key={w} className={s.mcDow} role="columnheader">{w}</div>)}
-              {groupByDay(cal.entries, tz, weekStart, 7).map(b => (
-                <button key={b.day} type="button" role="gridcell" aria-selected={day === b.day} aria-label={`${short(b.day)}, ${b.entries.length} ${b.entries.length === 1 ? 'booking' : 'bookings'}`}
-                  className={`${s.mcCell} ${b.day === today ? s.mcToday : ''} ${day === b.day ? s.mcSel : ''}`}
-                  onClick={() => { setDay(b.day); const el = dayRefs.current[b.day]; if (el) { scrollMainTo(el); } }}>
-                  <b>{Number(b.day.slice(8))}</b>
-                  {b.entries.length > 0 && <span className={s.mcBars} aria-hidden="true">{b.entries.slice(0, 4).map(e => <i key={e.bookingId} />)}{b.entries.length > 4 && <em>+{b.entries.length - 4}</em>}</span>}
-                </button>
-              ))}
-            </div>
-            <div className={s.weekList} aria-label="Bookings this week">
-              {groupByDay(cal.entries, tz, weekStart, 7).map(b => (
-                <section key={b.day} ref={el => { dayRefs.current[b.day] = el; }} className={`${s.weekDay} ${day === b.day ? s.weekSel : ''}`} aria-label={short(b.day)}>
-                  <div className={s.weekDayHead}><strong>{new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: 'short', month: 'short', day: 'numeric' }).format(new Date(`${b.day}T12:00:00Z`))}</strong>{b.day === today && <span className={s.weekToday}>Today</span>}</div>
-                  {b.entries.length === 0 ? <p className={s.muted}>Nothing booked</p> : <ul>{b.entries.map(e => (
-                    <li key={e.bookingId}><strong>{localTime(e.startUtc, tz)} - {localTime(e.endUtc, tz)}</strong><span>{e.memberName}, {equipmentChips(e.space || '', e.equipmentIds, resources).join(', ') || 'Booking'}</span></li>
-                  ))}</ul>}
-                </section>
-              ))}
-            </div>
-          </>
-        )}
+        {cal.ready && !cal.failed && view === 'week' && (() => {
+          const days = groupByDay(cal.entries, tz, weekStart, 7);
+          const sel = days.filter(b => b.day === day)[0];
+          const long = (ymd: string): string => new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: 'long', month: 'long', day: 'numeric' }).format(new Date(`${ymd}T12:00:00Z`));
+          const gear = (e: { space?: string; equipmentIds: string[] }): string => equipmentChips(e.space || '', e.equipmentIds, resources).join(', ') || 'Booking';
+          const pick = (d: string): void => { setDay(d); window.setTimeout(() => { if (panelRef.current) { scrollMainTo(panelRef.current); } }, 0); };
+          return (
+            <>
+              <div className={s.wkGrid} role="grid" aria-label="Week calendar">
+                {days.map((b, i) => (
+                  <div key={b.day} role="gridcell" tabIndex={0} aria-selected={day === b.day}
+                    aria-label={`${long(b.day)}, ${b.entries.length} ${b.entries.length === 1 ? 'booking' : 'bookings'}`}
+                    className={`${s.wkBox} ${b.day === today ? s.wkToday : ''} ${day === b.day ? s.wkSel : ''} ${b.day < today ? s.wkPast : ''} ${i === 6 ? s.wkLast : ''}`}
+                    onClick={() => pick(b.day)}
+                    onKeyDown={ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); pick(b.day); } }}>
+                    <div className={s.wkHead}><span className={s.wkDow}>{WEEK[i]}</span><b>{Number(b.day.slice(8))}</b>{b.day === today && <em>Today</em>}</div>
+                    {b.entries.length === 0 ? <span className={s.wkFree}>Free</span> : b.entries.slice(0, 2).map(e => (
+                      <div key={e.bookingId} className={s.wkEntry}><strong>{localTime(e.startUtc, tz)} - {localTime(e.endUtc, tz)}</strong><span>{gear(e)}</span></div>
+                    ))}
+                    {b.entries.length > 2 && <span className={s.wkMore}>+{b.entries.length - 2} more</span>}
+                  </div>
+                ))}
+              </div>
+              <div ref={panelRef} className={s.wkPanel} aria-label="Selected day">
+                <h3>{long(day)}{day === today && <em>Today</em>}</h3>
+                {!sel || sel.entries.length === 0 ? <p className={s.muted}>Nothing booked</p> : <ul>{sel.entries.map(e => (
+                  <li key={e.bookingId}><strong>{localTime(e.startUtc, tz)} - {localTime(e.endUtc, tz)}</strong><span>{e.memberName}</span><span>{gear(e)}</span></li>
+                ))}</ul>}
+              </div>
+            </>
+          );
+        })()}
 
         {cal.ready && !cal.failed && view === 'cards' && (
           <>

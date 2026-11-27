@@ -14,7 +14,7 @@ const STAGING = {
   solutionId: 'd5270044-328c-4f85-a99d-5e985562c6a9',
   featureId: '3536ace4-8cb5-41b7-b17b-a190ea119886',
   webPartId: 'b7cbec8a-2b76-4c3d-82ce-a8a3448b8e4f',
-  version: '1.15.9.0'
+  version: '1.15.10.0'
 };
 
 const origSolution = readFileSync(SOLUTION, 'utf8');
