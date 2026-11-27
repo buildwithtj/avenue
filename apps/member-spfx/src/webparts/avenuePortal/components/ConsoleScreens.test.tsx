@@ -301,22 +301,12 @@ describe('schedule', () => {
     await click(button(/^Equipment$/));
     await flush();
     expect(document.querySelector('[data-unit="stove-1"]')?.textContent).toMatch(/Next booking|In use|bookings?|Free for the rest of today/);   // the sample bookings end at 18:00 UTC, so later in the day a unit reads Free
-    await click(button(/^Timeline$/));
-    await flush();
-    expect(document.querySelector('[data-lane="stove-1"]')?.textContent).toContain('Sample Bakery');
-    expect(document.querySelectorAll('[data-lane]').length).toBe(resources.length + 1);
     await click(button(/^Week$/));
     await flush();
-    const cell = document.querySelector('[aria-label^="Stove #1"][aria-label*="booked 8%"]');
-    expect(cell).not.toBeNull();
-  });
-  it('is a list per equipment on phones', async () => {
-    await act(async () => { root.render(<SizeContext.Provider value="phone"><CalendarView source={src} facility={facility} resources={resources} /></SizeContext.Provider>); });
-    await flush();
-    await click(button(/^Timeline$/));
-    await flush();
-    expect(document.querySelector('[data-testid="schedule-list"] article[data-unit="stove-1"]')?.textContent).toContain('12:00 PM - 2:00 PM');
-    expect(document.querySelector('[data-testid="board"]')).toBeNull();
+    expect(document.querySelectorAll('[aria-label="Week calendar"] [role="gridcell"]').length).toBe(7);
+    expect(document.querySelector('[aria-label="Bookings this week"]')?.textContent).toContain('Sample Bakery');
+    expect(document.querySelectorAll('[aria-label="Bookings this week"] section').length).toBe(7);
+    expect(document.body.textContent).not.toContain('Timeline');
   });
   it('opens a booked day in a sheet on phones, so the member does not scroll past the month grid', async () => {
     await act(async () => { root.render(<SizeContext.Provider value="phone"><CalendarView source={src} facility={facility} resources={resources} /></SizeContext.Provider>); });

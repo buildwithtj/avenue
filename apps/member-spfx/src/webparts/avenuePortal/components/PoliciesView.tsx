@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { scrollMainTo } from './smoothScroll';
 import s from './Site.module.scss';
 import type { IFacility, IPlan } from '../../../avenue/contracts';
 import type { AvenueReadSource } from '../../../avenue/readSource';
@@ -38,7 +39,7 @@ export default function PoliciesView(props: IPoliciesViewProps): React.ReactElem
   const prep: number = f.minPrepTables === undefined ? 2 : f.minPrepTables;
   const plans = useLoad<IPlan[]>(() => props.source.listPlans().catch((): IPlan[] => []), [props.source]);
   const open: IPlan[] = (plans.data || []).filter(p => p.openToNew !== false && p.priceCents !== undefined);
-  const jump = (id: string): void => { const el: HTMLElement | null = document.getElementById(`policy-${id}`); if (el && el.scrollIntoView) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } };
+  const jump = (id: string): void => { const el: HTMLElement | null = document.getElementById(`policy-${id}`); if (el) { scrollMainTo(el); } };
   return (
     <div className={s.pol}>
       <nav className={s.polToc} aria-label="On this page">

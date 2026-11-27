@@ -81,7 +81,7 @@ export function PageHead(props: { eyebrow: string; title: string; lede?: string;
       <div className={r['head-copy']}>
         {props.back}
         <SiteEyebrow title={props.eyebrow} />
-        <h1>{props.title}<span aria-hidden="true">.</span></h1>
+        <h1 className={r.srOnly}>{props.title}</h1>
         {/* Page subtitles removed on request (27 Nov 2026): the title alone heads each page. `lede` is kept in the props for callers. */}
       </div>
       {props.action}

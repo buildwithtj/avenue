@@ -289,7 +289,7 @@ export default function BookBoard(props: IBookBoardProps): React.ReactElement {
               return <li key={n} className={i < at ? s.stepDone : i === at ? s.stepNow : ''} aria-current={i === at ? 'step' : undefined}><b>{i < at ? '✓' : i + 1}</b>{n}</li>;
             })}
           </ol>
-          <h1 className={s.pageTitle}>{!kit && unitIds.length === 0 ? 'What are you making?' : !block ? 'Now pick your time' : 'Review and send'}</h1>
+          <h1 className={s.srOnly}>{!kit && unitIds.length === 0 ? 'What are you making?' : !block ? 'Now pick your time' : 'Review and send'}</h1>
           <div className={s.kitBar} role="group" aria-label="Kits">
             {KITS.map(k => (
               <button key={k.key} type="button" className={`${s.kit} ${kit === k.key ? s.kitOn : ''}`} aria-pressed={kit === k.key} data-kit={k.key} onClick={() => pickKit(k.key)}>

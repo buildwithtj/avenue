@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { installSmoothScrollX } from './smoothScrollX';
+import { installSmoothScroll, scrollMainTo } from './smoothScroll';
 import { brandLogoOnDark, brandLogoOnLight, brandMark } from '../assets';
 import { MessageBar, MessageBarType } from '@fluentui/react';
 import styles from './AvenuePortal.module.scss';
@@ -215,6 +216,7 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
   React.useEffect(() => { setFull(!!props.immersive); }, [props.immersive]);
   // Lenis-style glide for every horizontal rail (wheel sideways and mouse drag); vertical scrolling stays native.
   React.useEffect(() => (rootRef.current ? installSmoothScrollX(rootRef.current) : undefined), []);
+  React.useEffect(() => installSmoothScroll(rootRef.current), []);
   React.useEffect(() => {
     if (!full) { return undefined; }
     acquireImmersive();
@@ -408,7 +410,7 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
   const firstTab: React.MutableRefObject<boolean> = React.useRef<boolean>(true);
   React.useEffect(() => {
     if (firstTab.current) { firstTab.current = false; return; }
-    if (rootRef.current && rootRef.current.scrollIntoView) { rootRef.current.scrollIntoView({ block: 'start' }); }
+    if (rootRef.current) { scrollMainTo(rootRef.current, false, 0); }
   }, [tab]);
 
   const renderTab = (t: TabKey): React.ReactElement | null => {
@@ -606,7 +608,7 @@ function PortalInner(props: IAvenuePortalProps): React.ReactElement {
                   {tabOn('events') && <button type="button" onClick={() => setTab('events')}>Events</button>}
                   {tabOn('storage') && <button type="button" onClick={() => setTab('storage')}>Storage</button>}
                   {tabOn('support') && <button type="button" onClick={() => setTab('support')}>Message Flavors</button>}
-                  {POLICY_SECTIONS.map(x => <button key={x.id} type="button" onClick={() => { setTab('policies'); window.setTimeout(() => { const el: HTMLElement | null = document.getElementById(`policy-${x.id}`); if (el && el.scrollIntoView) { el.scrollIntoView({ block: 'start' }); } }, 60); }}>{x.title}</button>)}
+                  {POLICY_SECTIONS.map(x => <button key={x.id} type="button" onClick={() => { setTab('policies'); window.setTimeout(() => { const el: HTMLElement | null = document.getElementById(`policy-${x.id}`); if (el) { scrollMainTo(el, false); } }, 60); }}>{x.title}</button>)}
                 </nav>
               </details>
             </div>

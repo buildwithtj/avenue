@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { scrollMainTo } from './smoothScroll';
 import { celebrate } from './feedback';
 import { MessageBar, MessageBarType } from '@fluentui/react';
 import styles from './AvenuePortal.module.scss';
@@ -98,7 +99,7 @@ export default function DocumentsView(props: IDocumentsViewProps): React.ReactEl
   // "Upload" on a required row opens the one upload form below, preset to that type.
   const startUpload = (type: DocType): void => {
     setDocType(type); setSent(false); setErrors([]);
-    if (formRef.current && typeof formRef.current.scrollIntoView === 'function') { formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    if (formRef.current) { scrollMainTo(formRef.current); }
     window.setTimeout(() => { if (issueInput.current) { issueInput.current.focus({ preventScroll: true }); } }, 0);
   };
 

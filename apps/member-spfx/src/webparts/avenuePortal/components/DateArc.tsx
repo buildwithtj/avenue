@@ -232,7 +232,7 @@ export function DateArc(props: IDateArcProps): React.ReactElement {
 
   return (
     <>
-    <div ref={rootRef} className={flat ? ds.flat : ds.arc} style={flat ? undefined : { height: H }} role="listbox" aria-label={label} tabIndex={0}
+    <div ref={rootRef} className={flat ? ds.flat : ds.arc} style={flat ? undefined : { height: H }} role="listbox" data-lenis-prevent="" aria-label={label} tabIndex={0}
       aria-activedescendant={`${uid}${value}`} data-arc={flat ? 'flat' : 'arc'}
       onKeyDown={onKey} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp}>
       {!flat && <svg className={ds.guide} width={W} height={H} aria-hidden="true"><path d={`M0 ${yEdge.toFixed(1)} A ${R.toFixed(1)} ${R.toFixed(1)} 0 0 1 ${W} ${yEdge.toFixed(1)}`} /></svg>}

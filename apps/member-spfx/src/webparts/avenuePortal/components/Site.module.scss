@@ -3206,7 +3206,6 @@ $rSlate: #5B6370;
 [data-size='phone'] .schedule-card, [data-size='phone'] .right-column { min-width: 0; max-width: 100%; }
 button, a, [role='button'], input, select, textarea, summary { touch-action: manipulation; }
 .sheetBody { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
-.module-view { content-visibility: auto; contain-intrinsic-size: auto 360px; }
 
 // ---- v14: modern buttons and a pill segmented control with a sliding thumb (central primitives: every page picks them up) ----
 .site .btn { min-height: 46px; padding: 0 20px; border: 0; border-radius: 16px; background: #e4eef0; color: #0f4c5c; font-weight: 650; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: none; position: relative; overflow: hidden; transition: transform .12s cubic-bezier(.34, 1.4, .64, 1), background .2s, box-shadow .2s, opacity .12s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
@@ -4083,3 +4082,15 @@ $fb-ink: #0f4c5c; $fb-gold: #c9a24d; $fb-edge: #c9d4d9;
 // 1.15.7 smaller page titles (My bookings, Schedule, Book board): match PageHead.
 .site .pageTitle { font-size: 26px !important; font-weight: 700; letter-spacing: -.02em; line-height: 1.15; margin: 6px 0 4px !important; }
 .site[data-size='phone'] .pageTitle { font-size: 22px !important; }
+// 1.15.8 Schedule week grid: cells reuse the month grid; every day's bookings sit under it.
+.weekList { margin-top: 16px; }
+.weekSel { background: #F1F6F7; box-shadow: inset 3px 0 0 $ink; padding-left: 12px; }
+.weekToday { margin-left: 8px; padding: 2px 8px; border-radius: 999px; background: $citrus; color: #1F1F1F; font-size: 12px; font-weight: 700; }
+.pageHead { padding-bottom: 8px !important; }
+// 1.15.8 active tab: soft pill behind the icon, ink icon and label, gentle scale; no glow.
+[data-size='phone'] .tabbar .tab { color: #5b6370; -webkit-tap-highlight-color: transparent; }
+[data-size='phone'] .tabbar .tab:not(.tabBook) .navIcon { box-sizing: content-box; width: 24px; height: 24px; padding: 4px 8px; border-radius: 16px !important; background: transparent !important; color: #5b6370; filter: none; transition: transform .18s ease, background-color .18s ease, color .18s ease !important; }
+[data-size='phone'] .tabbar .tab.tabOn:not(.tabBook) .navIcon { background: rgba(15, 76, 92, .10) !important; color: #0f4c5c; filter: none; transform: scale(1.06); }
+[data-size='phone'] .tabbar .tab.tabOn:not(.tabBook) span { color: #0f4c5c; font-weight: 700; }
+[data-size='phone'] .tabbar .tab:not(.tabBook):active .navIcon { background: rgba(15, 76, 92, .14) !important; transform: scale(.94) !important; }
+@media (prefers-reduced-motion: reduce) { [data-size='phone'] .tabbar .tab:not(.tabBook) .navIcon { transition: none !important; } }

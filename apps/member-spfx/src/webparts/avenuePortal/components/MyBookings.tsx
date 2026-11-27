@@ -1,5 +1,6 @@
 import { toast } from './feedback';
 import * as React from 'react';
+import { scrollMainTo } from './smoothScroll';
 import s from './Site.module.scss';
 import rf from './Ref.module.scss';
 import { canSelfCancel, extensionWaiting, hoursThisMonth, validateExtension } from '../../../avenue/booking';
@@ -113,7 +114,7 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
   const byDay: Map<string, (typeof strip)[number]> = new Map(strip.map(d => [d.ymd, d] as [string, (typeof strip)[number]]));
   const stripValue: string = focusDay && byDay.has(focusDay) ? focusDay : anchorYmd || todayYmd;
   // Choosing a day (wheel, week bar, month grid, Today) marks it and brings its bookings into view.
-  const pickStripDay = (ymd: string): void => { setFocusDay(ymd); const el: HTMLElement | null = document.getElementById(`day-${ymd}`); if (el && el.scrollIntoView) { el.scrollIntoView({ block: 'start', behavior: 'smooth' }); } };
+  const pickStripDay = (ymd: string): void => { setFocusDay(ymd); const el: HTMLElement | null = document.getElementById(`day-${ymd}`); if (el) { scrollMainTo(el); } };
   const open: IMyRequest | undefined = all.filter(r => r.requestId === openId)[0];
 
   const cancellable = (r: IMyRequest): boolean => !r.cancelSent && !r.cancelRequested && (r.status === 'Approved' || r.status === 'Pending' || !r.status) && Date.parse(r.startUtc) > now;
@@ -269,7 +270,7 @@ export default function MyBookings(props: IMyBookingsProps): React.ReactElement 
     <section aria-label="My bookings" className={s.mb}>
       <div className={s.pageHead}>
         <div className={`${s.container} ${s.headRow}`}>
-          <div className={rf['head-copy']}><SiteEyebrow title={props.facility.title} /><h1 className={s.pageTitle}>My bookings<span className={s.rDot} aria-hidden="true">.</span></h1>
+          <div className={rf['head-copy']}><SiteEyebrow title={props.facility.title} /><h1 className={s.srOnly}>My bookings</h1>
             <dl className={s.factRow}>
               <div><dt>{liveNow ? 'Now' : 'Next'}</dt><dd>{liveNow ? `In the kitchen until ${localTime(liveNow.endUtc, tz)}` : nextUp ? `${facilityDayLabel(localDay(nextUp.startUtc, tz), todayYmd)}, ${localTime(nextUp.startUtc, tz)}` : 'Nothing booked'}</dd></div>
               <div><dt>Waiting</dt><dd>{waitingCount}</dd></div>

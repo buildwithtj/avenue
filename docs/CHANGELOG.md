@@ -1,5 +1,12 @@
 # Changelog
 
+## 28 Nov 2026: staging 1.15.9.0 deployed (Lenis, Schedule week grid, nav, titles)
+- Scroll: removed `.module-view { content-visibility: auto }` (cards popped in and the scroll height jumped); Lenis 1.1.20 smooth wheel scrolling on the SharePoint `contentScrollRegion` (desktop / fine pointer only, off under reduced motion; touch stays native; skips any element that scrolls itself, dialogs and `[data-lenis-prevent]`); `scrollMainTo` routes main-page scrolls through Lenis; hero image and sheet on their own layers.
+- Page titles visually hidden on tab pages (kept as screen-reader h1); Home greeting and the Flavors wordmark stay.
+- Schedule: Timeline view removed; Week view is a 7-cell calendar-style grid (today gold, selected outlined) with all 7 days' details below (shared-calendar member display names as before); switcher is Calendar / Equipment / Week.
+- Phone bottom bar: active tab has a soft ink pill (rgba(15,76,92,.10)) behind a slightly larger icon and a bold ink label.
+- 1.15.8 deployed and found broken on desktop: Lenis kept its first measured limit because SharePoint's scroll content box never changes size (wheel scrolling stuck at 48 px). 1.15.9 observes the portal root with a ResizeObserver and calls `lenis.resize()`. Deployed as TDDAdmin: AppCatalogVersion 1.15.9.0, bundle `avenue-portal-web-part_6cb018451442873e99eb.js`. Checked as automations@ (mouse, phone width): wheel scrolls the whole Schedule page (876 of 901 px), Week grid shows 7 cells with today gold, tapping Sat 28 scrolls to its highlighted section, bottom-bar Schedule pill, no page title. Not checked: real phone touch scrolling, desktop width.
+
 ## 27 Nov 2026: staging 1.15.7.0 deployed (scroll, footer, page titles)
 - Scroll jank/flicker: top bar glass now toggles with hysteresis (on > 32 px, off < 8 px), no `--bar-h` change on scroll, blur on a permanent `::before` layer cross-faded by opacity; blur 20 px+saturate -> 12 px and removed from non-floating surfaces; scroll-driven CSS reveals/parallax (`animation-timeline`) and the hero scroll listener removed; single-layer shadows on phone KPI cards, `.bkHours`, wide cart.
 - Sticky footer: `.main` flex 1 0 auto, footer margin-top auto, `.site` min-height 100dvh in immersive mode (70dvh otherwise); desktop Messages shell shorter.

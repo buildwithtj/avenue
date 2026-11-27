@@ -78,7 +78,7 @@ export function DateWeek(props: IDateArcProps): React.ReactElement {
         ))}
       </div>
       {open && (
-        <div className={ds.pop} role="dialog" aria-label="Choose a date">
+        <div className={ds.pop} data-lenis-prevent="" role="dialog" aria-label="Choose a date">
           <div className={ds.popHead}>
             <button type="button" className={ds.navBtn} aria-label="Previous month" onClick={() => { grabFocus.current = false; setVm(shiftMonth(vm, -1)); }}>‹</button>
             <strong>{monthOf(vm)}</strong>

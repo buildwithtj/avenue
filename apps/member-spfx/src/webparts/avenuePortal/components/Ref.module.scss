@@ -763,11 +763,11 @@ $ico-sh: 0 10px 20px rgba(8, 24, 30, .28), 0 2px 4px rgba(8, 24, 30, .2), inset 
 /* ---- Home hero, phone: the photo is PINNED (position: sticky, no transform, no scroll handler); the content sheet rises over it. The photo never blurs or
    darkens further while scrolling; the overlay text fades with opacity only once the sheet has risen about 40 px (useSheetCover). ---- */
 [data-size='phone'] .hero { position: sticky; top: 0; z-index: 0; }
-[data-size='phone'] .hero-img { transform: none; will-change: auto; animation: none; }
+[data-size='phone'] .hero-img { transform: translateZ(0); backface-visibility: hidden; will-change: auto; animation: none; }
 [data-size='phone'] .hero-copy { transform: none; opacity: 1; will-change: auto; transition: opacity .2s cubic-bezier(.23, 1, .32, 1); }
 [data-size='phone'] [data-cover='1'] .hero-copy { opacity: 0; pointer-events: none; }
 .sheet-mark { position: absolute; left: 0; top: 0; width: 1px; height: 1px; pointer-events: none; }
-[data-size='phone'] .home-sheet { z-index: 4; }
+[data-size='phone'] .home-sheet { z-index: 4; position: relative; isolation: isolate; }
 @media (prefers-reduced-motion: reduce) { [data-size='phone'] .hero-copy { transition: none; } }
 [data-motion='reduce'][data-size='phone'] .hero-copy { transition: none; }
 
@@ -986,3 +986,6 @@ $ico-sh: 0 10px 20px rgba(8, 24, 30, .28), 0 2px 4px rgba(8, 24, 30, .2), inset 
 /* 1.15.7 smaller page titles everywhere (PageHead h1 and the pages that render .pageTitle themselves): 22 px phone, 26 px wider. */
 .greeting-row h1, [data-size='phone'] .greeting-row h1 { font-size: 26px !important; font-weight: 700; letter-spacing: -.02em; line-height: 1.15; margin: 6px 0 4px !important; }
 [data-size='phone'] .greeting-row h1 { font-size: 22px !important; }
+// 1.15.8 page titles are visually hidden (the bottom nav already names the page); the h1 stays for screen readers.
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.greeting-row { margin-bottom: 12px !important; }

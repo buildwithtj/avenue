@@ -89,7 +89,7 @@ export default function MoreSheet(props: IMoreSheetProps): React.ReactElement | 
   return (
     <div className={s.moreRoot} data-open={shown ? 'true' : 'false'}>
       <div className={s.moreScrim} onClick={onClose} aria-hidden="true" />
-      <div ref={sheet} className={s.moreSheet} role="dialog" aria-modal="true" aria-labelledby="more-title" tabIndex={-1}>
+      <div ref={sheet} className={s.moreSheet} role="dialog" data-lenis-prevent="" aria-modal="true" aria-labelledby="more-title" tabIndex={-1}>
         <div className={s.moreGrab} onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp} aria-hidden="true"><i /></div>
         <header className={s.moreHead}><h2 id="more-title">More</h2><button type="button" className={s.moreClose} onClick={onClose} aria-label="Close">
           <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg></button></header>

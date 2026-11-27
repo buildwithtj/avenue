@@ -47,7 +47,7 @@ export function Sheet(props: { title: string; onClose: () => void; children: Rea
   return ReactDOM.createPortal(
     <div className={`${root.avenuePortal} ${s.artScope}`} data-motion={userReduced ? 'reduce' : 'full'} data-size={size}>
       <div className={`${s.scrim} ${anim(reduced, closing ? s.scrimOut : s.scrimIn)}`} onClick={onClose} data-testid="sheet-scrim" />
-      <div ref={panel} tabIndex={-1} role="dialog" aria-modal="true" aria-label={props.title} className={`${s.sheet} ${variant} ${anim(reduced, closing ? s.sheetOut : s.sheetIn)}`}>
+      <div ref={panel} tabIndex={-1} role="dialog" data-lenis-prevent="" aria-modal="true" aria-label={props.title} className={`${s.sheet} ${variant} ${anim(reduced, closing ? s.sheetOut : s.sheetIn)}`}>
         <div className={s.sheetHead}>
           <h2 className={s.sheetTitle}>{props.title}</h2>
           <button type="button" className={s.iconBtn} aria-label="Close" onClick={onClose}>×</button>
